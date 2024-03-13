@@ -1,26 +1,43 @@
 ﻿#Requires AutoHotkey v2.0
 #SingleInstance Force
 #Include "./src/App.ahk"
+TraySetIcon A_ScriptDir . "\src\assets\QMTray.ico"
+TrayTip "QM 2 运行中…按下 F9 开始使用脚本"
 CoordMode "Mouse", "Screen"
-TraySetIcon A_ScriptDir . "\src\Assets\CFTray.ico"
 
 ; Initializing configuration
-version := "1.3.0"
-popupTitle := "ClipFlow " . version
+version := "2.2.0"
+popupTitle := "QM2 for FrontDesk " . version
 winGroup := ["ahk_class SunAwtFrame", "旅客信息"]
-config := useConfigJSON(
-	"./clipflow.config.json",
-	"clipflow.config.json",
-)
 
 ; Gui
-ClipFlow := Gui(, popupTitle)
-App(ClipFlow)
-ClipFlow.Show()
-ClipFlow.OnEvent("Close", (*) => utils.quitApp("ClipFlow", popupTitle, winGroup))
+QM := Gui(, popupTitle)
+App(QM)
+QM.Show()
+QM.OnEvent("Close", (*) => utils.quitApp("QM2", popupTitle, winGroup))
 
-; hotkeys setup
-Pause:: ClipFlow.Show()
-^F12:: utils.cleanReload(winGroup)
-#Hotif WinActive(popupTitle)
-Esc:: ClipFlow.Hide()
+; hotkey setup
+F9:: {
+    QM.Show()
+}
+F12:: utils.cleanReload(winGroup)
+
+#HotIf WinActive(popupTitle)
+Esc:: QM.Hide()
+
+#HotIf cityLedgerPersist.value
+^o:: CityLedgerCo.USE()
+MButton:: CityLedgerCo.USE()
+
+#HotIf WinExist(CashieringScripts.popupTitle)
+::pw:: {
+    CashieringScripts.sendPassword()
+}
+::agd:: {
+    CashieringScripts.agodaBalanceTransfer()
+}
+::blk:: {
+    CashieringScripts.blockPmBilling()
+}
+!F11:: CashieringScripts.openBilling()
+#F11:: CashieringScripts.depositEntry()

@@ -301,22 +301,22 @@ class AddReactiveRadio extends AddReactive {
 }
 
 
-; class AddReactiveComboBox extends AddReactive {
-;     __New(GuiObject, options, mapObj, depend := 0, key := 0, event := 0) {
-;         ; mapObj: a Map(value, optionText) map object
-;         this.key := key
-;         this.mapObj := mapObj
-;         this.vals := []
-;         this.text := []
-;         for val, text in this.mapObj {
-;             this.vals.Push(val)
-;             this.text.Push(text)
-;         }
-;         super.__New("ComboBox", GuiObject, options, this.text, depend, key, event)
-;     }
+class AddReactiveComboBox extends AddReactive {
+    __New(GuiObject, options, mapObj, depend := 0, key := 0, event := 0) {
+        ; mapObj: a Map(value, optionText) map object
+        this.key := key
+        this.mapObj := mapObj
+        this.vals := []
+        this.text := []
+        for val, text in this.mapObj {
+            this.vals.Push(val)
+            this.text.Push(text)
+        }
+        super.__New("ComboBox", GuiObject, options, this.text, depend, key, event)
+    }
 
-;     ; overiding the getValue() of ReactiveControl. Returning the value of mapObj instead.
-;     getValue() {
-;         return this.vals[this.ctrl.Value]
-;     }
-; }
+    ; overiding the getValue() of ReactiveControl. Returning the value of mapObj instead.
+    getValue() {
+        return this.vals[this.ctrl.Value]
+    }
+}

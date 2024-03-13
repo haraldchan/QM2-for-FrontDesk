@@ -1,33 +1,27 @@
-#Include "../Tabs/FlowModes.ahk"
-#Include "../Tabs/History.ahk"
+#Include "./TabPages/OnePress.ahk"
+#Include "./TabPages/Xldp.ahk"
+#Include "./Phrases/RushRoom.ahk"
+#Include "./Phrases/Upsell.ahk"
+#Include "./Phrases/ExtraBed.ahk"
+#Include "./Phrases/TableResv.ahk"
 
-Tabs(CF, onTop, onTopCheckBox) {
-	historyOnTop(curTab){
-		prevTab := curTab
-		prevOnTop := onTop.value
-
-		if (curTab = 2) {
-			onTop.set(true)
-			onTopCheckBox.Value := 1
-		} else {
-			onTop.set(false)
-			onTopCheckBox.Value := 0
-		}
-		WinSetAlwaysOnTop onTop.value, popupTitle
-	}
+Tabs(QM, curTab, curSelectedScriptTab1, curSelectedScriptTab2, useDesktopXl) {
 
 	return (
-		Tab3 := CF.AddTab3("w280 x15" . " Choose1", ["Flow Modes", "History"]),
-		Tab3.OnEvent("Change", (*) => 
-			config.write("tabPos", Tab3.Value)
-			historyOnTop(Tab3.Value)
-		)
+		Tab3 := QM.AddTab3("w280 x15" . " Choose1", ["一键运行", "Excel 辅助", "常用语句"]),
+		Tab3.OnEvent("Change", (t*) => curTab.set(t[1].value)),
 
 		Tab3.UseTab(1),
-		FlowModes(CF),
+		OnePress(QM, curSelectedScriptTab1),
 
 		Tab3.UseTab(2),
-		History(CF),
+		Xldp(QM, curSelectedScriptTab2, useDesktopXl),
+
+		Tab3.UseTab(3),
+		RushRoom(QM),
+		Upsell(QM),
+		ExtraBed(QM),
+		TableReserve(QM),
 
 		Tab3.UseTab()
 	)

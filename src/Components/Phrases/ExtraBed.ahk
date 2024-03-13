@@ -1,8 +1,8 @@
 ExtraBed(App){
 	extraBedCharge := [
-		{label: "345元", price: 345},
-		{label: "575元", price: 575},
-		{label: "免费", price: 0},
+		{ label: "345元", price: 345 },
+		{ label: "575元", price: 575 },
+		{ label: "免费", price: 0 },
 	]
 
 	charge := signal(345)
@@ -53,6 +53,3 @@ ExtraBed(App){
 		App.AddButton("x+108 yp-65 w80 h50", "复制`nComment`nAlert").OnEvent("Click", writeClipboard)
 	)
 }
-
-App()
-F12:: Reload

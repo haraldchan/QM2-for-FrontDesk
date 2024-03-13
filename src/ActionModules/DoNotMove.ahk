@@ -1,5 +1,3 @@
-#Include "../../../Lib/Classes/utils.ahk"
-
 class DoNotMove {
     static description := "预到房间批量 DoNotMove"
     static popupTitle := "Do Not Move(batch)"

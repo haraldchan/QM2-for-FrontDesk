@@ -1,5 +1,3 @@
-#Include "../../../Lib/Classes/utils.ahk"
-
 class GroupKeys {
     static name := "GroupKeys"
     static description := "团队房卡制作     - Excel表：GroupKeys.xls"
@@ -8,6 +6,7 @@ class GroupKeys {
     static dateSlash := "\d{4}/\d{2}/\d{2}"
     static scriptHost := SubStr(A_ScriptDir, 1, InStr(A_ScriptDir, "\", , -1, -1) - 1)
     static path := IniRead(this.scriptHost . "\Lib\QM for FrontDesk\config.ini", "GroupKeys", "xlsPath")
+    static defaultPath := A_ScriptDir . "\Excel\GroupKeys.xls"
 
     static USE(desktopMode := 0) {
         if (desktopMode = true) {

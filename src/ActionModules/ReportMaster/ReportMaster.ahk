@@ -1,5 +1,4 @@
-#Include "../../../Lib/QM for FrontDesk/reports.ahk"
-#Include "../../../Lib/Classes/utils.ahk"
+#Include "./reports.ahk"
 
 class ReportMaster {
 	static description := "报表保存 - Report Master"
@@ -94,7 +93,7 @@ class ReportMaster {
 		}, {
 			searchStr: "pkgforecast",
 			name: "Upselling - 当天 Upsell 报表",
-			saveFn: upsell
+			saveFn: upsellPkg
 		}, {
 			searchStr: "pkgforecast",
 			name: "Afternoon Tea - 当天 大堂吧下午茶 报表",
@@ -233,7 +232,7 @@ class ReportMaster {
 
 	static groupArrivingOptions(fileType) {
 		reportName := "当天 Arrival 团单"
-		onDayGroup := Format("\\10.0.2.13\fd\9-ON DAY GROUP DETAILS\{2}\{2}{3}\{1}Group ARR&DEP.xlsx", today, A_Year, A_MM)
+		onDayGroup := Format("\\10.0.2.13\fd\9-ON DAY GROUP DETAILS\{2}\{2}{3}\{1}Group ARR&DEP.xlsx", FormatTime(A_Now, "yyyyMMdd"), A_Year, A_MM)
 		blockInfo := this.getBlockInfo(onDayGroup)
 		blockInfoText := ""
 		for blockName, blockCode in blockInfo {

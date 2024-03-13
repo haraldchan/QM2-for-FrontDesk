@@ -51,6 +51,3 @@ TableReserve(App){
         	.OnEvent("Click", writeClipboard)
 	)
 }
-
-App()
-F12:: Reload

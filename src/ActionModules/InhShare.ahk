@@ -1,5 +1,3 @@
-#Include "../../../Lib/Classes/utils.ahk"
-
 class InhShare {
 	static description := "生成空白 In-House Share"
 

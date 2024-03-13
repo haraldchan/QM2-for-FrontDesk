@@ -1,7 +1,3 @@
-#Include "../../../Lib/Classes/utils.ahk"
-#Include "../../../Lib/Classes/Reactive.ahk"
-CoordMode "Mouse", "Screen"
-
 class CashieringScripts {
     static description := "入账关联 - 快速打开Billing、入Deposit等）"
     static popupTitle := "Cashiering Scripts"
@@ -11,9 +7,9 @@ class CashieringScripts {
         9138, "9138 - EFT-Wechat",
         9140, "9140 - EFT-Alipay",
     )
-    static showPassword := ReactiveSignal(false)
-    static paymentTypeSelected := ReactiveSignal(9132)
-    static userPassword := ReactiveSignal("")
+    static showPassword := signal(false)
+    static paymentTypeSelected := signal(9132)
+    static userPassword := signal("")
 
     static USE() {
         CS := Gui("+AlwaysOnTop +MinSize250x300", this.popupTitle)
@@ -33,7 +29,7 @@ class CashieringScripts {
 
         CS.AddGroupBox("r4 x10 y+20 w260", " Deposit ")
         CS.AddText("xp+10 yp+20 h20", "支付类型")
-        paymentType := addReactiveComboBox(CS, "yp+20 w200 Choose2", this.paymentType)
+        paymentType := AddReactiveComboBox(CS, "yp+20 w200 Choose2", this.paymentType)
         paymentType.setEvent({ event: "Change", callback: (*) => this.paymentTypeSelected.set(paymentType.getValue()) })
 
         depositBtn := addReactiveButton(CS, "y+10 w100", "录入 &Deposit", { event: "Click", callback: (*) => this.depositEntry() })

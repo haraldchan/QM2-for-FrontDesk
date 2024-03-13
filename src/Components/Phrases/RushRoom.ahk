@@ -16,13 +16,10 @@ RushRoom(App){
 		App.AddGroupBox("w320 r3", "Rush Room - 赶房与Key Keep"),
 		App.AddText("xp+10 yp+20 h20", "赶房时间"),
         
-        AddReactiveEdit(App, "xp+60 w150 h20", "{1}", rushTime,, ["LoseFocus", (e*) => rushTime.set(e[1].value)]),
-        AddReactiveRadio(App, "xp-60 y+10 h25 Checked", "已做卡", keyMade,, ["Click", (*) => keyMade.set(true)]),
-        AddReactiveRadio(App, "xp+70 h25", "已做卡", keyMade,, ["Click", (*) => keyMade.set(false)]),
+		App.AddEdit("xp+60 w150 h20", rushTime.value).OnEvent("LoseFocus", (e*) => rushTime.set(e[1].value))
+		App.AddRadio("xp-60 y+10 h25 Checked", "已做卡").OnEvent("Click", (*) => keyMade.set(true))
+		App.AddRadio("xp+70 h25", "未做卡").OnEvent("Click", (*) => keyMade.set(false))
 
         App.AddButton("xp+150 yp-30 w80 h50", "复制`nComment`nAlert").OnEvent("Click", writeClipboard)
 	)
 }
-
-App()
-F12:: Reload

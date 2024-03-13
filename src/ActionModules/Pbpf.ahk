@@ -1,5 +1,3 @@
-#Include "../../../Lib/Classes/utils.ahk"
-
 class PbPf {
 	static description := "生成 PayBy PayFor 信息"
 	static popupTitle := "PayBy PayFor"
@@ -103,8 +101,8 @@ class PbPf {
 
 	static pbpf(initX := 759, initY := 266) {
 		commentPos := (A_OSVersion = "6.1.7601")
-			? scriptHost . "\QM for FrontDesk\src\assets\commentWin7.PNG"
-			: scriptHost . "\QM for FrontDesk\src\assets\comment.PNG"
+			? A_ScriptDir . "\src\assets\commentWin7.PNG"
+			: A_ScriptDir . "\src\assets\comment.PNG"
 
 		WinMaximize "ahk_class SunAwtFrame"
 		WinActivate "ahk_class SunAwtFrame"

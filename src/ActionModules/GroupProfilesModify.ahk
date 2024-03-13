@@ -1,5 +1,3 @@
-#Include "../../../Lib/Classes/utils.ahk"
-
 class GroupProfilesModify {
     static name := "GroupProfilesModify"
     static description := "团队Profile录入  - Excel表：GroupRoomNum.xls"
@@ -7,6 +5,8 @@ class GroupProfilesModify {
     static scriptHost := SubStr(A_ScriptDir, 1, InStr(A_ScriptDir, "\", , -1, -1) - 1)
     static path := IniRead(this.scriptHost . "\Lib\QM for FrontDesk\config.ini", "GroupProfilesModify", "xlsPath")
     static wwly := this.getWwlyPath()
+    static defaultPath := A_ScriptDir . "\Excel\GroupRoomNum.xls"
+
 
     static USE(desktopMode := 0, initX := 0, initY := 0) {
         if (desktopMode = true) {

@@ -1,6 +1,3 @@
-#Include "../../../Lib/Classes/utils.ahk"
-#Include "../../../Lib/QM for FrontDesk/reports.ahk"
-
 class PsbBatchCO {
     static name := "PsbBatchCO"
     static description := "旅安系统批量退房 - Excel表：CheckOut.xls"
@@ -8,6 +5,7 @@ class PsbBatchCO {
     static scriptHost := SubStr(A_ScriptDir, 1, InStr(A_ScriptDir, "\", , -1, -1) - 1)
     static path := IniRead(this.scriptHost . "\Lib\QM for FrontDesk\config.ini", "PsbBatchCO", "xlsPath")
     static blockingPopups := ["来访提示", "数据验证"]
+    static defaultPath := A_ScriptDir . "\Excel\CheckOut.xls"
 
     static USE(desktopMode := 0) {
         if (desktopMode = true) {
