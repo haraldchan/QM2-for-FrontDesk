@@ -29,15 +29,15 @@ Esc:: QM.Hide()
 ^o:: CityLedgerCo.USE()
 MButton:: CityLedgerCo.USE()
 
-#HotIf WinExist(CashieringScripts.popupTitle)
-::pw:: {
-    CashieringScripts.sendPassword()
-}
-::agd:: {
-    CashieringScripts.agodaBalanceTransfer()
-}
-::blk:: {
-    CashieringScripts.blockPmBilling()
-}
-!F11:: CashieringScripts.openBilling()
-#F11:: CashieringScripts.depositEntry()
+; #HotIf WinExist(CashieringScripts.popupTitle)
+; ::pw:: {
+;     CashieringScripts.sendPassword()
+; }
+; ::agd:: {
+;     CashieringScripts.agodaBalanceTransfer()
+; }
+; ::blk:: {
+;     CashieringScripts.blockPmBilling()
+; }
+; !F11:: CashieringScripts.openBilling()
+; #F11:: CashieringScripts.depositEntry()

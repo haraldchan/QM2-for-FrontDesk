@@ -3,7 +3,11 @@
 
 class signal {
     __New(val) {
-        this.value := val is Object ? this.mapify(val) : val
+        this.value := val is Class 
+            ? val 
+            : val is Object
+                ? this.mapify(val) 
+                : val
         this.subs := []
         this.comps := []
         this.effects := []
@@ -29,7 +33,7 @@ class signal {
             : newSignalValue
 
         ; change to Map()
-        if (newSignalValue is Object) {
+        if (!(newSignalValue is Class) && newSignalValue is Object) {
             this.value := this.mapify(this.value)
         }
 

@@ -2,7 +2,7 @@
 #Include "./CityLedgerCO.ahk"
 
 ; OnePress
-#Include "./CashieringScripts.ahk"
+; #Include "./CashieringScripts.ahk"
 #Include "./DoNotMove.ahk"
 #Include "./DoNotMove.ahk"
 #Include "./GroupShare.ahk"
