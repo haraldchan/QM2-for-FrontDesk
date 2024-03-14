@@ -3,10 +3,10 @@
 
 class signal {
     __New(val) {
-        this.value := val is Class 
-            ? val 
+        this.value := ((val is Class) or (val is Func))
+            ? val
             : val is Object
-                ? this.mapify(val) 
+                ? this.mapify(val)
                 : val
         this.subs := []
         this.comps := []
@@ -96,7 +96,7 @@ class computed {
 
     sync(newVal) {
         this.value := this.mutation.Call(newVal)
-        
+
         ; notify all subscribers to update
         for ctrl in this.subs {
             ctrl.update()
