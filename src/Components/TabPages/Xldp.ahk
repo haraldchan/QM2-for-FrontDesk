@@ -5,17 +5,13 @@ Xldp(QM, curSelectedScriptTab2, useDesktopXl) {
         PsbBatchCO,
     ]
 
-    xlPath := signal([
-        GroupKeys.defaultPath,
-        GroupProfilesModify.defaultPath,
-        PsbBatchCO.defaultPath
-    ])
+    xlPath := signal(modules.map(module => module.defaultPath))
 
     radioStyle(index) {
         return index = 1 ? "Checked x30 y+10 h25" : "x30 y+10 h25"
     }
 
-    handleSelect(ctrls, thisRadio, thisModule,*) {
+    handleSelect(ctrls, thisRadio, thisModule) {
         for ctrlArray in ctrls {
             ctrlArray[1].setValue(0)
         }
@@ -23,7 +19,7 @@ Xldp(QM, curSelectedScriptTab2, useDesktopXl) {
         curSelectedScriptTab2.set(thisModule)
     }
 
-    selectNewXl(index,*) {
+    selectNewXl(index) {
         QM.Opt("+OwnDialogs")
         selectedFile := FileSelect(3, , "请选择 Excel 文件")
         if (selectedFile = "") {
@@ -37,18 +33,12 @@ Xldp(QM, curSelectedScriptTab2, useDesktopXl) {
         useDesktopXl.set(use => !use)
         for ctrlArray in ctrlGroups {
             for ctrl in ctrlArray {
-                if (ctrl is Gui.Control) {
-                    ctrl.Enabled := !useDesktopXl.value
-                } else {
-                    ctrl.disable(!useDesktopXl.value)
-                }
+                ctrl.disable(!useDesktopXl.value)
             }
         }
-
     }
 
-
-    xldpNotifier := "
+    xldpDesc := "
     (
         功能说明：
             
@@ -69,18 +59,18 @@ Xldp(QM, curSelectedScriptTab2, useDesktopXl) {
 
     return (
         ctrls := modules.map((module, index) => [
-            AddReactiveRadio(QM, radioStyle(A_Index), module.description, curSelectedScriptTab2,,
+            AddReactiveRadio(QM, radioStyle(A_Index), module.description, , ,
                 ["Click", (r*) => handleSelect(ctrls, r[1], module)]),
-
+            
             AddReactiveEdit(QM, "x30 y+10 h25 w150  ReadOnly", "{1}", xlPath, A_Index),
 
-            AddReactiveButton(QM, "h25 w70 x+10", "选择文件", xlPath,,
+            AddReactiveButton(QM, "h25 w70 x+10", "选择文件", , ,
                 ["Click", (*) => selectNewXl(index)]),
-
-            AddReactiveButton(QM, "h25 w70 x+10", "打开表格", xlPath,,
+            
+            AddReactiveButton(QM, "h25 w70 x+10", "打开表格", , ,
                 ["Click", (*) => Run(xlPath.value[index])]),
         ]),
         QM.AddCheckbox("h25 x30 y+10", "使用桌面文件模式").OnEvent("Click", (*) => toggleDesktopMode(ctrls)),
-        QM.AddText("y+25", xldpNotifier)
+        QM.AddText("y+25", xldpDesc)
     )
 }
