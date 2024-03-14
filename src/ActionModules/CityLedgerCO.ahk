@@ -1,5 +1,10 @@
 class CityLedgerCo {
 	static USE() {
+		if (!WinExist("ahk_class SunAwtFrame")) {
+			MsgBox("Opera PMS 未启动！", popupTitle, "4096 T2")
+			return
+		}
+
 		WinMaximize "ahk_class SunAwtFrame"
 		WinActivate "ahk_class SunAwtFrame"
 		WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
@@ -26,7 +31,7 @@ class CityLedgerCo {
 		Sleep 10
 		Send "{Esc}"
 		Sleep 10
-		
+
 		; Move to Close button
 		; MouseMove 894, 722
 		; Move to Win.1
@@ -37,7 +42,7 @@ class CityLedgerCo {
 		Sleep 100
 		BlockInput false
 	}
-	
+
 	static smallWin() {
 		BlockInput true
 		MouseMove 700, 200
