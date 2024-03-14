@@ -12,7 +12,7 @@ OnePress(QM, curSelectedScriptTab1) {
         return index = 1 ? "Checked h25" : "h25 y+10"
     }
 
-    ReportMasterNotifier := "
+    ReportMasterDesc := "
     (
         Report Master 常见问题：
 
@@ -31,6 +31,6 @@ OnePress(QM, curSelectedScriptTab1) {
             QM.AddRadio(radioStyle(A_Index), module.description)
                 .OnEvent("Click", (*) => curSelectedScriptTab1.set(module))
         ),
-        QM.AddText("y+35", ReportMasterNotifier)
+        QM.AddText("y+35", ReportMasterDesc)
     )
 }
