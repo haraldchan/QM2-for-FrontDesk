@@ -45,7 +45,7 @@ App(QM) {
 
 		Tabs(QM, curTab, curSelectedScriptTab1, curSelectedScriptTab2, useDesktopXl),
 
-		QM.AddButton("Default h40 w150", "启动脚本").OnEvent("Click", (*) => runSelectedScript()),
-		QM.AddButton("h40 w150 x+18", "隐藏窗口").OnEvent("Click", (*) => QM.Hide())
+		QM.AddButton("Default h40 w160", "启动脚本").OnEvent("Click", (*) => runSelectedScript()),
+		QM.AddButton("h40 w160 x+28", "隐藏窗口").OnEvent("Click", (*) => QM.Hide())
 	)
 }
