@@ -23,16 +23,16 @@ Upsell(App){
         App.AddGroupBox("w320 r6", "Upselling - 房间升级"),
 
 		App.AddText("xp+10 yp+25", "升级房型"),
-		App.AddEdit("x+10 w150", "").OnEvent("LoseFocus", (e*) => roomType.set(e[1].value))
+		App.AddEdit("x+10 w150", "").OnEvent("LoseFocus", (e*) => roomType.set(e[1].value)),
 
         App.AddText("xp-58 y+10 ", "每晚差价"),
-		App.AddEdit("x+10 w150", "").OnEvent("LoseFocus", (e*) => rateDiff.set(e[1].value))
+		App.AddEdit("x+10 w150", "").OnEvent("LoseFocus", (e*) => rateDiff.set(e[1].value)),
 
         App.AddText("xp-58 y+10", "升级晚数"),
-		App.AddEdit("x+10 w150", "").OnEvent("LoseFocus", (e*) => nts.set(e[1].value))
+		App.AddEdit("x+10 w150", "").OnEvent("LoseFocus", (e*) => nts.set(e[1].value)),
  
-		App.AddRadio("xp-55 y+10 h20 Checked", "中文").OnEvent("Click", (*) => lang.set("C"))
-		App.AddRadio("x+10 h20", "英文").OnEvent("Click", (*) => lang.set("E"))
+		App.AddRadio("xp-55 y+10 h20 Checked", "中文").OnEvent("Click", (*) => lang.set("C")),
+		App.AddRadio("x+10 h20", "英文").OnEvent("Click", (*) => lang.set("E")),
 	
         App.AddButton("xp+160 yp-90 w80 h50", "复制`nComment`nAlert").OnEvent("Click", writeClipboard)
 	)

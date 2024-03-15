@@ -45,7 +45,7 @@ ExtraBed(App){
 		App.AddEdit("xp+45 h20 w40", "Amy").OnEvent("LoseFocus", (e*) => approver.set(e[1].value)),
 
 		App.AddText("xp+55", "加床晚数"),
-		App.AddEdit("xp+55 w40 Number", "1").OnEvent("LoseFocus", (e*) => nts.set(e[1].value))
+		App.AddEdit("xp+55 w40 Number", "1").OnEvent("LoseFocus", (e*) => nts.set(e[1].value)),
 
 		App.AddRadio("xp-150 y+15 h25 Checked", "中文").OnEvent("Click", (*) => lang.set("C")),
 		App.AddRadio("x+10 h25", "英文").OnEvent("Click", (*) => lang.set("E")),
