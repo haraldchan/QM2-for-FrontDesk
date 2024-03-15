@@ -59,15 +59,15 @@ Xldp(QM, curSelectedScriptTab2, useDesktopXl) {
 
     return (
         ctrls := modules.map((module, index) => [
-            AddReactiveRadio(QM, radioStyle(A_Index), module.description, , ,
+            AddReactiveRadio(QM, radioStyle(A_Index), module.description, curSelectedScriptTab2, ,
                 ["Click", (r*) => handleSelect(ctrls, r[1], module)]),
             
             AddReactiveEdit(QM, "x30 y+10 h25 w150  ReadOnly", "{1}", xlPath, A_Index),
 
-            AddReactiveButton(QM, "h25 w70 x+10", "选择文件", , ,
+            AddReactiveButton(QM, "h25 w70 x+10", "选择文件", xlPath, ,
                 ["Click", (*) => selectNewXl(index)]),
             
-            AddReactiveButton(QM, "h25 w70 x+10", "打开表格", , ,
+            AddReactiveButton(QM, "h25 w70 x+10", "打开表格", xlPath, ,
                 ["Click", (*) => Run(xlPath.value[index])]),
         ]),
         QM.AddCheckbox("h25 x30 y+10", "使用桌面文件模式").OnEvent("Click", (*) => toggleDesktopMode(ctrls)),
