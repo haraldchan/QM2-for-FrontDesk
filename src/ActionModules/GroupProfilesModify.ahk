@@ -2,8 +2,6 @@ class GroupProfilesModify {
     static name := "GroupProfilesModify"
     static description := "团队Profile录入  - Excel表：GroupRoomNum.xls"
     static popupTitle := "GroupProfilesModify"
-    static scriptHost := SubStr(A_ScriptDir, 1, InStr(A_ScriptDir, "\", , -1, -1) - 1)
-    static path := IniRead(this.scriptHost . "\Lib\QM for FrontDesk\config.ini", "GroupProfilesModify", "xlsPath")
     static wwly := this.getWwlyPath()
     static defaultPath := A_ScriptDir . "\Excel\GroupRoomNum.xls"
 
@@ -19,7 +17,7 @@ class GroupProfilesModify {
                 return
             }
         } else {
-            path := this.path
+            path := this.defaultPath
         }
         if (this.wwly = "") {
             MsgBox("没有找到旅业同步系统，请换一台电脑。")

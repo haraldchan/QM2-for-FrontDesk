@@ -2,8 +2,6 @@ class PsbBatchCO {
     static name := "PsbBatchCO"
     static description := "旅安系统批量退房 - Excel表：CheckOut.xls"
     static popupTitle := "PSB CheckOut(Batch)"
-    static scriptHost := SubStr(A_ScriptDir, 1, InStr(A_ScriptDir, "\", , -1, -1) - 1)
-    static path := IniRead(this.scriptHost . "\Lib\QM for FrontDesk\config.ini", "PsbBatchCO", "xlsPath")
     static blockingPopups := ["来访提示", "数据验证"]
     static defaultPath := A_ScriptDir . "\Excel\CheckOut.xls"
 
@@ -18,7 +16,7 @@ class PsbBatchCO {
                 return
             }
         } else {
-            xlPath := this.path
+            xlPath := this.defaultPath
         }
 
         textMsg := "
@@ -93,8 +91,6 @@ class PsbBatchCO {
         Xl.Quit()
         TrayTip "读入完成"
 
-        ; SetTimer(this.winDetectAndClose(this.blockingPopups))
-
         loop lastRow {
             A_Clipboard := depRoomNums[A_Index]
             MouseMove 282, 205
@@ -121,11 +117,8 @@ class PsbBatchCO {
             }
         }
 
-        ; IniWrite("null", this.scriptHost . "\Lib\QM for FrontDesk\config.ini", "PsbBatchCO", "errorQuitAt")
         Sleep 1000
         MsgBox("PSB 批量拍Out 已完成！", this.popupTitle)
-
-        ; SetTimer(this.winDetectAndClose(this.blockingPopups), 0)
     }
 
     static winDetectAndClose(targetWins) {
