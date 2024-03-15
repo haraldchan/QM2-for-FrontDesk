@@ -5,11 +5,11 @@ OnePress(QM, curSelectedScriptTab1) {
         GroupShare,
         DoNotMove,
         ReportMaster,
-        ; CashieringScripts
+        CashieringScripts
     ]
 
     radioStyle(index) {
-        return index = 1 ? "Checked h25" : "h25 y+10"
+        return index = 1 ? "Checked x30 y+10 h25" : "x30 y+10 h25"
     }
 
     ReportMasterDesc := "
