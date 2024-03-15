@@ -147,11 +147,16 @@ class AddReactive {
         this.GuiObject := GuiObject
         this.options := options
         this.formattedString := textString
-        this.innerText := RegExMatch(textString, "\{\d+\}")
-            ? this.handleFormatStr(textString, depend, key)
-            : textString
+
+        if (controlType = "ComboBox") {
+            this.innerText := textString
+        } else {
+            this.innerText := RegExMatch(textString, "\{\d+\}")
+                ? this.handleFormatStr(textString, depend, key)
+                : textString
+        }
+
         this.depend := depend
-        this.key := key
 
         ; add control
         this.ctrl := this.GuiObject.Add(this.ctrlType, this.options, this.innerText)
@@ -261,7 +266,7 @@ class AddReactive {
     }
 
     setEvent(event, callback) {
-        this.ctrl.OnEvent(event, this.callback)
+        this.ctrl.OnEvent(event, callback)
     }
 
     disable(state) {
