@@ -13,11 +13,14 @@ class CashieringScripts {
 
     static USE() {
         CS := Gui("+AlwaysOnTop +MinSize250x300", this.popupTitle)
-        addReactiveText(CS, "h20", "Opera 密码")
-        this.pwd := addReactiveEdit(CS, "Password* h20 w110 x+10", "")
-        this.pwd.setEvent({ event: "Change", callback: (*) => this.userPassword.set(this.pwd.getInnerText())})
+        CS.AddText("h20", "Opera 密码")
 
-        addReactiveCheckBox(CS, "h20 x+10", "显示", { event: "Click", callback: CashieringScripts.togglePasswordVisibility })
+        this.pwd := AddReactiveEdit(CS, "Password* h20 w110 x+10", "",this.userPassword,,["LoseFocus", (e*) => CashieringScripts.updateUserPassword(e[1])])
+
+        AddReactiveCheckBox(
+            CS, "h20 x+10", "显示", this.showPassword,, 
+            ["Click", (c*) => CashieringScripts.togglePasswordVisibility(c[1])]
+        )
 
         ; persist hotkey shotcuts
         CS.AddGroupBox("r5 x10 w260", " 快捷键 ")
@@ -30,24 +33,29 @@ class CashieringScripts {
         CS.AddGroupBox("r4 x10 y+20 w260", " Deposit ")
         CS.AddText("xp+10 yp+20 h20", "支付类型")
         paymentType := AddReactiveComboBox(CS, "yp+20 w200 Choose2", this.paymentType)
-        paymentType.setEvent({ event: "Change", callback: (*) => this.paymentTypeSelected.set(paymentType.getValue()) })
+        paymentType.setEvent("Change", (*) => this.paymentTypeSelected.set(paymentType.getValue()))
 
-        depositBtn := addReactiveButton(CS, "y+10 w100", "录入 &Deposit", { event: "Click", callback: (*) => this.depositEntry() })
+        AddReactiveButton(CS, "y+10 w100", "录入 &Deposit",,,["Click", (*) => this.depositEntry()])
 
         CS.Show()
     }
 
-    static sendPassword() {
-        Send Format("{Text}{1}", this.userPassword.get())
+    static updateUserPassword(e){
+        CashieringScripts.userPassword.set(e.value)
+        e.value := CashieringScripts.userPassword.value
     }
 
-    static togglePasswordVisibility() {
-        if (CashieringScripts.showPassword.get() = true) {
+    static sendPassword() {
+        Send Format("{Text}{1}", this.userPassword.value)
+    }
+
+    static togglePasswordVisibility(c) {
+        CashieringScripts.showPassword.set(c.value)
+        if (c.value = false) {
             CashieringScripts.pwd.setOptions("+Password*")
         } else {
             CashieringScripts.pwd.setOptions("-Password*")
         }
-        CashieringScripts.showPassword.set(!CashieringScripts.showPassword.get())
     }
 
     static openBilling() {
@@ -62,7 +70,7 @@ class CashieringScripts {
         Sleep 100
         Send "!b"
         Sleep 100
-        Send Format("{Text}{1}", this.userPassword.get())
+        Send Format("{Text}{1}", this.userPassword.value)
         Sleep 100
         Send "{Enter}"
     }
@@ -95,13 +103,13 @@ class CashieringScripts {
         Sleep 300
         Send "{BackSpace}"
         Sleep 100
-        Send Format("{Text}{1}", this.userPassword.get())
+        Send Format("{Text}{1}", this.userPassword.value)
         Sleep 200
         MouseMove 707, 397
         Sleep 500
         Send "{Enter}"
         Sleep 100
-        Send Format("{Text}{1}", this.paymentTypeSelected.get())
+        Send Format("{Text}{1}", this.paymentTypeSelected.value)
         Sleep 200
         MouseMove 944, 387
         Sleep 450
@@ -211,7 +219,7 @@ class CashieringScripts {
         Sleep 100
         Send "!b"
         Sleep 100
-        Send Format("{Text}{1}", this.userPassword.get())
+        Send Format("{Text}{1}", this.userPassword.value)
         Sleep 100
         Send "{Enter}"
     }
