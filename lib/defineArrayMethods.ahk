@@ -130,7 +130,7 @@ defineArrayMethods(arr) {
 defineArrayMethods(Array)
 
 ; LSP syntax fragments for vscode-autohotkey2-lsp
-; defineArrayMethods.ahk
+;#defineArrayMethods.ahk
 ; /**
 ;  * Returns true if, in the array, it finds an element for which the provided function returns true; 
 ;  * otherwise it returns false. It doesn't modify the array.
@@ -149,9 +149,11 @@ defineArrayMethods(Array)
 
 ; /**
 ;  * Executes a user-supplied "reducer" callback function on each element of the array, in order, passing in the return value from the calculation on the preceding element. The final result of running the reducer across all elements of the array is a single value.
-;  * @param callbackFn A function to execute for each element in the array. Its return value is added as a single element in the new array. The function is called with the twp arguments: element [, index]
+;  * @param callbackFn 
+;  * A function to execute for each element in the array. Its return value becomes the value of the accumulator parameter on the next invocation of callbackFn. 
+;  * For the last invocation, the return value becomes the return value of reduce(). The function is called with arguments: accumulator, currentValue.
 ;  * @param accumulator 
-;  * The value resulting from the previous call to callbackFn. On the first call, its value is initialValue if the latter is specified; otherwise its value is array[1]	 * @param index
+;  * The value resulting from the previous call to callbackFn. On the first call, its value is initialValue if the latter is specified; otherwise its value is array[1]
 ;  * @param currentValue
 ;  * The index position of currentValue in the array. On the first call, its value is 0 if initialValue is specified, otherwise 1.
 ;  */
@@ -159,7 +161,7 @@ defineArrayMethods(Array)
 
 ; /**
 ;  * Creates a new array populated with the results of calling a provided function on every element in the calling array.
-;  * @param callbackFn A function to execute for each element in the array. Its return value becomes the value of the accumulator parameter on the next invocation of callbackFn. For the last invocation, the return value becomes the return value of reduce(). The function is called with the following arguments: 
+;  * @param callbackFn A function to execute for each element in the array. Its return value is added as a single element in the new array. The function is called with arguments: element [, index]
 ;  * @param element
 ;  * The current element being processed in the array.
 ;  * @param index
