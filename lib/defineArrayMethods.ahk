@@ -129,7 +129,7 @@ defineArrayMethods(arr) {
 
 defineArrayMethods(Array)
 
-; added LSP syntax fragments for vscode-autohotkey2-lsp
+; LSP syntax fragments for vscode-autohotkey2-lsp
 ; defineArrayMethods.ahk
 ; /**
 ;  * Returns true if, in the array, it finds an element for which the provided function returns true; 
