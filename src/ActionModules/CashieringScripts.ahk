@@ -23,11 +23,17 @@ class CashieringScripts {
 
         ; persist hotkey shotcuts
         CS.AddGroupBox("r5 x10 w260", " 快捷键 ")
-        CS.AddText("xp+10 yp+20", "输入:pw   - 快速输入密码")
-        CS.AddText("yp+20", "输入:agd  - 生成Agoda BalanceTransfer")
-        CS.AddText("yp+20", "输入:blk  - Blocks 界面打开PM (主管权限)")
-        CS.AddText("yp+20", "Alt+F11   - InHouse 界面打开Billing")
-        CS.AddText("yp+20", "Win+F11   - 录入 Deposit")
+        p := "
+        (
+            输入:pw   - 快速输入密码
+            输入:agd  - 生成Agoda BalanceTransfer
+            输入:blk  - Blocks 界面打开PM (主管权限)
+            Alt+F11   - InHouse 界面打开Billing
+            Win+F11   - 录入 Deposit
+        )"
+        StrSplit(p, "`n").map(fragment => 
+            CS.AddText((A_Index = 1 ? "xp+10 " : "") . "yp+20", fragment)
+        )
 
         CS.AddGroupBox("r4 x10 y+20 w260", " Deposit ")
         CS.AddText("xp+10 yp+20 h20", "支付类型")
