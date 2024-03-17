@@ -41,20 +41,13 @@ Xldp(QM, curSelectedScriptTab2, useDesktopXl) {
     xldpDesc := "
     (
         功能说明：
-            
         启动脚本前，必须先将对应的数据从 Opera PMS 导出的报
-            
         表中复制到 Excel 表中，才能实现功能。
             
-            
         桌面文件模式：
-            
         选中“使用桌面文件模式”后，脚本将只会从本机桌面读取
-
         相应文件名的 Excel 表。 请直接在桌面操作所需 Excel
-
         工作表。
- 
     )"
 
     return (
@@ -71,6 +64,9 @@ Xldp(QM, curSelectedScriptTab2, useDesktopXl) {
                 ["Click", (*) => Run(xlPath.value[index])]),
         ]),
         QM.AddCheckbox("h25 x30 y+10", "使用桌面文件模式").OnEvent("Click", (*) => toggleDesktopMode(ctrls)),
-        QM.AddText("y+25", xldpDesc)
+        ; QM.AddText("y+25", xldpDesc)
+        StrSplit(xldpDesc, "`n").map(fragment => 
+            QM.AddText("y+10 h25", fragment)
+        )
     )
 }

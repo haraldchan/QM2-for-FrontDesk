@@ -38,7 +38,10 @@ App(QM) {
 	)"
 
 	return (
-		QM.AddText(, description),
+		; QM.AddText(, description),
+		StrSplit(description, "`n").map(fragment => 
+			QM.AddText("y+10 h25", fragment)
+		)
 
 		QM.AddCheckbox("y+10 h25", "令 CityLedger 挂账保持常驻")
 			.OnEvent("Click", (*) => cityLedgerPersist.set(on => !on)),
