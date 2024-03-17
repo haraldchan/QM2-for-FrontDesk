@@ -12,13 +12,12 @@ class CashieringScripts {
     static userPassword := signal("")
 
     static USE() {
-        CS := Gui("+AlwaysOnTop +MinSize250x300", this.popupTitle)
+        CS := Gui("+MinSize250x300", this.popupTitle)
         CS.AddText("h20", "Opera 密码")
 
-        this.pwd := AddReactiveEdit(CS, "Password* h20 w110 x+10", "",this.userPassword,,["LoseFocus", (e*) => CashieringScripts.updateUserPassword(e[1])])
+        this.pwd := CS.AddReactiveEdit("Password* h20 w110 x+10", "",this.userPassword,,["LoseFocus", (e*) => CashieringScripts.updateUserPassword(e[1])])
 
-        AddReactiveCheckBox(
-            CS, "h20 x+10", "显示", this.showPassword,, 
+        CS.AddReactiveCheckBox("h20 x+10", "显示", this.showPassword,, 
             ["Click", (c*) => CashieringScripts.togglePasswordVisibility(c[1])]
         )
 
@@ -32,10 +31,10 @@ class CashieringScripts {
 
         CS.AddGroupBox("r4 x10 y+20 w260", " Deposit ")
         CS.AddText("xp+10 yp+20 h20", "支付类型")
-        paymentType := AddReactiveComboBox(CS, "yp+20 w200 Choose2", this.paymentType)
+        paymentType := CS.AddReactiveDropDownList("yp+20 w200 Choose2", this.paymentType)
         paymentType.setEvent("Change", (*) => this.paymentTypeSelected.set(paymentType.getValue()))
 
-        AddReactiveButton(CS, "y+10 w100", "录入 &Deposit",,,["Click", (*) => this.depositEntry()])
+        CS.AddReactiveButton("y+10 w100", "录入 &Deposit",,,["Click", (*) => this.depositEntry()])
 
         CS.Show()
     }
