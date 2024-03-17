@@ -28,7 +28,7 @@ TableReserve(App){
 	return (
         App.AddGroupBox("r7 w320", "Table Reserve - 餐饮预订"),
         App.AddText("xp+10 yp+20", "预订餐厅"),
-        App.AddComboBox("w150 x+10 Choose1", restaurantList)
+        App.AddDropDownList("w150 x+10 Choose1", restaurantList)
         	.OnEvent("Change", (c*) => restaurant.set(restaurantList[c[1].value])),
 
         App.AddText("xp-58.5 y+10", "预订日期"),
