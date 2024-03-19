@@ -10,13 +10,22 @@ App(QM) {
 	curSelectedScriptTab2 := signal(GroupKeys)
 	curTab := signal(1)
 
+	suspendClipFLow(){
+		ClipFlowPath := "\\10.0.2.13\fd\19-个人文件夹\HC\Software - 软件及脚本\AHK_Scripts\ClipFlow\ClipFlow.ahk"
+
+		DetectHiddenWindows true
+		SetTitleMatchMode 2
+		PostMessage 0x0111, 65305,,, ClipFlowPath . " - AutoHotkey"  ; Suspend.
+	}
+
 	runSelectedScript() {
 		if (!WinExist("ahk_class SunAwtFrame")) {
 			MsgBox("Opera PMS 未启动！", popupTitle, "4096 T2")
 			return
 		}
-
+		suspendClipFLow()
 		QM.Hide()
+
 		if (curTab.value = 1) {
 			curSelectedScriptTab1.value.USE()
 		} else if (curTab.value = 2) {
@@ -24,6 +33,7 @@ App(QM) {
 		} else {
 			return
 		}
+		suspendClipFLow()
 	}
 
 	description := "
