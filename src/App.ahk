@@ -23,7 +23,7 @@ App(QM) {
 			MsgBox("Opera PMS 未启动！", popupTitle, "4096 T2")
 			return
 		}
-		suspendClipFLow()
+		; suspendClipFLow()
 		QM.Hide()
 
 		if (curTab.value = 1) {
@@ -33,16 +33,15 @@ App(QM) {
 		} else {
 			return
 		}
-		suspendClipFLow()
+		; suspendClipFLow()
 	}
 
 	description := "
 	(
 		快捷键及对应功能：
-		
 		F9:        显示脚本选择窗
 		F12:       强制停止脚本/重载
-		
+
 		常驻脚本(按下即启动)
 		Ctrl+O 或 鼠标中键:    CityLedger挂账
 	)"
@@ -50,8 +49,8 @@ App(QM) {
 	return (
 		; QM.AddText(, description),
 		StrSplit(description, "`n").map(fragment => 
-			QM.AddText("y+10 h25", fragment)
-		)
+			QM.AddText("y+10 h2", fragment)
+		),
 
 		QM.AddCheckbox("y+10 h25", "令 CityLedger 挂账保持常驻")
 			.OnEvent("Click", (*) => cityLedgerPersist.set(on => !on)),
