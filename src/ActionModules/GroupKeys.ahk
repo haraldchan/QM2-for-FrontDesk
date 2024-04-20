@@ -4,7 +4,7 @@ class GroupKeys {
     static popupTitle := "Group Keys"
     static dateDash := "^\d{1,4}-\d{1,2}-\d{1,2}"
     static dateSlash := "\d{4}/\d{2}/\d{2}"
-    static defaultPath := A_ScriptDir . "\Excel\GroupKeys.xls"
+    static defaultPath := A_ScriptDir . "\src\Excel\GroupKeys.xls"
 
     static USE(desktopMode := 0) {
         if (desktopMode = true) {
@@ -92,7 +92,7 @@ class GroupKeys {
                 : coTimeRead.Push(sheet.Cells(A_Index, 3).Text)
         }
 
-        return [coDateRead, coDateRead]
+        return [coDateRead, coTimeRead]
     }
 
     static getRoomingList(lastRow, sheet) {
