@@ -3,7 +3,7 @@ class GroupProfilesModify {
     static description := "团队Profile录入  - Excel表：GroupRoomNum.xls"
     static popupTitle := "GroupProfilesModify"
     static wwly := this.getWwlyPath()
-    static defaultPath := A_ScriptDir . "\Excel\GroupRoomNum.xls"
+    static defaultPath := A_ScriptDir . "src\Excel\GroupRoomNum.xls"
 
 
     static USE(desktopMode := 0, initX := 0, initY := 0) {
