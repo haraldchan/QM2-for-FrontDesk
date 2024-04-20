@@ -3,7 +3,7 @@ class PsbBatchCO {
     static description := "旅安系统批量退房 - Excel表：CheckOut.xls"
     static popupTitle := "PSB CheckOut(Batch)"
     static blockingPopups := ["来访提示", "数据验证"]
-    static defaultPath := A_ScriptDir . "\Excel\CheckOut.xls"
+    static defaultPath := A_ScriptDir . "\src\Excel\CheckOut.xls"
 
     static USE(desktopMode := 0) {
         if (desktopMode = true) {
