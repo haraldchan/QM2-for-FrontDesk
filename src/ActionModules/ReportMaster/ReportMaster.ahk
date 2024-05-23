@@ -61,7 +61,7 @@ class ReportMaster {
 			name: "HK03-OOO",
 			saveFn: ooo
 		}, {
-			searchStr: "gprpmlist",
+			searchStr: "grprmlist",
 			name: "Group Rooming List",
 			saveFn: groupRoom
 		}, {
