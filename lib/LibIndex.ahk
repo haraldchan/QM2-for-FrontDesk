@@ -1,13 +1,16 @@
 #Include "./utils.ahk"
 #Include "./defineArrayMethods.ahk"
+#Include "./defineGuiMethods.ahk"
 #Include "./useConfigJSON.ahk"
+#Include "./useSingleScript.ahk"
+#Include "./useFileDB.ahk"
+#Include "./useDict.ahk"
 
-#Include "./revue/revue.ahk"
-#Include "./revue/typeChecker.ahk"
+#Include "./AddReactive/AddReactive.ahk"
 /************************************************************************
  * @author haraldchan
- * @date 2024/03/08
- * @version 0.1.2
+ * @date 2024/04/16
+ * @version 1.0.0
  ***********************************************************************/
 
 #Include "JSON.ahk"

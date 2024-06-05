@@ -8,7 +8,7 @@ defineArrayMethods(arr) {
     arr.Prototype.concat := concat
     arr.Prototype.unshift := unshift
     arr.Prototype.toReversed := toReversed
-    arr.Prototype.unique
+    arr.Prototype.unique := unique
 
     some(arr, fn) {
         for item in arr {

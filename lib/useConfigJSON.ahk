@@ -4,6 +4,16 @@ class useConfigJSON {
         this.configFilename := configFilename
         this.configDest := configDest
         this.path := this.createLocal()
+
+    }
+
+    updateKeys() {
+        localConfig := JSON.parse(FileRead(this.path, "UTF-8"))
+        tempConfig := JSON.parse(FileRead(this.configTemplateSrc, "UTF-8"))
+
+        if (localConfig.Capacity != tempConfig.Capacity) {
+            this.path := this.createLocal()
+        }
     }
 
     createLocal() {
@@ -52,10 +62,10 @@ class useConfigJSON {
             return o
         }
 
-        config := JSON.parse(FileRead(this.path))
+        config := JSON.parse(FileRead(this.path, "UTF-8"))
         
         FileDelete(this.path)
-        FileAppend(JSON.stringify(writeValue(config, keyToFind, newVal)), this.path)
+        FileAppend(JSON.stringify(writeValue(config, keyToFind, newVal)), this.path, "UTF-8")
     }
 }
 

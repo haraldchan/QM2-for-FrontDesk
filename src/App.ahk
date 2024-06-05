@@ -23,7 +23,6 @@ App(QM) {
 			MsgBox("Opera PMS 未启动！", popupTitle, "4096 T2")
 			return
 		}
-		; suspendClipFLow()
 		QM.Hide()
 
 		if (curTab.value = 1) {
@@ -33,7 +32,6 @@ App(QM) {
 		} else {
 			return
 		}
-		; suspendClipFLow()
 	}
 
 	description := "
