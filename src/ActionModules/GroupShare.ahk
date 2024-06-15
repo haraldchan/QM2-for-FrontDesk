@@ -27,94 +27,93 @@ class GroupShare {
         this.dnmShare(roomQty.Value)
 
         Sleep 1000
-        MsgBox("已完成DNM & Share共 " . roomQty.Value . " 房，请核对有否错漏。", this.popupTitle, "4096")
+        MsgBox("已完成DNM & Share共 " . roomQty.Value . " 房，请核对有否错漏。", this.popupTitle, "4096 T1")
     }
 
     static dnmShare(roomQty, initX := 340, initY := 311) {
         MouseMove initX, initY ; 340, 311
-        Sleep 100
+        utils.waitLoading()
         Click "Down"
         MouseMove initX - 158, initY - 1 ; 182, 310
-        Sleep 100
+        utils.waitLoading()
         Click "Up"
         MouseMove initX - 40, initY - 4 ; 300, 307
-        Sleep 100
+        utils.waitLoading()
         Send "{Backspace}"
-        Sleep 100
+        utils.waitLoading()
         Send "{Text}TGDA"
         loop roomQty {
             BlockInput true
             MouseMove initX + 85, initY + 226 ; 425, 537
-            Sleep 200
+            utils.waitLoading()
             Send "!r"
             MouseMove initX + 129, initY + 201 ; 469, 512
-            Sleep 3000
+            utils.waitLoading()
             Click
-            Sleep 700
+            utils.waitLoading()
             Send "!t"
-            Sleep 100
+            utils.waitLoading()
             Send "!s"
-            Sleep 100
+            utils.waitLoading()
             Send "!m"
-            Sleep 100
-            Sleep 3000
+            utils.waitLoading()
             Send "{Esc}"
-            Sleep 300
+            utils.waitLoading()
             Send "{Text}1"
-            Sleep 100
+            utils.waitLoading()
             MouseMove initX + 147, initY + 91 ; 487, 402
-            Sleep 100
+            utils.waitLoading()
             Click "Down"
             MouseMove initX + 178, initY + 92 ; 518, 403
-            Sleep 200
+            utils.waitLoading()
             Click "Up"
             MouseMove initX + 176, initY + 132 ; 516, 443
-            Sleep 200
+            utils.waitLoading()
             Send "{Text}0"
-            Sleep 200
+            utils.waitLoading()
             Send "!o"
-            Sleep 1000
+            utils.waitLoading()
             Send "!r"
-            Sleep 200
+            utils.waitLoading()
             MouseMove  950, 597
-            Sleep 2500
+            utils.waitLoading()
             Click
-            Sleep 800
+            utils.waitLoading()
             Send "!d"
-            Sleep 1000
+            utils.waitLoading()
             Send "{Left}"
-            Sleep 150
+            utils.waitLoading()
             Send "{Space}"
-            Sleep 500
+            utils.waitLoading()
             Send "!o"
-            Sleep 500
+            utils.waitLoading()
             Send "!c"
-            Sleep 300
+            utils.waitLoading()
             MouseMove initX - 19, initY + 196 ; 321, 507
-            Sleep 1500
+            utils.waitLoading()
             Click "Down"
             MouseMove initX - 154, initY + 198 ; 186, 509
-            Sleep 200
+            utils.waitLoading()
             Click "Up"
-            Sleep 200
+            utils.waitLoading()
             Send "{Text}NRR"
-            Sleep 100
+            utils.waitLoading()
             Send "{Tab}"
-            Sleep 500
+            utils.waitLoading()
             loop 5 {
                 Send "{Esc}"
-                Sleep 200
+                utils.waitLoading()
             }
             Send "!o"
-            Sleep 800
+            utils.waitLoading()
             Send "!o"
-            Sleep 3000
+            utils.waitLoading()
             Send "!c"
-            Sleep 800
+            utils.waitLoading()
             Send "!c"
-            Sleep 300
+            utils.waitLoading()
             Send "!c"
-            Sleep 5000
+            utils.waitLoading()
             BlockInput false
         }
     }

@@ -12,29 +12,29 @@ class DoNotMove {
         }
         this.dnm(roomQty.Value)
         Sleep 1000
-        MsgBox("已完成批量DoNotMove，合共" . roomQty.Value . "房。", this.popupTitle)
+        MsgBox("已完成批量DoNotMove，合共" . roomQty.Value . "房。", this.popupTitle, "4096 T1")
     }
 
     static dnm(roomQty, initX := 696, initY := 614) {
         BlockInput true
         loop roomQty {
             MouseMove initX, initY ; 696, 614
-            Sleep 200
+            utils.waitLoading()
             Send "!r"
-            Sleep 100
+            utils.waitLoading()
             MouseMove initX - 117, initY - 87 ; 579, 527
-            Sleep 2000
+            utils.waitLoading()
             Click
-            Sleep 400
+            utils.waitLoading()
             Click
-            Sleep 300
+            utils.waitLoading()
             Click
             MouseMove initX - 223, initY - 100 ; 473, 514
-            Sleep 500
+            utils.waitLoading()
             Click
-            Sleep 700
+            utils.waitLoading()
             Send "!o"
-            Sleep 100
+            utils.waitLoading()
         }
         BlockInput false
     }

@@ -7,72 +7,73 @@ class InhShare {
 		Sleep 1000
 		WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
 		BlockInput true
-		Sleep 100
+		; Sleep 100
 		Send "!t"
-		Sleep 200
+		; Sleep 200
+		utils.waitLoading()
 		Send "!s"
-		Sleep 200
+		utils.waitLoading()
 		Send "!m"
-		Sleep 700
+		utils.waitLoading()
 		Send "{Esc}"
-		Sleep 800
+		utils.waitLoading()
 		Send "{Text}1"
-		Sleep 350
+		utils.waitLoading()
 		loop 4 {
 			Send "{Tab}"
-			Sleep 50
+			utils.waitLoading()
 		}
 		Send "{Text}0"
-		Sleep 210
+		utils.waitLoading()
 		Send "{Tab}"
-		Sleep 50
+		utils.waitLoading()
 		Send "{Tab}"
-		Sleep 207
+		utils.waitLoading()
 		Send "{Text}6"
-		Sleep 1500
+		utils.waitLoading()
 		Send "!o"
-		Sleep 800
+		utils.waitLoading()
 		Send "!r"
-		Sleep 1000
+		utils.waitLoading()
 		MouseMove initX, initY ; 949, 599
-		Sleep 2000
+		utils.waitLoading()
 		Click
-		Sleep 200
+		utils.waitLoading()
 		Send "!d"
 		MouseMove initX - 338, initY - 53 ; 611, 546
-		Sleep 200
+		utils.waitLoading()
 		Click
-		Sleep 1500
+		utils.waitLoading()
 		Send "!c"
 		MouseMove initX - 625, initY - 92 ; 324, 507
-		Sleep 1000
+		utils.waitLoading()
 		Click "Down"
 		MouseMove initX - 737, initY - 79 ; 212, 520
-		Sleep 200
+		utils.waitLoading()
 		Click "Up"
-		Sleep 200
+		utils.waitLoading()
 		Send "{Text}NRR"
-		Sleep 200
+		utils.waitLoading()
 		Send "!o"
-		Sleep 1000
+		utils.waitLoading()
 		loop 4 {
 			Send "{Esc}"
-			Sleep 500
+			utils.waitLoading()
 		}
-		Sleep 3500
+		utils.waitLoading()
 		Send "!i"
-		Sleep 3000
+		utils.waitLoading()
 		loop 5 {
 			Send "{Esc}"
-			Sleep 100
+			utils.waitLoading()
 		}
-		Sleep 1000
+		utils.waitLoading()
 		Send "{Space}"
-		Sleep 1000
+		utils.waitLoading()
 		Send "!o"
-		Sleep 300
+		utils.waitLoading()
 		Send "!c"
-		Sleep 300
+		utils.waitLoading()
 		BlockInput false
 		WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
 	}
