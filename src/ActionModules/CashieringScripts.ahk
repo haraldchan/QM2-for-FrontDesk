@@ -96,92 +96,92 @@ class CashieringScripts {
         if (supplement.Result = "Cancel") {
             utils.cleanReload(winGroup)
         }
-        Sleep 500
+        utils.waitLoading()
         Send "!t"
         MouseMove 710, 378
-        Sleep 500
+        utils.waitLoading()
         Click 1
-        Sleep 500
+        utils.waitLoading()
         Send "!p"
-        Sleep 200
+        utils.waitLoading()
         MouseMove 584, 446
-        Sleep 300
+        utils.waitLoading()
         Send "{BackSpace}"
-        Sleep 100
+        utils.waitLoading()
         Send Format("{Text}{1}", this.userPassword.value)
-        Sleep 200
+        utils.waitLoading()
         MouseMove 707, 397
-        Sleep 500
+        utils.waitLoading()
         Send "{Enter}"
-        Sleep 100
+        utils.waitLoading()
         Send Format("{Text}{1}", this.paymentTypeSelected.value)
-        Sleep 200
+        utils.waitLoading()
         MouseMove 944, 387
-        Sleep 450
+        utils.waitLoading()
         Send "{Tab}"
-        Sleep 200
+        utils.waitLoading()
         Send "{Tab}"
-        Sleep 200
+        utils.waitLoading()
         Send Format("{Text}{1}", amount.Value)
-        Sleep 200
+        utils.waitLoading()
         MouseMove 577, 326
-        Sleep 100
+        utils.waitLoading()
         Send "{Tab}"
-        Sleep 100
+        utils.waitLoading()
         Send Format("{Text}{1}", supplement.Value)
-        Sleep 100
+        utils.waitLoading()
         MouseMove 596, 421
-        Sleep 500
+        utils.waitLoading()
         Send "!o"
-        Sleep 300
+        utils.waitLoading()
         Send "{Escape}"
-        Sleep 200
+        utils.waitLoading()
         Send "{Escape}"
-        Sleep 200
+        utils.waitLoading()
         Send "{Escape}"
-        Sleep 200
+        utils.waitLoading()
         Send "!c"
-        Sleep 200
+        utils.waitLoading()
         Send "!c"
-        Sleep 200
+        utils.waitLoading()
     }
 
     static agodaBalanceTransfer() {
         balance := InputBox("请输入账单金额")
         orderId := InputBox("请输入单号")
         WinActivate "ahk_class SunAwtFrame"
-        Sleep 100
+        utils.waitLoading()
         Send "!p"
-        Sleep 100
+        utils.waitLoading()
         Send "8888"
-        Sleep 100
+        utils.waitLoading()
         Send "{Tab}"
         Send balance.Value
-        Sleep 100
+        utils.waitLoading()
         loop 5 {
             Send "{Tab}"
-            Sleep 10
+            utils.waitLoading()
         }
         Send Format("FR CRS.{1}", orderId.Value)
-        Sleep 100
+        utils.waitLoading()
         Send "{Enter}"
-        Sleep 100
+        utils.waitLoading()
         Send "8888"
-        Sleep 100
+        utils.waitLoading()
         Send "{Tab}"
-        Sleep 100
+        utils.waitLoading()
         Send Format("-{1}", balance.Value)
-        Sleep 100
+        utils.waitLoading()
         loop 5 {
             Send "{Tab}"
-            Sleep 10
+            utils.waitLoading()
         }
         Send "{Text}TO 9003"
-        Sleep 100
+        utils.waitLoading()
         Send "{Enter}"
-        Sleep 100
+        utils.waitLoading()
         Send "!o"
-        Sleep 100
+        utils.waitLoading()
         Send "!c"
         MsgBox("DONE.", "Agoda Transfer", "T1 4096")
     }
@@ -195,37 +195,37 @@ class CashieringScripts {
             return
         }
         Send "{Enter}"
-        Sleep 100
+        utils.waitLoading()
         Send "!r"
-        Sleep 100
+        utils.waitLoading()
         Send "!a"
-        Sleep 100
+        utils.waitLoading()
         loop 6 {
             Send "{Tab}"
-            Sleep 100
+        utils.waitLoading()
         }
         Send "{Text}-100"
-        Sleep 100
+        utils.waitLoading()
         Send "!o"
         MouseMove 695, 220
         Click 1
-        Sleep 100
+        utils.waitLoading()
         loop 10 {
             Send "{PgDn}"
-            Sleep 10
+        utils.waitLoading()
         }
-        Sleep 200
+        utils.waitLoading()
         Send "!e"
         loop 3 {
             Send "{Enter}"
-            Sleep 100
+            utils.waitLoading()
         }
         Send "!t"
-        Sleep 100
+        utils.waitLoading()
         Send "!b"
-        Sleep 100
+        utils.waitLoading()
         Send Format("{Text}{1}", this.userPassword.value)
-        Sleep 100
+        utils.waitLoading()
         Send "{Enter}"
     }
 }
