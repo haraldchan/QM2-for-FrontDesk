@@ -1,7 +1,6 @@
 class ReportMasterNext_Action {
     static reportList := {
-        onr: [
-        {
+        onr: [{
             searchStr: "%complimentary",
             name: "Guest INH Complimentary",
             saveFn: this.comp
@@ -77,8 +76,7 @@ class ReportMasterNext_Action {
             searchStr: "%guestinhw",
             name: "Guest In House w/o Due Out(VIP INH)",
             saveFn: this.vipInh
-        }
-        ],
+        }],
         misc: [{
             searchStr: "Wshgz_special",
             name: "Specials - 当天水果5 报表",
@@ -168,19 +166,18 @@ class ReportMasterNext_Action {
 
         isWindows7 := StrSplit(A_OSVersion, ".")[1] = 6
 
+        if (WinWait("Warning",, 20)) {
+            WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
+            WinSetAlwaysOnTop true, "Warning"
+        }
+        
         loop 30 {
             sleep 1000
 
             if (!isWindows7 && WinExist("Warning")) {
-                WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
-                WinSetAlwaysOnTop true, "Warning"
-                Sleep 100
+                utils.waitLoading()
                 Send "{Enter}"
-                Sleep 100
-                if (WinExist("Warning")) {
-                    continue
-                }
-
+                utils.waitLoading()
                 WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
             }
 
@@ -194,9 +191,6 @@ class ReportMasterNext_Action {
             }
         }
 
-        Sleep 200
-        MouseMove initX, initY ; WIP
-        Click
         Sleep 200
         Send "!c"
         BlockInput false
