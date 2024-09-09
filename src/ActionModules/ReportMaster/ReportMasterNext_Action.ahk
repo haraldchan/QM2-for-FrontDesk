@@ -191,6 +191,9 @@ class ReportMasterNext_Action {
             }
         }
 
+        MouseMove initX, initY
+        utils.waitLoading()
+        Click
         Sleep 200
         Send "!c"
         BlockInput false
