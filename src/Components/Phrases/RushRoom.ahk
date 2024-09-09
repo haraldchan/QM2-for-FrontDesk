@@ -21,13 +21,13 @@ class RushRoom extends Component {
 
 	render(App){
 		return super.Add(
-			App.AddGroupBox("x30 y350 w350 r3", "Rush Room - 赶房与Key Keep"),
-			App.AddText("xp+10 yp+20 h20 0x200", "赶房时间"),
+			App.AddGroupBox("Section x30 y350 w350 r3", "Rush Room - 赶房与Key Keep"),
+			App.AddText("xs10 yp+30 h20 0x200", "赶房时间"),
 			App.AddEdit("vrushTime xp+60 w150 h20", "14:00"),
 
-			App.AddRadio("vmade xp-60 y+10 h25 Checked", "已做卡"),
+			App.AddRadio("vmade xs10 y+10 h25 Checked", "已做卡"),
 			App.AddRadio("xp+70 h25", "未做卡"),
-        	App.AddReactiveButton("x270 y370 w90 h55", "复制`nComment`nAlert")
+        	App.AddReactiveButton("x270 y380 w90 h55", "复制`nComment`nAlert")
         	   .OnEvent("Click", (*) => this.writeClipboard(App))
         )
 	}

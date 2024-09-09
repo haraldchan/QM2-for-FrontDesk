@@ -23,21 +23,21 @@ class Upsell extends Component {
 
 	render(App){
 		return super.Add(
-			App.AddGroupBox("x30 y350 w350 r6", "Upselling - 房间升级"),
+			App.AddGroupBox("Section x30 y350 w350 r6", "Upselling - 房间升级"),
 
-			App.AddText("xp+10 yp+20 h20 0x200", "升级房型"),
+			App.AddText("xs10 yp+30 h20 0x200", "升级房型"),
 			App.AddEdit("vupType x+10 w150 h20"),
 
-			App.AddText("xp-58 y+10 h20 0x200", "每晚差价"),
+			App.AddText("xs10 y+10 h20 0x200", "每晚差价"),
 			App.AddEdit("vdiff x+10 w150 h20", ""),
 
-			App.AddText("xp-58 y+10 h20 0x200", "升级晚数"),
+			App.AddText("xs10 y+10 h20 0x200", "升级晚数"),
 			App.AddEdit("vnts x+10 w150 h20", ""),
 			 
-			App.AddRadio("vchn xp-55 y+10 h20 Checked", "中文"),
+			App.AddRadio("vchn xs10 y+15 h20 Checked", "中文"),
 			App.AddRadio("x+10 h20", "英文"),
 				
-			App.AddReactiveButton("x270 y370 w90 h55", "复制`nComment`nAlert")
+			App.AddReactiveButton("x270 y380 w90 h55", "复制`nComment`nAlert")
 			.OnEvent("Click", (*) => this.writeClipboard(App))
 		)
 	}

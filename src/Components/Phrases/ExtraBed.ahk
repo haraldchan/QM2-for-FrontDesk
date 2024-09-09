@@ -38,25 +38,25 @@ class ExtraBed extends Component {
 
 	render(App){
 		return super.Add(
-			App.AddGroupBox("w350 x30 y350 r5", "Extra Bed - 加床"),
+			App.AddGroupBox("Section w350 x30 y350 r5", "Extra Bed - 加床"),
 
-			App.AddText("xp10 yp+20 h20 0x200", "价格"),
+			App.AddText("xs10 yp+30 h20 0x200", "价格"),
 
 			this.extraBedCharge.map((item, index) =>
 				App.AddReactiveRadio((index = 1 ? "xp+30 h15 Checked" : "x+10 h15"), item.label)
 				   .OnEvent("Click", (*) => this.charge.set(item.price))
 				),
 
-			App.AddText("xp-160 y+15 h20 0x200", "批准人"),
+			App.AddText("xs10 y+15 h20 0x200", "批准人"),
 			App.AddEdit("vapprover xp+45 h20 w50", "Frankie"),
 
 			App.AddText("xp+60 h20 0x200", "加床晚数"),
 			App.AddEdit("vebnts xp+55 w40 Number", "1"),
 
-			App.AddRadio("vebchn xp-150 y+15 h25 Checked", "中文"),
+			App.AddRadio("vebchn xs10 y+5 h25 Checked", "中文"),
 			App.AddRadio("x+10 h25", "英文"),
 
-			App.AddReactiveButton("x270 y370 w90 h55", "复制`nComment`nAlert")
+			App.AddReactiveButton("x270 y380 w90 h55", "复制`nComment`nAlert")
 			   .OnEvent("Click", (*) => this.writeClipboard(App))
 		)
 	}
