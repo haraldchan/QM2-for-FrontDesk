@@ -19,7 +19,7 @@ OnePress(App) {
         for module in modules {
             App.getCtrlByName(module.name . "Action").Opt(module.name = moduleName ? "+Default" : "-Default")
         }
-        WinSetAlwaysOnTop (App.getCtrlByType("Tab3").value = 1 && moduleName = "PaymentRelation"), popupTitle
+        WinSetAlwaysOnTop (moduleName = "PaymentRelation"), popupTitle
     }
 
     return (
@@ -28,5 +28,6 @@ OnePress(App) {
                .OnEvent("Click", (*) => selectedModule.set(module.name))
         ),
         Dynamic(selectedModule, moduleComponents),
+        App.getCtrlByName(selectedModule.value . "Action").Opt("+Default")
     )
 }
