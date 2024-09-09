@@ -6,12 +6,15 @@ class PaymentRelation extends Component {
 
     __New(App) {
         super.__New("PaymentRelation")
-        this.checkIn := signal(true)
+        this.App := App
         this.render(App)
     }
 
     action() {
+        this.App.Hide()
+        Sleep 200
         PaymentRelation_Action.USE()
+        this.App.Show()
     }
 
     getFormData(App) {
