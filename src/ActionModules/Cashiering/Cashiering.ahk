@@ -72,7 +72,8 @@ class Cashiering extends Component {
             App.AddGroupBox("r2 xs10 y+10 w330", " Deposit "),
             App.AddText("xp+10 yp+30 h25 0x200", "支付类型"),
             App.AddDropDownList("vpt x+10 w130 Choose2", this.paymentType.values()),
-            App.AddButton("vCashieringAction x+13 w100 h25", "录入 Deposit"),
+            App.AddReactiveButton("vCashieringAction x+13 w100 h25", "录入 Deposit")
+               .OnEvent("Click", (*) => Cashiering_Action.depositEntry(this.getFormData())),
         )
     }
 }
