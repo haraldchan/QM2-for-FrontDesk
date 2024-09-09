@@ -1,8 +1,4 @@
 class Cashiering_Action {
-    static USE() {
-
-    }
-
     static sendPassword(form) {
         Send Format("{Text}{1}", form.password)
     }
@@ -32,14 +28,17 @@ class Cashiering_Action {
             MsgBox("请先打开Opera PMS")
             return
         }
+
         amount := InputBox("请输入金额")
-        supplement := InputBox("请输入单号（后四位即可）")
         if (amount.Result = "Cancel") {
-            utils.cleanReload(winGroup)
+            return
         }
+
+        supplement := InputBox("请输入单号（后四位即可）")
         if (supplement.Result = "Cancel") {
-            utils.cleanReload(winGroup)
+            return
         }
+        
         Sleep 500
         Send "!t"
         MouseMove 710, 378
@@ -92,7 +91,15 @@ class Cashiering_Action {
 
     static agodaBalanceTransfer() {
         balance := InputBox("请输入账单金额")
+        if (balance.Result = "Cancel") {
+            return
+        }
+
         orderId := InputBox("请输入单号")
+        if (orderId.Result = "Cancel") {
+            return
+        }
+        
         WinActivate "ahk_class SunAwtFrame"
         Sleep 100
         Send "!p"
