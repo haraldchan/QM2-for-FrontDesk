@@ -12,7 +12,7 @@ class PaymentRelation extends Component {
 
     action() {
         this.App.Hide()
-        Sleep 200
+        Sleep 100
         PaymentRelation_Action.USE()
         this.App.Show()
     }
@@ -20,6 +20,7 @@ class PaymentRelation extends Component {
     getFormData(App) {
         return Map(
             "pfRoom", App.getCtrlByName("pfRoom").Value,
+            "pfName", App.getCtrlByName("pfName").Value,      
             "party", App.getCtrlByName("party").Value,
             "roomQty", App.getCtrlByName("roomQty").Value,
             "pfCopy", App.getCtrlByName("pfCopy").Value,
@@ -39,7 +40,7 @@ class PaymentRelation extends Component {
         nameConf := IsNumber(form["pbName"]) ? "#" . form["pbName"] : form["pbName"]
         if (form["party"] = "" || form["roomQty"] = "") {
             ; 2-room party
-            A_Clipboard := Format("P/F Rm{1} {2}  ", form["pbName"], nameConf)
+            A_Clipboard := Format("P/F Rm{1} {2}  ", form["pbRoom"], nameConf)
         } else {
             ; 3 or more room party
             A_Clipboard := Format("P/F Party#{1}, total {2}-rooms  ", form["party"], form["roomQty"])
@@ -57,7 +58,7 @@ class PaymentRelation extends Component {
         }
 
         nameConf := IsNumber(form["pfName"]) ? "#" . form["pfName"] : form["pfName"]
-        A_Clipboard := Format("P/B Rm{1} {2}  ", form["pfName"], nameConf)
+        A_Clipboard := Format("P/B Rm{1} {2}  ", form["pfRoom"], nameConf)
         MsgBox(A_Clipboard, "已复制信息", "4096 T1")
     }
 
