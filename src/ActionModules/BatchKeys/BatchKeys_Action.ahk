@@ -1,7 +1,4 @@
 class BatchKeys_Action {
-    static dateDash := "^\d{1,4}-\d{1,2}-\d{1,2}"
-    static dateSlash := "\d{4}/\d{1,2}/\d{1,2}"
-
     static USE(xlPath, useDeskTopXl := false) {
         if (useDeskTopXl = true) {
             if (FileExist(A_Desktop . "\GroupKeys.xls")) {
@@ -17,6 +14,9 @@ class BatchKeys_Action {
         }
 
         infoFromInput := this.getCheckoutInput()
+        if (infoFromInput = "") {
+            return
+        }
 
         Xl := ComObject("Excel.Application")
         GroupKeysXl := Xl.Workbooks.Open(path)
@@ -42,25 +42,18 @@ class BatchKeys_Action {
             2、将Rooming List的房号录入“GroupKeys.xls”文件的第一列；
 
             - 如需单独修改某个房间的退房日期、时间，请分别填入GroupKeys.xls的第二、第三列
-            - 日期格式：yyyy-mm-dd 或 yyyy/mm/dd（具体请先查看VingCard中格式）
-            - 时间格式：HH:MM
+            - 日期格式：yyyyMMdd，如 “20240101”
+            - 时间格式：HH:MM，如 “13:00”
         
             3、确保VingCard已经打开处于Check-in界面。
         )", "Batch Keys", "OKCancel 4096")
+
         if (start = "Cancel") {
-            utils.cleanReload(winGroup)
+            return
         }
-        loop {
-            coDateInput := InputBox("请输入退房日期：`n(格式为yyyy-mm-dd或yyyy/mm/dd)", "Batch Keys").Value
-            if (RegExMatch(coDateInput, this.dateDash) > 0
-                || RegExMatch(coDateInput, this.dateSlash)
-                || coDateInput = "") {
-                break
-            } else {
-                MsgBox("输入格式必须为yyyy-mm-dd或yyyy/mm/dd，如2023-01-01或2023/01/01。")
-                continue
-            }
-        }
+        
+        coDateInput := InputBox("请输入退房日期：`n(yyyymmdd，如20240101)", "Batch Keys",, FormatTime(DateAdd(A_Now, 1, "Days"), "yyyyMMdd")).Value
+        coDateInputFormatted := FormatTime(coDateInput, "ShortDate")
         coTimeInput := InputBox("请输入退房时间：`n(格式为HH:MM)", "Batch Keys", , "13:00").Value
 
         infoConfirm := MsgBox(Format("
@@ -68,12 +61,12 @@ class BatchKeys_Action {
             当前团队制卡信息：
             退房日期：{1}
             退房时间：{2}
-            )", coDateInput, coTimeInput), "GroupKey", "OKCancel")
+            )", coDateInputFormatted, coTimeInput), "GroupKey", "OKCancel")
         if (infoConfirm = "Cancel") {
             utils.cleanReload(winGroup)
         }
 
-        return [coDateInput, coTimeInput]
+        return [coDateInputFormatted, coTimeInput]
     }
 
     static getCheckoutXls(lastRow, sheet) {
