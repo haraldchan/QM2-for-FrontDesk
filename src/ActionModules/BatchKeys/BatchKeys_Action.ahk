@@ -20,7 +20,7 @@ class BatchKeys_Action {
 
         Xl := ComObject("Excel.Application")
         GroupKeysXl := Xl.Workbooks.Open(path)
-        groupRooms := GroupKeysXl.Worksheets("Sheet1")
+        groupRooms := GroupKeysXl.Worksheets[1]
         lastRow := groupRooms.Cells(groupRooms.Rows.Count, "A").End(-4162).Row
 
         roomingList := this.getRoomingList(lastRow, groupRooms)
