@@ -24,7 +24,15 @@ class BatchKeys extends Component {
     handleToogleDesktopMode(App, isEnabled) {
         App.getCtrlByName("filePath").Enabled := isEnabled
         App.getCtrlByName("selectXlBtn").Enabled := isEnabled
-        App.getCtrlByName("openXlBtn").Enabled := isEnabled
+
+        if (isEnabled = false) {
+            if (!FileExist(A_Desktop . "\GroupKeys.xls")) {
+                FileAppend("", A_Desktop . "\GroupKeys.xls")
+            }
+            this.xlPath.set(A_Desktop . "\GroupKeys.xls")
+        } else {
+            this.xlPath.set(A_ScriptDir . "\src\Excel\GroupKeys.xls")
+        }
     }
 
     action(){
