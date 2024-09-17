@@ -2,7 +2,7 @@
 #SingleInstance Force
 #Include "./src/App.ahk"
 TraySetIcon A_ScriptDir . "\src\assets\QMTray.ico"
-TrayTip "App 2 运行中…按下 F9 开始使用脚本"
+TrayTip "QM 2 运行中…按下 F9 开始使用脚本"
 CoordMode "Mouse", "Screen"
 
 ; Initializing configuration
