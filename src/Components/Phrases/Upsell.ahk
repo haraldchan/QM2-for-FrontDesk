@@ -6,18 +6,17 @@ class Upsell extends Component {
 	}
 
 	writeClipboard(App) {
-		upType := App.getCtrlByName("upType").Value
-		diff := App.getCtrlByName("diff").Value		
-		nts := App.getCtrlByName("nts").Value
-		chn := App.getCtrlByName("chn").Value
+		form := App.submitComponent("$$" . this.name)
 
-		if (upType = "" || diff = "" || nts = "") {
+		if (form.upType = "" || form.diff = "" || form.nts = "") {
 			return
 		}
 
-		A_Clipboard := chn = true
-			? Format("另加{1}元每晚 升级到{2}，共{3}晚，合共另加{4}元。", diff, upType, nts, diff * nts)
-			: Format("Add RMB{1}(per night) upgrade to {2} for {3}Nights, total RMB{4} EXTRA", diff, upType, nts, diff * nts)
+		commentTemplate := chn = true
+			? "另加{1}元每晚 升级到{2}，共{3}晚，合共另加{4}元。"
+			: "Add RMB{1}(per night) upgrade to {2} for {3}Nights, total RMB{4} EXTRA"
+
+		A_Clipboard := Format(commentTemplate, form.diff, form.upType, form.nts, form.diff * form.nts)
 		MsgBox(A_Clipboard, "已复制信息", "T1")
 	}
 

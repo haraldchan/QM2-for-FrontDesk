@@ -7,22 +7,18 @@ class TableReserve extends Component {
 	}
 
 	writeClipboard(App) {
-		restaurant := App.getCtrlByName("restaurant").Text
-		date := FormatTime(App.getCtrlByName("date").Value, "LongDate")
-		time := App.getCtrlByName("time").Value
-		accommodate := App.getCtrlByName("accommodate").Value
-		staffId := App.getCtrlByName("staffId").Value
+		form := App.submitComponent("$$" . this.name)
 
-		if (time = "" || accommodate = "" || staffId = "") {
+		if (form.time = "" || form.accommodate = "" || form.staffId = "") {
 			return
 		}
 
         A_Clipboard := Format("已预订{1} {2}, {3}。 人数: {4}位，接订工号：{5}",
-			restaurant,
-			date,
-			time,
-			accommodate,
-			staffId
+			this.restaurantList[form.restaurant],
+			FormatTime(form.date, "LongDate"),
+			form.time,
+			form.accommodate,
+			form.staffId
 		)
         MsgBox(A_Clipboard, "已复制信息", "T1")
 	}

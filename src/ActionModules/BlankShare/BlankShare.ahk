@@ -10,16 +10,11 @@ class BlankShare extends Component {
         this.render(App)
     }
 
-    getFormData(App){
-        return {
-            checkin: App.getCtrlByName("checkin").Value,
-            shareQty: App.getCtrlByName("shareQty").Value,
-        }
-    }
-
     action(){
-        form := this.getFormData(this.App)
+        form := this.App.submitComponent("$$BlankShare")
         BlankShare_Action.USE(form.checkIn, form.shareQty)
+        ; reset value after share created
+        this.App.getCtrlByName("shareQty").Value := 1
     }
 
     render(App) {

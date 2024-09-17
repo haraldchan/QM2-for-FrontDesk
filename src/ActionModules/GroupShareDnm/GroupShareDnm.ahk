@@ -11,16 +11,6 @@ class GroupShareDnm extends Component {
         this.render(App)
     }
 
-    getFormData(App) {
-        return Map(
-            "roomQty", App.getCtrlByName("gsdRmQty").Value,
-            "rateCode", App.getCtrlByName("rc").Value,
-            "both", App.getCtrlByName("sharednm").Value,
-            "shareOnly", App.getCtrlByName("shareOnly").Value,
-            "dnmOnly", App.getCtrlByName("dnmOnly").Value
-        )
-    }
-
     handleUseRateCode(isUse) {
         rc := this.App.getCtrlByName("rc")
         rc.Enabled := isUse
@@ -28,14 +18,14 @@ class GroupShareDnm extends Component {
     }
 
     action() {
-        form := this.getFormData(this.App)
-        if (form["roomQty"] = "") {
+        form := this.App.submitComponent("$$GroupShareDnm")
+        if (form.gsdRmQty = "") {
             MsgBox("请输入需要处理的房间数量", popupTitle, "4096 T1")
             this.App.getCtrlByName("gsdRmQty").Focus()
             return
         }
 
-        GroupShareDnm_Action.USE(form["roomQty"], form["rateCode"], form["both"], form["shareOnly"], form["dnmOnly"])
+        GroupShareDnm_Action.USE(form.gsdRmQty, form.rc, form.sharednm, form.shareOnly, form.dnmOnly)
     }
 
     render(App) {
