@@ -4,7 +4,6 @@ defineGuiMethods(gui) {
     gui.Prototype.getCtrlByTypeAll := getCtrlByTypeAll
     gui.ListView.Prototype.getCheckedRowNumbers := getCheckedRows
     gui.ListView.Prototype.getFocusedRowNumbers := getFocusedRows
-    gui.Prototype.submitComponent := submitComponent
     gui.Prototype.arcs := []
     gui.Prototype.arcGroups := []
 
@@ -72,19 +71,6 @@ defineGuiMethods(gui) {
         }
         return focusedRows
     }
-
-    submitComponent(GuiObject, groupName) {
-        groupCtrls := {}
-
-        for ctrl in GuiObject {
-            if (ctrl.HasOwnProp("groupName") && ctrl.groupName = groupName && ctrl.name != "") {
-                name := ctrl.name
-                groupCtrls.DefineProp(name, { Value: ctrl.Value})
-            }
-        }
-
-        return groupCtrls
-    }   
 }
 
 defineGuiMethods(Gui)
