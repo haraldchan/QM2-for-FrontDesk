@@ -18,7 +18,7 @@ class GroupShareDnm extends Component {
     }
 
     action() {
-        form := this.App.submitComponent("$$GroupShareDnm")
+        form := this.submit()
         if (form.gsdRmQty = "") {
             MsgBox("请输入需要处理的房间数量", popupTitle, "4096 T1")
             this.App.getCtrlByName("gsdRmQty").Focus()

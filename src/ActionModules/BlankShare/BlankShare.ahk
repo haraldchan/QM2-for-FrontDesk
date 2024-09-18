@@ -11,7 +11,7 @@ class BlankShare extends Component {
     }
 
     action(){
-        form := this.App.submitComponent("$$BlankShare")
+        form := this.submit()
         BlankShare_Action.USE(form.checkIn, form.shareQty)
         ; reset value after share created
         this.App.getCtrlByName("shareQty").Value := 1

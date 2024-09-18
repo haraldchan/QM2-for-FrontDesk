@@ -18,7 +18,7 @@ class PaymentRelation extends Component {
     }
 
     getPayFor(App) {
-        form := App.submitComponent("$$PaymentRelation")
+        form := this.submit()
 
         nameConf := IsNumber(form.pbName) ? "#" . form.pbName : form.pbName
         if (form.party = "" || form.roomQty = "") {
@@ -33,7 +33,7 @@ class PaymentRelation extends Component {
     }
 
     getPayBy(App) {
-        form := App.submitComponent("$$PaymentRelation")
+        form := this.submit()
 
         nameConf := IsNumber(form.pfName) ? "#" . form.pfName : form.pfName
         A_Clipboard := Format("P/B Rm{1} {2}  ", form.pfRoom, nameConf)

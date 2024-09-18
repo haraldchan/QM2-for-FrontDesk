@@ -7,7 +7,7 @@ class TableReserve extends Component {
 	}
 
 	writeClipboard(App) {
-		form := App.submitComponent("$$" . this.name)
+		form := this.submit()
 
 		if (form.time = "" || form.accommodate = "" || form.staffId = "") {
 			return

@@ -6,13 +6,13 @@ class Upsell extends Component {
 	}
 
 	writeClipboard(App) {
-		form := App.submitComponent("$$" . this.name)
+		form := this.submit()
 
 		if (form.upType = "" || form.diff = "" || form.nts = "") {
 			return
 		}
 
-		commentTemplate := chn = true
+		commentTemplate := form.chn = true
 			? "另加{1}元每晚 升级到{2}，共{3}晚，合共另加{4}元。"
 			: "Add RMB{1}(per night) upgrade to {2} for {3}Nights, total RMB{4} EXTRA"
 
