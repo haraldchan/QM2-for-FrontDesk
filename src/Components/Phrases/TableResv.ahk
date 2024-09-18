@@ -1,5 +1,7 @@
 class TableReserve extends Component {
 	static name := "TableResv"
+	static description := "Table Reserve - 餐饮预订"
+
 	__New(App) {
 		super.__New("TableResv")
 		this.restaurantList := ["宏图府", "玉堂春暖", "风味餐厅", "流浮阁"]

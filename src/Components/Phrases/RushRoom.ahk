@@ -1,5 +1,7 @@
 class RushRoom extends Component {
 	static name := "RushRoom"
+	static description := "Rush Room - 赶房与Key Keep"
+
 	__New(App) {
 		super.__New("RushRoom")
 		this.render(App)

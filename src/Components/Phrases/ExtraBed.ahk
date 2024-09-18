@@ -1,5 +1,6 @@
 class ExtraBed extends Component {
 	static name := "ExtraBed"
+	static description := "Extra Bed - 加床"
 
 	__New(App) {
 		super.__New("ExtraBed")

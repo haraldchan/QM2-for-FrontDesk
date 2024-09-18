@@ -4,13 +4,13 @@
 #Include "../Phrases/TableResv.ahk"
 
 Phrases(App){
-    selectedPhrase := signal("Extra Bed - 加床")
-	phraseComponents := Map(
-		"Rush Room - 赶房与Key Keep", Map(RushRoom, App),
-		"Upselling - 房间升级", Map(Upsell, App),
-		"Extra Bed - 加床", Map(ExtraBed, App),
-		"Table Reserve - 餐饮预订", Map(TableReserve, App)
-	)
+	phrases := [RushRoom, Upsell, ExtraBed, TableReserve]
+
+    selectedPhrase := signal(ExtraBed.description)
+	phraseComponents := Map()
+	for phrase in phrases {
+		phraseComponents[phrase.description] := Map(phrase, App)
+	}
 
     return (
         phraseComponents.keys().map(phrase => 

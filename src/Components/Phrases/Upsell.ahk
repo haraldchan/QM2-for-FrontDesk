@@ -1,5 +1,7 @@
 class Upsell extends Component {
 	static name := "Upsell"
+	static description := "Upselling - 房间升级"
+
 	__New(App){
 		super.__New("Upsell")
 		this.render(App)
