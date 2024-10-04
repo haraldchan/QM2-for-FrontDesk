@@ -1,17 +1,17 @@
 OnePress(App) {
     modules := [
-        BlankShare,
-        PaymentRelation,
-        GroupShareDnm,
-        Cashiering,
-        PsbBatchUpload,
-        BatchKeys
+        BlankShare(App),
+        PaymentRelations(App),
+        GroupShareDnm(App),
+        Cashiering(App),
+        PsbBatchUpload(App),
+        BatchKeys(App),
     ]
 
-    selectedModule := signal(BlankShare.name)
+    selectedModule := signal(modules[1].name)
     moduleComponents := Map()
     for module in modules {
-        moduleComponents[module.name] := Map(module, App)
+        moduleComponents[module.name] := module
     }
 
     effect(selectedModule, moduleName => handleModuleChange(moduleName))
@@ -19,7 +19,7 @@ OnePress(App) {
         for module in modules {
             App.getCtrlByName(module.name . "Action").Opt(module.name = moduleName ? "+Default" : "-Default")
         }
-        WinSetAlwaysOnTop (moduleName = "PaymentRelation"), popupTitle
+        WinSetAlwaysOnTop (moduleName = "PaymentRelations"), popupTitle
     }
 
     return (

@@ -4,12 +4,17 @@
 #Include "../Phrases/TableResv.ahk"
 
 Phrases(App){
-	phrases := [RushRoom, Upsell, ExtraBed, TableReserve]
+	phrases := [
+		RushRoom(App), 
+		Upsell(App), 
+		ExtraBed(App), 
+		TableReserve(App)
+	]
 
-    selectedPhrase := signal(ExtraBed.description)
+    selectedPhrase := signal(phrases[1].description)
 	phraseComponents := Map()
 	for phrase in phrases {
-		phraseComponents[phrase.description] := Map(phrase, App)
+		phraseComponents[phrase.description] := phrase
 	}
 
     return (

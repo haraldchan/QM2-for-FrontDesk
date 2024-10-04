@@ -187,46 +187,9 @@ class AddReactiveListView extends AddReactive {
         this.titleKeys := newColumnDetails.keys
         this.innerText := newColumnDetails.HasOwnProp("titles") ? newColumnDetails.titles : this.titleKeys
         this.colWidths := newColumnDetails.HasOwnProp("widths") ? newColumnDetails.widths : this.titleKeys.map(item => "AutoHdr")
-    
+
         for title in this.innerText {
             this.ctrl.ModifyCol(A_Index, columnOptions, title)
-        }
-    }
-}
-
-class IndexList {
-    /**
-     * Creates a list of multiple reactive controls, ordered by index.
-     * @param {Gui} GuiObject The target Gui Object.
-     * @param {string} controlType Control type to create. Available: Text, Edit, CheckBox, Radio.
-     * @param {string} options Options apply to the control, same as Gui.Add.
-     * @param {string} innerText Text or formatted text to hold signal values.
-     * @param {signal} depend Subscribed signal
-     * @param {[ event: Event, callback: ()=>void ]} event Events and callback function objects.
-     * @return {Gui.Control[]}
-     */
-    __New(guiObj, controlType, options, innerText, depend := 0, key := 0, event := 0) {
-        loop depend.value.length {
-            guiObj.AddReactive(controlType, options, innerText, depend, A_Index, event)
-        }
-    }
-}
-
-class KeyList {
-    /**
-     * Creates a list of multiple reactive controls, render each item by keys.
-     * @param {Gui} GuiObject The target Gui Object.
-     * @param {string} controlType Control type to create. Available: Text, Edit, CheckBox, Radio.
-     * @param {string} options Options apply to the control, same as Gui.Add.
-     * @param {string} innerText Text or formatted text to hold signal values.
-     * @param {signal} depend Subscribed signal
-     * @param {array} key the keys of the signal's value
-     * @param {[ event: Event, callback: ()=>void ]} event Events and callback function objects.
-     * @return {Gui.Control[]}
-     */
-    __New(guiObj, controlType, options, innerText, depend := 0, key := 0, event := 0) {
-        loop depend.value.length {
-            guiObj.AddReactive(controlType, options, innerText, depend, [[A_Index], key*], event)
         }
     }
 }
@@ -240,5 +203,3 @@ Gui.Prototype.AddReactiveRadio := AddReactiveRadio
 Gui.Prototype.AddReactiveComboBox := AddReactiveComboBox
 Gui.Prototype.AddReactiveDropDownList := AddReactiveDropDownList
 Gui.Prototype.AddReactiveListView := AddReactiveListView
-Gui.Prototype.IndexList := IndexList
-Gui.Prototype.KeyList := KeyList

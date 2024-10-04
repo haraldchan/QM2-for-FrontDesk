@@ -2,10 +2,9 @@ defineGuiMethods(gui) {
     gui.Prototype.getCtrlByName := getCtrlByName
     gui.Prototype.getCtrlByType := getCtrlByType
     gui.Prototype.getCtrlByTypeAll := getCtrlByTypeAll
+    gui.Prototype.getComponent := getComponent
     gui.ListView.Prototype.getCheckedRowNumbers := getCheckedRows
     gui.ListView.Prototype.getFocusedRowNumbers := getFocusedRows
-    gui.Prototype.arcs := []
-    gui.Prototype.arcGroups := []
 
     getCtrlByName(gui, name) {
         for ctrl in gui {
@@ -29,7 +28,7 @@ defineGuiMethods(gui) {
                 return ctrl
             }
         }
-        throw TypeError("Control type not found.")
+        throw TypeError(Format("Control type ({1}) not found.", ctrlType))
     }
 
     getCtrlByTypeAll(gui, ctrlType) {
@@ -42,6 +41,15 @@ defineGuiMethods(gui) {
         } 
 
         return ctrlArray
+    }
+
+    getComponent(gui, componentName) {
+        for component in gui.components {
+            if (component.name = componentName) {
+                return component
+            }
+        }
+        throw TypeError(Format("Component({1}) not found.", componentName))
     }
 
     getCheckedRows(LV) {
