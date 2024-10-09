@@ -6,13 +6,13 @@
 Phrases(App){
 	phrases := [
 		RushRoom(App), 
+		TableReserve(App)
 		Upsell(App), 
 		ExtraBed(App), 
-		TableReserve(App)
 	]
 
     selectedPhrase := signal(phrases[1].description)
-	phraseComponents := Map()
+	phraseComponents := OrderedMap()
 	for phrase in phrases {
 		phraseComponents[phrase.description] := phrase
 	}

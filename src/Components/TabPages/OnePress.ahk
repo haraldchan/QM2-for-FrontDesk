@@ -9,7 +9,7 @@ OnePress(App) {
     ]
 
     selectedModule := signal(modules[1].name)
-    moduleComponents := Map()
+    moduleComponents := OrderedMap()
     for module in modules {
         moduleComponents[module.name] := module
     }
@@ -19,7 +19,7 @@ OnePress(App) {
         for module in modules {
             App.getCtrlByName(module.name . "Action").Opt(module.name = moduleName ? "+Default" : "-Default")
         }
-        WinSetAlwaysOnTop (moduleName = "PaymentRelations"), popupTitle
+        WinSetAlwaysOnTop (moduleName = "PaymentRelation"), popupTitle
     }
 
     return (
