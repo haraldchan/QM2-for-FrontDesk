@@ -1,7 +1,7 @@
 OnePress(App) {
     modules := [
         BlankShare(App),
-        PaymentRelations(App),
+        PaymentRelation(App),
         GroupShareDnm(App),
         Cashiering(App),
         PsbBatchUpload(App),

@@ -6,7 +6,7 @@
 Phrases(App){
 	phrases := [
 		RushRoom(App), 
-		TableReserve(App)
+		TableReserve(App),
 		Upsell(App), 
 		ExtraBed(App), 
 	]
