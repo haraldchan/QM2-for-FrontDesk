@@ -3,7 +3,6 @@
 Cashiering(App) {
     c := Component(App, A_ThisFunc)
     c.description := "入账关联 - 快速打开Billing、入Deposit等"
-    
     password := signal("")
 
     hotStringCommands := "
@@ -33,18 +32,16 @@ Cashiering(App) {
         App.getCtrlByName("pwd").Opt(ctrl.Value = false ? "+Password*" : "-Password*")
     }
 
-    
-    bindHotKeys() {
-        HotIf (*) => getFormData().password != ""
+    (bindHotKeys() => (
+        HotIf((*) => getFormData().password != ""),
         ; hot keys
-        Hotkey "!F11", (*) => Cashiering_Action.openBilling(getFormData())
-        Hotkey "#F11", (*) => Cashiering_Action.depositEntry(getFormData())
+        Hotkey("!F11", (*) => Cashiering_Action.openBilling(getFormData())),
+        Hotkey("#F11", (*) => Cashiering_Action.depositEntry(getFormData())),
         ; hot strings
-        Hotstring "::pw", (*) => Cashiering_Action.sendPassword(getFormData())
-        Hotstring "::agd", (*) => Cashiering_Action.agodaBalanceTransfer()
-        Hotstring "::blk", (*) => Cashiering_Action.blockPmBilling(getFormData())
-    }
-    bindHotKeys()
+        Hotstring("::pw", (*) => Cashiering_Action.sendPassword(getFormData())),
+        Hotstring("::agd", (*) => Cashiering_Action.agodaBalanceTransfer()),
+        Hotstring("::blk", (*) => Cashiering_Action.blockPmBilling(getFormData())))
+    )()
 
     c.render := (this) => this.Add(
         App.AddGroupBox("Section w350 x30 y400 r10", "入账关联"),
