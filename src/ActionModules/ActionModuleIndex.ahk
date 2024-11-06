@@ -8,6 +8,7 @@
 #Include "./Cashiering/Cashiering.ahk"
 #Include "./PsbBatchUpload/PsbBatchUpload.ahk"
 #Include "./BatchKeys/BatchKeys.ahk"
+#Include "./FetchFedexResv/FetchFedexResv.ahk"
 
 ; Report Master
 #Include "./ReportMaster/ReportMasterNext.ahk"
