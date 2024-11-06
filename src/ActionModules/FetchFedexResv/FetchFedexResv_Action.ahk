@@ -38,6 +38,7 @@ class FetchFedexResv_Action {
         inbound := this.getMoreFieldsValue(6)
         crew["ibCode"] := SubStr(inbound, 1, 2)
         crew["ibNum"] := SubStr(inbound, 3)
+        Sleep 100
 
         ; arr 
         arr := StrSplit(this.getMoreFieldsValue(2), "-")
@@ -131,6 +132,7 @@ class FetchFedexResv_Action {
         loop step {
             Send "{Tab}"
         }
+        Sleep 100    
         Send "^c"
         Sleep 100
 
