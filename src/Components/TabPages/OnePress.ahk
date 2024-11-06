@@ -1,11 +1,16 @@
 OnePress(App) {
+    styles := {
+        pos: "x30 y420"
+    }
+
     modules := [
-        BlankShare(App),
-        PaymentRelation(App),
-        GroupShareDnm(App),
-        Cashiering(App),
-        PsbBatchUpload(App),
-        BatchKeys(App),
+        BlankShare(App, styles),
+        PaymentRelation(App, styles),
+        GroupShareDnm(App, styles),
+        Cashiering(App, styles),
+        PsbBatchUpload(App, styles),
+        BatchKeys(App, styles),
+        FetchFedexResv(App, styles)
     ]
 
     selectedModule := signal(modules[1].name)
