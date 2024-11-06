@@ -1,6 +1,6 @@
 #Include "./BatchKeys_Action.ahk"
 
-BatchKeys(App){
+BatchKeys(App, styles){
     bk := Component(App, A_ThisFunc)
 
     bk.description := "批量房卡制作（Excel 表辅助）"
@@ -31,7 +31,7 @@ BatchKeys(App){
     }
 
     bk.render := (this) => this.Add(
-        App.AddGroupBox("Section w350 x30 y400 r5", "批量房卡制作（Excel 表辅助）"),
+        App.AddGroupBox("Section w350 r5 " . styles.pos, "批量房卡制作（Excel 表辅助）"),
         App.AddReactiveEdit("vfilePath xs10 yp+30 h25 w150  ReadOnly", "{1}", xlPath),
         App.AddReactiveButton("vselectXlBtn h25 w70 x+10", "选择文件")
            .OnEvent("Click", (*) => handleSelectXl(App)),
