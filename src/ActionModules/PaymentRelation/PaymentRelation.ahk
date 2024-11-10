@@ -43,7 +43,7 @@ PaymentRelation(App, styles) {
         App.AddReactiveButton("vpfCopy xs10 y+10 h30 w150", "复制Pay For信息")
            .OnEvent("Click", (*) => getPayFor()),
         ; pay by
-        App.AddGroupBox("Section x210 y430 w170 r7", "P/B房(被支付人)"),
+        App.AddGroupBox("Section x210 y420 w170 r7", "P/B房(被支付人)"),
         App.AddText("xs10 yp+25 h20 0x200", "房号         "),
         App.AddEdit("vpbRoom Number x+10 w80 h20", ""),
         App.AddText("xs10 y+10 h20 0x200", "姓名/确认号 "),
