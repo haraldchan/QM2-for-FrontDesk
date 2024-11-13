@@ -1,7 +1,7 @@
 #Include "./ReportMasterNext_Action.ahk"
 
 ReportMasterNext(App) {
-    ON_DAY_GROUP := Format("\\10.0.2.13\fd\9-ON DAY GROUP DETAILS\{2}\{2}{3}\{1}Group ARR&DEP.xlsx", FormatTime(A_Now, "yyyyMMdd"), A_Year, A_MM)
+    monthFolder := Format("\\10.0.2.13\fd\9-ON DAY GROUP DETAILS\{1}\{1}{2}",A_Year, A_MM)
 
     reportIndex := Map(
         "夜班报表", ReportMasterNext_Action.reportList.onr,
@@ -19,7 +19,7 @@ ReportMasterNext(App) {
         
         if (ctrl.Text = "预抵团队" && reportIndex["预抵团队"].Length = 0) {
             reportCategory.set("Loading") ; make it blank on first load
-            reportIndex["预抵团队"] := getBlockInfo(ON_DAY_GROUP)
+            reportIndex["预抵团队"] := getBlockInfo()
 
             reportCategory.set("预抵团队")            
         }
@@ -40,11 +40,26 @@ ReportMasterNext(App) {
         App.getCtrlByName("$reportCheckAll").ctrl.Visible := !isShowingMisc
     }
 
-    getBlockInfo(fileName) {
+    getBlockInfo() {
+        loop files monthFolder . "\*.xlsx" {
+            if (InStr(A_LoopFileName, FormatTime(A_Now, "yyyyMMdd"))) {
+                XL_FILE_PATH := A_LoopFileFullPath
+                break
+            } else {
+                MsgBox("未找到 OnDayGroup Excel 文件，请手动添加", popupTitle, "4096 T1")
+                App.Opt("+OwnDialogs")
+                XL_FILE_PATH := FileSelect(3, , "请选择 OnDayGroup Excel 文件")
+                if (XL_FILE_PATH == "") {
+                    utils.cleanReload(winGroup)
+                } 
+                break
+            }
+        }
+
         blockInfo := []
 
         Xl := ComObject("Excel.Application")
-        OnDayGroupDetails := Xl.Workbooks.Open(fileName).Worksheets("Sheet1")
+        OnDayGroupDetails := Xl.Workbooks.Open(XL_FILE_PATH).Worksheets("Sheet1")
         loop {
             blockCodeReceived := OnDayGroupDetails.Cells(A_Index + 3, 1).Text
             blockNameReceived := OnDayGroupDetails.Cells(A_Index + 3, 2).Text
@@ -154,7 +169,7 @@ ReportMasterNext(App) {
             }
             
             for block in selectedBlocks {
-                reportObj := ReportMasterNext_Action.reportList.groupApp
+                reportObj := ReportMasterNext_Action.reportList.groupArr
                 reportObj.blockName := block["blockName"]
                 reportObj.blockCode := block["blockCode"]
                 ReportMasterNext_Action.reportFiling(reportObj, fileType)
