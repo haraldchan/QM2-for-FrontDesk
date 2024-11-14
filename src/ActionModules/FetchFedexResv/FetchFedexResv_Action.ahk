@@ -70,7 +70,7 @@ class FetchFedexResv_Action {
 
         h := Floor(mins / 60)
         m := mins - (60 * h)
-        crew["stayHours"] := h . ":" . m
+        crew["stayHours"] := h . ":" . (m < 10 ? "0" . m : m)
 
         cell := ""
         for k, v in crew {

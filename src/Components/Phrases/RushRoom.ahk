@@ -1,4 +1,7 @@
-RushRoom(App) {
+RushRoom(props) {
+	App := props.App
+	commonStyle := props.commonStyle
+
 	rr := Component(App, A_ThisFunc)
 	rr.description := "Rush Room - 赶房与Key Keep"
 
@@ -17,7 +20,7 @@ RushRoom(App) {
 	}
 
 	rr.render := (this) => this.Add(
-		App.AddGroupBox("Section x30 y350 w350 r3", "Rush Room - 赶房与Key Keep"),
+		App.AddGroupBox("Section r3 " . commonStyle, "Rush Room - 赶房与Key Keep"),
 		App.AddText("xs10 yp+30 h20 0x200", "赶房时间"),
 		App.AddEdit("vrushTime xp+60 w150 h20", "14:00"),
 

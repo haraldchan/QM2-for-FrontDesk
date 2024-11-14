@@ -3,6 +3,12 @@ class Component {
      * Create a component instance.
      * ```
      * comp := Component(guiObj, "componentName")
+     * 
+     * Comp(guiObj) {
+     *   c := Component(guiObj, A_ThisFunc)
+     *   ; ...
+     *   return c
+     * }
      * ```
      * @param {String} name The unique name of the component
      * @param {Object} props 
@@ -23,16 +29,6 @@ class Component {
      * @returns {Component}
      */
     Add(controls*) {
-        ; for item in controls {
-        ;     if (item is Array) {
-        ;         for c in item {
-        ;             checkType(item, Gui.Control, "Parameter is not Gui.Control or Array of Gui.Control")
-        ;         }
-        ;     } else {
-        ;         checkType(item, Gui.Control, "Parameter is not Gui.Control or Array of Gui.Control")
-        ;     }
-        ; }
-
         saveControls(ctrlsArray, controls) {
             for control in controls {
                 ; native control
@@ -73,6 +69,7 @@ class Component {
      * @param {Object} props props Object
      */
     defineProps(props) {
+        checkType(props, Object.Prototype)
         for name, val in props.OwnProps() {
             this.props.DefineProp(name, { Value: val })
         }
@@ -108,5 +105,4 @@ class Component {
     }
 }
 
-Gui.Prototype.Component := Component
 Gui.Prototype.components := []

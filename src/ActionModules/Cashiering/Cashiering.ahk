@@ -1,6 +1,9 @@
 #Include "./Cashiering_Action.ahk"
 
-Cashiering(App, styles) {
+Cashiering(props) {
+    App := props.App, 
+    styles := props.styles
+
     c := Component(App, A_ThisFunc)
     c.description := "入账关联 - 快速打开Billing、入Deposit等"
     
@@ -45,7 +48,7 @@ Cashiering(App, styles) {
     )).Call()
 
     c.render := (this) => this.Add(
-        App.AddGroupBox("Section w350 r10 " . styles.pos, "入账关联"),
+        App.AddGroupBox("Section r10 " . styles.xPos . styles.yPos . styles.wide, "入账关联"),
         ; opera password
         App.AddText("xs10 yp+30 h20", "Opera 密码"),
         App.AddReactiveEdit("vpwd Password* h20 w200 x+10", "")

@@ -3,25 +3,25 @@
 #Include "../Phrases/ExtraBed.ahk"
 #Include "../Phrases/TableResv.ahk"
 
-Phrases(App){
+Phrases(App) {
 	phrases := [
-		RushRoom(App), 
-		TableReserve(App),
-		Upsell(App), 
-		ExtraBed(App), 
+		RushRoom,
+		TableReserve,
+		Upsell,
+		ExtraBed,
 	]
 
-    selectedPhrase := signal(phrases[1].description)
+	selectedPhrase := signal(phrases[1].description)
 	phraseComponents := OrderedMap()
 	for phrase in phrases {
 		phraseComponents[phrase.description] := phrase
 	}
 
-    return (
-        phraseComponents.keys().map(phrase => 
+	return (
+		phraseComponents.keys().map(phrase =>
 			App.AddRadio((phrase = selectedPhrase.value ? "Checked" : "") . " w200 h25", phrase)
 			   .OnEvent("Click", (*) => selectedPhrase.set(phrase))
 		),
-		Dynamic(selectedPhrase, phraseComponents)
-    )
+		Dynamic(selectedPhrase, phraseComponents, { App: App, commonStyle: "x30 y350 w350" })
+	)
 }

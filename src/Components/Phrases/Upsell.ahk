@@ -1,4 +1,7 @@
-Upsell(App) {
+Upsell(props) {
+	App := props.App
+	commonStyle := props.commonStyle
+
 	ups := Component(App, A_ThisFunc)
 	ups.description := "Upselling - 房间升级"
 
@@ -18,7 +21,7 @@ Upsell(App) {
 	}
 
 	ups.render := (this) => this.Add(
-		App.AddGroupBox("Section x30 y350 w350 r6", "Upselling - 房间升级"),
+		App.AddGroupBox("Section r6 " . commonStyle, "Upselling - 房间升级"),
 		; room type
 		App.AddText("xs10 yp+30 h20 0x200", "升级房型"),
 		App.AddEdit("vupsType x+10 w150 h20"),

@@ -1,6 +1,9 @@
 #Include "./FetchFedexResv_Action.ahk"
 
-FetchFedexResv(App, styles) {
+FetchFedexResv(props) {
+    App := props.App, 
+    styles := props.styles
+
     ffr := Component(App, A_ThisFunc)
     ffr.description := "抓取 FedEx Opera 订单信息"
 
@@ -18,7 +21,7 @@ FetchFedexResv(App, styles) {
     }
 
     ffr.render := (this) => this.Add(
-        App.AddGroupBox("Section w350 r5 " . styles.pos, "FedEx 订单信息抓取"),
+        App.AddGroupBox("Section r5 " . styles.xPos . styles.yPos . styles.wide, "FedEx 订单信息抓取"),
         App.AddText("xs10 yp+30 h20", "房号：   "),
         App.AddEdit("vroomNum x+10"),
         App.AddText("xs10 yp+30 h20", "确认号："),

@@ -1,4 +1,7 @@
-ExtraBed(App) {
+ExtraBed(props) {
+	App := props.App
+	commonStyle := props.commonStyle
+
 	eb := Component(App, A_ThisFunc)
 	eb.description := "Extra Bed - 加床"
 	charge := signal(345)
@@ -31,7 +34,7 @@ ExtraBed(App) {
 	}
 
 	eb.render := (this) => this.Add(
-		App.AddGroupBox("Section w350 x30 y350 r5", "Extra Bed - 加床"),
+		App.AddGroupBox("Section r5 " . commonStyle, "Extra Bed - 加床"),
 
 		App.AddText("xs10 yp+30 h20 0x200", "价格"),
 

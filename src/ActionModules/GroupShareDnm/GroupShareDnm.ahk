@@ -1,6 +1,9 @@
 #Include "./GroupShareDnm_Action.ahk"
 
-GroupShareDnm(App, styles) {
+GroupShareDnm(props) {
+    App := props.App, 
+    styles := props.styles
+
     gsd := Component(App, A_ThisFunc)
     gsd.description := "预抵房间批量 Share/DoNotMove"
     rateCode := signal("TGDA")
@@ -23,7 +26,7 @@ GroupShareDnm(App, styles) {
     }
 
     gsd.render := (this) => this.Add(
-        App.AddGroupBox("Section w350 r8 " . styles.pos, "预抵房间批量 Share/DoNotMove"),
+        App.AddGroupBox("Section r8 " . styles.xPos . styles.yPos . styles.wide, "预抵房间批量 Share/DoNotMove"),
         ; room Qty
         App.AddText("xs10 yp+30 h20 Checked 0x200", "批量处理房间数量    "),
         App.AddEdit("vgsdRmQty x+5 h20 0x200 w100", ""),

@@ -1,5 +1,5 @@
 defineArrayMethods(arr) {
-    
+
     arr.Prototype.some := some
     some(arr, fn) {
         for item in arr {
@@ -176,6 +176,22 @@ defineArrayMethods(arr) {
         flatInner(arr)
 
         return newArray
+    }
+
+    arr.Prototype.join := join
+    join(arr, separator := ",") {
+        joined := ""
+
+        for item in arr {
+            if (A_Index = arr.Length) {
+                joined .= item
+            } else {
+                joined .= item . separator
+            }
+
+        }
+
+        return joined
     }
 }
 

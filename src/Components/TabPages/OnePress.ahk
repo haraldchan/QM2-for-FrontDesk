@@ -1,16 +1,12 @@
 OnePress(App) {
-    styles := {
-        pos: "x30 y420"
-    }
-
     modules := [
-        BlankShare(App, styles),
-        PaymentRelation(App, styles),
-        GroupShareDnm(App, styles),
-        Cashiering(App, styles),
-        PsbBatchUpload(App, styles),
-        BatchKeys(App, styles),
-        FetchFedexResv(App, styles)
+        BlankShare,
+        PaymentRelation,
+        GroupShareDnm,
+        Cashiering,
+        PsbBatchUpload,
+        BatchKeys,
+        FetchFedexResv
     ]
 
     selectedModule := signal(modules[1].name)
@@ -20,7 +16,7 @@ OnePress(App) {
     }
 
     effect(selectedModule, moduleName => handleModuleChange(moduleName))
-    handleModuleChange(moduleName){
+    handleModuleChange(moduleName) {
         for module in modules {
             App.getCtrlByName(module.name . "Action").Opt(module.name = moduleName ? "+Default" : "-Default")
         }
@@ -30,9 +26,9 @@ OnePress(App) {
     return (
         modules.map(module =>
             App.AddRadio(A_Index = 1 ? "Checked x30 y+10 h20" : "x30 y+10 h20", module.description)
-               .OnEvent("Click", (*) => selectedModule.set(module.name))
+            .OnEvent("Click", (*) => selectedModule.set(module.name))
         ),
-        Dynamic(selectedModule, moduleComponents),
+        Dynamic(selectedModule, moduleComponents, { App: App, styles: { xPos: "x30 ", yPos: "420 ", wide: "350 " } }),
         App.getCtrlByName(selectedModule.value . "Action").Opt("+Default")
     )
 }

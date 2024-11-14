@@ -1,8 +1,11 @@
 #Include "./ReportMasterNext_Action.ahk"
 
 ReportMasterNext(App) {
+<<<<<<< HEAD
     monthFolder := Format("\\10.0.2.13\fd\9-ON DAY GROUP DETAILS\{1}\{1}{2}",A_Year, A_MM)
 
+=======
+>>>>>>> 544efe1 (updated with new version of AddReactive)
     reportIndex := Map(
         "夜班报表", ReportMasterNext_Action.reportList.onr,
         "预抵团队", [],
@@ -41,6 +44,7 @@ ReportMasterNext(App) {
     }
 
     getBlockInfo() {
+<<<<<<< HEAD
         loop files monthFolder . "\*.xlsx" {
             if (InStr(A_LoopFileName, FormatTime(A_Now, "yyyyMMdd"))) {
                 XL_FILE_PATH := A_LoopFileFullPath
@@ -57,7 +61,27 @@ ReportMasterNext(App) {
         }
 
         blockInfo := []
+=======
+        monthFolder := Format("\\10.0.2.13\fd\9-ON DAY GROUP DETAILS\{1}\{1}{2}",A_Year, A_MM)
+>>>>>>> 544efe1 (updated with new version of AddReactive)
 
+        XL_FILE_PATH := ""
+        loop files monthFolder . "\*.xlsx" {
+            if (InStr(A_LoopFileName, FormatTime(A_Now, "yyyyMMdd"))) { 
+                XL_FILE_PATH := A_LoopFileFullPath
+                break
+            } else {
+                MsgBox("未找到 OnDayGroup Excel 文件，请手动添加", popupTitle, "4096 T1")
+                App.Opt("+OwnDialogs")
+                XL_FILE_PATH := FileSelect(3, , "请选择 OnDayGroup Excel 文件")
+                if (XL_FILE_PATH == "") {
+                    utils.cleanReload(winGroup)
+                } 
+                break
+            }
+        }
+        
+        blockInfo := []
         Xl := ComObject("Excel.Application")
         OnDayGroupDetails := Xl.Workbooks.Open(XL_FILE_PATH).Worksheets("Sheet1")
         loop {

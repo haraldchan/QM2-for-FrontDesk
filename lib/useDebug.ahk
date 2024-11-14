@@ -1,4 +1,4 @@
-#Include "./AddReactive/AddReactive.ahk"
+#Include "./AddReactive/useAddReactive.ahk"
 
 class useDebug {
     static logContent := signal("")

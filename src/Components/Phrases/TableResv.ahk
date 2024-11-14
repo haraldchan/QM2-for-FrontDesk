@@ -1,4 +1,7 @@
-TableReserve(App) {
+TableReserve(props) {
+	App := props.App
+	commonStyle := props.commonStyle
+
 	tr := Component(App, A_ThisFunc)
 	tr.description := "Table Reserve - 餐饮预订"
 	restaurantList := ["宏图府", "玉堂春暖", "风味餐厅", "流浮阁"]
@@ -23,7 +26,7 @@ TableReserve(App) {
 	}
 
 	tr.render := (this) => this.Add(
-		App.AddGroupBox("Section x30 y350 r7 w350", "Table Reserve - 餐饮预订"),
+		App.AddGroupBox("Section r7 " . commonStyle, "Table Reserve - 餐饮预订"),
 		; restaurant
 		App.AddText("xp+10 yp+30 h20 0x200", "预订餐厅"),
 		App.AddDropDownList("vrestaurant w150 x+10 Choose1", restaurantList),
