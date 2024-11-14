@@ -15,12 +15,12 @@ App(App) {
 		Ctrl+O 或 鼠标中键:    CityLedger挂账
 	)"
 
-	setCLHotkeys(){
-		HotIf (*) => cityLedgerPersist.value
-		Hotkey "^o", (*) => CityLedgerCo.USE()
-		Hotkey "MButton", (*) => CityLedgerCo.USE()
-	}
-
+	(() => (
+		HotIf((*) => cityLedgerPersist.value),
+		Hotkey("^o", (*) => CityLedgerCo.USE()),
+		Hotkey("MButton", (*) => CityLedgerCo.USE())
+	))()
+	
 	return (
 		StrSplit(description, "`n").map(fragment => App.AddText("y+5", fragment)),
 
@@ -28,6 +28,5 @@ App(App) {
 		   .OnEvent("Click", (*) => cityLedgerPersist.set(on => !on)),
 
 		Tabs(App),
-		setCLHotkeys()
 	)
 }
