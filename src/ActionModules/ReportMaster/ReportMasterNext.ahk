@@ -1,11 +1,6 @@
 #Include "./ReportMasterNext_Action.ahk"
 
 ReportMasterNext(App) {
-<<<<<<< HEAD
-    monthFolder := Format("\\10.0.2.13\fd\9-ON DAY GROUP DETAILS\{1}\{1}{2}",A_Year, A_MM)
-
-=======
->>>>>>> 544efe1 (updated with new version of AddReactive)
     reportIndex := Map(
         "夜班报表", ReportMasterNext_Action.reportList.onr,
         "预抵团队", [],
@@ -44,7 +39,6 @@ ReportMasterNext(App) {
     }
 
     getBlockInfo() {
-<<<<<<< HEAD
         loop files monthFolder . "\*.xlsx" {
             if (InStr(A_LoopFileName, FormatTime(A_Now, "yyyyMMdd"))) {
                 XL_FILE_PATH := A_LoopFileFullPath
@@ -61,9 +55,7 @@ ReportMasterNext(App) {
         }
 
         blockInfo := []
-=======
         monthFolder := Format("\\10.0.2.13\fd\9-ON DAY GROUP DETAILS\{1}\{1}{2}",A_Year, A_MM)
->>>>>>> 544efe1 (updated with new version of AddReactive)
 
         XL_FILE_PATH := ""
         loop files monthFolder . "\*.xlsx" {
