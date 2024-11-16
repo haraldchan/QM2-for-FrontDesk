@@ -5,7 +5,6 @@ BlankShare(props) {
     styles := props.styles
 
     bs := Component(App, A_ThisFunc)
-    bs.description := "生成空白(NRR) Share"
 
     action() {
         form := bs.submit()
@@ -24,5 +23,3 @@ BlankShare(props) {
 
     return bs
 }
-
-BlankShare.description := "生成空白(NRR) Share"

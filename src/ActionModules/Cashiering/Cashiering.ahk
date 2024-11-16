@@ -70,5 +70,3 @@ Cashiering(props) {
 
     return c
 }
-
-Cashiering.description := "入账关联 - 快速打开Billing、入Deposit等"

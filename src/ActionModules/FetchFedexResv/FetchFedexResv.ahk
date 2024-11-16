@@ -5,7 +5,6 @@ FetchFedexResv(props) {
     styles := props.styles
 
     ffr := Component(App, A_ThisFunc)
-    ffr.description := "抓取 FedEx Opera 订单信息"
 
     action() {
         roomNum := App.getCtrlByName("roomNum")
@@ -32,5 +31,3 @@ FetchFedexResv(props) {
 
     return ffr
 }
-
-FetchFedexResv.description := "抓取 FedEx Opera 订单信息"

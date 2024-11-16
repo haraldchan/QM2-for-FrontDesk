@@ -5,7 +5,6 @@ GroupShareDnm(props) {
     styles := props.styles
 
     gsd := Component(App, A_ThisFunc)
-    gsd.description := "预抵房间批量 Share/DoNotMove"
     rateCode := signal("TGDA")
 
     handleUseRateCode(isUse) {
@@ -45,5 +44,3 @@ GroupShareDnm(props) {
 
     return gsd
 }
-
-GroupShareDnm.description := "预抵房间批量 Share/DoNotMove"

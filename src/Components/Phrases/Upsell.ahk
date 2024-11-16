@@ -3,7 +3,6 @@ Upsell(props) {
 	commonStyle := props.commonStyle
 
 	ups := Component(App, A_ThisFunc)
-	ups.description := "Upselling - 房间升级"
 
 	writeClipboard() {
 		form := ups.submit()

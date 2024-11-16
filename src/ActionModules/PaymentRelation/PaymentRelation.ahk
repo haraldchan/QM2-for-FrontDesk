@@ -5,7 +5,6 @@ PaymentRelation(props) {
     styles := props.styles
 
     pr := Component(App, A_ThisFunc)
-    pr.description := "生成 PayBy PayFor 信息"
 
     getPayFor() {
         form := pr.submit()
@@ -60,5 +59,3 @@ PaymentRelation(props) {
 
     return pr
 }
-
-PaymentRelation.description := "生成 PayBy PayFor 信息"

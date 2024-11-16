@@ -3,7 +3,7 @@ TableReserve(props) {
 	commonStyle := props.commonStyle
 
 	tr := Component(App, A_ThisFunc)
-	tr.description := "Table Reserve - 餐饮预订"
+	
 	restaurantList := ["宏图府", "玉堂春暖", "风味餐厅", "流浮阁"]
 	tomorrow := FormatTime(DateAdd(A_Now, 1, "Days"), "yyyyMMdd")
 

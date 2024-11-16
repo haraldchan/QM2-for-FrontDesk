@@ -3,7 +3,7 @@ ExtraBed(props) {
 	commonStyle := props.commonStyle
 
 	eb := Component(App, A_ThisFunc)
-	eb.description := "Extra Bed - 加床"
+
 	charge := signal(345)
 	ebCharge := [
 		{ label: "345元", price: 345 },

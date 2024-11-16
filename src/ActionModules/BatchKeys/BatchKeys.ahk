@@ -5,7 +5,6 @@ BatchKeys(props){
     styles := props.styles
 
     bk := Component(App, A_ThisFunc)
-    bk.description := "批量房卡制作（Excel 表辅助）"
     xlPath := signal(A_ScriptDir . "\src\Excel\GroupKeys.xls")
 
     handleSelectXl(App) {
@@ -48,5 +47,3 @@ BatchKeys(props){
 
     return bk
 }
-
-BatchKeys.description := "批量房卡制作（Excel 表辅助）"

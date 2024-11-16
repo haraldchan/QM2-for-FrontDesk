@@ -5,7 +5,6 @@ PsbBatchUpload(props) {
     styles := props.styles
 
     pbu := Component(App, A_ThisFunc)
-    pbu.description := "旅业二期（网页版）批量上报"
 
     pbu.render := (this) => this.Add(
         App.AddGroupBox("Section r4 " . styles.xPos . styles.yPos . styles.wide, "旅业二期（网页版）批量上报"),
@@ -16,5 +15,3 @@ PsbBatchUpload(props) {
 
     return pbu
 }
-
-PsbBatchUpload.description := "旅业二期（网页版）批量上报"

@@ -3,7 +3,6 @@ RushRoom(props) {
 	commonStyle := props.commonStyle
 
 	rr := Component(App, A_ThisFunc)
-	rr.description := "Rush Room - 赶房与Key Keep"
 
 	writeClipboard(){
 		rushTime := App.getCtrlByName("rushTime").Value
