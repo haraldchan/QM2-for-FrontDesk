@@ -39,6 +39,8 @@ ReportMasterNext(App) {
     }
 
     getBlockInfo() {
+        monthFolder := Format("\\10.0.2.13\fd\9-ON DAY GROUP DETAILS\{1}\{1}{2}",A_Year, A_MM)
+
         loop files monthFolder . "\*.xlsx" {
             if (InStr(A_LoopFileName, FormatTime(A_Now, "yyyyMMdd"))) {
                 XL_FILE_PATH := A_LoopFileFullPath
@@ -55,7 +57,6 @@ ReportMasterNext(App) {
         }
 
         blockInfo := []
-        monthFolder := Format("\\10.0.2.13\fd\9-ON DAY GROUP DETAILS\{1}\{1}{2}",A_Year, A_MM)
 
         XL_FILE_PATH := ""
         loop files monthFolder . "\*.xlsx" {
@@ -127,7 +128,7 @@ ReportMasterNext(App) {
             widths: [120, 200]
         },
         options: {
-            lvOptions: "$reportList Checked Grid NoSortHdr -ReadOnly -Multi x30 y+15 w350 r15",
+            lvOptions: "$reportList Checked Grid NoSortHdr -ReadOnly -Multi x30 y+15 w350 r17",
             itemOptions: "Check"
         }
     }
