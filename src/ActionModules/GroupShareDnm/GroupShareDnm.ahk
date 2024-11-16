@@ -45,3 +45,5 @@ GroupShareDnm(props) {
 
     return gsd
 }
+
+GroupShareDnm.description := "预抵房间批量 Share/DoNotMove"
