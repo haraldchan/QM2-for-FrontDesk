@@ -32,3 +32,5 @@ FetchFedexResv(props) {
 
     return ffr
 }
+
+FetchFedexResv.description := "抓取 FedEx Opera 订单信息"
