@@ -48,3 +48,5 @@ BatchKeys(props){
 
     return bk
 }
+
+BatchKeys.description := "批量房卡制作（Excel 表辅助）"
