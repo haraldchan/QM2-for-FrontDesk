@@ -27,6 +27,6 @@ App(App) {
 		App.AddCheckbox("y+10 h25", "令 CityLedger 挂账保持常驻")
 		   .OnEvent("Click", (*) => cityLedgerPersist.set(on => !on)),
 
-		Tabs(App),
+		Tabs(App)
 	)
 }
