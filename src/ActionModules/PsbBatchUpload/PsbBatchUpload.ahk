@@ -16,3 +16,5 @@ PsbBatchUpload(props) {
 
     return pbu
 }
+
+PsbBatchUpload.description := "旅业二期（网页版）批量上报"
