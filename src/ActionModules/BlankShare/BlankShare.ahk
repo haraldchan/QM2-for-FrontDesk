@@ -24,3 +24,5 @@ BlankShare(props) {
 
     return bs
 }
+
+BlankShare.description := "生成空白(NRR) Share"
