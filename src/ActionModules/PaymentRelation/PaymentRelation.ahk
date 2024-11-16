@@ -60,3 +60,5 @@ PaymentRelation(props) {
 
     return pr
 }
+
+PaymentRelation.description := "生成 PayBy PayFor 信息"
