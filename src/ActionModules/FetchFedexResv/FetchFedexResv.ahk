@@ -1,7 +1,7 @@
 #Include "./FetchFedexResv_Action.ahk"
 
 FetchFedexResv(props) {
-    App := props.App, 
+    App := props.App
     styles := props.styles
 
     ffr := Component(App, A_ThisFunc)
@@ -16,7 +16,9 @@ FetchFedexResv(props) {
 
         roomNum.Focus()
 
-        WinActivate "ahk_class XLMAIN"
+        if (WinExist("ahk_class XLMAIN")) {
+            WinActivate "ahk_class XLMAIN"
+        }
     }
 
     ffr.render := (this) => this.Add(
@@ -26,8 +28,8 @@ FetchFedexResv(props) {
         App.AddText("xs10 yp+30 h20", "确认号："),
         App.AddEdit("vconfNum x+10"),
         App.AddReactiveButton("vFetchFedexResvAction xs10 y+10 w100 ", "抓取订单信息")
-           .OnEvent("Click", (*) => action()),
-)
+           .OnEvent("Click", (*) => action())
+    )
 
     return ffr
 }
