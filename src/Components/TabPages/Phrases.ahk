@@ -5,10 +5,10 @@
 
 Phrases(App) {
 	phrases := OrderedMap(
-		RushRoom,  "Rush Room - 赶房与Key Keep",
+		RushRoom,  	  "Rush Room - 赶房与Key Keep",
 		TableReserve, "Table Reserve - 餐饮预订",
-		Upsell, "Upselling - 房间升级",
-		ExtraBed, "Extra Bed - 加床",
+		Upsell, 	  "Upselling - 房间升级",
+		ExtraBed, 	  "Extra Bed - 加床",
 	)
 
 	selectedPhrase := signal(phrases.keys()[1].name)
