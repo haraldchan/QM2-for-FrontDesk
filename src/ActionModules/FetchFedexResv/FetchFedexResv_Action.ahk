@@ -1,4 +1,6 @@
 class FetchFedexResv_Action {
+    static AnchorImage := A_ScriptDir . "\src\Assets\AltNameAnchor.PNG"
+
     static USE(roomNum, confNum) {
         crew := OrderedMap(
             "name", "",         ; profile
@@ -20,14 +22,17 @@ class FetchFedexResv_Action {
         WinMaximize "ahk_class SunAwtFrame"
         WinActivate "ahk_class SunAwtFrame"
 
-        name := this.getCrewName()
-        crew["name"] := name[1] . " " . name[2]
-        Send "{Up}"
-        utils.waitLoading()
+        ; open reservation
         Send "!r"
         utils.waitLoading()
-
-        crew["trip"] := this.getTripNum(name[1])
+        
+        ; get crewname
+        name := this.getCrewName()
+        crew["name"] := name[1] . " " . name[2]
+        utils.waitLoading()
+        
+        ; get trip number
+        crew["trip"] := this.getTripNum()
         utils.waitLoading()
 
         ; open More Fields panel
@@ -83,7 +88,19 @@ class FetchFedexResv_Action {
     }
 
     static getCrewName() {
-        Send "!p"
+        ; Send "!p"
+        loop 10 {
+            if (ImageSearch(&FoundX, &FoundY, 0, 0, A_ScreenWidth, A_ScreenWidth, this.AnchorImage)) {
+                anchorX := FoundX - 20
+                anchorY := FoundY 
+                break
+            } 
+            Sleep 100
+        }
+
+        MouseMove anchorX, anchorY
+        utils.waitLoading()
+        Click
         utils.waitLoading()
         Send "^c"
         Sleep 100
@@ -100,11 +117,9 @@ class FetchFedexResv_Action {
         return [firstname, lastname]
     }
 
-    static getTripNum(crewFirstname) {
-        AnchorImage := A_ScriptDir . "\src\Assets\AltNameAnchor.PNG"
-
+    static getTripNum() {
         loop 10 {
-            if (ImageSearch(&FoundX, &FoundY, 0, 0, A_ScreenWidth, A_ScreenWidth, AnchorImage)) {
+            if (ImageSearch(&FoundX, &FoundY, 0, 0, A_ScreenWidth, A_ScreenWidth, this.AnchorImage)) {
                 anchorX := FoundX + 441
                 anchorY := FoundY + 365
                 break
