@@ -35,7 +35,7 @@ Upsell(props) {
 		App.AddRadio("x+10 h20", "英文"),
 			
 		App.AddReactiveButton("x270 y380 w90 h55", "复制`nComment`nAlert")
-		.OnEvent("Click", (*) => this.writeClipboard(App))	
+		.OnEvent("Click", (*) => writeClipboard())	
 	)
 
 	return ups
