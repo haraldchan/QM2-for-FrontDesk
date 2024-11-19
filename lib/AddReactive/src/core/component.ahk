@@ -38,7 +38,7 @@ class Component {
                 }
 
                 ; AddReactive control
-                if (InStr(Type(Control), "AddReactive")) {
+                if (Control is AddReactive) {
                     control.ctrl.groupName := "$$" . this.name
                     ctrlsArray.Push(control.ctrl)
                 }
