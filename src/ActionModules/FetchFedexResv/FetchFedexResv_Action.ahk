@@ -1,7 +1,7 @@
 class FetchFedexResv_Action {
     static AnchorImage := A_ScriptDir . "\src\Assets\AltNameAnchor.PNG"
 
-    static USE(roomNum, confNum) {
+    static USE(roomNum, confNum) {        
         crew := OrderedMap(
             "name", "",         ; profile
             "roomNum", roomNum, ; resv-room
@@ -21,10 +21,21 @@ class FetchFedexResv_Action {
 
         WinMaximize "ahk_class SunAwtFrame"
         WinActivate "ahk_class SunAwtFrame"
+        CoordMode "Pixel", "Screen"
 
         ; open reservation
         Send "!r"
         utils.waitLoading()
+
+        ; check if alert is on top
+        loop {
+            if (ImageSearch(&FoundX, &FoundY, 0, 0, A_ScreenWidth, A_ScreenWidth, this.AnchorImage)) {
+                break
+            } 
+
+            Send "{Enter}"
+            Sleep 250
+        }
         
         ; get crewname
         name := this.getCrewName()
@@ -84,6 +95,9 @@ class FetchFedexResv_Action {
 
         A_Clipboard := cell
 
+        Send "!o"
+        utils.waitLoading()
+
         MsgBox("已复制订单信息，请到 Sign-In Sheet FullName 处粘贴",,"4096 T1")
     }
 
@@ -121,7 +135,7 @@ class FetchFedexResv_Action {
         loop 10 {
             if (ImageSearch(&FoundX, &FoundY, 0, 0, A_ScreenWidth, A_ScreenWidth, this.AnchorImage)) {
                 anchorX := FoundX + 441
-                anchorY := FoundY + 365
+                anchorY := FoundY + 345
                 break
             } else {
                 loop 5 {
