@@ -17,6 +17,7 @@ App(App) {
 		; PSC
 		PersistScriptsControl(App),
 		; Action Module Tabs
-		Tabs(App)
+		Tabs(App),
+		App.getCtrlByName("firstRadio").Focus()
 	)
 }
