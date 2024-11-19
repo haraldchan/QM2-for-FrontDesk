@@ -24,6 +24,14 @@ PaymentRelation(props) {
         MsgBox(A_Clipboard, "已复制信息", "4096 T1")
     }
 
+    clear() {
+        for ctrl in pr.ctrls {
+            if (ctrl is Gui.Edit) {
+                ctrl.Value := ""
+            }
+        }
+    }
+
     action() {
         App.Hide()
         Sleep 100
@@ -52,9 +60,11 @@ PaymentRelation(props) {
         App.AddEdit("vpbName x+1 w80 h20", ""),
         App.AddReactiveButton("vpbCopy xs10 y+70 h30 w150", "复制Pay By信息")
            .OnEvent("Click", (*) => getPayBy()),
-        ;execute
-        App.AddReactiveButton("vPaymentRelationAction h40 y+25 " . styles.wide . styles.xPos, "粘 贴 信 息")
-           .OnEvent("Click", (*) => action())
+        ; btns  
+        App.ARButton("vPaymentRelationAction w300 h40 y+25 " . styles.xPos, "粘 贴 信 息")
+           .OnEvent("Click", (*) => action()),
+        App.ARButton("w40 h40 x+10", "清空")
+           .OnEvent("Click", (*) => clear())
     )
 
     return pr
