@@ -1,6 +1,3 @@
-; Persist
-#Include "./CityLedgerCO.ahk"
-
 ; OnePress
 #Include "./BlankShare/BlankShare.ahk"
 #Include "./PaymentRelation/PaymentRelation.ahk"
