@@ -1,4 +1,6 @@
 class BalanceTransfer {
+    static alertImg := A_ScriptDir . "\src\Assets\alert.png"
+
     static USE() {
         BT := Gui(, "Balance Transfer")
         BT.OnEvent("Escape", (this) => this.Destroy())
@@ -38,8 +40,18 @@ class BalanceTransfer {
         
         WinActivate "ahk_class SunAwtFrame"
         Sleep 100
+
+        ; Post
         Send "!p"
-        Sleep 100
+        utils.waitLoading()
+
+        ; check if it is no post 
+        if (ImageSearch(&FoundX, &FoundY, 0, 0, A_ScreenWidth, A_ScreenWidth, this.alertImg)) {
+            Send "{Enter}"
+            utils.waitLoading()
+        } 
+
+        ; post balance transfer transactions
         Send "8888"
         Sleep 100
         Send "{Tab}"
