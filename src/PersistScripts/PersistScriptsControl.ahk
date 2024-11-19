@@ -2,9 +2,6 @@
 #Include "./CityLedgerCo.ahk"
 
 PersistScriptsControl(App) {
-	cityLedgerOn := signal(false)
-	balanceTransferOn := signal(true)
-
 	setHotkeys() {
 		; City Ledger
 		HotIf (*) => App.getCtrlByName("CityLedgerOn").Value
