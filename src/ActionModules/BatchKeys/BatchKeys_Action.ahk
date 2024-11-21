@@ -152,3 +152,63 @@ class BatchKeys_Action {
         }
     }
 }
+
+class BatchKeys2_Action {
+    
+
+    static USE(formData) {
+        CoordMode "Mouse", "Window"
+        WinActivate "ahk_exe vision.exe"
+
+        this.makeKey(8888, formData.coDate, formData.etd, formData.confNum)
+    }
+
+    static makeKey(room, coDate, etd, confNum) {
+        ; send confNum
+        A_Clipboard := confNum
+        Send "^{Tab}"
+        Sleep 150
+        Send "^v"
+        Sleep 100
+        loop 2 {
+            Send "^{Tab}"
+            Sleep 100   
+        }
+
+        ; send room number
+        A_Clipboard := room
+        MouseMove 168, 196 
+        Click 3
+        Sleep 150
+        Send "^v" ; room num can only be pasted
+        Sleep 150
+
+        ; send check out date
+        MouseMove 173, 363
+        Sleep 150
+        Click "Down"
+        MouseMove 7, 363
+        Sleep 150
+        Click "Up"
+        Sleep 100
+        Send "{Text}" . coDate
+        Sleep 150
+
+        ; send check out time
+        Send "{Tab}"
+        Sleep 100
+        Send "{Text}" . etd
+        Sleep 150
+
+        ; send number of cards
+        loop 3 {
+            Send "{Tab}"
+            Sleep 50
+        }
+        Send "2"
+        Sleep 150
+
+        ; make 
+        Send "!e"
+    }
+}
