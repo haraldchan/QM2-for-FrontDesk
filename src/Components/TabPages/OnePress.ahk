@@ -26,7 +26,7 @@ OnePress(App) {
 
     return (
         modules.keys().map(module =>
-            App.AddRadio(A_Index = 1 ? "Checked x30 y+10 h20" : "x30 y+10 h20", modules[module])
+            App.AddRadio(A_Index = 1 ? "vfirstRadio Checked x30 y+10 h20" : "x30 y+10 h20", modules[module])
                .OnEvent("Click", (*) => selectedModule.set(module.name))
         ),
         Dynamic(selectedModule, moduleComponents, { App: App, styles: { xPos: "x30 ", yPos: "y450 ", wide: "w350 " } }),
