@@ -29,7 +29,6 @@ BatchKeys2(props) {
             confNum: confNum
         }
         
-        MsgBox JSON.stringify(formData)
         BatchKeys2_Action.USE(formData)
     }
 
@@ -38,7 +37,7 @@ BatchKeys2(props) {
     stdCheckout := FormatTime(DateAdd(A_Now, 1, "Days"), "yyyyMMdd") . "130000"
 
     bk.render := (this) => this.Add(
-        App.AddGroupBox("Section r6 " . styles.xPos . styles.yPos . styles.wide, "批量房卡制作"),
+        App.AddGroupBox("Section r6 " . styles.xPos . styles.yPos . styles.wide, "批量房卡制作（连续输入）"),
         
         ; form
         App.AddText(textStyle, "房号 (空格分隔)："),
