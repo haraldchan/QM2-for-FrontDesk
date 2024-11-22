@@ -1,6 +1,6 @@
 #Include "./BatchKeys_Action.ahk"
 
-BatchKeys(props){
+BatchKeysXl(props){
     App := props.App, 
     styles := props.styles
 
@@ -40,8 +40,8 @@ BatchKeys(props){
            .OnEvent("Click", (*) => Run(xlPath.value)),
         App.AddReactiveCheckbox("vuseDesktopXl h25 xs10 y+10", "使用桌面文件模式")
            .OnEvent("Click", (ctrl, _) => handleToogleDesktopMode(App, !ctrl.Value)),
-        App.AddReactiveButton("vBatchKeysAction xs10 y+10 w100", "启 动")
-           .OnEvent("Click", (*) => BatchKeys_Action.USE(xlPath.value, App.getCtrlByName("useDesktopXl").Value)
+        App.AddReactiveButton("vBatchKeysXlAction xs10 y+10 w100", "启 动")
+           .OnEvent("Click", (*) => BatchKeysXl_Action.USE(xlPath.value, App.getCtrlByName("useDesktopXl").Value)
         ) 
     ) 
 

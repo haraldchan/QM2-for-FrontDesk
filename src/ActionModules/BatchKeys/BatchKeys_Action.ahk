@@ -1,4 +1,4 @@
-class BatchKeys_Action {
+class BatchKeysXl_Action {
     static USE(xlPath, useDeskTopXl := false) {
         if (useDeskTopXl = true) {
             if (FileExist(A_Desktop . "\GroupKeys.xls")) {
@@ -153,7 +153,7 @@ class BatchKeys_Action {
     }
 }
 
-class BatchKeys2_Action {
+class BatchKeysSq_Action {
     static USE(formData) {
         CoordMode "Mouse", "Window"
         WinActivate "ahk_exe vision.exe"

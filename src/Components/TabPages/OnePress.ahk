@@ -5,8 +5,8 @@ OnePress(App) {
         Cashiering,      "入账关联 - 快速打开Billing、入Deposit等",
         GroupShareDnm,   "预抵房间批量 Share/DoNotMove",
         PsbBatchUpload,  "旅业二期（网页版）批量上报",
-        BatchKeys,       "批量房卡制作（Excel 表辅助）", 
-        BatchKeys2,      "批量房卡制作（新，测试中）", 
+        BatchKeysXl,     "批量房卡制作（Excel 表辅助）", 
+        BatchKeysSq,     "批量房卡制作（连续输入）", 
         FetchFedexResv,  "抓取 FedEx Opera 订单信息"
     )
 

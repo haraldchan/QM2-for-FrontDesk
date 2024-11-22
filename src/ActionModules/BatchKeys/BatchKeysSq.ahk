@@ -1,6 +1,6 @@
 #Include "./BatchKeys_Action.ahk"
 
-BatchKeys2(props) {
+BatchKeysSq(props) {
     App := props.App
     styles := props.styles
 
@@ -29,7 +29,7 @@ BatchKeys2(props) {
             confNum: confNum
         }
         
-        BatchKeys2_Action.USE(formData)
+        BatchKeysSq_Action.USE(formData)
     }
 
     textStyle := "xs10 yp+30 w100 h25 0x200"
@@ -48,7 +48,7 @@ BatchKeys2(props) {
         App.AddEdit("vcpbNum " . editStyle , ""),
 
         ; bts
-        App.AddReactiveButton("vBatchKeys2Action xs10 y+10 w100", "开始制卡")
+        App.AddReactiveButton("vBatchKeysSqAction xs10 y+10 w100", "开始制卡")
            .OnEvent("Click", (*) => action())
     )
 

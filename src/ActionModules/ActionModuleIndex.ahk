@@ -4,8 +4,8 @@
 #Include "./GroupShareDnm/GroupShareDnm.ahk"
 #Include "./Cashiering/Cashiering.ahk"
 #Include "./PsbBatchUpload/PsbBatchUpload.ahk"
-#Include "./BatchKeys/BatchKeys.ahk"
-#Include "./BatchKeys/BatchKeys2.ahk"
+#Include "./BatchKeys/BatchKeysXl.ahk"
+#Include "./BatchKeys/BatchKeysSq.ahk"
 #Include "./FetchFedexResv/FetchFedexResv.ahk"
 
 ; Report Master
