@@ -170,7 +170,7 @@ class BatchKeysSq_Action {
                     {3}
                 )",
                 room, 
-                A_Index + 1 < formData.rooms.Length ? Format("下一房号：{1}`n", formData.rooms[A_Index + 1]) : ""
+                A_Index + 1 <= formData.rooms.Length ? Format("下一房号：{1}`n", formData.rooms[A_Index + 1]) : "",
                 A_Index == formData.rooms.Length ? "`n房卡已全部制作完成，请再次核对确保无误" : ""
             ), "Batch Keys", "OKCancel 4096")
             
