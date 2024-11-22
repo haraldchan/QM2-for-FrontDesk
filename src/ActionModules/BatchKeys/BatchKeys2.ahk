@@ -41,11 +41,11 @@ BatchKeys2(props) {
         App.AddGroupBox("Section r6 " . styles.xPos . styles.yPos . styles.wide, "批量房卡制作"),
         
         ; form
-        App.AddText(textStyle, "房号："),
+        App.AddText(textStyle, "房号 (空格分隔)："),
         App.AddEdit("vrooms " . editStyle , ""),
-        App.AddText(textStyle, "退房日期时间："),
+        App.AddText(textStyle, "退房日期、时间："),
         App.AddDateTime("vcoDateTime x+10 w200 Choose" . stdCheckout, "yyyy-MM-dd HH:mm"),
-        App.AddText(textStyle, "确认号："),
+        App.AddText(textStyle, "确认号/Party号："),
         App.AddEdit("vcpbNum " . editStyle , ""),
 
         ; bts
