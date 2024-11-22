@@ -11,11 +11,11 @@ Cashiering(props) {
 
     hotStringCommands := "
     (
-        输入:pw   - 快速输入密码
-        输入:agd  - 生成Agoda BalanceTransfer
-        输入:blk  - Blocks 界面打开PM (主管权限)
-        Alt+F11   - InHouse 界面打开Billing
-        Win+F11   - 录入 Deposit
+        输入:pw`t`t- 快速输入密码
+        输入:agd`t- 生成Agoda BalanceTransfer
+        输入:blk`t`t- Blocks 界面打开PM (主管权限)
+        热键:Alt+F11`t- InHouse 界面打开Billing
+        热键:Win+F11`t- 录入 Deposit
     )"
 
     paymentType := Map(
