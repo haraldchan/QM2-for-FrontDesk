@@ -164,16 +164,18 @@ class BatchKeysSq_Action {
             checkConf := MsgBox(Format("
                 (
                     已做房卡：{1}
+                    {2}
                     - 是(Y)制作下一个
                     - 否(N)退出制卡
-                    {2}
+                    {3}
                 )",
                 room, 
+                A_Index + 1 < formData.rooms.Length ? Format("下一房号：{1}`n", formData.rooms[A_Index + 1]) : ""
                 A_Index == formData.rooms.Length ? "`n房卡已全部制作完成，请再次核对确保无误" : ""
             ), "Batch Keys", "OKCancel 4096")
             
             if (checkConf = "Cancel") {
-                utils.cleanReload(winGroup)
+                return
             }
         }
     }
