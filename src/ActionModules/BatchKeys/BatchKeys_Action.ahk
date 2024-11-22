@@ -154,13 +154,28 @@ class BatchKeys_Action {
 }
 
 class BatchKeys2_Action {
-    
-
     static USE(formData) {
         CoordMode "Mouse", "Window"
         WinActivate "ahk_exe vision.exe"
 
-        this.makeKey(8888, formData.coDate, formData.etd, formData.confNum)
+        for room in formData.rooms {
+            this.makeKey(room, formData.coDate, formData.etd, formData.confNum)
+
+            checkConf := MsgBox(Format("
+                (
+                    已做房卡：{1}
+                    - 是(Y)制作下一个
+                    - 否(N)退出制卡
+                    {2}
+                )",
+                room, 
+                A_Index == formData.rooms.Length ? "`n房卡已全部制作完成，请再次核对确保无误" : ""
+            ), "Batch Keys", "OKCancel 4096")
+            
+            if (checkConf = "Cancel") {
+                utils.cleanReload(winGroup)
+            }
+        }
     }
 
     static makeKey(room, coDate, etd, confNum) {
