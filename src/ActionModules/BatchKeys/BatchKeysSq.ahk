@@ -26,7 +26,8 @@ BatchKeysSq(props) {
             rooms: roomsArr,
             coDate: coDate,
             etd: etd,
-            confNum: confNum
+            confNum: confNum,
+            enable28f: App.getCtrlByName("enable28f").Value
         }
         
         BatchKeysSq_Action.USE(formData)
@@ -49,7 +50,8 @@ BatchKeysSq(props) {
 
         ; bts
         App.AddReactiveButton("vBatchKeysSqAction xs10 y+10 w100", "开始制卡")
-           .OnEvent("Click", (*) => action())
+           .OnEvent("Click", (*) => action()),
+        App.AddCheckBox("venable28f x+15 h30", "可开启28楼电梯")
     )
 
     return bk

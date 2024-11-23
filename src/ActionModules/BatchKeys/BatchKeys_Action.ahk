@@ -159,7 +159,7 @@ class BatchKeysSq_Action {
         WinActivate "ahk_exe vision.exe"
 
         for room in formData.rooms {
-            this.makeKey(room, formData.coDate, formData.etd, formData.confNum)
+            this.makeKey(room, formData.coDate, formData.etd, formData.confNum, formData.enable28f)
 
             checkConf := MsgBox(Format("
                 (
@@ -180,7 +180,7 @@ class BatchKeysSq_Action {
         }
     }
 
-    static makeKey(room, coDate, etd, confNum) {
+    static makeKey(room, coDate, etd, confNum, enable28f) {
         ; send confNum
         A_Clipboard := confNum
         Send "^{Tab}"
@@ -217,11 +217,28 @@ class BatchKeysSq_Action {
         Send "{Text}" . etd
         Sleep 150
 
-        ; send number of cards
-        loop 3 {
-            Send "{Tab}"
+        ; enable 28f
+        if (enable28f != 0) {
+            loop 2 {
+                Send "{Tab}"
+                Sleep 50
+            }
+            loop 2 {
+                Send "{Down}"
+                Sleep 50
+            }
+            Send "{Space}"
             Sleep 50
+            Send "{Tab}"
+            Sleep 150
+        } else {
+            loop 3 {
+                Send "{Tab}"
+                Sleep 50
+            }
         }
+
+        ; send number of cards
         Send "2"
         Sleep 150
 
