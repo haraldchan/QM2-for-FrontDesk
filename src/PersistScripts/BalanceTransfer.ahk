@@ -1,5 +1,25 @@
 class BalanceTransfer {
     static alertImg := A_ScriptDir . "\src\Assets\alert.png"
+    static isRunning := false
+
+	static start() {
+		WinMaximize "ahk_class SunAwtFrame"
+		WinActivate "ahk_class SunAwtFrame"
+		Sleep 500
+		WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
+		BlockInput "MouseMove"
+
+		Hotkey("F12", (*) => this.end(), "On")
+		this.isRunning := true
+	}
+	
+	static end() {
+		BlockInput "MouseMoveOff"
+		WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
+		
+		Hotkey("F12", (*) => {}, "Off")
+		this.isRunning := false
+	}
 
     static USE() {
         BT := Gui(, "Balance Transfer")
@@ -38,8 +58,7 @@ class BalanceTransfer {
         fromMsg := formData.fromMsg
         toMsg := formData.toMsg
         
-        WinActivate "ahk_class SunAwtFrame"
-        Sleep 100
+        this.start()
 
         ; Post
         Send "!p"
@@ -82,6 +101,8 @@ class BalanceTransfer {
         Send "!o"
         Sleep 100
         Send "!c"
+        
+        this.end()
         MsgBox("已完成.", "Balance Transfer", "T1 4096")
     }
 }

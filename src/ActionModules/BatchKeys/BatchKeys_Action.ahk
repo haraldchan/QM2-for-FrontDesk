@@ -51,8 +51,8 @@ class BatchKeysXl_Action {
         if (start = "Cancel") {
             return
         }
-        
-        coDateInput := InputBox("请输入退房日期：`n(yyyymmdd，如20240101)", "Batch Keys",, FormatTime(DateAdd(A_Now, 1, "Days"), "yyyyMMdd")).Value
+
+        coDateInput := InputBox("请输入退房日期：`n(yyyymmdd，如20240101)", "Batch Keys", , FormatTime(DateAdd(A_Now, 1, "Days"), "yyyyMMdd")).Value
         coDateInputFormatted := FormatTime(coDateInput, "ShortDate")
         coTimeInput := InputBox("请输入退房时间：`n(格式为HH:MM)", "Batch Keys", , "13:00").Value
 
@@ -75,10 +75,10 @@ class BatchKeysXl_Action {
         loop lastRow {
             sheet.Cells(A_Index, 2).Text = ""
                 ? coDateRead.Push("blank")
-                    : coDateRead.Push(sheet.Cells(A_Index, 2).Text)
+                : coDateRead.Push(sheet.Cells(A_Index, 2).Text)
             sheet.Cells(A_Index, 3).Text = ""
                 ? coTimeRead.Push("blank")
-                    : coTimeRead.Push(sheet.Cells(A_Index, 3).Text)
+                : coTimeRead.Push(sheet.Cells(A_Index, 3).Text)
         }
 
         return [coDateRead, coTimeRead]
@@ -154,13 +154,30 @@ class BatchKeysXl_Action {
 }
 
 class BatchKeysSq_Action {
-    static USE(formData) {
+    static isRunning := false
+
+    static start() {
         CoordMode "Mouse", "Window"
         WinActivate "ahk_exe vision.exe"
+        BlockInput "MouseMove"
+
+        Hotkey("F12", (*) => this.end(), "On")
+        this.isRunning := true
+    }
+
+    static end() {
+        CoordMode "Mouse", "Screen"
+        BlockInput "MouseMoveOff"
+
+        Hotkey("F12", (*) => {}, "Off")
+        this.isRunning := false
+    }
+
+    static USE(formData) {
+        this.start()
 
         for room in formData.rooms {
             this.makeKey(room, formData.coDate, formData.etd, formData.confNum, formData.enable28f)
-
             checkConf := MsgBox(Format("
                 (
                     已做房卡：{1}
@@ -169,15 +186,18 @@ class BatchKeysSq_Action {
                     - 否(N)退出制卡
                     {3}
                 )",
-                room, 
+                room,
                 A_Index + 1 <= formData.rooms.Length ? Format("下一房号：{1}`n", formData.rooms[A_Index + 1]) : "",
                 A_Index == formData.rooms.Length ? "`n房卡已全部制作完成，请再次核对确保无误" : ""
-            ), "Batch Keys", "OKCancel 4096")
-            
-            if (checkConf = "Cancel") {
+            ), "Batch Keys", "YesNo 4096")
+
+            if (checkConf = "No") {
+                this.end()
                 return
             }
         }
+        this.end()
+
     }
 
     static makeKey(room, coDate, etd, confNum, enable28f) {
@@ -189,12 +209,12 @@ class BatchKeysSq_Action {
         Sleep 100
         loop 2 {
             Send "^{Tab}"
-            Sleep 100   
+            Sleep 100
         }
 
         ; send room number
         A_Clipboard := room
-        MouseMove 168, 196 
+        MouseMove 168, 196
         Click 3
         Sleep 150
         Send "^v" ; room num can only be pasted
@@ -242,7 +262,7 @@ class BatchKeysSq_Action {
         Send "2"
         Sleep 150
 
-        ; make 
+        ; make
         Send "!e"
     }
 }

@@ -1,4 +1,25 @@
 class ReportMasterNext_Action {
+	static isRunning := false
+
+	static start() {
+		WinMaximize "ahk_class SunAwtFrame"
+		WinActivate "ahk_class SunAwtFrame"
+		Sleep 500
+		WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
+		BlockInput "MouseMove"
+
+		Hotkey("F12", (*) => this.end(), "On")
+		this.isRunning := true
+	}
+	
+	static end() {
+		BlockInput "MouseMoveOff"
+		WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
+		
+		Hotkey("F12", (*) => {}, "Off")
+		this.isRunning := false
+	}
+
     static reportList := {
         onr: [{
             searchStr: "%complimentary",
@@ -106,6 +127,8 @@ class ReportMasterNext_Action {
     }
 
     static reportFiling(reportInfoObj, fileType, initX := 433, initY := 598) {
+        this.start()
+
         fileTypeSelectPointer := Map(
             "PDF", 0,
             "XML", 2,
@@ -143,6 +166,10 @@ class ReportMasterNext_Action {
         Send "{Enter}"
         Sleep 100
         Send "!o"
+        if (!this.isRunning) {
+			this.end()
+			return
+		}
 
         ; run saving actions, return filename
         reportFn := reportInfoObj.saveFn
@@ -163,17 +190,18 @@ class ReportMasterNext_Action {
         Send "{Enter}"
 
         TrayTip Format("正在保存：{1}", saveFileName)
+        if (!this.isRunning) {
+            this.end()
+			return
+		}
 
-        isWindows7 := StrSplit(A_OSVersion, ".")[1] = 6
-
-        if (WinWait("Warning",, 20)) {
-            WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
-            WinSetAlwaysOnTop true, "Warning"
-        }
-        
+        isWindows7 := StrSplit(A_OSVersion, ".")[1] == 6
         loop 30 {
+            if (!this.isRunning) {
+                this.end()
+                return
+            }
             sleep 1000
-
             if (!isWindows7 && WinExist("Warning")) {
                 utils.waitLoading()
                 Send "{Enter}"
@@ -187,7 +215,8 @@ class ReportMasterNext_Action {
 
             if (A_Index = 30) {
                 MsgBox("保存出错，脚本已终止。", "ReportMaster", "T1 4096")
-                utils.cleanReload(winGroup)
+                this.end()
+                return
             }
         }
 
@@ -196,8 +225,8 @@ class ReportMasterNext_Action {
         Click
         Sleep 200
         Send "!c"
-        BlockInput false
-        WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
+        
+        this.end()
     }
 
     static comp() {

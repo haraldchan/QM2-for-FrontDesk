@@ -1,7 +1,29 @@
 class FetchFedexResv_Action {
     static AnchorImage := A_ScriptDir . "\src\Assets\AltNameAnchor.PNG"
+    static isRunning := false
 
-    static USE(roomNum, confNum) {        
+    static start() {
+        WinMaximize "ahk_class SunAwtFrame"
+        WinActivate "ahk_class SunAwtFrame"
+        WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
+        CoordMode "Pixel", "Screen"
+        BlockInput "MouseMove"
+
+		Hotkey("F12", (*) => this.end(), "On")
+		this.isRunning := true
+    }
+
+    static end() {
+        WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
+        BlockInput "MouseMoveOff"
+
+        Hotkey("F12", (*) => {}, "Off")
+		this.isRunning := false
+    }
+
+    static USE(roomNum, confNum) {
+        this.start()
+
         crew := OrderedMap(
             "name", "",         ; profile
             "roomNum", roomNum, ; resv-room
@@ -19,10 +41,6 @@ class FetchFedexResv_Action {
             "obNum", ""         ; more fields
         )
 
-        WinMaximize "ahk_class SunAwtFrame"
-        WinActivate "ahk_class SunAwtFrame"
-        CoordMode "Pixel", "Screen"
-
         ; open reservation
         Send "!r"
         utils.waitLoading()
@@ -31,24 +49,36 @@ class FetchFedexResv_Action {
         loop {
             if (ImageSearch(&FoundX, &FoundY, 0, 0, A_ScreenWidth, A_ScreenWidth, this.AnchorImage)) {
                 break
-            } 
+            }
 
             Send "{Enter}"
             Sleep 250
         }
-        
+
         ; get crewname
         name := this.getCrewName()
         crew["name"] := name[1] . " " . name[2]
         utils.waitLoading()
-        
+		if (!this.isRunning) {
+			this.end()
+			return
+		}        
+
         ; get trip number
         crew["trip"] := this.getTripNum()
         utils.waitLoading()
+		if (!this.isRunning) {
+			this.end()
+			return
+		}
 
         ; open More Fields panel
         Send "!i"
         utils.waitLoading()
+		if (!this.isRunning) {
+			this.end()
+			return
+		}
 
         ; inbound
         inbound := this.getMoreFieldsValue(6)
@@ -56,7 +86,7 @@ class FetchFedexResv_Action {
         crew["ibNum"] := SubStr(inbound, 3)
         Sleep 100
 
-        ; arr 
+        ; arr
         arr := StrSplit(this.getMoreFieldsValue(2), "-")
         crew["arr"] := arr[1] . "/" . arr[2]
 
@@ -77,6 +107,10 @@ class FetchFedexResv_Action {
 
         Send "!o"
         utils.waitLoading()
+        if (!this.isRunning) {
+			this.end()
+			return
+		}
 
         mins := DateDiff(
             "20" . dep[3] . dep[1] . dep[2] . StrReplace(crew["ETD"], ":", ""),
@@ -98,7 +132,8 @@ class FetchFedexResv_Action {
         Send "!o"
         utils.waitLoading()
 
-        MsgBox("已复制订单信息，请到 Sign-In Sheet FullName 处粘贴",,"4096 T1")
+        this.end()
+        MsgBox("已复制订单信息，请到 Sign-In Sheet FullName 处粘贴", , "4096 T1")
     }
 
     static getCrewName() {
@@ -106,9 +141,9 @@ class FetchFedexResv_Action {
         loop 10 {
             if (ImageSearch(&FoundX, &FoundY, 0, 0, A_ScreenWidth, A_ScreenWidth, this.AnchorImage)) {
                 anchorX := FoundX - 20
-                anchorY := FoundY 
+                anchorY := FoundY
                 break
-            } 
+            }
             Sleep 100
         }
 
@@ -119,12 +154,12 @@ class FetchFedexResv_Action {
         Send "^c"
         Sleep 100
         lastname := A_Clipboard
-        
+
         Send "{Tab}"
         Send "^c"
         Sleep 100
         firstname := A_Clipboard
-        
+
         Send "!o"
         utils.waitLoading()
 
@@ -161,7 +196,7 @@ class FetchFedexResv_Action {
         loop step {
             Send "{Tab}"
         }
-        Sleep 100    
+        Sleep 100
         Send "^c"
         Sleep 100
 

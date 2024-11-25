@@ -1,13 +1,29 @@
 class BlankShare_Action {
-	static USE(checkIn, shareQty, initX := 949, initY := 599) {
+	static isRunning := false
+
+	static start() {
 		WinMaximize "ahk_class SunAwtFrame"
 		WinActivate "ahk_class SunAwtFrame"
-		Sleep 1000
+		Sleep 500
 		WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
-		BlockInput true
-		; Sleep 100
+		BlockInput "MouseMove"
+
+		Hotkey("F12", (*) => this.end(), "On")
+		this.isRunning := true
+	}
+	
+	static end() {
+		BlockInput "MouseMoveOff"
+		WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
+		
+		Hotkey("F12", (*) => {}, "Off")
+		this.isRunning := false
+	}
+	
+	static USE(checkIn, shareQty, initX := 949, initY := 599) {
+		this.start()
+
 		Send "!t"
-		; Sleep 200
 		utils.waitLoading()
 		Send "!s"
 		utils.waitLoading()
@@ -31,8 +47,15 @@ class BlankShare_Action {
 		utils.waitLoading()
 		Send "!o"
 		utils.waitLoading()
+
+		if (!this.isRunning) {
+			this.end()
+			return
+		}
+		; open resv
 		Send "!r"
 		utils.waitLoading()
+		; delete comment
 		MouseMove initX, initY ; 949, 599
 		utils.waitLoading()
 		Click
@@ -43,6 +66,12 @@ class BlankShare_Action {
 		Click
 		utils.waitLoading()
 		Send "!c"
+
+		if (!this.isRunning) {
+			this.end()
+			return
+		}
+		; change RateCode to NRR
 		MouseMove initX - 625, initY - 92 ; 324, 507
 		utils.waitLoading()
 		Click "Down"
@@ -58,9 +87,12 @@ class BlankShare_Action {
 			Send "{Esc}"
 			utils.waitLoading()
 		}
-		
-		utils.waitLoading()
-			if (checkIn = true) {
+	
+		if (!this.isRunning) {
+			this.end()
+			return
+		}
+		if (checkIn = true) {
 			Send "!i"
 			utils.waitLoading()
 			loop 5 {
@@ -94,9 +126,9 @@ class BlankShare_Action {
 				Send "{Tab}"
 				utils.waitLoading()
 				Send "{Text}6"
-				utils.waitLoading()	
-				Send "!o"	
-				utils.waitLoading()		
+				utils.waitLoading()
+				Send "!o"
+				utils.waitLoading()
 				if (checkIn = true) {
 					Send "!i"
 					utils.waitLoading()
@@ -114,7 +146,6 @@ class BlankShare_Action {
 		utils.waitLoading()
 		Send "!c"
 		utils.waitLoading()
-		BlockInput false
-		WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
+
 	}
 }

@@ -1,10 +1,27 @@
 class GroupShareDnm_Action {
+    static isRunning := false
+
+	static start() {
+		WinMaximize "ahk_class SunAwtFrame"
+		WinActivate "ahk_class SunAwtFrame"
+		Sleep 500
+		WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
+		BlockInput "MouseMove"
+		
+		Hotkey("F12", (*) => this.end(), "On")
+		this.isRunning := true
+	}
+	
+	static end() {
+		BlockInput "MouseMoveOff"
+		WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
+		
+		Hotkey("F12", (*) => {}, "Off")
+		this.isRunning := false
+	}
+
     static USE(roomQty, ratecode, both, shareOnly, dnmOnly) {
-        WinMaximize "ahk_class SunAwtFrame"
-        WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
-        WinActivate "ahk_class SunAwtFrame"
-        Sleep 500
-        BlockInput true
+        this.start()
 
         if (both = true) {
             this.shareDnm(roomQty, ratecode)
@@ -14,8 +31,7 @@ class GroupShareDnm_Action {
             this.shareDnm(roomQty, ratecode, shareOnly)
         }
 
-        WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
-        BlockInput false
+        this.end()
     }
 
     static shareDnm(roomQty, ratecode, shareOnly := false, initX := 340, initY := 311) {
@@ -30,18 +46,26 @@ class GroupShareDnm_Action {
         Send "{Backspace}"
         utils.waitLoading()
         Send Format("{Text}{1}", ratecode)
+        if (!this.isRunning) {
+			this.end()
+			return
+		} 
+
         loop roomQty {
             BlockInput true
             MouseMove initX + 85, initY + 226 ; 425, 537
             utils.waitLoading()
             Send "!r"
 
-            ; TODO: test if this avoids dnm
             if (shareOnly = false) {
                 MouseMove initX + 129, initY + 201 ; 469, 512
                 utils.waitLoading()
                 Click
                 utils.waitLoading()
+            }
+            if (!this.isRunning) {
+                this.end()
+                return
             }
 
             Send "!t"
@@ -68,6 +92,11 @@ class GroupShareDnm_Action {
             utils.waitLoading()
             Send "!r"
             utils.waitLoading()
+            if (!this.isRunning) {
+                this.end()
+                return
+            }
+
             MouseMove 950, 597
             utils.waitLoading()
             Click
@@ -82,6 +111,11 @@ class GroupShareDnm_Action {
             utils.waitLoading()
             Send "!c"
             utils.waitLoading()
+            if (!this.isRunning) {
+                this.end()
+                return
+            }
+            
             MouseMove initX - 19, initY + 196 ; 321, 507
             utils.waitLoading()
             Click "Down"
@@ -93,6 +127,11 @@ class GroupShareDnm_Action {
             utils.waitLoading()
             Send "{Tab}"
             utils.waitLoading()
+            if (!this.isRunning) {
+                this.end()
+                return
+            }
+
             loop 5 {
                 Send "{Esc}"
                 utils.waitLoading()
@@ -111,6 +150,10 @@ class GroupShareDnm_Action {
 
     static dnm(roomQty, initX := 696, initY := 614) {
         loop roomQty {
+            if (!this.isRunning) {
+                this.end()
+                return
+            }
             MouseMove initX, initY ; 696, 614
             utils.waitLoading()
             Send "!r"

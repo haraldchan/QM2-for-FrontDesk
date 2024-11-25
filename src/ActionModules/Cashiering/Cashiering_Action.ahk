@@ -1,9 +1,7 @@
 class Cashiering_Action {
-    static sendPassword(form) {
-        Send Format("{Text}{1}", form.password)
-    }
+    static isRunning := false
 
-    static openBilling(form) {
+    static start() {
         try {
             WinMaximize "ahk_class SunAwtFrame"
             WinActivate "ahk_class SunAwtFrame"
@@ -11,6 +9,21 @@ class Cashiering_Action {
             MsgBox("请先打开Opera PMS")
             return
         }
+
+        Hotkey("F12", (*) => this.end(), "On")
+        this.isRunning := true
+    }
+
+    static end() {
+        Hotkey("F12", (*) => {}, "On")
+        this.isRunning := false
+    }
+
+    static sendPassword(form) {
+        Send Format("{Text}{1}", form.password)
+    }
+
+    static openBilling(form) {
         Send "!t"
         Sleep 100
         Send "!b"
@@ -21,13 +34,7 @@ class Cashiering_Action {
     }
 
     static depositEntry(form) {
-        try {
-            WinMaximize "ahk_class SunAwtFrame"
-            WinActivate "ahk_class SunAwtFrame"
-        } catch {
-            MsgBox("请先打开Opera PMS")
-            return
-        }
+        this.start()
 
         amount := InputBox("请输入金额")
         if (amount.Result = "Cancel") {
@@ -38,7 +45,7 @@ class Cashiering_Action {
         if (supplement.Result = "Cancel") {
             return
         }
-        
+
         Sleep 500
         Send "!t"
         MouseMove 710, 378
@@ -52,6 +59,11 @@ class Cashiering_Action {
         Send "{BackSpace}"
         Sleep 100
         Send Format("{Text}{1}", form.password)
+		
+        if (!this.isRunning) {
+			this.end()
+			return
+		}
         Sleep 200
         MouseMove 707, 397
         Sleep 500
@@ -71,6 +83,11 @@ class Cashiering_Action {
         Sleep 100
         Send "{Tab}"
         Sleep 100
+
+		if (!this.isRunning) {
+			this.end()
+			return
+		}
         Send Format("{Text}{1}", supplement.Value)
         Sleep 100
         MouseMove 596, 421
@@ -87,6 +104,8 @@ class Cashiering_Action {
         Sleep 200
         Send "!c"
         Sleep 200
+
+        this.end()
     }
 
     static agodaBalanceTransfer() {
@@ -99,7 +118,7 @@ class Cashiering_Action {
         if (orderId.Result = "Cancel") {
             return
         }
-        
+
         WinActivate "ahk_class SunAwtFrame"
         Sleep 100
         Send "!p"
@@ -138,13 +157,8 @@ class Cashiering_Action {
     }
 
     static blockPmBilling(form) {
-        try {
-            WinMaximize "ahk_class SunAwtFrame"
-            WinActivate "ahk_class SunAwtFrame"
-        } catch {
-            MsgBox("请先打开Opera PMS")
-            return
-        }
+        this.start()
+
         Send "{Enter}"
         Sleep 100
         Send "!r"
@@ -178,5 +192,7 @@ class Cashiering_Action {
         Send Format("{Text}{1}", form.password)
         Sleep 100
         Send "{Enter}"
+
+        this.end()
     }
 }
