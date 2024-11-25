@@ -19,7 +19,7 @@ QM.OnEvent("Close", (*) => utils.quitApp("QM2", popupTitle, winGroup))
 
 ; hotkey setup
 F9:: QM.Show()
-F12:: utils.cleanReload(winGroup)
+^F12:: utils.cleanReload(winGroup)
 
 #HotIf WinActive(popupTitle)
 Esc:: QM.Hide()
