@@ -1,0 +1,18 @@
+{
+	"username": "guest",
+	"password": "",
+	"hotString": "",
+	"accounts": {
+		"opera": {
+			"username": "",
+			"password": ""
+		},
+		"vingcard": {
+			"password": ""
+		},
+		"psb": {
+			"username": "",
+			"password": ""
+		}
+	}
+}
