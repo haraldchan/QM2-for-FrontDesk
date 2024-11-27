@@ -117,7 +117,7 @@ class useProfile {
             
             if (this.users.find(user => user["username"] == StrLower(userData.username)) == "") {
                 this.users.Push(userData)
-                App.getCtrlByType("ComboBox").Add(userData.username)
+                App.getCtrlByType("ComboBox").Add([userData.username])
 
                 FileAppend(JSON.stringify(userData), this.userFolder . "\" . userData.masterUsername . ".json", "UTF-8")
             } else {
