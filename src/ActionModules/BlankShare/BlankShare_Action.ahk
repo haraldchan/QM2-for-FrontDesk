@@ -2,22 +2,23 @@ class BlankShare_Action {
 	static isRunning := false
 
 	static start() {
+		this.isRunning := true
+		HotIf (*) => this.isRunning
+		Hotkey("F12", (*) => this.end(), "On")
+
 		WinMaximize "ahk_class SunAwtFrame"
 		WinActivate "ahk_class SunAwtFrame"
 		Sleep 500
 		WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
-		BlockInput "MouseMove"
-
-		Hotkey("F12", (*) => this.end(), "On")
-		this.isRunning := true
+		BlockInput true
 	}
-	
+
 	static end() {
-		BlockInput "MouseMoveOff"
-		WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
-		
-		Hotkey("F12", (*) => {}, "Off")
 		this.isRunning := false
+		Hotkey("F12", "Off")
+
+		BlockInput false
+		WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
 	}
 	
 	static USE(checkIn, shareQty, initX := 949, initY := 599) {
@@ -37,6 +38,11 @@ class BlankShare_Action {
 			Send "{Tab}"
 			utils.waitLoading()
 		}
+		if (!this.isRunning) {
+			msgbox("脚本已终止", popupTitle, "4096 T1")
+			return
+		}
+
 		Send "{Text}0"
 		utils.waitLoading()
 		Send "{Tab}"
@@ -49,7 +55,7 @@ class BlankShare_Action {
 		utils.waitLoading()
 
 		if (!this.isRunning) {
-			this.end()
+			msgbox("脚本已终止", popupTitle, "4096 T1")
 			return
 		}
 		; open resv
@@ -68,7 +74,7 @@ class BlankShare_Action {
 		Send "!c"
 
 		if (!this.isRunning) {
-			this.end()
+			msgbox("脚本已终止", popupTitle, "4096 T1")
 			return
 		}
 		; change RateCode to NRR
@@ -89,7 +95,7 @@ class BlankShare_Action {
 		}
 	
 		if (!this.isRunning) {
-			this.end()
+			msgbox("脚本已终止", popupTitle, "4096 T1")
 			return
 		}
 		if (checkIn = true) {
@@ -105,6 +111,10 @@ class BlankShare_Action {
 
 		if (shareQty > 1) {
 			loop (shareQty - 1) {
+				if (!this.isRunning) {
+					msgbox("脚本已终止", popupTitle, "4096 T1")
+					return
+				}
 				loop 5 {
 					Send "{Down}"
 					utils.waitLoading()
@@ -147,5 +157,6 @@ class BlankShare_Action {
 		Send "!c"
 		utils.waitLoading()
 
+		this.end()
 	}
 }
