@@ -6,7 +6,7 @@ TrayTip "QM 2 运行中…按下 F9 开始使用脚本"
 CoordMode "Mouse", "Screen"
 
 ; Initializing configuration
-version := "2.4.0"
+version := "2.5.0"
 popupTitle := "QM2 for FrontDesk " . version
 winGroup := ["ahk_class SunAwtFrame", "旅客信息", "ahk_class 360se6_Frame"]
 
