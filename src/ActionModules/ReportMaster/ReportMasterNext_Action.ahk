@@ -135,11 +135,6 @@ class ReportMasterNext_Action {
             "XLS", 5,
         )
 
-        WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
-        WinMaximize "ahk_class SunAwtFrame"
-        WinActivate "ahk_class SunAwtFrame"
-        BlockInput true
-        Sleep 100
         Send "!m"
         Sleep 100
         Send "{Text}R"
@@ -196,7 +191,7 @@ class ReportMasterNext_Action {
 			return
 		}
 
-        isWindows7 := StrSplit(A_OSVersion, ".")[1] == 6
+        ; isWindows7 := StrSplit(A_OSVersion, ".")[1] == 6
         loop 30 {
             if (!this.isRunning) {
                 this.end()
