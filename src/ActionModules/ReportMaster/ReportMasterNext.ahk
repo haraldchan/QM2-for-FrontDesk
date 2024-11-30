@@ -167,10 +167,15 @@ ReportMasterNext(App) {
                 selectedReport.Push(reportDetails.value[row])
             }
 
+            ReportMasterNext_Action.start()
             for report in selectedReport {
+                if (!ReportMasterNext_Action.isRunning && A_Index > 1) {
+                    return
+                }
                 ReportMasterNext_Action.reportFiling(report, fileType)
                 savedReports .= report.name . "`n"
             }
+            ReportMasterNext_Action.end()
         }
         
         ; handle on-day group arriving
@@ -185,6 +190,7 @@ ReportMasterNext(App) {
                 selectedBlocks.Push(reportDetails.value[block])
             }
             
+            ReportMasterNext_Action.start()
             for block in selectedBlocks {
                 reportObj := ReportMasterNext_Action.reportList.groupArr
                 reportObj.blockName := block["blockName"]
@@ -192,6 +198,7 @@ ReportMasterNext(App) {
                 ReportMasterNext_Action.reportFiling(reportObj, fileType)
                 savedReports .= block["blockName"] . "`n"
             }
+            ReportMasterNext_Action.end()
         }
 
         openMyDocs(savedReports)
