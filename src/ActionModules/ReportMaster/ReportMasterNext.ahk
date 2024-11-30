@@ -152,7 +152,9 @@ ReportMasterNext(App) {
         ; handle misc report saving
         if (reportCategory.value = "其他报表") {
             savedReports .= reportDetails.value[LV.GetNext()].name
+            ReportMasterNext_Action.start()
             ReportMasterNext_Action.reportFiling(reportDetails.value[LV.GetNext()], fileType)
+            ReportMasterNext_Action.end()
         }
 
         ; handle over-night reports
