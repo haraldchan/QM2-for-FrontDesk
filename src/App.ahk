@@ -19,13 +19,13 @@ App(App) {
 		
 		; user profile
 		App.AddCheckbox("", "当前用户").OnEvent("Click", (ctrl, _) => U.setUsing(ctrl.Value)),
-		App.AddComboBox("w100 x+10", U.users.map(user => user["username"]))
+		App.AddComboBox("vuserList w100 x+10", U.users.map(user => user["username"]))
 		   .OnEvent("Change", (ctrl, _) => U.setUser(ctrl.Text)),
 		
 		App.AddButton("vshowUserInfo w60 h30 x+10", "查看")
-		   .OnEvent("Click", (*) => (U.showUserInfo(App))),
+		   .OnEvent("Click", (*) => (U.showUserInfo(App, App.getCtrlByName("userList")))),
 		App.AddButton("vsubmitUserInfo w60 h30 x+10", "新建")
-		   .OnEvent("Click", (*) => (U.showUserInfo(App, "new"))),
+		   .OnEvent("Click", (*) => (U.showUserInfo(App, App.getCtrlByName("userList"), "new"))),
 		; PSC
 		PersistScriptsControl(App),
 		

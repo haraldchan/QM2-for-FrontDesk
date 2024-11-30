@@ -12,14 +12,14 @@ class useProfile {
         loop files this.userFolder . "\*.json" {
             this.users.Push(JSON.parse(FileRead(A_LoopFileFullPath, "UTF-8")))
         }
+
+        this.hotstringLogin := "li"
+        this.hotstringPwd := "pw"
         this.curUser := this.users.find(user => user["username"] == "guest")
-        
-        this.prevHotstring := ""
-        this.hotString := ""
-        this.setHotString(this.hotString)
+        this.setUser(this.curUser)
     }
 
-    sendPassword() {
+    sendUsernameAndPassword(){
         for win, acc in this.winMap {
             if (WinActive(win)) {
                 Send "{Text}" . Format("{1}`t{2}",
@@ -30,12 +30,26 @@ class useProfile {
         }
     }
 
-    setHotString(newStr) {
-        this.prevHotstring := this.hotString
-        this.hotString := newStr
-        HotIf((*) => this.isUsing == true),
-        Hotstring(this.prevHotString, (*) => this.sendPassword(), "Off")
-        Hotstring(this.hotString, (*) => this.sendPassword(), "On")
+    sendPassword() {
+        for win, acc in this.winMap {
+            if (WinActive(win)) {
+                Send "{Text}" . this.curUser["accounts"][acc]["password"]
+            }
+        }
+    }
+
+    setHotstring(newStrLogin, newStrPwd) {
+        this.prevHotstringLogin := this.hotstringLogin
+        this.prevHotstringPwd := this.hotstringPwd
+        this.hotstringLogin := newStrLogin
+        this.hotstringPwd := newStrPwd
+
+        HotIf((*) => this.isUsing == true)
+        Hotstring(this.prevHotstringLogin, (*) => this.sendUsernameAndPassword(), "Off")
+        Hotstring(this.hotstringLogin, (*) => this.sendUsernameAndPassword(), "On")
+        Hotstring(this.prevHotstringPwd, (*) => this.sendPassword(), "Off")
+        Hotstring(this.hotstringPwd, (*) => this.sendPassword(), "On")
+
     }
 
     setUser(username) {
@@ -48,7 +62,7 @@ class useProfile {
 
         if (validateUser["username"] == "guest") {
             this.curUser := validateUser
-            this.setHotString(this.curUser["hotString"])
+            this.setHotstring(this.curUser["hotstringLogin"], this.curUser["hotstringPwd"])
             return
         }
         
@@ -61,7 +75,7 @@ class useProfile {
         }
         
         this.curUser := validateUser
-        this.setHotString(this.curUser["hotString"])
+        this.setHotString(this.curUser["hotString"], this.curUser["hotstringPwd"])
     }
 
     setUsing(state) {
@@ -71,7 +85,7 @@ class useProfile {
         this.setUser(this.isUsing == false ? "guest" : this.curUser)
     }
 
-    showUserInfo(App, formStatus := 0){
+    showUserInfo(App, userlist, formStatus := 0){
         App.getCtrlByName("showUserInfo").Enabled := false
         App.getCtrlByName("submitUserInfo").Enabled := false
 
@@ -99,7 +113,8 @@ class useProfile {
             userData := {
                 username: formData.masterUsername,
                 password: formData.masterPassword,
-                hotString: "::" . formData.hotstring,
+                hotstringLogin: "::" . formData.hotstringLogin,
+                hotstringPwd: "::" . formData.hotstringPwd,
                 accounts: {
                     opera: {
                         username: formData.operaUsername,
@@ -117,7 +132,7 @@ class useProfile {
             
             if (this.users.find(user => user["username"] == StrLower(userData.username)) == "") {
                 this.users.Push(userData)
-                App.getCtrlByType("ComboBox").Add([userData.username])
+                userlist.Add([userData.username])
 
                 FileAppend(JSON.stringify(userData), this.userFolder . "\" . userData.masterUsername . ".json", "UTF-8")
             } else {
@@ -137,34 +152,35 @@ class useProfile {
         }
 
         return (
-            UserInfo.AddText("w100", "当前用户: "),
+            UserInfo.AddText("x10 w100", "当前用户: "),
             UserInfo.AddEdit("w100 x+10 vmasterUsername", this.curUser["username"]),
-            UserInfo.AddText("w100", "主密码: "),
+            UserInfo.AddText("x10 w100", "主密码: "),
             UserInfo.AddEdit("w100 x+10 vmasterPassword", this.curUser["password"]),
-            UserInfo.AddText("w100", "输入指令: "),
-            UserInfo.AddEdit("w100 x+10 vhotstring", this.curUser["hotstring"]),
+            UserInfo.AddText("x10 w100", "输入指令: "),
+            UserInfo.AddEdit("w100 vhotstringLogin", this.curUser["hotstringLogin"]),
+            UserInfo.AddEdit("w100 vhotstringPwd", this.curUser["hotstringPwd"]),
             
             ; opera
-            UserInfo.AddGroupBox("Section r2", "Opera PMS").SetFont("Bold"),
+            UserInfo.AddGroupBox("x10 Section r2", "Opera PMS").SetFont("Bold"),
             UserInfo.AddText(textStyle, "账号: "),
             UserInfo.AddText(editStyle . "voperaUsername", this.curUser["accounts"]["opera"]["username"]),
             UserInfo.AddText(textStyle, "密码: "),
             UserInfo.AddText(editStyle . "voperaPassword", this.curUser["accounts"]["opera"]["password"]),
             
             ; psb
-            UserInfo.AddGroupBox("Section r2", "旅业信息系统").SetFont("Bold"),
+            UserInfo.AddGroupBox("x10 Section r2", "旅业信息系统").SetFont("Bold"),
             UserInfo.AddText(textStyle, "账号: "),
             UserInfo.AddText(editStyle . "vpsbUsername", this.curUser["accounts"]["psb"]["username"]),
             UserInfo.AddText(textStyle, "密码: "),
             UserInfo.AddText(editStyle . "vpsbPassword", this.curUser["accounts"]["psb"]["password"]),
 
             ; vingcard
-            UserInfo.AddGroupBox("Section r3", "VingCard").SetFont("Bold"),
+            UserInfo.AddGroupBox("x10 Section r3", "VingCard").SetFont("Bold"),
             UserInfo.AddText(textStyle, "密码: "),
             UserInfo.AddText(editStyle . "vvingcardPassword", this.curUser["accounts"]["vingcard"]["password"]),
 
             ; btns
-            UserInfo.AddButton("w60 h30", "新 建").OnEvent("Click", (*) => handleNewForm()),
+            UserInfo.AddButton("x10 w60 h30", "新 建").OnEvent("Click", (*) => handleNewForm()),
             UserInfo.AddButton("w60 h30 x+10", "提 交").OnEvent("Click", (*) => handleSubmit()),
 
             UserInfo.Show()

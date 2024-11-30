@@ -1,7 +1,8 @@
 {
 	"username": "haraldchan",
 	"password": "34200342",
-	"hotString": "li",
+	"hotstringLogin": "li",
+	"hotstringPwd": "pw",
 	"accounts": {
 		"opera": {
 			"username": "foharaldc",

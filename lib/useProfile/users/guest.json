@@ -1,7 +1,8 @@
 {
 	"username": "guest",
 	"password": "",
-	"hotString": "",
+	"hotstringLogin": "li",
+	"hotstringPwd": "pw",
 	"accounts": {
 		"opera": {
 			"username": "",
