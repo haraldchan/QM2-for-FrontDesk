@@ -127,7 +127,6 @@ class ReportMasterNext_Action {
     }
 
     static reportFiling(reportInfoObj, fileType, initX := 433, initY := 598) {
-        this.start()
 
         fileTypeSelectPointer := Map(
             "PDF", 0,
@@ -182,7 +181,9 @@ class ReportMasterNext_Action {
 
         Sleep 1000
         Send "!f"
-        Sleep 1000
+        
+        WinWait("Please Select a Directory to Download")
+        Sleep 200
         Send "{Backspace}"
         Sleep 200
         Send Format("{Text}{1}", saveFileName)
@@ -202,7 +203,10 @@ class ReportMasterNext_Action {
                 return
             }
             sleep 1000
-            if (!isWindows7 && WinExist("Warning")) {
+            if (Winwait("Warning",, 20)) {
+                WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
+                Sleep 100
+                WinActivate "Warning"
                 utils.waitLoading()
                 Send "{Enter}"
                 utils.waitLoading()
@@ -225,8 +229,6 @@ class ReportMasterNext_Action {
         Click
         Sleep 200
         Send "!c"
-        
-        this.end()
     }
 
     static comp() {
@@ -329,13 +331,19 @@ class ReportMasterNext_Action {
         preAuditDate := DateAdd(A_Now, -1, "Days")
         preAuditMonth := FormatTime(preAuditDate, "MM")
         preAuditYear := FormatTime(preAuditDate, "yyyy")
+
         nMonth := (preAuditMonth = 12) ? 1 : preAuditMonth + 1
         nextMonth := (nMonth < 10) ? "0" . nMonth : nMonth
         nextNextMonth := (nextMonth = 12) ? 1 : nextMonth + 1
         nextNextMonth := (nextNextMonth < 10) ? "0" . nextNextMonth : nextNextMonth
+
         printYear := preAuditMonth = 12 ? preAuditYear + 1 : preAuditYear
+
         firstDayOfNextMonth := printYear . nextMonth . "01"
-        firstDayOfNextNextMonth := printYear . nextNextMonth . "01"
+        firstDayOfNextNextMonth := nextNextMonth == "01"
+            ? printYear + 1 . nextNextMonth . "01"
+            : printYear . nextNextMonth . "01"
+
         dateFirstNext := nextMonth . "01" . printYear
         dateLastNext := FormatTime(DateAdd(firstDayOfNextNextMonth, -1, "Days"), "MMddyyyy")
 
