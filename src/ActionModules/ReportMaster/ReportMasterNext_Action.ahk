@@ -2,22 +2,22 @@ class ReportMasterNext_Action {
 	static isRunning := false
 
 	static start() {
+        this.isRunning := true
+		HotIf (*) => this.isRunning
+		Hotkey("F12", (*) => this.end(), "On")
+
 		WinMaximize "ahk_class SunAwtFrame"
 		WinActivate "ahk_class SunAwtFrame"
-		Sleep 500
 		WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
-		BlockInput "MouseMove"
-
-		Hotkey("F12", (*) => this.end(), "On")
-		this.isRunning := true
+		BlockInput true
 	}
 	
 	static end() {
-		BlockInput "MouseMoveOff"
-		WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
-		
-		Hotkey("F12", (*) => {}, "Off")
 		this.isRunning := false
+		Hotkey("F12", "Off")
+
+		WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
+		BlockInput false
 	}
 
     static reportList := {
@@ -166,8 +166,8 @@ class ReportMasterNext_Action {
         Send "{Enter}"
         Sleep 100
         Send "!o"
-        if (!this.isRunning) {
-			this.end()
+		if (!this.isRunning) {
+			msgbox("脚本已终止", popupTitle, "4096 T1")
 			return
 		}
 
@@ -190,8 +190,8 @@ class ReportMasterNext_Action {
         Send "{Enter}"
 
         TrayTip Format("正在保存：{1}", saveFileName)
-        if (!this.isRunning) {
-            this.end()
+		if (!this.isRunning) {
+			msgbox("脚本已终止", popupTitle, "4096 T1")
 			return
 		}
 

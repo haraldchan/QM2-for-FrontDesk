@@ -5,18 +5,24 @@ class Cashiering_Action {
         try {
             WinMaximize "ahk_class SunAwtFrame"
             WinActivate "ahk_class SunAwtFrame"
+            WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
+            BlockInput true
         } catch {
             MsgBox("请先打开Opera PMS")
             return
         }
 
-        Hotkey("F12", (*) => this.end(), "On")
-        this.isRunning := true
+		this.isRunning := true
+		HotIf (*) => this.isRunning
+		Hotkey("F12", (*) => this.end(), "On")
     }
 
     static end() {
-        Hotkey("F12", (*) => {}, "On")
-        this.isRunning := false
+		this.isRunning := false
+		Hotkey("F12", "Off")
+
+		BlockInput false
+		WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
     }
 
     static sendPassword(form) {
@@ -60,8 +66,8 @@ class Cashiering_Action {
         Sleep 100
         Send Format("{Text}{1}", form.password)
 		
-        if (!this.isRunning) {
-			this.end()
+		if (!this.isRunning) {
+			msgbox("脚本已终止", popupTitle, "4096 T1")
 			return
 		}
         Sleep 200
@@ -85,7 +91,7 @@ class Cashiering_Action {
         Sleep 100
 
 		if (!this.isRunning) {
-			this.end()
+			msgbox("脚本已终止", popupTitle, "4096 T1")
 			return
 		}
         Send Format("{Text}{1}", supplement.Value)

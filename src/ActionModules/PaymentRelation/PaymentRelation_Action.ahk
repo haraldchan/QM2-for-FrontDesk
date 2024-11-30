@@ -2,24 +2,24 @@ class PaymentRelation_Action {
 	static isRunning := false
 
 	static start() {
-		WinMaximize "ahk_class SunAwtFrame"
-		WinActivate "ahk_class SunAwtFrame"
-		Sleep 500
-		WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
-		BlockInput "MouseMove"
+        this.isRunning := true
+		HotIf (*) => this.isRunning
+		Hotkey("F12", (*) => this.end(), "On")
+
         CoordMode "Pixel", "Screen"
         CoordMode "Mouse", "Screen"
-		
-		Hotkey("F12", (*) => this.end(), "On")
-		this.isRunning := true
+		WinMaximize "ahk_class SunAwtFrame"
+		WinActivate "ahk_class SunAwtFrame"
+		WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
+		BlockInput true
 	}
 	
 	static end() {
-		BlockInput "MouseMoveOff"
-		WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
-		
-		Hotkey("F12", (*) => {}, "Off")
-		this.isRunning := false
+        this.isRunning := false
+		Hotkey("F12", "Off")
+
+        WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
+		BlockInput false
 	}
 
     static USE(initX := 759, initY := 266) {
@@ -52,8 +52,8 @@ class PaymentRelation_Action {
         Sleep 100
         Send "!c"
         Sleep 100
-        if (!this.isRunning) {
-			this.end()
+		if (!this.isRunning) {
+			msgbox("脚本已终止", popupTitle, "4096 T1")
 			return
 		}
 
@@ -72,8 +72,8 @@ class PaymentRelation_Action {
         Click
         MouseMove initX - 70, initY + 211 ; 689, 477
         Sleep 100
-        if (!this.isRunning) {
-			this.end()
+		if (!this.isRunning) {
+			msgbox("脚本已终止", popupTitle, "4096 T1")
 			return
 		}
 

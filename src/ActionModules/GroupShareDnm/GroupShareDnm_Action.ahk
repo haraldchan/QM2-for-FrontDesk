@@ -2,22 +2,23 @@ class GroupShareDnm_Action {
     static isRunning := false
 
 	static start() {
+		this.isRunning := true
+		HotIf (*) => this.isRunning
+		Hotkey("F12", (*) => this.end(), "On")
+
 		WinMaximize "ahk_class SunAwtFrame"
 		WinActivate "ahk_class SunAwtFrame"
 		Sleep 500
 		WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
-		BlockInput "MouseMove"
-		
-		Hotkey("F12", (*) => this.end(), "On")
-		this.isRunning := true
+		BlockInput true
 	}
 	
 	static end() {
-		BlockInput "MouseMoveOff"
-		WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
-		
-		Hotkey("F12", (*) => {}, "Off")
 		this.isRunning := false
+		Hotkey("F12", "Off")
+
+		BlockInput false
+		WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
 	}
 
     static USE(roomQty, ratecode, both, shareOnly, dnmOnly) {
@@ -46,10 +47,10 @@ class GroupShareDnm_Action {
         Send "{Backspace}"
         utils.waitLoading()
         Send Format("{Text}{1}", ratecode)
-        if (!this.isRunning) {
-			this.end()
+		if (!this.isRunning) {
+			msgbox("脚本已终止", popupTitle, "4096 T1")
 			return
-		} 
+		}
 
         loop roomQty {
             BlockInput true
@@ -93,7 +94,7 @@ class GroupShareDnm_Action {
             Send "!r"
             utils.waitLoading()
             if (!this.isRunning) {
-                this.end()
+                msgbox("脚本已终止", popupTitle, "4096 T1")
                 return
             }
 
@@ -112,7 +113,7 @@ class GroupShareDnm_Action {
             Send "!c"
             utils.waitLoading()
             if (!this.isRunning) {
-                this.end()
+                msgbox("脚本已终止", popupTitle, "4096 T1")
                 return
             }
             
@@ -128,7 +129,7 @@ class GroupShareDnm_Action {
             Send "{Tab}"
             utils.waitLoading()
             if (!this.isRunning) {
-                this.end()
+                msgbox("脚本已终止", popupTitle, "4096 T1")
                 return
             }
 
@@ -151,7 +152,7 @@ class GroupShareDnm_Action {
     static dnm(roomQty, initX := 696, initY := 614) {
         loop roomQty {
             if (!this.isRunning) {
-                this.end()
+                msgbox("脚本已终止", popupTitle, "4096 T1")
                 return
             }
             MouseMove initX, initY ; 696, 614

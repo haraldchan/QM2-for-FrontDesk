@@ -157,20 +157,21 @@ class BatchKeysSq_Action {
     static isRunning := false
 
     static start() {
+        this.isRunning := true
+		HotIf (*) => this.isRunning
+		Hotkey("F12", (*) => this.end(), "On")
+
         CoordMode "Mouse", "Window"
         WinActivate "ahk_exe vision.exe"
         BlockInput "MouseMove"
-
-        Hotkey("F12", (*) => this.end(), "On")
-        this.isRunning := true
     }
 
     static end() {
+        this.isRunning := false
+		Hotkey("F12", "Off")
+
         CoordMode "Mouse", "Screen"
         BlockInput "MouseMoveOff"
-
-        Hotkey("F12", (*) => {}, "Off")
-        this.isRunning := false
     }
 
     static USE(formData) {

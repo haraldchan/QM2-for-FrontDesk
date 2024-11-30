@@ -3,22 +3,23 @@ class FetchFedexResv_Action {
     static isRunning := false
 
     static start() {
+		this.isRunning := true
+		HotIf (*) => this.isRunning
+		Hotkey("F12", (*) => this.end(), "On")
+
+        CoordMode "Pixel", "Screen"
         WinMaximize "ahk_class SunAwtFrame"
         WinActivate "ahk_class SunAwtFrame"
         WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
-        CoordMode "Pixel", "Screen"
-        BlockInput "MouseMove"
-
-		Hotkey("F12", (*) => this.end(), "On")
-		this.isRunning := true
+        BlockInput true
     }
 
     static end() {
-        WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
-        BlockInput "MouseMoveOff"
-
-        Hotkey("F12", (*) => {}, "Off")
 		this.isRunning := false
+		Hotkey("F12", "Off")
+
+		BlockInput false
+		WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
     }
 
     static USE(roomNum, confNum) {
@@ -60,15 +61,15 @@ class FetchFedexResv_Action {
         crew["name"] := name[1] . " " . name[2]
         utils.waitLoading()
 		if (!this.isRunning) {
-			this.end()
+			msgbox("脚本已终止", popupTitle, "4096 T1")
 			return
-		}        
+		}    
 
         ; get trip number
         crew["trip"] := this.getTripNum()
         utils.waitLoading()
 		if (!this.isRunning) {
-			this.end()
+			msgbox("脚本已终止", popupTitle, "4096 T1")
 			return
 		}
 
@@ -76,7 +77,7 @@ class FetchFedexResv_Action {
         Send "!i"
         utils.waitLoading()
 		if (!this.isRunning) {
-			this.end()
+			msgbox("脚本已终止", popupTitle, "4096 T1")
 			return
 		}
 
@@ -107,8 +108,8 @@ class FetchFedexResv_Action {
 
         Send "!o"
         utils.waitLoading()
-        if (!this.isRunning) {
-			this.end()
+		if (!this.isRunning) {
+			msgbox("脚本已终止", popupTitle, "4096 T1")
 			return
 		}
 
