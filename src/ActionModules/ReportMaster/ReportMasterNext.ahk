@@ -39,39 +39,23 @@ ReportMasterNext(App) {
     }
 
     getBlockInfo() {
-        monthFolder := Format("\\10.0.2.13\fd\9-ON DAY GROUP DETAILS\{1}\{1}{2}",A_Year, A_MM)
+        monthFolder := Format("\\10.0.2.13\fd\9-ON DAY GROUP DETAILS\{1}\{1}{2}", A_Year, A_MM)
+        XL_FILE_PATH := ""
 
-        loop files monthFolder . "\*.xlsx" {
+        loop files monthFolder . "\*" {
             if (InStr(A_LoopFileName, FormatTime(A_Now, "yyyyMMdd"))) {
                 XL_FILE_PATH := A_LoopFileFullPath
-                break
-            } else {
-                MsgBox("未找到 OnDayGroup Excel 文件，请手动添加", popupTitle, "4096 T1")
-                App.Opt("+OwnDialogs")
-                XL_FILE_PATH := FileSelect(3, , "请选择 OnDayGroup Excel 文件")
-                if (XL_FILE_PATH == "") {
-                    utils.cleanReload(winGroup)
-                } 
                 break
             }
         }
 
-        blockInfo := []
-
-        XL_FILE_PATH := ""
-        loop files monthFolder . "\*.xlsx" {
-            if (InStr(A_LoopFileName, FormatTime(A_Now, "yyyyMMdd"))) { 
-                XL_FILE_PATH := A_LoopFileFullPath
-                break
-            } else {
-                MsgBox("未找到 OnDayGroup Excel 文件，请手动添加", popupTitle, "4096 T1")
-                App.Opt("+OwnDialogs")
-                XL_FILE_PATH := FileSelect(3, , "请选择 OnDayGroup Excel 文件")
-                if (XL_FILE_PATH == "") {
-                    utils.cleanReload(winGroup)
-                } 
-                break
-            }
+        if (XL_FILE_PATH == "") {
+            MsgBox("未找到 OnDayGroup Excel 文件，请手动添加", popupTitle, "4096 T1")
+            App.Opt("+OwnDialogs")
+            XL_FILE_PATH := FileSelect(3, , "请选择 OnDayGroup Excel 文件")
+            if (XL_FILE_PATH == "") {
+                return
+            } 
         }
         
         blockInfo := []
@@ -194,6 +178,9 @@ ReportMasterNext(App) {
             
             ReportMasterNext_Action.start()
             for block in selectedBlocks {
+                if (!ReportMasterNext_Action.isRunning && A_Index > 1) {
+                    return
+                }
                 reportObj := ReportMasterNext_Action.reportList.groupArr
                 reportObj.blockName := block["blockName"]
                 reportObj.blockCode := block["blockCode"]
