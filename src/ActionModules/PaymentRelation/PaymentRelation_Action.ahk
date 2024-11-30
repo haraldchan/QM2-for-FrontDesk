@@ -35,12 +35,12 @@ class PaymentRelation_Action {
             MouseMove anchorX + 1, anchorY + 1
             Click
         } else {
-            BlockInput "MouseMoveOff"
+            BlockInput false
             manualClick := MsgBox("请先点击打开Comment。", "Payment Relation", "OKCancel 4096")
             if (manualClick = "Cancel") {
                 return
             }
-            BlockInput "MouseMove"
+            BlockInput true
         }
 
         Sleep 100
