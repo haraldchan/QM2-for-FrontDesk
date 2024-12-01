@@ -163,7 +163,7 @@ class BatchKeysSq_Action {
 
         CoordMode "Mouse", "Window"
         WinActivate "ahk_exe vision.exe"
-        BlockInput "MouseMove"
+        BlockInput true
     }
 
     static end() {
@@ -171,7 +171,7 @@ class BatchKeysSq_Action {
 		Hotkey("F12", "Off")
 
         CoordMode "Mouse", "Screen"
-        BlockInput "MouseMoveOff"
+        BlockInput false
     }
 
     static USE(formData) {
@@ -179,6 +179,7 @@ class BatchKeysSq_Action {
 
         for room in formData.rooms {
             this.makeKey(room, formData.coDate, formData.etd, formData.confNum, formData.enable28f)
+            BlockInput false
             checkConf := MsgBox(Format("
                 (
                     已做房卡：{1}
@@ -193,9 +194,9 @@ class BatchKeysSq_Action {
             ), "Batch Keys", "YesNo 4096")
 
             if (checkConf = "No") {
-                this.end()
                 return
             }
+            BlockInput true
         }
         this.end()
 
