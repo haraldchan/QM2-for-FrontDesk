@@ -5,16 +5,15 @@ class BalanceTransfer {
 	static start() {
 		WinMaximize "ahk_class SunAwtFrame"
 		WinActivate "ahk_class SunAwtFrame"
-		Sleep 500
 		WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
-		BlockInput "MouseMove"
+		BlockInput true
 
 		Hotkey("F12", (*) => this.end(), "On")
 		this.isRunning := true
 	}
 	
 	static end() {
-		BlockInput "MouseMoveOff"
+		BlockInput false
 		WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
 		
 		Hotkey("F12", (*) => {}, "Off")
@@ -80,7 +79,7 @@ class BalanceTransfer {
             Send "{Tab}"
             Sleep 10
         }
-        Send Format("{1}", fromMsg)
+        Send Format("{Text}{1}", fromMsg)
         Sleep 100
         Send "{Enter}"
         Sleep 100
@@ -94,12 +93,12 @@ class BalanceTransfer {
             Send "{Tab}"
             Sleep 10
         }
-        Send Format("{1}", toMsg)
+        Send Format("{Text}{1}", toMsg)
         Sleep 100
         Send "{Enter}"
         Sleep 100
         Send "!o"
-        Sleep 100
+        utils.waitLoading()
         Send "!c"
         
         this.end()

@@ -40,8 +40,6 @@ class Cashiering_Action {
     }
 
     static depositEntry(form) {
-        this.start()
-
         amount := InputBox("请输入金额")
         if (amount.Result = "Cancel") {
             return
@@ -51,6 +49,8 @@ class Cashiering_Action {
         if (supplement.Result = "Cancel") {
             return
         }
+
+        this.start()
 
         Sleep 500
         Send "!t"
