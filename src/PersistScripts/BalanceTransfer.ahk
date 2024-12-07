@@ -73,7 +73,7 @@ class BalanceTransfer {
         Send "8888"
         Sleep 100
         Send "{Tab}"
-        Send balance
+        Send "{Text}" . balance
         Sleep 100
         loop 5 {
             Send "{Tab}"
@@ -87,7 +87,7 @@ class BalanceTransfer {
         Sleep 100
         Send "{Tab}"
         Sleep 100
-        Send Format("-{1}", balance)
+        Send "{Text}" . Format("-{1}", balance)
         Sleep 100
         loop 5 {
             Send "{Tab}"
