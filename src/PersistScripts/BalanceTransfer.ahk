@@ -80,7 +80,7 @@ class BalanceTransfer {
             Sleep 10
         }
         Send Format("{Text}{1}", fromMsg)
-        Sleep 100
+        Sleep 100 
         Send "{Enter}"
         Sleep 100
         Send "8888"
@@ -102,6 +102,6 @@ class BalanceTransfer {
         Send "!c"
         
         this.end()
-        MsgBox("已完成.", "Balance Transfer", "T1 4096")
+        ; MsgBox("已完成.", "Balance Transfer", "T1 4096")
     }
 }
