@@ -132,13 +132,13 @@ class Cashiering_Action {
         Send "8888"
         Sleep 100
         Send "{Tab}"
-        Send balance.Value
+        Send "{Text}" . balance.Value
         Sleep 100
         loop 5 {
             Send "{Tab}"
             Sleep 10
         }
-        Send Format("FR CRS.{1}", orderId.Value)
+        Send "{Text}" . Format("FR CRS.{1}", orderId.Value)
         Sleep 100
         Send "{Enter}"
         Sleep 100
@@ -146,7 +146,7 @@ class Cashiering_Action {
         Sleep 100
         Send "{Tab}"
         Sleep 100
-        Send Format("-{1}", balance.Value)
+        Send "{Text}" . Format("-{1}", balance.Value)
         Sleep 100
         loop 5 {
             Send "{Tab}"
@@ -159,7 +159,7 @@ class Cashiering_Action {
         Send "!o"
         Sleep 100
         Send "!c"
-        MsgBox("已完成.", "Agoda Transfer", "T1 4096")
+        ; MsgBox("已完成.", "Agoda Transfer", "T1 4096")
     }
 
     static blockPmBilling(form) {
