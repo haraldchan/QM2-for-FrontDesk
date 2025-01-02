@@ -4,6 +4,7 @@
 #Include "./GroupShareDnm/GroupShareDnm.ahk"
 #Include "./Cashiering/Cashiering.ahk"
 #Include "./PsbBatchUpload/PsbBatchUpload.ahk"
+#Include "./PsbBatchCheckout/PsbBatchCheckout.ahk"
 #Include "./BatchKeys/BatchKeysXl.ahk"
 #Include "./BatchKeys/BatchKeysSq.ahk"
 #Include "./FetchFedexResv/FetchFedexResv.ahk"
