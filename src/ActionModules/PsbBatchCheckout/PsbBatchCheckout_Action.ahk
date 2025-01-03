@@ -45,7 +45,7 @@ class PsbBatchCheckout_Action {
             }
 
             prevRoomNum := roomNum
-            departedGuests.Push({ roomNum: roomNum, name: name })
+            departedGuests.Push({ roomNum: Integer(roomNum), name: name })
         }
 
         xmlDoc := ""
