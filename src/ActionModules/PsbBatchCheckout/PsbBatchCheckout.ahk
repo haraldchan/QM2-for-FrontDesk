@@ -35,8 +35,10 @@ PsbBatchCheckout(props) {
         App.AddGroupBox("Section r11 " . styles.xPos . styles.yPos . styles.wide, "旅业二期（网页版）批量退房"),
         ; App.AddText("xs10 yp+30 0x200", "readme"),
         DepartedRoomsList(App, departedRooms),
-        App.ARButton("xs10 yp+240 w120 h30", "获取房号").OnEvent("Click", handleGetDepartedRooms),
+        App.ARButton("xs10 yp+240 w120 h30", "获取房号")
+           .OnEvent("Click", handleGetDepartedRooms),
         App.ARButton("vPsbBatchCheckoutAction x+10 w120 h30", "开始退房")
+           .OnEvent("Click", (*) => PsbBatchCheckout_Action.USE(departedRooms.value))
     )
 
     return pbc

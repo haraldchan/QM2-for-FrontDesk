@@ -1,6 +1,6 @@
 class PsbBatchCheckout_Action {
-    static USE() {
-
+    static USE(departedRooms) {
+        this.checkoutBatch(departedRooms)
     }
 
     static saveDeps(frTime := "00:00", toTime := "23:59") {
@@ -35,16 +35,11 @@ class PsbBatchCheckout_Action {
         departedGuests := []
         roomElements := xmlDoc.getElementsByTagName("ROOM")
         nameElements := xmlDoc.getElementsByTagName("GUEST_NAME")
-        prevRoomNum := ""
 
         loop roomElements.Length {
             roomNum := roomElements[A_Index - 1].ChildNodes[0].nodeValue
             name := nameElements[A_Index - 1].ChildNodes[0].nodeValue
-            if (roomNum == prevRoomNum) {
-                continue
-            }
 
-            prevRoomNum := roomNum
             departedGuests.Push({ roomNum: Integer(roomNum), name: name })
         }
 
@@ -53,7 +48,26 @@ class PsbBatchCheckout_Action {
         return departedGuests
     }
 
-    static checkoutBatch() {
+    static checkoutBatch(departedRooms) {
+        deps := departedRooms.map(item => item["roomNum"])
+        js := Format(this.JSnippet, JSON.stringify(deps))
 
+        WinActivate("ahk_class 360se6_Frame")
+        Send "^+j"
+        Sleep 1000
+
+        Send "允许粘贴"
+        Send "{Enter}"
+        Sleep 1000
+
+        A_Clipboard := js
+        Send "^v"
+        Sleep 1000
+        Send "{Enter}"
     }
+
+    static JSnippet := "
+    (
+
+    )"
 }

@@ -8,8 +8,8 @@
  * @param {string} innerText The innerText of the target span.
  * @returns {HTMLSpanElement}
  */
-function findSpan(innerText) {
-	return Array.from(document.querySelectorAll('span')).find((span) => span.innerText === innerText)
+function findSpan(label) {
+	return Array.from(document.querySelectorAll('span')).find((span) => span.innerText === label)
 }
 
 const rooms = []
@@ -23,7 +23,7 @@ const change = new Event('input', {
 })
 
 // check out flow
-queryInput.value = 712
+queryInput.value = rooms[0]
 queryInput.dispatchEvent(change)
 queryBtn.click()
 sortBtn.click()
@@ -36,30 +36,26 @@ coBtn.click()
 setTimeout(() => {
 	okBtn = Array.from(document.querySelector('.el-message-box__btns').querySelectorAll('span')).find((span) => span.innerText === '确定')
 	cxlBtn = Array.from(document.querySelector('.el-message-box__btns').querySelectorAll('span')).find((span) => span.innerText === '取消')
-	// cxlBtn.click()
-	// okBtn.style.color = 'green'
-	// cxlBtn.style.color = 'red'
+	cxlBtn.click()
 }, 500)
 
-// rooms.forEach(room => {
-	// coBtn = findSpan('退房')
+function loop(room) {
+	setTimeout(() => {
+		queryInput.value = room
+		queryInput.dispatchEvent(change)
+		queryBtn.click()
+	}, 1000)
 
-// 	setTimeout(() => {
-// 		setTimeout(() => {
-// 			queryInput.value = room
-// 			queryInput.dispatchEvent(change)
-// 			queryBtn.click()
-// 		}, 1000);
+	setTimeout(() => {
+		coBtn = findSpan('退房')
+		coBtn.click()
+	}, 2000)
 
-// 		// setTimeout(() => {
-// 		// 	coBtn.click()
-// 		// 	}, 2000);
-			
-// 		// setTimeout(() => {
-// 		// 	okBtn.click()	
-// 		// }, 4000);
+	setTimeout(() => {
+		okBtn.click()
+	}, 4000)
+}
 
-// 	}, 2000);
-// })
-
-// alert('已完成退房。')
+for (let i = 0; i < array.length; i++) {
+	loop(rooms[i])
+}
