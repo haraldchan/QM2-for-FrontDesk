@@ -39,6 +39,10 @@ class Dynamic {
             this.components.Push(instance)
 
             instance.render()
+
+            for childComponent in instance.childComponents {
+                childComponent.render()
+            }
         }
 
         ; show components conditionally

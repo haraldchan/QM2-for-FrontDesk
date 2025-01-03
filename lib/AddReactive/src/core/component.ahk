@@ -19,6 +19,7 @@ class Component {
         this.props := {}
         this.defineProps(props)
         this.ctrls := []
+        this.childComponents := []
 
         GuiObj.components.Push(this)
     }
@@ -54,6 +55,11 @@ class Component {
                         saveControls(ctrlsArray, listControl)
                     }
                 }
+
+                ; nested component
+                if (control is Component) {
+                    this.childComponents.Push(control)
+                }
             }
         }
 
@@ -83,8 +89,13 @@ class Component {
         state := isShow is Func
             ? isShow()
             : isShow
+        
         for ctrl in this.ctrls {
             ctrl.visible := state
+        }
+
+        for component in this.childComponents {
+            component.visible(state)
         }
     }
 
@@ -99,6 +110,11 @@ class Component {
             if (ctrl.name != "") {
                 formData.DefineProp(ctrl.name, { Value: ctrl.Value })
             }
+        }
+
+        for component in this.childComponents {
+            componentFormData := component.submit()
+            formData.DefineProp(component.name, { Value: componentFormData})
         }
 
         return formData
