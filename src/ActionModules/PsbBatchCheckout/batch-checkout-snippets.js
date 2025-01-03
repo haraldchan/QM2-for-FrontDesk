@@ -1,11 +1,7 @@
-const rooms = []
-const queryInput = document.querySelector('input[placeholder="请输入查询条件"]')
-const querySelect = document.querySelector('input[placeholder="请选择字段"]')
-
-const change = new Event('input', {
-	bubbles: true,
-	cancelable: true,
-})
+/**
+ * TODO:
+ * 3. if no query result, continue
+ */
 
 /**
  * Find the span element by innerText.
@@ -16,19 +12,29 @@ function findSpan(innerText) {
 	return Array.from(document.querySelectorAll('span')).find((span) => span.innerText === innerText)
 }
 
-document.querySelectorAll('.el-select-dropdown__item')[3].click()
+const rooms = []
+const queryInput = document.querySelector('input[placeholder="请输入查询条件"]')
 const queryBtn = findSpan('查 询')
-let okBtn
+const sortBtn = document.querySelectorAll('.cell')[7]
 
-/**
- * TODO:
- * 1. get check-all checkbox
- * 2. get "全部退房" button
- * 3. if no query result, continue
- */
+const change = new Event('input', {
+	bubbles: true,
+	cancelable: true,
+})
 
-// let coBtn = findSpan('退房')
-// coBtn.click()
+
+
+// test search
+queryInput.value = 712
+queryInput.dispatchEvent(change)
+queryBtn.click()
+sortBtn.click()
+sortBtn.click()
+
+let okBtn 
+
+let coBtn = findSpan('退房')
+coBtn.style.color = 'red'
 
 // setTimeout(() => {
 	// okBtn = Array.from(document.querySelector('.el-message-box__btns').querySelectorAll('span')).find((span) => span.innerText === '确定')
@@ -36,25 +42,25 @@ let okBtn
 	// cxlBtn.click()
 // }, 500)
 
-rooms.forEach(room => {
-	coBtn = findSpan('退房')
+// rooms.forEach(room => {
+	// coBtn = findSpan('退房')
 
-	setTimeout(() => {
-		setTimeout(() => {
-			queryInput.value = room
-			queryInput.dispatchEvent(change)
-			queryBtn.click()
-		}, 1000);
+// 	setTimeout(() => {
+// 		setTimeout(() => {
+// 			queryInput.value = room
+// 			queryInput.dispatchEvent(change)
+// 			queryBtn.click()
+// 		}, 1000);
 
-		// setTimeout(() => {
-		// 	coBtn.click()
-		// 	}, 2000);
+// 		// setTimeout(() => {
+// 		// 	coBtn.click()
+// 		// 	}, 2000);
 			
-		// setTimeout(() => {
-		// 	okBtn.click()	
-		// }, 4000);
+// 		// setTimeout(() => {
+// 		// 	okBtn.click()	
+// 		// }, 4000);
 
-	}, 2000);
-})
+// 	}, 2000);
+// })
 
-alert('已完成退房。')
+// alert('已完成退房。')
