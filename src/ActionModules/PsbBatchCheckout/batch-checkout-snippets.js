@@ -22,25 +22,24 @@ const change = new Event('input', {
 	cancelable: true,
 })
 
-
-
-// test search
+// check out flow
 queryInput.value = 712
 queryInput.dispatchEvent(change)
 queryBtn.click()
 sortBtn.click()
 sortBtn.click()
 
-let okBtn 
-
+let okBtn, cxlBtn
 let coBtn = findSpan('退房')
-coBtn.style.color = 'red'
+coBtn.click()
 
-// setTimeout(() => {
-	// okBtn = Array.from(document.querySelector('.el-message-box__btns').querySelectorAll('span')).find((span) => span.innerText === '确定')
-	// cxlBtn = Array.from(document.querySelector('.el-message-box__btns').querySelectorAll('span')).find((span) => span.innerText === '取消')
+setTimeout(() => {
+	okBtn = Array.from(document.querySelector('.el-message-box__btns').querySelectorAll('span')).find((span) => span.innerText === '确定')
+	cxlBtn = Array.from(document.querySelector('.el-message-box__btns').querySelectorAll('span')).find((span) => span.innerText === '取消')
 	// cxlBtn.click()
-// }, 500)
+	// okBtn.style.color = 'green'
+	// cxlBtn.style.color = 'red'
+}, 500)
 
 // rooms.forEach(room => {
 	// coBtn = findSpan('退房')
