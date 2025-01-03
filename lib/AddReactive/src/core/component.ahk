@@ -15,6 +15,7 @@ class Component {
      */
     __New(GuiObj, name, props := {}) {
         checkType(name, String, "Parameter #1 is not a string")
+        this.GuiObj := GuiObj
         this.name := name
         this.props := {}
         this.defineProps(props)
@@ -94,8 +95,21 @@ class Component {
             ctrl.visible := state
         }
 
-        for component in this.childComponents {
+        this.handleChildComponentVisible(state, this.childComponents)
+    }
+
+    handleChildComponentVisible(state, childComponents){
+        if (childComponents.Length == 0) {
+            return
+        }
+        
+        for component in childComponents {
             component.visible(state)
+            if (
+                ; component.HasOwnProp("childComponents") && 
+                component.childComponents.Length > 0) {
+                this.handleChildComponentVisible(state, component.childComponents)
+            }
         }
     }
 
@@ -103,7 +117,11 @@ class Component {
      * Collects the values from named controls of the component and composes them into an Object.
      * @returns {Object} 
      */
-    submit() {
+    submit(hide := false) {
+        if (hide == true) {
+            this.GuiObj.hide()
+        }
+
         formData := {}
 
         for ctrl in this.ctrls {
@@ -112,12 +130,25 @@ class Component {
             }
         }
 
-        for component in this.childComponents {
-            componentFormData := component.submit()
-            formData.DefineProp(component.name, { Value: componentFormData})
-        }
+        this.handleChildComponentSubmit(formData, this.childComponents)
 
         return formData
+    }
+
+    handleChildComponentSubmit(dataObj, childComponents) {
+        if (childComponents.Length == 0) {
+            return
+        }
+
+        for component in childComponents {
+            componentFormData := component.submit()
+            if (
+                ; component.HasOwnProp("childComponents") && 
+                component.childComponents.Length > 0) {
+                this.handleChildComponentSubmit(componentFormData, component.childComponents)
+            }
+            dataObj.DefineProp(component.name, { Value: componentFormData})
+        }
     }
 }
 
