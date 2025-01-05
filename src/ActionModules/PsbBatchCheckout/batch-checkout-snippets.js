@@ -3,16 +3,16 @@ function findSpan(label) {
 }
 
 // sequence funcs
-async function executeSequence(room) {
+async function executeCheckout(room) {
 	await delay(0, roomQuery, room)
 	await delay(1000, clickCheckout)
-	await delay(1000, clickOk)
+	await delay(1000, clickOk, room)
 }
 
 function delay(ms, func, ...args) {
 	return new Promise((resolve) => {
 		setTimeout(() => {
-			console.log("Executing: " + func.name)
+			console.log('Executing: ' + func.name)
 			func(...args)
 			resolve()
 		}, ms)
@@ -32,31 +32,34 @@ function clickCheckout() {
 	console.log('clickCheckout executed')
 }
 
-function clickOk() {
+function clickOk(room) {
 	let okBtn = Array.from(document.querySelector('.el-message-box__btns').querySelectorAll('span')).find((span) => span.innerText === '确定')
 	okBtn.click()
 	console.log('clickOk executed')
+	console.log(room + ' has checked out')
 }
 
-// initializing
-const rooms = {}
+// running script
+const rooms = {} // rooms will be replace by actual depart rooms when read by PsbBatchCheckout_Action.checkoutBatch
 const queryInput = document.querySelector('input[placeholder="请输入查询条件"]')
 const queryBtn = findSpan('查 询')
-const sortBtn = document.querySelector('.sort-caret.descending')
+const sortDescentBtn = document.querySelector('.sort-caret.descending')
 const change = new Event('input', {
 	bubbles: true,
 	cancelable: true,
 })
 
-sortBtn.click()
-executeSequence(rooms[0])
+findSpan('未上报').click()
+sortDescentBtn.click()
+executeCheckout(rooms[0])
 let index = 1
-const loop  = setInterval(() => {
-	if (index > rooms.length) {
+const loop = setInterval(() => {
+	if (index === rooms.length) {
 		clearInterval(loop)
+		alert('已完成拍 out。')
 		return
 	}
 	console.log('Starting sequence...')
-	executeSequence(rooms[index])
+	executeCheckout(rooms[index])
 	index++
-}, 3000) 
+}, 3000)
