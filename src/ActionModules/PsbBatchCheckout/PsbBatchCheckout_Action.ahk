@@ -1,5 +1,10 @@
 class PsbBatchCheckout_Action {
     static USE(departedRooms) {
+        if (!WinExist("ahk_class 360se6_Frame")) {
+            MsgBox("请先打开 360 浏览器/ 旅业二期！", "批量上报", "4096 T2")
+            utils.cleanReload(winGroup)
+        }
+
         this.checkoutBatch(departedRooms)
     }
 
@@ -48,9 +53,10 @@ class PsbBatchCheckout_Action {
         return departedGuests
     }
 
+
     static checkoutBatch(departedRooms) {
         deps := departedRooms.map(item => item["roomNum"])
-        js := Format(this.JSnippet, JSON.stringify(deps))
+        js := Format(FileRead(A_ScriptDir . "\src\ActionModules\PsbBatchCheckout\batch-checkout-snippets.js", "UTF-8"), JSON.stringify(deps))
 
         WinActivate("ahk_class 360se6_Frame")
         Send "^+j"
@@ -65,9 +71,4 @@ class PsbBatchCheckout_Action {
         Sleep 1000
         Send "{Enter}"
     }
-
-    static JSnippet := "
-    (
-
-    )"
 }
