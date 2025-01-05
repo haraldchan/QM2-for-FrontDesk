@@ -5,14 +5,14 @@ function findSpan(label) {
 // sequence funcs
 async function executeSequence(room) {
 	await delay(0, roomQuery, room)
-	await delay(2000, clickCheckout)
-	await delay(2000, clickOk)
+	await delay(1000, clickCheckout)
+	await delay(1000, clickOk)
 }
 
 function delay(ms, func, ...args) {
 	return new Promise((resolve) => {
 		setTimeout(() => {
-			console.log(`Executing: ${func.name}`)
+			console.log("Executing: " + func.name)
 			func(...args)
 			resolve()
 		}, ms)
@@ -27,8 +27,6 @@ function roomQuery(room) {
 }
 
 function clickCheckout() {
-	sortBtn.click()
-	sortBtn.click()
 	coBtn = findSpan('退房')
 	coBtn.click()
 	console.log('clickCheckout executed')
@@ -41,16 +39,18 @@ function clickOk() {
 }
 
 // initializing
-const rooms = []
+const rooms = {}
 const queryInput = document.querySelector('input[placeholder="请输入查询条件"]')
 const queryBtn = findSpan('查 询')
-const sortBtn = document.querySelectorAll('.cell')[7]
+const sortBtn = document.querySelector('.sort-caret.descending')
 const change = new Event('input', {
 	bubbles: true,
 	cancelable: true,
 })
 
-let index = 0
+sortBtn.click()
+executeSequence(rooms[0])
+let index = 1
 const loop  = setInterval(() => {
 	if (index > rooms.length) {
 		clearInterval(loop)
@@ -59,4 +59,4 @@ const loop  = setInterval(() => {
 	console.log('Starting sequence...')
 	executeSequence(rooms[index])
 	index++
-}, 10000) 
+}, 3000) 
