@@ -2,7 +2,7 @@ class PsbBatchCheckout_Action {
     static USE(departedRooms) {
         if (!WinExist("ahk_class 360se6_Frame")) {
             MsgBox("请先打开 360 浏览器/ 旅业二期！", "批量上报", "4096 T2")
-            utils.cleanReload(winGroup)
+            return
         }
 
         this.checkoutBatch(departedRooms)
