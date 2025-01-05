@@ -2,13 +2,15 @@ class PsbBatchUpload_Action {
     static USE() {
         if (!WinExist("ahk_class 360se6_Frame")) {
             MsgBox("请先打开 360 浏览器/ 旅业二期！", "批量上报", "4096 T2")
-            utils.cleanReload(winGroup)
+            return
         }
 
         this.execute()
     }
 
     static execute() {
+        js := Format(FileRead(A_ScriptDir . "\src\ActionModules\PsbBatchUpload\batch-upload-snippets.js", "UTF-8"))
+
         WinActivate("ahk_class 360se6_Frame")
         Send "^+j"
         Sleep 1000
@@ -17,39 +19,9 @@ class PsbBatchUpload_Action {
         Send "{Enter}"
         Sleep 1000
 
-        A_Clipboard := this.JSnippet
+        A_Clipboard := js
         Send "^v"
+        Sleep 1000
         Send "{Enter}"
     }
-
-    static JSnippet := "
-    (
-        function findSpan(label){
-            return Array.from(document.querySelectorAll('span')).find((span) => span.innerText === label)
-        }
-
-        findSpan('未上报').click()
-
-        const batchCheckin = setInterval(() => {
-            setTimeout(() => {
-                findSpan('修改').click()
-            }, 1000)
-
-
-            setTimeout(() => {
-                findSpan('上报(R)').click()
-            }, 4000)
-            
-            setTimeout(() => {
-                if (findSpan('一同入住')) {
-                    findSpan('一同入住').click()
-                }
-            }, 5000)
-
-            if (findSpan('暂无数据')) {
-                alert('已完成所有上报。')
-                clearInterval(batchCheckin)
-            }
-        }, 2000)
-    )"
 }
