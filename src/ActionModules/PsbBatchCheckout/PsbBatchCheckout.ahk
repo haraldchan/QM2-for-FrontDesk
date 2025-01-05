@@ -29,6 +29,27 @@ PsbBatchCheckout(props) {
         useListPlaceholder(departedRooms, ["roomNum"], "Loading...")
 
         departedRooms.set(PsbBatchCheckout_Action.getDepartedRooms(A_MyDocuments . "\" . filename . ".XML"))
+        App.Show()
+    }
+
+    handleBatchCheckout(*) {
+        LV := App.getCtrlByName("roomsDp")
+        if (LV.GetNext() = 0) {
+            return
+        }
+
+        checkedRooms := []
+        for row in LV.getCheckedRowNumbers() {
+            if (LV.getCheckedRowNumbers()[1] = "0") {
+                MsgBox("未选中房号", popupTitle, "T2")
+                App.Show()
+                return
+            }
+            
+            checkedRooms.Push(departedRooms.value[row])
+        }
+
+        PsbBatchCheckout_Action.USE(checkedRooms)
     }
 
     pbc.render := (this) => this.Add(
@@ -38,7 +59,7 @@ PsbBatchCheckout(props) {
         App.ARButton("xs10 yp+240 w120 h30", "获取房号")
            .OnEvent("Click", handleGetDepartedRooms),
         App.ARButton("vPsbBatchCheckoutAction x+10 w120 h30", "开始退房")
-           .OnEvent("Click", (*) => PsbBatchCheckout_Action.USE(departedRooms.value))
+           .OnEvent("Click", handleBatchCheckout)
     )
 
     return pbc
