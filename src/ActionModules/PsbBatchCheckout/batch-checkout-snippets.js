@@ -5,8 +5,8 @@ function findSpan(label) {
 // sequence funcs
 async function executeCheckout(room) {
 	await delay(0, roomQuery, room)
-	await delay(1000, clickCheckout)
-	await delay(1000, clickOk, room)
+	await delay(1500, clickCheckout)
+	await delay(1500, clickOk, room)
 }
 
 function delay(ms, func, ...args) {
@@ -49,7 +49,7 @@ const change = new Event('input', {
 	cancelable: true,
 })
 
-findSpan('未上报').click()
+findSpan('已上报').click()
 sortDescentBtn.click()
 executeCheckout(rooms[0])
 let index = 1
@@ -62,4 +62,4 @@ const loop = setInterval(() => {
 	console.log('Starting sequence...')
 	executeCheckout(rooms[index])
 	index++
-}, 3000)
+}, 4000)
