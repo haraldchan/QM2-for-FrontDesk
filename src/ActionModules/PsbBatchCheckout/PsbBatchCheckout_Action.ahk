@@ -66,9 +66,12 @@ class PsbBatchCheckout_Action {
         Send "{Enter}"
         Sleep 1000
 
+        prevClb := A_Clipboard
         A_Clipboard := js
         Send "^v"
         Sleep 1000
         Send "{Enter}"
+
+        A_Clipboard := prevClb
     }
 }
