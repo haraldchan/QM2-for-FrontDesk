@@ -4,7 +4,7 @@ function findSpan(label) {
 
 async function executeUpload() {
     await delay(0, () => findSpan('修改').click())
-	await delay(2000, findSpan('上报(R)').click())
+	await delay(2000, () => findSpan('上报(R)').click())
 	await delay(2000, () => findSpan('一同入住') && findSpan('一同入住').click())
 }
 
