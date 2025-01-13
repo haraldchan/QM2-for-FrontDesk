@@ -10,10 +10,8 @@ PsbBatchCheckout(props) {
     departedRooms := signal([{ roomNum: "", name: "" }])
 
     handleGetDepartedRooms(forceReportDownload := false) {
-        if (forceReportDownload) {
-            if (MsgBox("是否下载 FO03 - Departures？", popupTitle, "OKCancel") == "Cancel") {
-                return
-            } 
+        if (forceReportDownload && MsgBox("是否下载 FO03 - Departures？", popupTitle, "OKCancel") == "Cancel") {
+            return
         }
 
         filename := FormatTime(A_Now, "yyyyMMdd") . " - departure"
