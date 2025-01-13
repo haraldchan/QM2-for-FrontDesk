@@ -170,7 +170,9 @@ class ReportMasterNext_Action {
         if (reportInfoObj.searchStr = "GRPRMLIST" && reportInfoObj.name = "Group Arrival - 当天预抵团单") {
             saveName := reportFn(this, reportInfoObj.blockCode, reportInfoObj.blockName)
         } else {
-            saveName := reportFn(this)
+            saveName := reportInfoObj.hasOwnProp("args")
+                ? reportFn(this, reportInfoObj.args*)
+                : reportFn(this)
         }
         saveFileName := saveName . "." . fileType
 
