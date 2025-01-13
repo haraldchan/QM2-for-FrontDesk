@@ -12,14 +12,16 @@ DepartedRoomsList(App, departedRooms) {
         itemOptions: "Check"
     }
 
+    today := FormatTime(A_Now, "yyyyMMdd")
+
     drl.render := (this) => this.Add(
         App.ARCheckBox("vcheckAllDp Checked xs10 h20 xs10 yp-210", " 全选").SetFont("bold s10"),
         
         ; time range
-        App.AddText("x+50 h20 0x200", "时间区间："),
-        App.AddEdit("vdpFrom x+10 h20", "00:00"),
-         App.AddText("x+5 h20 0x200", "-"),
-        App.AddEdit("vdpTo x+5 h20", "23:59"),
+        App.AddText("x+55 h20 0x200", "FO03 时间区间："),
+        App.AddDateTime("1 vdpFrom x+10 h20 w55 Choose" . today . "0000", "HH:mm"),
+        App.AddText("x+1 h20 0x200", "-"),
+        App.AddDateTime("1 vdpTo x+1 h20 w55 Choose" . today . "2359", "HH:mm"),
         
         ; departed guest list
         App.ARListView(options, columnDetails, departedRooms),

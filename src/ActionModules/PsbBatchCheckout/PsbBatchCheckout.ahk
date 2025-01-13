@@ -23,7 +23,7 @@ PsbBatchCheckout(props) {
                 searchStr: "FO03", 
                 name: filename, 
                 saveFn: PsbBatchCheckout_Action.saveDeps,
-                args: [App.getCtrlByName("dpFrom").Value, App.getCtrlByName("dpTo").Value] 
+                args: [App.getCtrlByName("dpFrom").Text, App.getCtrlByName("dpTo").Text] 
             }, "XML")
             ReportMasterNext_Action.end()
         }
@@ -37,6 +37,7 @@ PsbBatchCheckout(props) {
             departedRooms.set(res)
         }
 
+        Sleep 500
         App.Show()
     }
 
