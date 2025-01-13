@@ -14,6 +14,14 @@ DepartedRoomsList(App, departedRooms) {
 
     drl.render := (this) => this.Add(
         App.ARCheckBox("vcheckAllDp Checked xs10 h20 xs10 yp-210", " 全选").SetFont("bold s10"),
+        
+        ; time range
+        App.AddText("x+50 h20 0x200", "时间区间："),
+        App.AddEdit("vdpFrom x+10 h20", "00:00"),
+         App.AddText("x+5 h20 0x200", "-"),
+        App.AddEdit("vdpTo x+5 h20", "23:59"),
+        
+        ; departed guest list
         App.ARListView(options, columnDetails, departedRooms),
         shareCheckStatus(
             App.getCtrlByName("checkAllDp"),

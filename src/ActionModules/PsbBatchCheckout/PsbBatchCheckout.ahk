@@ -13,11 +13,16 @@ PsbBatchCheckout(props) {
         filename := FormatTime(A_Now, "yyyyMMdd") . " - departure"
         if (!FileExist(A_MyDocuments . "\" . filename . ".XML")) {
             ReportMasterNext_Action.start()
-            ReportMasterNext_Action.reportFiling({ searchStr: "FO03", name: filename, saveFn: PsbBatchCheckout_Action.saveDeps }, "XML")
+            ReportMasterNext_Action.reportFiling({
+                searchStr: "FO03", 
+                name: filename, 
+                saveFn: PsbBatchCheckout_Action.saveDeps,
+                args: [App.getCtrlByName("dpFrom").Value, App.getCtrlByName("dpTo").Value] 
+            }, "XML")
             ReportMasterNext_Action.end()
         }
 
-        useListPlaceholder(departedRooms, ["roomNum"], "Loading...")
+        useListPlaceholder(departedRooms, ["roomNum", "name"], "Loading...")
 
         departedRooms.set(PsbBatchCheckout_Action.getDepartedRooms(A_MyDocuments . "\" . filename . ".XML"))
         App.Show()
