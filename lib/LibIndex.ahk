@@ -1,5 +1,6 @@
 #Include "./utils.ahk"
 #Include "./useConfigJSON.ahk"
 #Include "./useDebug.ahk"
+#Include "./useControl.ahk"
 #Include "./AddReactive/useAddReactive.ahk"
 #Include "./useProfile/useProfile.ahk"
