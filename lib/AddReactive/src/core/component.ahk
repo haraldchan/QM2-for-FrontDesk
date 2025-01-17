@@ -95,10 +95,10 @@ class Component {
             ctrl.visible := state
         }
 
-        this.handleChildComponentVisible(state, this.childComponents)
+        this._handleChildComponentVisible(state, this.childComponents)
     }
 
-    handleChildComponentVisible(state, childComponents){
+    _handleChildComponentVisible(state, childComponents){
         if (childComponents.Length == 0) {
             return
         }
@@ -108,7 +108,7 @@ class Component {
             if (
                 ; component.HasOwnProp("childComponents") && 
                 component.childComponents.Length > 0) {
-                this.handleChildComponentVisible(state, component.childComponents)
+                this._handleChildComponentVisible(state, component.childComponents)
             }
         }
     }
@@ -130,12 +130,12 @@ class Component {
             }
         }
 
-        this.handleChildComponentSubmit(formData, this.childComponents)
+        this._handleChildComponentSubmit(formData, this.childComponents)
 
         return formData
     }
 
-    handleChildComponentSubmit(dataObj, childComponents) {
+    _handleChildComponentSubmit(dataObj, childComponents) {
         if (childComponents.Length == 0) {
             return
         }
@@ -145,7 +145,7 @@ class Component {
             if (
                 ; component.HasOwnProp("childComponents") && 
                 component.childComponents.Length > 0) {
-                this.handleChildComponentSubmit(componentFormData, component.childComponents)
+                this._handleChildComponentSubmit(componentFormData, component.childComponents)
             }
             dataObj.DefineProp(component.name, { Value: componentFormData})
         }
