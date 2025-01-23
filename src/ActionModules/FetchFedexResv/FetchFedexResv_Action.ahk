@@ -1,5 +1,5 @@
 class FetchFedexResv_Action {
-    static AnchorImage := A_ScriptDir . "\src\Assets\AltNameAnchor.PNG"
+    static AnchorImage := A_ScriptDir . "\src\Assets\opera-active-win.PNG"
     static isRunning := false
 
     static start() {
@@ -48,7 +48,8 @@ class FetchFedexResv_Action {
 
         ; check if alert is on top
         loop {
-            if (ImageSearch(&FoundX, &FoundY, 0, 0, A_ScreenWidth, A_ScreenWidth, this.AnchorImage)) {
+            ; if there is a alert box
+            if (PixelGetColor(551, 421) != "0xFFFFFF") {
                 break
             }
 
@@ -141,8 +142,8 @@ class FetchFedexResv_Action {
         ; Send "!p"
         loop 10 {
             if (ImageSearch(&FoundX, &FoundY, 0, 0, A_ScreenWidth, A_ScreenWidth, this.AnchorImage)) {
-                anchorX := FoundX - 20
-                anchorY := FoundY
+                anchorX := FoundX + 270
+                anchorY := FoundY + 36
                 break
             }
             Sleep 100
@@ -170,8 +171,8 @@ class FetchFedexResv_Action {
     static getTripNum() {
         loop 10 {
             if (ImageSearch(&FoundX, &FoundY, 0, 0, A_ScreenWidth, A_ScreenWidth, this.AnchorImage)) {
-                anchorX := FoundX + 441
-                anchorY := FoundY + 345
+                anchorX := FoundX + 718
+                anchorY := FoundY + 376
                 break
             } else {
                 loop 5 {
