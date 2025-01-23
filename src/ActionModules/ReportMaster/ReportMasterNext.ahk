@@ -18,8 +18,6 @@ ReportMasterNext(App) {
         if (ctrl.Text = "预抵团队" && reportIndex["预抵团队"].Length = 0) {
             reportCategory.set("Loading") ; make it blank on first load
             reportIndex["预抵团队"] := getBlockInfo()
-
-            reportCategory.set("预抵团队")            
         }
 
         reportCategory.set(ctrl.Text)
@@ -33,7 +31,7 @@ ReportMasterNext(App) {
             btn.SetFont(btn.Text = current ? "Bold" : "Norm")
         }
 
-        isShowingMisc := current = "其他报表"
+        isShowingMisc := current == "其他报表"
         App.getCtrlByName("$reportList").ctrl.Opt(isShowingMisc ? "-Checked -Multi" : "+Checked +Multi")
         App.getCtrlByName("$reportCheckAll").ctrl.Visible := !isShowingMisc
     }
@@ -64,6 +62,7 @@ ReportMasterNext(App) {
         loop {
             blockCodeReceived := OnDayGroupDetails.Cells(A_Index + 3, 1).Text
             blockNameReceived := OnDayGroupDetails.Cells(A_Index + 3, 2).Text
+            commentReceived :=  OnDayGroupDetails.Cells(A_Index + 3, 4).Text
             if (blockCodeReceived = "" || blockCodeReceived = "Group StayOver") {
                 break
             }
@@ -71,7 +70,8 @@ ReportMasterNext(App) {
             blockInfo.Push(
                 Map(
                     "blockName", blockNameReceived,
-                    "blockCode", blockCodeReceived
+                    "blockCode", blockCodeReceived,
+                    "comment", commentReceived
                 )
             )
         }
@@ -107,12 +107,12 @@ ReportMasterNext(App) {
             widths: [120, 200]
         },
         columnDetailsGroup: {
-            keys: ["blockCode", "blockName"],
-            titles: ["block code", "团队名称"],
-            widths: [120, 200]
+            keys: ["blockCode", "blockName", "comment"],
+            titles: ["block code", "团队名称", "Comment"],
+            widths: [120, 130, 200]
         },
         options: {
-            lvOptions: "$reportList Checked Grid NoSortHdr -ReadOnly -Multi x30 y+15 w350 r17",
+            lvOptions: "$reportList Checked Grid NoSortHdr -ReadOnly -Multi LV0x4000 x30 y+15 w350 r17",
             itemOptions: "Check"
         }
     }
