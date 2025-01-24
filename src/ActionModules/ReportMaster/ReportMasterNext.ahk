@@ -1,6 +1,7 @@
 #Include "./ReportMasterNext_Action.ahk"
 
 ReportMasterNext(App) {
+    XL_FILE_PATH := ""
     reportIndex := Map(
         "夜班报表", ReportMasterNext_Action.reportList.onr,
         "预抵团队", [],
@@ -38,7 +39,6 @@ ReportMasterNext(App) {
 
     getBlockInfo() {
         monthFolder := Format("\\10.0.2.13\fd\9-ON DAY GROUP DETAILS\{1}\{1}{2}", A_Year, A_MM)
-        XL_FILE_PATH := ""
 
         loop files monthFolder . "\*" {
             if (InStr(A_LoopFileName, FormatTime(A_Now, "yyyyMMdd"))) {
@@ -112,7 +112,7 @@ ReportMasterNext(App) {
             widths: [120, 130, 200]
         },
         options: {
-            lvOptions: "$reportList Checked Grid NoSortHdr -ReadOnly -Multi LV0x4000 x30 y+15 w350 r17",
+            lvOptions: "$reportList Checked Grid NoSortHdr -ReadOnly -Multi LV0x4000 x30 y+15 w350 r20",
             itemOptions: "Check"
         }
     }
@@ -196,10 +196,13 @@ ReportMasterNext(App) {
     return (
         ; report selector btn group
         App.AddButton("vonr x30 y+15 w115 h35", "夜班报表").OnEvent("Click", (ctrl, _) => updateListContent(ctrl)),
-        App.AddButton("vodg x+0 w115 h35", "预抵团队").OnEvent("Click", (ctrl, _) => updateListContent(ctrl)),
+        App.ARButton("vodg x+0 w115 h35", "预抵团队").OnEvent(Map(
+            "Click", (ctrl, _) => updateListContent(ctrl),
+            "DoubleClick", (*) => Run(XL_FILE_PATH)
+        )),
         App.AddButton("vmisc x+0 w115 h35", "其他报表").OnEvent("Click", (ctrl, _) => updateListContent(ctrl)),
         ; report listview
-        App.AddReactiveListView(lvSettings.options, lvSettings.columnDetails, reportDetails),
+        App.ARListView(lvSettings.options, lvSettings.columnDetails, reportDetails),
         ; footer
         App.AddReactiveCheckBox("$reportCheckAll Checked y+10 h25", "全选"),
         App.AddDropDownList("vfileType w50 x+160 Choose1", ["PDF", "XML", "TXT", "XLS"]),
