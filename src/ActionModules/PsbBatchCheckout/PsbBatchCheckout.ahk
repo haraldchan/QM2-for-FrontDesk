@@ -18,10 +18,10 @@ PsbBatchCheckout(props) {
         if (forceReportDownload || !FileExist(A_MyDocuments . "\" . filename . ".XML")) {
             ReportMasterNext_Action.start()
             ReportMasterNext_Action.reportFiling({
-                searchStr: "FO03", 
-                name: filename, 
+                searchStr: "FO03",
+                name: filename,
                 saveFn: PsbBatchCheckout_Action.saveDeps,
-                args: [App.getCtrlByName("dpFrom").Text, App.getCtrlByName("dpTo").Text] 
+                args: [App.getCtrlByName("dpFrom").Text, App.getCtrlByName("dpTo").Text]
             }, "XML")
             ReportMasterNext_Action.end()
         }
@@ -52,7 +52,7 @@ PsbBatchCheckout(props) {
                 App.Show()
                 return
             }
-            
+
             checkedRooms.Push(departedRooms.value[row])
         }
 
@@ -61,16 +61,14 @@ PsbBatchCheckout(props) {
 
     pbc.render := (this) => this.Add(
         App.AddGroupBox("Section r11 " . styles.xPos . styles.yPos . styles.wide, "旅业二期（网页版）批量退房"),
-        
         ; Departed guest list by room
         DepartedRoomsList(App, departedRooms),
-        
         ; btns
         App.ARButton("xs10 yp+240 w120 h30", "获取房号")
            .OnEvent(Map(
-                "Click", (*) => handleGetDepartedRooms(),
-                "ContextMenu", (*) => handleGetDepartedRooms(true)
-            )),
+            "Click", (*) => handleGetDepartedRooms(),
+            "ContextMenu", (*) => handleGetDepartedRooms(true)
+        )),
         App.ARButton("vPsbBatchCheckoutAction x+10 w120 h30", "开始退房")
            .OnEvent("Click", handleBatchCheckout)
     )
