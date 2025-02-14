@@ -40,7 +40,7 @@ ExtraBed(props) {
 
 		ebCharge.map((item, index) =>
 			App.AddReactiveRadio((index = 1 ? "xp+30 h15 Checked" : "x+10 h15"), item.label)
-			   .OnEvent("Click", (*) => this.charge.set(item.price))
+			   .OnEvent("Click", (*) => charge.set(item.price))
 		),
 
 		App.AddText("xs10 y+15 h20 0x200", "批准人"),
