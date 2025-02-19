@@ -22,6 +22,7 @@ class BlankShare_Action {
 	}
 
 	static USE(checkIn, shareQty, roomNums, keepGoing := false) {
+		this.start()
 		; single room share(s)
 		if (!roomNums) {
 			this.makeShare(checkIn, shareQty)
@@ -30,12 +31,19 @@ class BlankShare_Action {
 
 		; multi room share(s)
 		shareQty := shareQty.includes(" ") ? shareQty.split(" ") : shareQty
-		for room in roomNums.split(" ") {
+		roomNums := roomNums.includes(" ") ? roomNums.split(" ") : [roomNums]
+		for room in roomNums {
 			this.search(room)
+			if (!this.isRunning) {
+            	msgbox("脚本已终止", popupTitle, "4096 T1")
+            	return	
+			}
 			utils.waitLoading()
-			this.makeShare(checkIn, shareQty[A_Index], true)
+			this.makeShare(checkIn, (shareQty is Array ? shareQty[A_Index] : shareQty), true)
 			utils.waitLoading()
 		}
+
+		( !keepGoing && this.end() )
 	}
 
 	static search(roomNum) {
