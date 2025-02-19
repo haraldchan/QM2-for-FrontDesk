@@ -18,7 +18,7 @@ PaymentRelation(props) {
         nameConf := IsNumber(form.pbName) ? "#" . form.pbName : form.pbName
         A_Clipboard := (form.party = "" || form.roomQty = "")
             ? Format("P/F Rm{1} {2}  ", form.pbRoom, nameConf)
-                : Format("P/F Party#{1}, total {2}-rooms  ", form.party, form.roomQty)
+            : Format("P/F Party#{1}, total {2}-rooms  ", form.party, form.roomQty)
         MsgBox(A_Clipboard, "已复制信息", "4096 T1")
     }
 
@@ -41,6 +41,7 @@ PaymentRelation(props) {
     action() {
         App.Hide()
         Sleep 100
+
         PaymentRelation_Action.USE()
         App.Show()
     }
