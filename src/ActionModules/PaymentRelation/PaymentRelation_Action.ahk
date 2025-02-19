@@ -22,7 +22,73 @@ class PaymentRelation_Action {
 		BlockInput false
 	}
 
-    static USE(initX := 759, initY := 266) {
+    static USE(formData := "") {
+        if (!formData) {
+            this.pasteInfo()
+            return
+        }
+        
+        ; pf <-> pb 2-room pair
+        if (!formData.party) {
+            this.search(formData.pfRoom)
+            utils.waitLoading()
+
+            ; pf
+            A_Clipboard := Format("P/F Rm{1} {2}  ", formData.pfRoom, IsNumber(formData.pfName) ? "#" . formData.pfName : formData.pfName)
+            this.pasteInfo()
+            utils.waitLoading()
+            
+            ; pb
+            A_Clipboard := Format("P/B Rm{1} {2}  ", formData.pbRoom, IsNumber(formData.pbName) ? "#" . formData.pbName : formData.pbName)
+            this.pasteInfo()
+            return 
+        }
+
+        ; party, pf -> multiple pb rooms
+    }
+
+	static search(roomNum, party := "") {
+        formattedRoom := StrLen(roomNum) == 3 ? "0" . roomNum : roomNum
+
+		MouseMove 329, 196 ; room number field
+        Click 3
+        utils.waitLoading()
+        if (!this.isRunning) {
+            msgbox("脚本已终止", popupTitle, "4096 T1")
+            return
+        }
+
+        Send "{Text}" . formattedRoom
+        utils.waitLoading()
+
+        if (party) {
+            loop 16 {
+                Send "{Tab}"
+                Sleep 10
+            }
+            Send "{Text}" . party
+            utils.waitLoading()
+        }
+
+        Send "!h" ; alt+h => search
+        utils.waitLoading()
+        if (!this.isRunning) {
+            msgbox("脚本已终止", popupTitle, "4096 T1")
+            return
+        }
+
+        ; sort by Prs.
+        Click 838, 378, "Right" 
+        utils.waitLoading()
+        Send "o"
+        utils.waitLoading() 
+        if (!this.isRunning) {
+            msgbox("脚本已终止", popupTitle, "4096 T1")
+            return
+        }
+	}
+
+    static pasteInfo(keepGoing := false, initX := 759, initY := 266) {
         this.start()
 
         commentPos := (A_OSVersion = "6.1.7601")
@@ -35,12 +101,20 @@ class PaymentRelation_Action {
             MouseMove anchorX + 1, anchorY + 1
             Click
         } else {
-            BlockInput false
-            manualClick := MsgBox("请先点击打开Comment。", "Payment Relation", "OKCancel 4096")
-            if (manualClick = "Cancel") {
-                return
-            }
-            BlockInput true
+            ; BlockInput false
+            ; manualClick := MsgBox("请先点击打开Comment。", "Payment Relation", "OKCancel 4096")
+            ; if (manualClick = "Cancel") {
+                ; return
+            ; }
+            ; BlockInput true
+
+            ; open reservation click
+            Send "{Enter}"
+            utils.waitLoading()
+            MouseMove initX, initX ; <- TODO: click to open comment
+            utils.waitLoading()
+            Click
+            utils.waitLoading()
         }
 
         Sleep 100
@@ -52,6 +126,13 @@ class PaymentRelation_Action {
         Sleep 100
         Send "!c"
         Sleep 100
+
+        ; when ImageSearch of comment flag fails, hence, comment edited in reservation window
+        if (anchorX?) {
+            Send "!c"
+            utils.waitLoading()
+        }
+
 		if (!this.isRunning) {
 			msgbox("脚本已终止", popupTitle, "4096 T1")
 			return
@@ -92,6 +173,6 @@ class PaymentRelation_Action {
         Sleep 200
         BlockInput false
 
-        this.end()
+        ( !keepGoing && this.end() )
     }
 }
