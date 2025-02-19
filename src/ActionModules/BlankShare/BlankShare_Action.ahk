@@ -20,8 +20,58 @@ class BlankShare_Action {
 		BlockInput false
 		WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
 	}
+
+	static USE(checkIn, shareQty, roomNums, keepGoing := false) {
+		; single room share(s)
+		if (!roomNums) {
+			this.makeShare(checkIn, shareQty)
+			return
+		}
+
+		; multi room share(s)
+		shareQty := shareQty.includes(" ") ? shareQty.split(" ") : shareQty
+		for room in roomNums.split(" ") {
+			this.search(room)
+			utils.waitLoading()
+			this.makeShare(checkIn, shareQty[A_Index], true)
+			utils.waitLoading()
+		}
+	}
+
+	static search(roomNum) {
+        formattedRoom := StrLen(roomNum) == 3 ? "0" . roomNum : roomNum
+
+		MouseMove 329, 196 ; room number field
+        Click 3
+        utils.waitLoading()
+        if (!this.isRunning) {
+            msgbox("脚本已终止", popupTitle, "4096 T1")
+            return
+        }
+
+        Send "{Text}" . formattedRoom
+        utils.waitLoading()
+
+
+        Send "!h" ; alt+h => search
+        utils.waitLoading()
+        if (!this.isRunning) {
+            msgbox("脚本已终止", popupTitle, "4096 T1")
+            return
+        }
+
+        ; sort by Prs.
+        Click 838, 378, "Right" 
+        utils.waitLoading()
+        Send "o"
+        utils.waitLoading() 
+        if (!this.isRunning) {
+            msgbox("脚本已终止", popupTitle, "4096 T1")
+            return
+        }
+	}
 	
-	static USE(checkIn, shareQty, initX := 949, initY := 599) {
+	static makeShare(checkIn, shareQty, keepGoing := false, initX := 949, initY := 599) {
 		this.start()
 
 		Send "!t"
@@ -157,6 +207,6 @@ class BlankShare_Action {
 		Send "!c"
 		utils.waitLoading()
 
-		this.end()
+		( !keepGoing && this.end() )
 	}
 }
