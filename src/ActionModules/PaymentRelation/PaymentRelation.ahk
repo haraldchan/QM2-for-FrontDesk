@@ -2,7 +2,13 @@
 
 PaymentRelation(props) {
     App := props.App, 
-    styles := props.styles
+    s := useProps(props.styles, {
+        xPos: "x30 ",
+        yPos: "y460 ",
+        wide: "w350 ",
+        panelWide: "w170 ",
+        rPanelXPos: "x210 "
+    })
 
     pr := Component(App, A_ThisFunc)
 
@@ -41,7 +47,7 @@ PaymentRelation(props) {
 
     pr.render := (this) => this.Add(
         ; pay for
-        App.AddGroupBox("Section w170 r7 " . styles.xPos . styles.yPos, "P/F房(支付人)"),
+        App.AddGroupBox("Section r7 " . s.panelWide . s.xPos . s.yPos, "P/F房(支付人)"),
         App.AddText("xs10 yp+25 h20 0x200", "房号         "),
         App.AddEdit("vpfRoom Number x+10 w80 h20", ""),
         App.AddText("xs10 y+10 h20 0x200", "姓名/确认号 "),
@@ -53,7 +59,7 @@ PaymentRelation(props) {
         App.AddReactiveButton("vpfCopy xs10 y+10 h30 w150", "复制Pay For信息")
            .OnEvent("Click", (*) => getPayFor()),
         ; pay by
-        App.AddGroupBox("Section x210 w170 r7 " . styles.yPos, "P/B房(被支付人)"),
+        App.AddGroupBox("Section r7 " . s.rPanelXPos . s.yPos . s.panelWide, "P/B房(被支付人)"),
         App.AddText("xs10 yp+25 h20 0x200", "房号         "),
         App.AddEdit("vpbRoom Number x+10 w80 h20", ""),
         App.AddText("xs10 y+10 h20 0x200", "姓名/确认号 "),
@@ -61,7 +67,7 @@ PaymentRelation(props) {
         App.AddReactiveButton("vpbCopy xs10 y+70 h30 w150", "复制Pay By信息")
            .OnEvent("Click", (*) => getPayBy()),
         ; btns  
-        App.ARButton("vPaymentRelationAction w300 h40 y+25 " . styles.xPos, "粘 贴 信 息")
+        App.ARButton("vPaymentRelationAction w300 h40 y+25 " . s.xPos, "粘 贴 信 息")
            .OnEvent("Click", (*) => action()),
         App.ARButton("w40 h40 x+10", "清空")
            .OnEvent("Click", (*) => clear())
