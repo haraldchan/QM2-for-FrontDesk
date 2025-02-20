@@ -12,7 +12,7 @@ BlankShare(props) {
 
     action() {
         form := bs.submit()
-        BlankShare_Action.USE(form.checkIn, Trim(form.shareQty), Trim(form.shareRoomNums))
+        BlankShare_Action.USE(form)
         App.getCtrlByName("shareRoomNums").Value := ""
         App.getCtrlByName("checkIn").Value := 1
         App.getCtrlByName("shareQty").Value := 1

@@ -28,13 +28,14 @@ class PaymentRelation_Action {
             return
         }
         
+        form := JSON.parse(JSON.stringify(formData))
         ; pf <-> pb 2-room pair
-        if (!formData.party) {
+        if (!form["party"]) {
             this.start() 
             ; pf
-            this.search(formData.pfRoom)
+            this.search(form["pfRoom"])
             utils.waitLoading()
-            A_Clipboard := Format("P/F Rm{1} {2}  ", formData.pbRoom, IsNumber(formData.pbName) ? "#" . formData.pbName : formData.pbName)
+            A_Clipboard := Format("P/F Rm{1} {2}  ", form["pbRoom"], IsNumber(form["pbName"]) ? "#" . form["pbName"] : form["pbName"])
             this.pasteInfo(true)
             utils.waitLoading()
             if (!this.isRunning) {
@@ -43,9 +44,9 @@ class PaymentRelation_Action {
             }
             
             ; pb
-            this.search(formData.pbRoom)
+            this.search(form["pbRoom"])
             utils.waitLoading(true)
-            A_Clipboard := Format("P/B Rm{1} {2}  ", formData.pfRoom, IsNumber(formData.pfName) ? "#" . formData.pfName : formData.pfName)
+            A_Clipboard := Format("P/B Rm{1} {2}  ", form["pfRoom"], IsNumber(form["pfName"]) ? "#" . form["pfName"] : form["pfName"])
             this.pasteInfo()
 
             this.end()
@@ -53,12 +54,12 @@ class PaymentRelation_Action {
         }
 
         ; party, pf -> multiple pb rooms
-        if (formData.party) {
+        if (form["party"]) {
             this.start()
             ; pf
-            this.search(formData.pfRoom)
-            pfMessage := Format("P/F Party#{1}, total {2}-rooms  ", formData.party, formData.partyRoomQty)
-            pbMessage := Format("P/B Rm{1} {2}  ", formData.pfRoom, IsNumber(formData.pfName) ? "#" . formData.pfName : formData.pfName)
+            this.search(form["pfRoom"])
+            pfMessage := Format("P/F Party#{1}, total {2}-rooms  ", form["party"], form["partyRoomQty"])
+            pbMessage := Format("P/B Rm{1} {2}  ", form["pfRoom"], IsNumber(form["pfName"]) ? "#" . form["pfName"] : form["pfName"])
             A_Clipboard := pfMessage
             this.pasteInfo(true)
             if (!this.isRunning) {
@@ -67,8 +68,8 @@ class PaymentRelation_Action {
             }
 
             ; pbs
-            loop formData.partyRoomQty {
-                this.search(" ", formData.party)
+            loop form["partyRoomQty"] {
+                this.search(" ", form["party"])
                 
                 ; sort main folio rooms
                 Click 838, 378, "Right" 

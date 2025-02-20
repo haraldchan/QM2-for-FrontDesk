@@ -21,7 +21,12 @@ class BlankShare_Action {
 		WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
 	}
 
-	static USE(checkIn, shareQty, roomNums, keepGoing := false) {
+	static USE(form) {
+		form := JSON.parse(JSON.stringify(form))
+		roomNums := Trim(form["shareRoomNums"])
+		shareQty := Trim(form["shareQty"])
+		checkIn := form["checkIn"]
+
 		this.start()
 		; single room share(s)
 		if (!roomNums) {
@@ -43,7 +48,7 @@ class BlankShare_Action {
 			utils.waitLoading()
 		}
 
-		( !keepGoing && this.end() )
+		this.end()
 	}
 
 	static search(roomNum) {
