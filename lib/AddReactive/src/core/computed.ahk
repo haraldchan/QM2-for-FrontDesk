@@ -1,4 +1,4 @@
-class computed {
+class computed extends signal {
     /**
      * Create a computed signal which derives a reactive value.
      * ```
@@ -21,13 +21,10 @@ class computed {
         this.effects := []
 
         if (this.signal is Array) {
-            this.subbedSignals := Map()
-
             for s in this.signal {
-                this.subbedSignals[s] := s.value
                 s.addComp(this)
             }
-            this.value := this.mutation.Call(this.subbedSignals.values()*)
+            this.value := this.mutation.Call(this.signal.map(s => s.value)*)
         } else {
             this.signal.addComp(this)
             this.value := this.mutation.Call(this.signal.value)
@@ -35,14 +32,10 @@ class computed {
     }
 
     sync(subbedSignal) {
+        prevValue := this.value
+
         if (this.signal is Array) {
-            for s in this.subbedSignals {
-                if (s = subbedSignal) {
-                    this.subbedSignals[s] := s.value
-                    break
-                }
-            }
-            this.value := this.mutation.Call(this.subbedSignals.values()*)
+            this.value := this.mutation.Call(this.signal.map(s => s.value)*)
         } else {
             this.value := this.mutation.Call(subbedSignal.value)
         }
@@ -58,12 +51,21 @@ class computed {
         }
 
         ; run all effectss
-        if (this.effects.Length > 0) {
-            for effect in this.effects {
-                effect()
+        for effect in this.effects {
+            if (effect.depend is signal) {
+                e := effect.effectFn
+                if (effect.effectFn.MaxParams == 1) {
+                    e(this.value)
+                } else if (effect.effectFn.MaxParams == 2) {
+                    e(this.value, prevValue)
+                } else {
+                    e()
+                }
+            } else if (effect.depend is Array) {
+                e := effect.effectFn
+                e(effect.depend.map(dep => dep.value)*)
             }
         }
-
     }
 
     addSub(controlInstance) {

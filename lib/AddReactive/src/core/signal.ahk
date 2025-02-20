@@ -50,11 +50,8 @@ class signal {
         }
 
         prevValue := this.value
-
         this.value := newSignalValue is Func ? newSignalValue(this.value) : newSignalValue
-
-        ; change to Map()
-        if (isPlainObject(newSignalValue) || newSignalValue is Array || newSignalValue is Map) {
+        if (isPlainObject(this.value) || this.value is Array || this.value is Map) {
             this.value := this._mapify(this.value)
         }
 
@@ -70,12 +67,18 @@ class signal {
 
         ; run all effects
         for effect in this.effects {
-            if (effect.MaxParams = 1) {
-                effect(this.value)
-            } else if (effect.MaxParams = 2) {
-                effect(this.value, prevValue)
-            } else {
-                effect()
+            if (effect.depend is signal) {
+                e := effect.effectFn
+                if (effect.effectFn.MaxParams == 1) {
+                    e(this.value)
+                } else if (effect.effectFn.MaxParams == 2) {
+                    e(this.value, prevValue)
+                } else {
+                    e()
+                }
+            } else if (effect.depend is Array) {
+                e := effect.effectFn
+                e(effect.depend.map(dep => dep.value)*)
             }
         }
     }
