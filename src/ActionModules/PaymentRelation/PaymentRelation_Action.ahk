@@ -73,9 +73,9 @@ class PaymentRelation_Action {
                 
                 ; sort main folio rooms
                 Click 838, 378, "Right" 
-                Sleep 100
+                Sleep 200
                 Send "{Down}"
-                Sleep 100
+                Sleep 200
                 Send "{Enter}"
                 utils.waitLoading() 
                 if (!this.isRunning) {
@@ -132,9 +132,9 @@ class PaymentRelation_Action {
         ; sort by Prs.
         if (!party) {
             Click 838, 378, "Right" 
-            Sleep 100
+            Sleep 200
             Send "{Down}"
-            Sleep 100
+            Sleep 200
             Send "{Enter}"
             utils.waitLoading() 
         }
