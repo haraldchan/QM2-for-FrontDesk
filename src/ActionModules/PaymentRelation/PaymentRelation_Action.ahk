@@ -29,6 +29,10 @@ class PaymentRelation_Action {
         }
         
         form := JSON.parse(JSON.stringify(formData))
+        if (formData["pfRoom"] == "" && formData["pfName"] == "") {
+            return
+        }
+
         ; pf <-> pb 2-room pair
         if (!form["party"]) {
             this.start() 
@@ -149,8 +153,8 @@ class PaymentRelation_Action {
         this.start()
 
         commentPos := (A_OSVersion = "6.1.7601")
-            ? A_ScriptDir . "\src\assets\commentWin7.PNG"
-            : A_ScriptDir . "\src\assets\comment.PNG"
+            ? "\\10.0.2.13\fd\19-个人文件夹\HC\Software - 软件及脚本\AHK_Scripts\QM2-for-FrontDesk-main\src\assets\commentWin7.PNG"
+            : "\\10.0.2.13\fd\19-个人文件夹\HC\Software - 软件及脚本\AHK_Scripts\QM2-for-FrontDesk-main\src\assets\comment.PNG"
 
         if (ImageSearch(&FoundX, &FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, commentPos)) {
             anchorX := FoundX
@@ -213,6 +217,8 @@ class PaymentRelation_Action {
         if (pbMessage) {
             A_Clipboard := pbMessage
         }
+        Send "{Up}"
+        Sleep 150
         Send "^v"
         Sleep 150
         Send "!o"
