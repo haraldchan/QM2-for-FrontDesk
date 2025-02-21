@@ -12,16 +12,16 @@ PaymentRelation(props) {
     })
 
     pr := Component(App, A_ThisFunc)
-    pasteSingle := signal(true)
-    effect(pasteSingle, isSingle => App.getCtrlByName("PaymentRelationAction").Text := isSingle ? "粘 贴 信 息" : "录 入 全 部")
+    pasteSingle := signal(s.useCopyBtn)
+    actionType := computed(pasteSingle, isSingle => isSingle ? "粘 贴 信 息" : "录 入 全 部")
 
     getPayFor(*) {
         form := pr.submit()
 
         nameConf := IsNumber(form.pbName) ? "#" . form.pbName : form.pbName
-        A_Clipboard := (form.party = "" || form.roomQty = "")
+        A_Clipboard := (!form.party || !form.partyRoomQty)
             ? Format("P/F Rm{1} {2}  ", form.pbRoom, nameConf)
-            : Format("P/F Party#{1}, total {2}-rooms  ", form.party, form.roomQty)
+            : Format("P/F Party#{1}, total {2}-rooms  ", form.party, form.partyRoomQty)
         MsgBox(A_Clipboard, "已复制信息", "4096 T1")
     }
 
@@ -54,7 +54,7 @@ PaymentRelation(props) {
         Sleep 100
 
         form := pr.submit()
-        PaymentRelation_Action.USE(s.useCopyBtn ? form : "")
+        PaymentRelation_Action.USE(pasteSingle.value ? "" : form)
         App.Show()
     }
 
@@ -82,7 +82,7 @@ PaymentRelation(props) {
         s.useCopyBtn && App.AddReactiveButton("vpbCopy xs10 y+70 h30 w150", "复制Pay By信息").OnEvent("Click", getPayBy),
         
         ; btns  
-        App.ARButton("vPaymentRelationAction w300 h40 " . (s.useCopyBtn ? "y+25 " : "y+75 ") . s.xPos, "{1}", pasteSingle)
+        App.ARButton("vPaymentRelationAction w300 h40 " . (s.useCopyBtn ? "y+25 " : "y+75 ") . s.xPos, "{1}", actionType)
            .OnEvent(
                 "Click", action,
                 "ContextMenu", handlePasteModeSwitch
