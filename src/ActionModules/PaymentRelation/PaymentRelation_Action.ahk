@@ -29,7 +29,7 @@ class PaymentRelation_Action {
         }
         
         form := JSON.parse(JSON.stringify(formData))
-        if (formData["pfRoom"] == "" && formData["pfName"] == "") {
+        if (!form["pfRoom"] || !form["pfName"]) {
             return
         }
 
