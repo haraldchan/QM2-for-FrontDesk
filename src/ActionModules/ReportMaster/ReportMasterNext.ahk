@@ -196,10 +196,10 @@ ReportMasterNext(App) {
     return (
         ; report selector btn group
         App.AddButton("vonr x30 y+15 w115 h35", "夜班报表").OnEvent("Click", (ctrl, _) => updateListContent(ctrl)),
-        App.ARButton("vodg x+0 w115 h35", "预抵团队").OnEvent(Map(
+        App.ARButton("vodg x+0 w115 h35", "预抵团队").OnEvent(
             "Click", (ctrl, _) => updateListContent(ctrl),
             "DoubleClick", (*) => Run(XL_FILE_PATH)
-        )),
+        ),
         App.AddButton("vmisc x+0 w115 h35", "其他报表").OnEvent("Click", (ctrl, _) => updateListContent(ctrl)),
         ; report listview
         App.ARListView(lvSettings.options, lvSettings.columnDetails, reportDetails),

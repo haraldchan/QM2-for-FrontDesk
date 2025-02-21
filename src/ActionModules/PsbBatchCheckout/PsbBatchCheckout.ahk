@@ -65,10 +65,10 @@ PsbBatchCheckout(props) {
         DepartedRoomsList(App, departedRooms),
         ; btns
         App.ARButton("xs10 yp+240 w120 h30", "获取房号")
-           .OnEvent(Map(
+           .OnEvent(
             "Click", (*) => handleGetDepartedRooms(),
             "ContextMenu", (*) => handleGetDepartedRooms(true)
-        )),
+        ),
         App.ARButton("vPsbBatchCheckoutAction x+10 w120 h30", "开始退房")
            .OnEvent("Click", handleBatchCheckout)
     )
