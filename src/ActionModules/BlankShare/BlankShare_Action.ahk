@@ -161,15 +161,23 @@ class BlankShare_Action {
 			msgbox("脚本已终止", popupTitle, "4096 T1")
 			return
 		}
-		if (checkIn = true) {
+		if (checkIn == true) {
 			Send "!i"
 			utils.waitLoading()
-			loop 5 {
-				Send "{Esc}"
-				utils.waitLoading()
-				Send "{Space}"
-				utils.waitLoading()
+
+			; TODO: determine whether there is a "Room Condition" popup
+			CoordMode "Pixel", "Screen"
+			ImageSearch(&foundX, &foundY, 0, 0, A_ScreenWidth, A_ScreenHeight, A_ScriptDir . "\Assets\alert.PNG")
+			if (PixelGetColor(foundX + 150, foundY) == "0xEDEAE6") {
+				Send "!y"
 			}
+
+			; loop 5 {
+			Send "{Esc}"
+			utils.waitLoading()
+			Send "{Space}"
+			utils.waitLoading()
+			; }
 		}
 
 		if (shareQty > 1) {
