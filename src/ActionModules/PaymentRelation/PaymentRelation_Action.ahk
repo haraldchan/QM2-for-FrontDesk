@@ -37,21 +37,24 @@ class PaymentRelation_Action {
         if (!form["party"]) {
             this.start() 
             ; pf
-            this.search(form["pfRoom"])
-            utils.waitLoading()
-            A_Clipboard := Format("P/F Rm{1} {2}  ", form["pbRoom"], IsNumber(form["pbName"]) ? "#" . form["pbName"] : form["pbName"])
-            this.pasteInfo(true)
-            utils.waitLoading()
-            if (!this.isRunning) {
-                msgbox("脚本已终止", popupTitle, "4096 T1")
-                return
+            res := this.search(form["pfRoom"])
+            if (res != "not found") {
+                A_Clipboard := Format("P/F Rm{1} {2}  ", form["pbRoom"], IsNumber(form["pbName"]) ? "#" . form["pbName"] : form["pbName"])
+                this.pasteInfo(true)
+                utils.waitLoading()
+                if (!this.isRunning) {
+                    msgbox("脚本已终止", popupTitle, "4096 T1")
+                    return
+                }
             }
-            
+
             ; pb
-            this.search(form["pbRoom"])
-            utils.waitLoading(true)
-            A_Clipboard := Format("P/B Rm{1} {2}  ", form["pfRoom"], IsNumber(form["pfName"]) ? "#" . form["pfName"] : form["pfName"])
-            this.pasteInfo()
+            res := this.search(form["pbRoom"])
+            if (res != "not found") {
+                utils.waitLoading(true)
+                A_Clipboard := Format("P/B Rm{1} {2}  ", form["pfRoom"], IsNumber(form["pfName"]) ? "#" . form["pfName"] : form["pfName"])
+                this.pasteInfo()
+            }
 
             this.end()
             return
@@ -61,7 +64,12 @@ class PaymentRelation_Action {
         if (form["party"]) {
             this.start()
             ; pf
-            this.search(form["pfRoom"])
+            res := this.search(form["pfRoom"])
+            if (res == "not found") {
+                this.end()
+                return
+            }
+
             pfMessage := Format("P/F Party#{1}, total {2}-rooms  ", form["party"], form["partyRoomQty"])
             pbMessage := Format("P/B Rm{1} {2}  ", form["pfRoom"], IsNumber(form["pfName"]) ? "#" . form["pfName"] : form["pfName"])
             A_Clipboard := pfMessage
@@ -73,8 +81,6 @@ class PaymentRelation_Action {
 
             ; pbs
             loop form["partyRoomQty"] {
-                this.search(" ", form["party"])
-                
                 ; sort main folio rooms
                 Click 838, 378, "Right" 
                 Sleep 200
@@ -128,6 +134,13 @@ class PaymentRelation_Action {
 
         Send "!h" ; alt+h => search
         utils.waitLoading()
+
+        CoordMode "Pixel", "Screen"
+        if (ImageSearch(&_, &_ ,0, 0, A_ScreenWidth, A_ScreenHeight, A_ScriptDir . "\src\assets\info.PNG")) {
+            Send "{Enter}"
+            return "not found"
+        }
+
         if (!this.isRunning) {
             msgbox("脚本已终止", popupTitle, "4096 T1")
             return
