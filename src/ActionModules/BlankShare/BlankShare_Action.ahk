@@ -38,7 +38,11 @@ class BlankShare_Action {
 		shareQty := shareQty.includes(" ") ? shareQty.split(" ") : shareQty
 		roomNums := roomNums.includes(" ") ? roomNums.split(" ") : [roomNums]
 		for room in roomNums {
-			this.search(room)
+			res := this.search(room)
+			if (res == "not found") {
+				continue
+			}
+
 			if (!this.isRunning) {
             	msgbox("脚本已终止", popupTitle, "4096 T1")
             	return	
@@ -68,6 +72,13 @@ class BlankShare_Action {
 
         Send "!h" ; alt+h => search
         utils.waitLoading()
+
+        CoordMode "Pixel", "Screen"
+        if (ImageSearch(&_, &_ ,0, 0, A_ScreenWidth, A_ScreenHeight, A_ScriptDir . "\src\assets\info.PNG")) {
+        	Send "{Enter}"
+        	return "not found"
+        }
+
         if (!this.isRunning) {
             msgbox("脚本已终止", popupTitle, "4096 T1")
             return
@@ -75,9 +86,10 @@ class BlankShare_Action {
 
         ; sort by Prs.
         Click 838, 378, "Right" 
-        utils.waitLoading()
-        Send "o"
-        utils.waitLoading() 
+        Sleep 200
+        Send "{Down}"
+        Sleep 200
+        Send "{Enter}"
         if (!this.isRunning) {
             msgbox("脚本已终止", popupTitle, "4096 T1")
             return
@@ -166,12 +178,14 @@ class BlankShare_Action {
 			utils.waitLoading()
 
 			; TODO: determine whether there is a "Room Condition" popup
-			CoordMode "Pixel", "Screen"
-			ImageSearch(&foundX, &foundY, 0, 0, A_ScreenWidth, A_ScreenHeight, A_ScriptDir . "\Assets\alert.PNG")
-			if (PixelGetColor(foundX + 150, foundY) == "0xEDEAE6") {
-				Send "!y"
+			; CoordMode "Pixel", "Screen"
+			if (ImageSearch(&foundX, &foundY, 0, 0, A_ScreenWidth, A_ScreenHeight, A_ScriptDir . "\src\assets\alert.PNG")) {
+				; MouseMove foundX, foundY ; 489, 486 ->792, 486 == 303 diff
+				if (PixelGetColor(foundX + 303, foundY) == "0xD7D7D7") {
+					Send "!y"
+					utils.waitLoading()
+				} 
 			}
-
 			; loop 5 {
 			Send "{Esc}"
 			utils.waitLoading()
