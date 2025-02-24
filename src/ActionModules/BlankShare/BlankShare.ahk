@@ -1,7 +1,8 @@
 #Include "./BlankShare_Action.ahk"
 
 BlankShare(props) {
-    App := props.App, 
+    App := props.App
+    c := useProps(props.BlankShare, { children: "" })
     s := useProps(props.styles, {
         xPos: "x30 ",
         yPos: "y460 ",
@@ -31,6 +32,7 @@ BlankShare(props) {
         
         ; is checkin
         App.AddCheckBox("vcheckIn Checked xs10 h20 yp+30 0x200", "是否 Check In"),
+        !c.children && c.children(App),
    
         App.AddReactiveButton("vBlankShareAction xs10 y+10 w100", "生成 Share")
         .OnEvent("Click", (*) => action())
