@@ -2,14 +2,13 @@
 
 BlankShare(props) {
     App := props.App
-    c := useProps(props, { BlankShare: {} })
     s := useProps(props.styles, {
         xPos: "x30 ",
         yPos: "y460 ",
         wide: "w350 "
     })
 
-    bs := Component(App, A_ThisFunc)
+    bs := Component(App, A_ThisFunc, props)
 
     action() {
         form := bs.submit()
@@ -32,7 +31,7 @@ BlankShare(props) {
         
         ; is checkin
         App.AddCheckBox("vcheckIn Checked xs10 h20 yp+30 0x200", "是否 Check In"),
-        c.BlankShare.hasOwnProp("children") && c.BlankShare.children.Call(App),
+        bs.children(),
    
         App.AddReactiveButton("vBlankShareAction xs10 y+10 w100", "生成 Share")
            .OnEvent("Click", (*) => action())
