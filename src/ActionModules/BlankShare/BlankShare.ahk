@@ -31,7 +31,7 @@ BlankShare(props) {
         
         ; is checkin
         App.AddCheckBox("vcheckIn Checked xs10 h20 yp+30 0x200", "是否 Check In"),
-        bs.children.(),
+        bs.children.Call(),
    
         App.AddReactiveButton("vBlankShareAction xs10 y+10 w100", "生成 Share")
            .OnEvent("Click", (*) => action())
