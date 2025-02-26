@@ -79,8 +79,11 @@ class PaymentRelation_Action {
                 return
             }
 
+
+
             ; pbs
             loop form["partyRoomQty"] {
+                this.search(" ", form["party"])
                 ; sort main folio rooms
                 Click 838, 378, "Right" 
                 Sleep 200
@@ -96,6 +99,7 @@ class PaymentRelation_Action {
                 ; select target room sequencially
                 loop (A_Index - 1) {
                     Send "{Down}"
+                    utils.waitLoading()
                 }
 
                 this.pasteInfo(true, pfMessage, pbMessage)
@@ -112,8 +116,7 @@ class PaymentRelation_Action {
     static search(roomNum := "", party := "") {
         formattedRoom := StrLen(roomNum) == 3 ? "0" . roomNum : roomNum
 
-        MouseMove 329, 196 ; room number field
-        Click 3
+        Send "!r" ; room number field
         utils.waitLoading()
         if (!this.isRunning) {
             msgbox("脚本已终止", popupTitle, "4096 T1")
