@@ -58,8 +58,7 @@ class BlankShare_Action {
 	static search(roomNum) {
         formattedRoom := StrLen(roomNum) == 3 ? "0" . roomNum : roomNum
 
-		MouseMove 329, 196 ; room number field
-        Click 3
+		Send "!r" ; room number field
         utils.waitLoading()
         if (!this.isRunning) {
             msgbox("脚本已终止", popupTitle, "4096 T1")
