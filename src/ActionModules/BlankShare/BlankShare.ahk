@@ -23,11 +23,11 @@ BlankShare(props) {
 
         ; room number(s)
         App.AddText("xs10 w100 h20 0x200 yp+30", "房号 (空格分割)"),
-        App.AddEdit("vshareRoomNums x+5 w100 h20 0x200", ""),
+        App.AddEdit("vshareRoomNums x+5 w200 h20 0x200", ""),
         
         ; share qty
         App.AddText("xs10 w100 h20 yp+30 0x200", "空白 Share 数量"),
-        App.AddEdit("vshareQty x+5 w100 h20 0x200", "1"),
+        App.AddEdit("vshareQty x+5 w200 h20 0x200", "1"),
         
         ; is checkin
         App.AddCheckBox("vcheckIn Checked xs10 h20 yp+30 0x200", "是否 Check In"),
