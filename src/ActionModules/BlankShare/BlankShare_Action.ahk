@@ -38,6 +38,10 @@ class BlankShare_Action {
 		shareQty := shareQty.includes(" ") ? shareQty.split(" ") : shareQty
 		roomNums := roomNums.includes(" ") ? roomNums.split(" ") : [roomNums]
 		for room in roomNums {
+			if (shareQty[A_Index] == 0) {
+				continue
+			}
+
 			res := this.search(room)
 			if (res == "not found") {
 				continue
