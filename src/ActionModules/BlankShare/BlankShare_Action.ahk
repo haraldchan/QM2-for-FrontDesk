@@ -35,8 +35,8 @@ class BlankShare_Action {
 		}
 
 		; multi room share(s)
-		shareQty := shareQty.includes(" ") ? shareQty.split(" ") : shareQty
-		roomNums := roomNums.includes(" ") ? roomNums.split(" ") : [roomNums]
+		shareQty := shareQty.split(" ")
+		roomNums :=  roomNums.split(" ")
 		for room in roomNums {
 			if (shareQty[A_Index] == 0) {
 				continue
@@ -52,7 +52,7 @@ class BlankShare_Action {
             	return	
 			}
 			utils.waitLoading()
-			this.makeShare(checkIn, (shareQty is Array ? shareQty[A_Index] : shareQty), true)
+			this.makeShare(checkIn, (shareQty[A_Index]), true)
 			utils.waitLoading()
 		}
 
