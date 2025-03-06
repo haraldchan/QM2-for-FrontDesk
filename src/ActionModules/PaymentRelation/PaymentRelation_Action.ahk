@@ -207,10 +207,10 @@ class PaymentRelation_Action {
 
         ; check if this is the pf room
         if (pfMessage) {
-            MouseMove 581, 541
-            Sleep 100
+            MouseMove 315, 367
+            Sleep 200
             Click 3
-            Sleep 100
+            Sleep 200
             Send "^c"
             Sleep 100
 
