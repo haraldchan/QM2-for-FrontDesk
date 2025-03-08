@@ -191,7 +191,10 @@ class FetchFedexResv_Action {
         Send "^c"
         Sleep 200
 
-        return Trim(StrSplit(A_Clipboard, (InStr(A_Clipboard, "  ") ? "  " : " "))[2])
+        recLocField := StrSplit(A_Clipboard, (InStr(A_Clipboard, "  ") ? "  " : " "))
+        tripNum := recLocField.Length > 1 ? recLocField[2] : ""
+
+        return tripNum
     }
 
     static getMoreFieldsValue(step) {
