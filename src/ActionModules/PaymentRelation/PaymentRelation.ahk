@@ -12,7 +12,8 @@ PaymentRelation(props) {
         rPanelXPos: "x210 "
     })
 
-    f := useProps(props, {
+    ( !props.hasOwnProp("form") && props.form := {} )
+    f := useProps(props.form, {
         pfRoom: "",
         pfName: "",
         party:  "",
