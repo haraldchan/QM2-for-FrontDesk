@@ -2,6 +2,7 @@
 
 PaymentRelation(props) {
     App := props.App, 
+    
     s := useProps(props.styles, {
         useCopyBtn: true,
         xPos: "x30 ",
@@ -9,6 +10,15 @@ PaymentRelation(props) {
         wide: "w350 ",
         panelWide: "w170 ",
         rPanelXPos: "x210 "
+    })
+
+    f := useProps(props, {
+        pfRoom: "",
+        pfName: "",
+        party:  "",
+        partyRoomQty: "",
+        pbRoom: "",
+        pbName: ""
     })
 
     pr := Component(App, A_ThisFunc)
@@ -19,7 +29,7 @@ PaymentRelation(props) {
         form := pr.submit()
 
         nameConf := IsNumber(form.pbName) ? "#" . form.pbName : form.pbName
-        A_Clipboard := (!form.party || !form.partyRoomQty)
+        A_Clipboard := (form.party = "" || form.partyRoomQty = "")
             ? Format("P/F Rm{1} {2}  ", form.pbRoom, nameConf)
             : Format("P/F Party#{1}, total {2}-rooms  ", form.party, form.partyRoomQty)
         MsgBox(A_Clipboard, "已复制信息", "4096 T1")
@@ -62,22 +72,22 @@ PaymentRelation(props) {
         ; pay for
         App.AddGroupBox("Section " . (s.useCopyBtn ? "r7 " : "r5 ") . s.panelWide . s.xPos . s.yPos, "P/F房(支付人)"),
         App.AddText("xs10 yp+25 h20 0x200", "房号         "),
-        App.AddEdit("vpfRoom Number x+10 w80 h20", ""),
+        App.AddEdit("vpfRoom Number x+10 w80 h20", f.pfRoom),
         App.AddText("xs10 y+10 h20 0x200", "姓名/确认号 "),
-        App.AddEdit("vpfName x+1 w80 h20", ""),
+        App.AddEdit("vpfName x+1 w80 h20", f.pfName),
         App.AddText("xs10 y+10 h20 0x200", "Party号     "),
-        App.AddEdit("vparty Number x+10 w80 h20", ""),
+        App.AddEdit("vparty Number x+10 w80 h20", f.party),
         App.AddText("xs10 y+10 h20 0x200", "Total房数  "),
-        App.AddEdit("vpartyRoomQty Number x+10 w80 h20", ""),
+        App.AddEdit("vpartyRoomQty Number x+10 w80 h20", f.partyRoomQty),
         ; copy btn
         s.useCopyBtn && App.AddReactiveButton("vpfCopy xs10 y+10 h30 w150", "复制Pay For信息").OnEvent("Click", getPayFor),
         
         ; pay by
         App.AddGroupBox("Section " . (s.useCopyBtn ? "r7 " : "r5 ") . s.rPanelXPos . s.yPos . s.panelWide, "P/B房(被支付人)"),
         App.AddText("xs10 yp+25 h20 0x200", "房号         "),
-        App.AddEdit("vpbRoom Number x+10 w80 h20", ""),
+        App.AddEdit("vpbRoom Number x+10 w80 h20", f.pbRoom),
         App.AddText("xs10 y+10 h20 0x200", "姓名/确认号 "),
-        App.AddEdit("vpbName x+1 w80 h20", ""),
+        App.AddEdit("vpbName x+1 w80 h20", f.pbName),
         ; copy btn
         s.useCopyBtn && App.AddReactiveButton("vpbCopy xs10 y+70 h30 w150", "复制Pay By信息").OnEvent("Click", getPayBy),
         
