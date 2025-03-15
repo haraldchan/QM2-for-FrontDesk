@@ -176,25 +176,22 @@ class BlankShare_Action {
 			msgbox("脚本已终止", popupTitle, "4096 T1")
 			return
 		}
-		if (checkIn == true) {
+		if (checkIn) {
 			Send "!i"
 			utils.waitLoading()
 
-			; TODO: determine whether there is a "Room Condition" popup
-			; CoordMode "Pixel", "Screen"
+			CoordMode "Pixel", "Screen"
 			if (ImageSearch(&foundX, &foundY, 0, 0, A_ScreenWidth, A_ScreenHeight, A_ScriptDir . "\src\assets\alert.PNG")) {
-				; MouseMove foundX, foundY ; 489, 486 ->792, 486 == 303 diff
 				if (PixelGetColor(foundX + 303, foundY) == "0xD7D7D7") {
 					Send "!y"
 					utils.waitLoading()
 				} 
 			}
-			; loop 5 {
+
 			Send "{Esc}"
 			utils.waitLoading()
 			Send "{Space}"
 			utils.waitLoading()
-			; }
 		}
 
 		if (shareQty > 1) {
@@ -227,15 +224,23 @@ class BlankShare_Action {
 				utils.waitLoading()
 				Send "!o"
 				utils.waitLoading()
-				if (checkIn = true) {
+
+				if (checkIn) {
 					Send "!i"
 					utils.waitLoading()
-					loop 5 {
-						Send "{Esc}"
-						utils.waitLoading()
-						Send "{Space}"
-						utils.waitLoading()
+		
+					CoordMode "Pixel", "Screen"
+					if (ImageSearch(&foundX, &foundY, 0, 0, A_ScreenWidth, A_ScreenHeight, A_ScriptDir . "\src\assets\alert.PNG")) {
+						if (PixelGetColor(foundX + 303, foundY) == "0xD7D7D7") {
+							Send "!y"
+							utils.waitLoading()
+						} 
 					}
+		
+					Send "{Esc}"
+					utils.waitLoading()
+					Send "{Space}"
+					utils.waitLoading()
 				}
 			}
 		}
