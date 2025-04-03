@@ -8,6 +8,7 @@
 #Include "./BatchKeys/BatchKeysXl.ahk"
 #Include "./BatchKeys/BatchKeysSq.ahk"
 #Include "./FetchFedexResv/FetchFedexResv.ahk"
+#Include "./BriefingSheets/BriefingSheets.ahk"
 
 ; Report Master
 #Include "./ReportMaster/ReportMasterNext.ahk"

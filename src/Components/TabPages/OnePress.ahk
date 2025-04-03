@@ -9,6 +9,7 @@ OnePress(App) {
         BatchKeysXl,      "批量房卡制作（Excel 表辅助）", 
         BatchKeysSq,      "批量房卡制作（连续输入）", 
         FetchFedexResv,   "抓取 FedEx Opera 订单信息"
+        BriefingSheets,   "生成 Briefing 报表"
     )
 
     selectedModule := signal(modules.keys()[1].name)
