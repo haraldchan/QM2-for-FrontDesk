@@ -233,14 +233,15 @@ class PaymentRelation_Action {
         if (pbMessage) {
             A_Clipboard := pbMessage
         }
+
         Send "{Up}"
-        Sleep 150
+        utils.waitLoading()
         Send "^v"
-        Sleep 150
+        utils.waitLoading()
         Send "!o"
-        Sleep 100
+        utils.waitLoading()
         Send "!c"
-        Sleep 100
+        utils.waitLoading()
 
         ; when ImageSearch of comment flag fails, hence, comment edited in reservation window
         if (!IsSet(anchorX)) {
@@ -255,19 +256,19 @@ class PaymentRelation_Action {
 
         Send "!t"
         MouseMove initX, initY ; 759, 266
-        Sleep 200
+        utils.waitLoading()
         Click
         Send "!n"
-        Sleep 200
+        utils.waitLoading()
         Send "{Text}OTH"
         MouseMove initX - 242, initY + 133 ; 517, 399
-        Sleep 100
+        utils.waitLoading()
         Click
         MouseMove initX - 280, initY + 169 ; 479, 435
-        Sleep 100
+        utils.waitLoading()
         Click
         MouseMove initX - 70, initY + 211 ; 689, 477
-        Sleep 100
+        utils.waitLoading()
         if (!this.isRunning) {
             msgbox("脚本已终止", popupTitle, "4096 T1")
             return
@@ -275,18 +276,19 @@ class PaymentRelation_Action {
 
         Click "Down"
         MouseMove initX - 62, initY + 211 ; 697, 477
-        Sleep 100
+        utils.waitLoading()
         Click "Up"
-        Sleep 100
+        utils.waitLoading()
         Send "^v"
-        Sleep 150
+        utils.waitLoading()
         Send "!o"
-        Sleep 400
+        utils.waitLoading()
         Send "!c"
+        utils.waitLoading()
         Sleep 200
         Send "!c"
-        Sleep 200
-        BlockInput false
+        utils.waitLoading()
+        Sleep 1000
 
         ( !keepGoing && this.end() )
     }
