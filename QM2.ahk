@@ -4,6 +4,7 @@
 TraySetIcon A_ScriptDir . "\src\assets\QMTray.ico"
 TrayTip "QM 2 运行中…按下 F9 开始使用脚本"
 CoordMode "Mouse", "Screen"
+CoordMode "Pixel", "Screen"
 
 ; Initializing configuration
 version := "2.6.0"
