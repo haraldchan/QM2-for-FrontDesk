@@ -14,9 +14,9 @@ InOutHelper(App) {
 
     action(*) {
         ; msgbox JSON.stringify(c.submit())
-
-        WinActivate "ahk_class SunAwtFrame"
-        InOutHelper_Action.handlePrevBooking()
+        ; WinActivate "ahk_class SunAwtFrame"
+        
+        InOutHelper_Action.USE(c.submit())
     }
 
     c.render := this => this.Add(
