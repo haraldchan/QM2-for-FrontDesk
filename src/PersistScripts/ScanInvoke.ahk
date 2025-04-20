@@ -1,7 +1,6 @@
 ScanInvoke() {
 	scannerName := "Epson Perfection V19"
 	savePath := "\\10.0.2.13\fd\01 FO PASSPORT SCANNING"
-	; picName := signal(savePath . "\" . FormatTime(A_Now, "yyyy-MM-dd"))
 
 	Win := Gui("+AlwaysOnTop", "启动扫描")
 	Win.OnEvent("Close", (*) => Win.Destroy())
@@ -46,7 +45,6 @@ ScanInvoke() {
 	            	Run img
 	            	Win.Destroy()
 					devMgr := ""
-					Win.Destroy()
 	            	return
 	            }
 	        }
