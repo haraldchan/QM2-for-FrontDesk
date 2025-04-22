@@ -1,4 +1,9 @@
 ScanInvoke() {
+	if (WinExist(A_ThisFunc)) {
+		WinActivate(A_ThisFunc)
+		return
+	}
+
 	scannerName := "Epson Perfection V19"
 	savePath := "\\10.0.2.13\fd\01 FO PASSPORT SCANNING"
 	temp := A_Desktop . "\temp.jpg"
@@ -10,6 +15,7 @@ ScanInvoke() {
 
 	scan(*) {
 		Win.Hide()
+		Hotkey("^+s", "Off")
 
 		; Save the scanned image
 		saveName := Win.getCtrlByName("saveName").Value
@@ -42,8 +48,8 @@ ScanInvoke() {
 				if FileExist(temp) {
 					FileDelete(temp)
 				}
-
 				image.SaveFile(temp)
+				; wait for temp jpg
 				loop {
 					if (A_Index > 7) {
 						MsgBox("扫描保存失败，请重试。", A_ThisFunc, "48 T5")
@@ -78,7 +84,7 @@ ScanInvoke() {
 	return (
 		Win.AddText("x10 h25 w80 0x200", "保存文件名"),
 		Win.AddEdit("vsaveName x+10 h25 w120", ""),
-		Win.AddButton("Default x10 y+15 w100 h30", "扫 描").OnEvent("Click", scan)
+		Win.AddButton("Default x10 y+15 w100 h30", "扫 描").OnEvent("Click", (*) => (scan(), Hotkey("^+s", (*) => scan(), "On")))
 		Win.AddButton("x+10 w100 h30", "取 消").OnEvent("Click", (*) => Win.Destroy()),
 		Win.Show()
 	)
