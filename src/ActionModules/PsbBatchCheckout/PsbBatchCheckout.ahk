@@ -39,12 +39,15 @@ PsbBatchCheckout(props) {
         App.Show()
     }
 
-    handleFilterByActLog(ctrl, _) {
+    handleFilterByActLog(ctrl, forceReportDownload := false) {
         ctrl.Text := ctrl.Text == "Log 筛选" ? "查看全部" : "Log 筛选"
 
         if (ctrl.Text == "查看全部") {
             userCode := InputBox("请输入用户Opera Code。多个用户请用空格分割")
             if (userCode.Result == "Cancel") {
+                return
+            }
+            if (forceReportDownload && MsgBox("是否下载 User Activity Log？", popupTitle, "OKCancel") == "Cancel") {
                 return
             }
             
@@ -56,7 +59,9 @@ PsbBatchCheckout(props) {
             }
             
             ReportMasterNext_Action.start()
-            ReportMasterNext_Action.reportFiling(reportObj, "XML")
+            if (forceReportDownload || !FileExist(A_MyDocuments . "\" . reportObj.name . ".XML")) {
+                ReportMasterNext_Action.reportFiling(reportObj, "XML")
+            }
             
             roomNums := PsbBatchCheckout_Action.getDepartedRoomFromActLog(A_MyDocuments . "\" . reportObj.name . ".XML")
             filteredDepartedRooms := departedRooms.value.filter(depRoom => roomNums.find(room => room == depRoom["roomNum"]))
@@ -93,10 +98,14 @@ PsbBatchCheckout(props) {
         ; btns
         App.ARButton("xs10 yp+240 w80 h30", "获取房号")
            .OnEvent(
-            "Click", (*) => handleGetDepartedRooms(),
-            "ContextMenu", (*) => handleGetDepartedRooms(true)
+                "Click", (*) => handleGetDepartedRooms(),
+                "ContextMenu", (*) => handleGetDepartedRooms(true)
         ),
-        App.ARButton("xs10 x+10 w80 h30", "Log 筛选").OnEvent("Click", handleFilterByActLog),
+        App.ARButton("xs10 x+10 w80 h30", "Log 筛选")
+           .OnEvent(
+                "Click", (ctrl, _) => handleFilterByActLog(ctrl)
+                "ContextMenu", (ctrl, _) => handleFilterByActLog(ctrl, true)
+        ),
         App.ARButton("vPsbBatchCheckoutAction x+10 w80 h30", "开始退房".OnEvent("Click", handleBatchCheckout))
     )
 
