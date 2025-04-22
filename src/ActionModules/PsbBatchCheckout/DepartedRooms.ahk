@@ -2,9 +2,9 @@ DepartedRoomsList(App, departedRooms) {
     drl := Component(App, A_ThisFunc)
 
     columnDetails := {
-        keys: ["roomNum", "name"],
-        titles: ["房号", "姓名"],
-        widths: [80, 220]
+        keys: ["roomNum", "name", "idNum"],
+        titles: ["房号", "姓名", "证件号码"],
+        widths: [80, 200, 200]
     }
 
     options := {

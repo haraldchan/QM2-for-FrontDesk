@@ -7,7 +7,7 @@ PsbBatchCheckout(props) {
 
     pbc := Component(App, A_ThisFunc)
 
-    departedRooms := signal([{ roomNum: "", name: "" }])
+    departedRooms := signal([{ roomNum: "", name: "", id: "" }])
 
     handleGetDepartedRooms(forceReportDownload := false) {
         if (forceReportDownload && MsgBox("是否下载 FO03 - Departures？", popupTitle, "OKCancel") == "Cancel") {
@@ -21,16 +21,16 @@ PsbBatchCheckout(props) {
                 searchStr: "FO03",
                 name: filename,
                 saveFn: PsbBatchCheckout_Action.saveDeps,
-                args: [App.getCtrlByName("dpFrom").Text, App.getCtrlByName("dpTo").Text]
+                args: [App.getCtrlByName("dpFrom").Text, App.dgetCtrlByName("dpTo").Text]
             }, "XML")
             ReportMasterNext_Action.end()
         }
 
-        useListPlaceholder(departedRooms, ["roomNum", "name"], "Loading...")
+        useListPlaceholder(departedRooms, ["roomNum", "name", "idNum"], "Loading...")
 
         res := PsbBatchCheckout_Action.getDepartedRooms(A_MyDocuments . "\" . filename . ".XML")
-        if (res.Length == 0) {
-            useListPlaceholder(departedRooms, ["roomNum", "name"], "No data")
+        if (!res.Length) {
+            useListPlaceholder(departedRooms, ["roomNum", "name", "idNum"], "No data")
         } else {
             departedRooms.set(res)
         }
@@ -39,15 +39,42 @@ PsbBatchCheckout(props) {
         App.Show()
     }
 
+    handleFilterByActLog(ctrl, _) {
+        ctrl.Text := ctrl.Text == "Log 筛选" ? "查看全部" : "Log 筛选"
+
+        if (ctrl.Text == "查看全部") {
+            userCode := InputBox("请输入用户Opera Code。多个用户请用空格分割")
+            if (userCode.Result == "Cancel") {
+                return
+            }
+            
+            reportObj := {
+                searchStr: "user_activity_log", 
+                name: FormatTime(A_Now, "yyyyMMdd") . " - " . userCode.Value.trim(), 
+                saveFn: PsbBatchCheckout_Action.saveActLog,
+                args: [userCode.Value.trim()]
+            }
+            
+            ReportMasterNext_Action.start()
+            ReportMasterNext_Action.reportFiling(reportObj, "XML")
+            
+            roomNums := PsbBatchCheckout_Action.getDepartedRoomFromActLog(A_MyDocuments . "\" . reportObj.name . ".XML")
+            filteredDepartedRooms := departedRooms.value.filter(depRoom => roomNums.find(room => room == depRoom["roomNum"]))
+            departedRooms.set(filteredDepartedRooms)
+        } else  {
+            handleGetDepartedRooms()
+        }
+    }
+
     handleBatchCheckout(*) {
         LV := App.getCtrlByName("roomsDp")
-        if (LV.GetNext() = 0) {
+        if (LV.GetNext() == 0) {
             return
         }
 
         checkedRooms := []
         for row in LV.getCheckedRowNumbers() {
-            if (LV.getCheckedRowNumbers()[1] = "0") {
+            if (LV.getCheckedRowNumbers()[1] == "0") {
                 MsgBox("未选中房号", popupTitle, "T2")
                 App.Show()
                 return
@@ -64,13 +91,13 @@ PsbBatchCheckout(props) {
         ; Departed guest list by room
         DepartedRoomsList(App, departedRooms),
         ; btns
-        App.ARButton("xs10 yp+240 w120 h30", "获取房号")
+        App.ARButton("xs10 yp+240 w80 h30", "获取房号")
            .OnEvent(
             "Click", (*) => handleGetDepartedRooms(),
             "ContextMenu", (*) => handleGetDepartedRooms(true)
         ),
-        App.ARButton("vPsbBatchCheckoutAction x+10 w120 h30", "开始退房")
-           .OnEvent("Click", handleBatchCheckout)
+        App.ARButton("xs10 x+10 w80 h30", "Log 筛选").OnEvent("Click", handleFilterByActLog),
+        App.ARButton("vPsbBatchCheckoutAction x+10 w80 h30", "开始退房".OnEvent("Click", handleBatchCheckout))
     )
 
     return pbc
