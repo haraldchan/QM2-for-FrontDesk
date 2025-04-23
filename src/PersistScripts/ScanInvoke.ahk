@@ -15,7 +15,7 @@ ScanInvoke() {
 
 	scan(*) {
 		Win.Hide()
-		Hotkey("^+s", "Off")
+		; Hotkey("^+s", "Off")
 
 		; Save the scanned image
 		saveName := Win.getCtrlByName("saveName").Value
