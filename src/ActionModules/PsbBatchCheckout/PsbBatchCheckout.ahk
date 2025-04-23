@@ -1,3 +1,4 @@
+
 #Include "./PsbBatchCheckout_Action.ahk"
 #Include "./DepartedRooms.ahk"
 
@@ -21,7 +22,7 @@ PsbBatchCheckout(props) {
                 searchStr: "FO03",
                 name: filename,
                 saveFn: PsbBatchCheckout_Action.saveDeps,
-                args: [App.getCtrlByName("dpFrom").Text, App.dgetCtrlByName("dpTo").Text]
+                args: [App.getCtrlByName("dpFrom").Text, App.getCtrlByName("dpTo").Text]
             }, "XML")
             ReportMasterNext_Action.end()
         }
@@ -42,18 +43,21 @@ PsbBatchCheckout(props) {
     handleFilterByActLog(ctrl, forceReportDownload := false) {
         ctrl.Text := ctrl.Text == "Log 筛选" ? "查看全部" : "Log 筛选"
 
-        if (ctrl.Text == "查看全部") {
+        if (ctrl.Text == "Log 筛选") {
             userCode := InputBox("请输入用户Opera Code。多个用户请用空格分割")
             if (userCode.Result == "Cancel") {
                 return
             }
+
             if (forceReportDownload && MsgBox("是否下载 User Activity Log？", popupTitle, "OKCancel") == "Cancel") {
+                ctrl.Text := "Log 筛选"
                 return
             }
             
+            
             reportObj := {
                 searchStr: "user_activity_log", 
-                name: FormatTime(A_Now, "yyyyMMdd") . " - " . userCode.Value.trim(), 
+                name: FormatTime(A_Now, "yyyyMMdd") . "-" . userCode.Value.trim(), 
                 saveFn: PsbBatchCheckout_Action.saveActLog,
                 args: [userCode.Value.trim()]
             }
@@ -62,6 +66,7 @@ PsbBatchCheckout(props) {
             if (forceReportDownload || !FileExist(A_MyDocuments . "\" . reportObj.name . ".XML")) {
                 ReportMasterNext_Action.reportFiling(reportObj, "XML")
             }
+            ReportMasterNext_Action.end()
             
             roomNums := PsbBatchCheckout_Action.getDepartedRoomFromActLog(A_MyDocuments . "\" . reportObj.name . ".XML")
             filteredDepartedRooms := departedRooms.value.filter(depRoom => roomNums.find(room => room == depRoom["roomNum"]))
@@ -96,17 +101,17 @@ PsbBatchCheckout(props) {
         ; Departed guest list by room
         DepartedRoomsList(App, departedRooms),
         ; btns
-        App.ARButton("xs10 yp+240 w80 h30", "获取房号")
+        App.ARButton("xs10 w80 h30", "获取房号")
            .OnEvent(
                 "Click", (*) => handleGetDepartedRooms(),
                 "ContextMenu", (*) => handleGetDepartedRooms(true)
         ),
-        App.ARButton("xs10 x+10 w80 h30", "Log 筛选")
+        App.ARButton("x+10 w80 h30", "Log 筛选")
            .OnEvent(
-                "Click", (ctrl, _) => handleFilterByActLog(ctrl)
-                "ContextMenu", (ctrl, _) => handleFilterByActLog(ctrl, true)
+                "Click", (ctrl, _) => handleFilterByActLog(ctrl),
+                "ContextMenu", (ctrl, *) => handleFilterByActLog(ctrl, true)
         ),
-        App.ARButton("vPsbBatchCheckoutAction x+10 w80 h30", "开始退房".OnEvent("Click", handleBatchCheckout))
+        App.ARButton("vPsbBatchCheckoutAction x+10 w80 h30", "开始退房").OnEvent("Click", handleBatchCheckout)
     )
 
     return pbc
