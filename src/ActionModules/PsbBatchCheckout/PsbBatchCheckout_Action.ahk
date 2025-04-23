@@ -52,8 +52,10 @@ class PsbBatchCheckout_Action {
             thisGuest := {}
 
             ; nameField := nameElements[A_Index - 1].ChildNodes[0].nodeValue
-            nameField := roomElements[A_Index - 1].selectSingleNode["GUEST_NAME"].value
-            roomField := roomElements[A_Index - 1].selectSingleNode["ROOM"].value
+            nameField := roomElements[A_Index - 1].selectSingleNode["GUEST_NAME"].text
+            roomField := roomElements[A_Index - 1].selectSingleNode["ROOM"].text
+
+
 
             fullName := RegExMatch(nameField, regHanzi)
                 ? SubStr(nameField, RegExMatch(nameField, regHanzi))
@@ -66,7 +68,7 @@ class PsbBatchCheckout_Action {
             loop 7 { ; check previous 7-day archives
                 guests := A_Index == 1 
                     ? guestsArrivedToday 
-                    : db.load(, FormatTime(DateAdd("20250418", 1 - A_Index, "Days"), "yyyyMMdd"), 60 * 24 * 30)
+                    : db.load(, FormatTime(DateAdd(A_Now, 1 - A_Index, "Days"), "yyyyMMdd"), 60 * 24 * 30)
                 
                 for guest in guests {
                     ; non-hanzi name
@@ -74,12 +76,20 @@ class PsbBatchCheckout_Action {
                         fullNameSplitted := fullName.split(", ")
                         guestNameSplitted := guest["name"].split(", ")
 
+                        try {
+
+
                         if (
                             (fullNameSplitted[1].includes(guestNameSplitted[1]) || guestNameSplitted[1].includes(fullNameSplitted[1]))
                             && (fullNameSplitted[2].includes(guestNameSplitted[2]) || guestNameSplitted[2].includes(fullNameSplitted[2]))
                         ) {
                             thisGuest.idNum := guest["idNum"]
                             break
+                        }
+
+                        } catch {
+                            msgbox("未能识别：" . fullNameSplitted.join(", "))
+                            msgbox("未能识别：" . guestNameSplitted.join(", "))
                         }
 
                     ; hanzi name
@@ -105,25 +115,24 @@ class PsbBatchCheckout_Action {
     }
 
     static saveActLog(userCode) {
-        fileName := FormatTime("20250125", "yyyyMMdd") . "-" . userCode
+        fileName := FormatTime(A_Now, "yyyyMMdd") . "-" . userCode
 
-        Send "01252025"
-        Send "{Tab}"
-        Send "01252025"
-        Send "{Tab}"
+        loop 3 {
+            Send "{Tab}"
+            Sleep 100
+        }
 
         ; select "Activity Type: Check Out"
-        loop 1 {
-            Send "{Tab}"
-            utils.waitLoading()
-        }
         loop 27 {
             Send "{Left}"
         }
         utils.waitLoading()
 
-        ; enter field "user"
+        ; enter field "Acitivity By"
         ;TODO: check flow. find out how to input multiple user
+        Send "{Tab}"
+        utils.waitLoading()
+        Send "{Text}" . userCode.replace(" ", ",")
 
         return fileName
     }
@@ -137,12 +146,7 @@ class PsbBatchCheckout_Action {
 
         roomNums := []
         loop actElements.Length {
-            actDesc := StrSplit(actElements[A_Index - 1].ChildNodes[0].nodeValue, " ")
-            if (actDesc[1] == 1) {
-                continue
-            }
-
-            room := Integer(actDesc[actDesc.findIndex(chunk => chunk == "room") + 1])
+            room := Integer(actElements[A_Index - 1].text.split(" Room = ")[2].substr(1, 4))
             roomNums.Push(room)
         }
 
