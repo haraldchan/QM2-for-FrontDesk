@@ -8,14 +8,14 @@ DepartedRoomsList(App, departedRooms) {
     }
 
     options := {
-        lvOptions: "vroomsDp Checked Grid NoSortHdr -ReadOnly xs10 yp+25 w330 r7 ",
+        lvOptions: "vroomsDp Checked Grid NoSortHdr -ReadOnly xs10 yp+25 w330 r9 ",
         itemOptions: "Check"
     }
 
     today := FormatTime(A_Now, "yyyyMMdd")
 
     drl.render := (this) => this.Add(
-        App.ARCheckBox("vcheckAllDp Checked xs10 h20 xs10 yp-210", " 全选").SetFont("bold s10"),
+        App.ARCheckBox("vcheckAllDp Checked xs10 h20 xs10 yp-270", " 全选").SetFont("bold s10"),
         
         ; time range
         App.AddText("x+55 h20 0x200", "FO03 时间区间："),
