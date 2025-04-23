@@ -5,8 +5,8 @@ function findElements(tagName, label) {
 // sequence funcs
 async function executeCheckout(guest, index, qty) {
 	await delay(0, idQuery, guest)
-	await delay(1500, clickCheckout)
-	await delay(1500, clickOk, guest, index, qty)
+	await delay(2000, clickCheckout)
+	await delay(2000, clickOk, guest)
 }
 
 function delay(ms, func, ...args) {
@@ -20,7 +20,7 @@ function delay(ms, func, ...args) {
 }
 
 function idQuery(guest) {
-	queryInput.value = guest.id
+	queryInput.value = guest.idNum
 	queryInput.dispatchEvent(change)
 	queryBtn.click()
 	// console.log('idQuery executed')
@@ -36,7 +36,7 @@ function clickOk(guest, index, qty) {
 	let okBtn = Array.from(document.querySelector('.el-message-box__btns').querySelectorAll('span')).find((span) => span.innerText === '确定')
 	okBtn.click()
 	// console.log('clickOk executed')
-	console.log(`${guest.roomNum}: ${guest.name} 已退房。 当前进度 ${index}/${qty}`)
+	console.log(`${guest.roomNum}: ${guest.name} 已退房。 `)
 }
 
 // running script
@@ -56,12 +56,12 @@ findElements('li', '证件号码').click()
 executeCheckout(guests[0])
 let index = 1
 const loop = setInterval(() => {
-	if (index === rooms.length) {
+	if (index === guests.length) {
 		clearInterval(loop)
 		alert('已完成拍 out。')
 		return
 	}
 	console.log('Starting sequence...')
-	executeCheckout(guests[index], index, guests.length)
+	executeCheckout(guests[index])
 	index++
-}, 4000)
+}, 5000)
