@@ -28,15 +28,16 @@ PsbBatchCheckout(props) {
         }
 
         useListPlaceholder(departedRooms, ["roomNum", "name", "idNum"], "Loading...")
-
+        pbc.ctrls.filter(ctrl => ctrl.type == "Button").map(ctrl => ctrl.Enabled == false)
+        
         res := PsbBatchCheckout_Action.getDepartedRooms(A_MyDocuments . "\" . filename . ".XML")
         if (!res.Length) {
             useListPlaceholder(departedRooms, ["roomNum", "name", "idNum"], "No data")
         } else {
             departedRooms.set(res)
         }
-
-        Sleep 500
+        
+        pbc.ctrls.filter(ctrl => ctrl.type == "Button").map(ctrl => ctrl.Enabled == true)
         App.Show()
     }
 
@@ -53,8 +54,7 @@ PsbBatchCheckout(props) {
                 ctrl.Text := "Log 筛选"
                 return
             }
-            
-            
+                        
             reportObj := {
                 searchStr: "user_activity_log", 
                 name: FormatTime(A_Now, "yyyyMMdd") . "-" . userCode.Value.trim(), 
@@ -62,18 +62,25 @@ PsbBatchCheckout(props) {
                 args: [userCode.Value.trim()]
             }
             
-            ReportMasterNext_Action.start()
             if (forceReportDownload || !FileExist(A_MyDocuments . "\" . reportObj.name . ".XML")) {
+                ReportMasterNext_Action.start()
                 ReportMasterNext_Action.reportFiling(reportObj, "XML")
+                ReportMasterNext_Action.end()
             }
-            ReportMasterNext_Action.end()
+            
+            useListPlaceholder(departedRooms, ["roomNum", "name", "idNum"], "Loading...")
+            pbc.ctrls.filter(ctrl => ctrl.type == "Button").map(ctrl => ctrl.Enabled == false)
             
             roomNums := PsbBatchCheckout_Action.getDepartedRoomFromActLog(A_MyDocuments . "\" . reportObj.name . ".XML")
             filteredDepartedRooms := departedRooms.value.filter(depRoom => roomNums.find(room => room == depRoom["roomNum"]))
+            
             departedRooms.set(filteredDepartedRooms)
         } else  {
             handleGetDepartedRooms()
         }
+        
+        pbc.ctrls.filter(ctrl => ctrl.type == "Button").map(ctrl => ctrl.Enabled == true)
+        App.Show()
     }
 
     handleBatchCheckout(*) {
