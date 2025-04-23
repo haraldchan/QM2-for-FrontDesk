@@ -39,6 +39,7 @@ class PsbBatchCheckout_Action {
         xmlDoc.load(xmlPath)
 
         departedGuests := []
+        matchFailedGuests := []
         regHanzi := "U)[\x{4E00}-\x{9FFF}]+" ; match hanzi name
         db := useFileDB({
             main: "\\10.0.2.13\fd\19-个人文件夹\HC\Software - 软件及脚本\AHK_Scripts\ClipFlow" . "\src\ActionModules\ProfileModifyNext\GuestProfiles",
@@ -77,19 +78,16 @@ class PsbBatchCheckout_Action {
                         guestNameSplitted := guest["name"].split(", ")
 
                         try {
-
-
-                        if (
-                            (fullNameSplitted[1].includes(guestNameSplitted[1]) || guestNameSplitted[1].includes(fullNameSplitted[1]))
-                            && (fullNameSplitted[2].includes(guestNameSplitted[2]) || guestNameSplitted[2].includes(fullNameSplitted[2]))
-                        ) {
-                            thisGuest.idNum := guest["idNum"]
-                            break
-                        }
-
+                            if (
+                                (fullNameSplitted[1].includes(guestNameSplitted[1]) || guestNameSplitted[1].includes(fullNameSplitted[1]))
+                                && (fullNameSplitted[2].includes(guestNameSplitted[2]) || guestNameSplitted[2].includes(fullNameSplitted[2]))
+                            ) {
+                                thisGuest.idNum := guest["idNum"]
+                                break
+                            }
                         } catch {
-                            msgbox("未能识别：" . fullNameSplitted.join(", "))
-                            msgbox("未能识别：" . guestNameSplitted.join(", "))
+                            thisGuest.idNum := ""
+                            matchFailedGuests.Push(thisGuest)
                         }
 
                     ; hanzi name
@@ -110,6 +108,9 @@ class PsbBatchCheckout_Action {
         }
 
         xmlDoc := ""
+        missedList := matchFailedGuests.map(guest => Format("{1}: {2}`n", guest["room"], guest["name"]))
+
+        MsgBox("以下 Departure 客人信息匹配失败，请留意手动 out：`n`n" . missedList)
 
         return departedGuests
     }
