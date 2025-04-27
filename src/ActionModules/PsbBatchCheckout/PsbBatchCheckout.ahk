@@ -1,4 +1,3 @@
-
 #Include "./PsbBatchCheckout_Action.ahk"
 #Include "./DepartedRooms.ahk"
 
@@ -28,7 +27,7 @@ PsbBatchCheckout(props) {
         }
 
         useListPlaceholder(departedRooms, ["roomNum", "name", "idNum"], "Loading...")
-        pbc.ctrls.filter(ctrl => ctrl.type == "Button").map(ctrl => ctrl.Enabled == false)
+        pbc.ctrls.filter(ctrl => ctrl.type == "Button").map(ctrl => ctrl.Enabled := false)
         
         res := PsbBatchCheckout_Action.getDepartedRooms(A_MyDocuments . "\" . filename . ".XML")
         if (!res.Length) {
@@ -37,14 +36,14 @@ PsbBatchCheckout(props) {
             departedRooms.set(res)
         }
         
-        pbc.ctrls.filter(ctrl => ctrl.type == "Button").map(ctrl => ctrl.Enabled == true)
+        pbc.ctrls.filter(ctrl => ctrl.type == "Button").map(ctrl => ctrl.Enabled := true)
         App.Show()
     }
 
     handleFilterByActLog(ctrl, forceReportDownload := false) {
         ctrl.Text := ctrl.Text == "Log 筛选" ? "查看全部" : "Log 筛选"
 
-        if (ctrl.Text == "Log 筛选") {
+        if (ctrl.Text == "查看全部") {
             userCode := InputBox("请输入用户Opera Code。多个用户请用空格分割")
             if (userCode.Result == "Cancel") {
                 return
@@ -67,19 +66,17 @@ PsbBatchCheckout(props) {
                 ReportMasterNext_Action.reportFiling(reportObj, "XML")
                 ReportMasterNext_Action.end()
             }
-            
-            useListPlaceholder(departedRooms, ["roomNum", "name", "idNum"], "Loading...")
-            pbc.ctrls.filter(ctrl => ctrl.type == "Button").map(ctrl => ctrl.Enabled == false)
+            pbc.ctrls.filter(ctrl => ctrl.type == "Button").map(ctrl => ctrl.Enabled := false)
             
             roomNums := PsbBatchCheckout_Action.getDepartedRoomFromActLog(A_MyDocuments . "\" . reportObj.name . ".XML")
             filteredDepartedRooms := departedRooms.value.filter(depRoom => roomNums.find(room => room == depRoom["roomNum"]))
-            
+
             departedRooms.set(filteredDepartedRooms)
         } else  {
             handleGetDepartedRooms()
         }
         
-        pbc.ctrls.filter(ctrl => ctrl.type == "Button").map(ctrl => ctrl.Enabled == true)
+        pbc.ctrls.filter(ctrl => ctrl.type == "Button").map(ctrl => ctrl.Enabled := true)
         App.Show()
     }
 
