@@ -52,11 +52,8 @@ class PsbBatchCheckout_Action {
         loop roomElements.Length {
             thisGuest := {}
 
-            ; nameField := nameElements[A_Index - 1].ChildNodes[0].nodeValue
             nameField := roomElements[A_Index - 1].selectSingleNode["GUEST_NAME"].text
             roomField := roomElements[A_Index - 1].selectSingleNode["ROOM"].text
-
-
 
             fullName := RegExMatch(nameField, regHanzi)
                 ? SubStr(nameField, RegExMatch(nameField, regHanzi))
@@ -85,13 +82,6 @@ class PsbBatchCheckout_Action {
                                 thisGuest.idNum := guest["idNum"]
                                 break
                             } 
-                            ; else if (
-                                ; (fullNameSplitted[1].replace(" ","").includes(guestNameSplitted[1]).replace(" ","") || guestNameSplitted[1].replace(" ","").includes(fullNameSplitted[1]).replace(" ",""))
-                                ; && (fullNameSplitted[2].replace(" ","").includes(guestNameSplitted[2]).replace(" ","") || guestNameSplitted[2].replace(" ","").includes(fullNameSplitted[2])).replace(" ","")
-                            ; ) {
-                                ; thisGuest.idNum := guest["idNum"]
-                                ; break
-                            ; }
                         } catch {
                             thisGuest.idNum := ""
                             if (!matchFailedGuests.find(guest => guest.name == thisGuest.name)) {
@@ -117,13 +107,13 @@ class PsbBatchCheckout_Action {
         }
 
         xmlDoc := ""
-        missedList := matchFailedGuests.map(guest => Format("{1}: {2}`n", guest.roomNum, guest.name)).join()
+        ; missedList := matchFailedGuests.map(guest => Format("{1}: {2}`n", guest.roomNum, guest.name)).join()
 
-        if (missedList.Length) {
-            MsgBox("以下 Departure 客人信息匹配失败，请留意手动 out：`n`n" . missedList)
-        }
+        ; if (missedList.Length) {
+        ;     MsgBox("以下 Departure 客人信息匹配失败，请留意手动 out：`n`n" . missedList)
+        ; }
 
-        return departedGuests
+        return [departedGuests, matchFailedGuests]
     }
 
     static saveActLog(userCode) {
