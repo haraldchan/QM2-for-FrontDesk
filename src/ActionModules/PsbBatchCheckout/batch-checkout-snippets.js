@@ -12,7 +12,6 @@ async function executeCheckout(guest, index, qty) {
 function delay(ms, func, ...args) {
 	return new Promise((resolve) => {
 		setTimeout(() => {
-			console.log('Executing: ' + func.name)
 			func(...args)
 			resolve()
 		}, ms)
@@ -23,20 +22,18 @@ function idQuery(guest) {
 	queryInput.value = guest.idNum
 	queryInput.dispatchEvent(change)
 	queryBtn.click()
-	// console.log('idQuery executed')
+	console.log(`当前查询: ${guest.roomNum}: ${guest.name}`)
 }
 
 function clickCheckout() {
 	coBtn = findElements('span', '退房')
 	coBtn.click()
-	// console.log('clickCheckout executed')
 }
 
 function clickOk(guest, index, qty) {
 	let okBtn = Array.from(document.querySelector('.el-message-box__btns').querySelectorAll('span')).find((span) => span.innerText === '确定')
 	okBtn.click()
-	// console.log('clickOk executed')
-	console.log(`${guest.roomNum}: ${guest.name} 已退房。 `)
+	console.log(`${guest.roomNum}: ${guest.name} 已退房。 ${index}/${qty} `)
 }
 
 // running script
@@ -62,6 +59,6 @@ const loop = setInterval(() => {
 		return
 	}
 	console.log('Starting sequence...')
-	executeCheckout(guests[index])
+	executeCheckout(guests[index], index, guests.Length)
 	index++
 }, 5000)
