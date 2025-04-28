@@ -107,12 +107,6 @@ class PsbBatchCheckout_Action {
         }
 
         xmlDoc := ""
-        ; missedList := matchFailedGuests.map(guest => Format("{1}: {2}`n", guest.roomNum, guest.name)).join()
-
-        ; if (missedList.Length) {
-        ;     MsgBox("以下 Departure 客人信息匹配失败，请留意手动 out：`n`n" . missedList)
-        ; }
-
         return [departedGuests, matchFailedGuests]
     }
 

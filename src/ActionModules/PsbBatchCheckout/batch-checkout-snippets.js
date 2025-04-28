@@ -6,7 +6,7 @@ function findElements(tagName, label) {
 async function executeCheckout(guest, index, qty) {
 	await delay(0, idQuery, guest)
 	await delay(2000, clickCheckout)
-	await delay(2000, clickOk, guest)
+	await delay(2000, clickOk, guest, index, qty)
 }
 
 function delay(ms, func, ...args) {
@@ -59,6 +59,6 @@ const loop = setInterval(() => {
 		return
 	}
 	console.log('Starting sequence...')
-	executeCheckout(guests[index], index, guests.Length)
+	executeCheckout(guests[index], index, guests.length - 1)
 	index++
 }, 5000)

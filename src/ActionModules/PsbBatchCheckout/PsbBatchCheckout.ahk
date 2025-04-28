@@ -9,7 +9,7 @@ PsbBatchCheckout(props) {
     pbc := Component(App, A_ThisFunc)
 
     departedRooms := signal([{ roomNum: "", name: "", id: "" }])
-    matchFailed := signal([])
+    matchFailed := signal([{ roomNum: "", name: "", id: "" }])
 
     handleGetDepartedRooms(forceReportDownload := false) {
         if (forceReportDownload && MsgBox("是否下载 FO03 - Departures？", popupTitle, "OKCancel") == "Cancel") {
@@ -40,7 +40,7 @@ PsbBatchCheckout(props) {
         if (!res[1].Length) {
             useListPlaceholder(departedRooms, ["roomNum", "name", "idNum"], "No data")
         } else {
-            departedRooms.set([res[1], matchFailed.value*])
+            departedRooms.set(res[1].append(matchFailed.value*))
         }
         
         pbc.ctrls.filter(ctrl => ctrl.type == "Button").map(ctrl => ctrl.Enabled := true)
