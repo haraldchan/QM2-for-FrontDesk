@@ -1,4 +1,4 @@
-MatchFailedRooms(matchFailedSignal, failedList) {
+MatchFailedRooms(departedRooms, failedList) {
     App := Gui("", "匹配缺失")
     App.SetFont(, "微软雅黑")
     App.OnEvent("Close", (*) => App.Destroy())
@@ -6,8 +6,9 @@ MatchFailedRooms(matchFailedSignal, failedList) {
     submitUpdatedIdNums(*) {
         idNumInputs := App.GetCtrlByTypeAll("Edit")
         completedList := failedList.map((guest, index) => guest.idNum := idNumInputs.find(edit => edit.name == "idNum" . index).Value)
+        appendedList := departedRooms.value.append(completedList)
 
-        matchFailedSignal.set(completedList)
+        departedRooms.set(completedList)
         App.Destroy()
     }
 
