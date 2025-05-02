@@ -1,4 +1,9 @@
 class PsbBatchCheckout_Action {
+    static db := useFileDB({
+        main: "\\10.0.2.13\fd\19-个人文件夹\HC\Software - 软件及脚本\AHK_Scripts\ClipFlow" . "\src\ActionModules\ProfileModifyNext\GuestProfiles",
+        archive: "\\10.0.2.13\fd\19-个人文件夹\HC\Software - 软件及脚本\AHK_Scripts\ClipFlow" . "\src\ActionModules\ProfileModifyNext\GuestProfilesArchive",
+    })
+
     static USE(departedRooms) {
         if (!WinExist("ahk_class 360se6_Frame")) {
             MsgBox("请先打开 360 浏览器/ 旅业二期！", "批量上报", "4096 T2")
@@ -33,6 +38,18 @@ class PsbBatchCheckout_Action {
         return FormatTime(A_Now, "yyyyMMdd") . " - departure"
     }
 
+    static createLookup() {
+        lookup := Map()
+
+        loop 7 {
+            for guest in this.db.load(, FormatTime(DateAdd(A_Now, 1 - A_Index, "Days"), "yyyyMMdd"), 60 * 24 * 30) {
+                lookup[guest["name"]] := lookup["idNum"]
+            }
+        }
+
+        return lookup
+    }
+
     static getDepartedRooms(xmlPath) {
         xmlDoc := ComObject("msxml2.DOMDocument.6.0")
         xmlDoc.async := false
@@ -41,12 +58,9 @@ class PsbBatchCheckout_Action {
         departedGuests := []
         matchFailedGuests := []
         regHanzi := "U)[\x{4E00}-\x{9FFF}]+" ; match hanzi name
-        db := useFileDB({
-            main: "\\10.0.2.13\fd\19-个人文件夹\HC\Software - 软件及脚本\AHK_Scripts\ClipFlow" . "\src\ActionModules\ProfileModifyNext\GuestProfiles",
-            archive: "\\10.0.2.13\fd\19-个人文件夹\HC\Software - 软件及脚本\AHK_Scripts\ClipFlow" . "\src\ActionModules\ProfileModifyNext\GuestProfilesArchive",
-        })
 
-        guestsArrivedToday := db.load(,, 60 * 24) ; pre-load on day data for faster loop
+        ; guestsArrivedToday := db.load(,, 60 * 24) ; pre-load on day data for faster loop
+        lookup := this.createLookup()
         roomElements := xmlDoc.getElementsByTagName("G_ROOM")
 
         loop roomElements.Length {
@@ -56,53 +70,60 @@ class PsbBatchCheckout_Action {
             roomField := roomElements[A_Index - 1].selectSingleNode["ROOM"].text
 
             fullName := RegExMatch(nameField, regHanzi)
-                ? SubStr(nameField, RegExMatch(nameField, regHanzi))
+                ? nameField.substr(RegExMatch(nameField, regHanzi))
                 : nameField.replace("*", "").split(",M")[1].replace(",", ", ")
 
             thisGuest.name := fullName
             thisGuest.roomNum := Integer(roomField)
 
-            
-            loop 7 { ; check previous 7-day archives
-                guests := A_Index == 1 
-                    ? guestsArrivedToday 
-                    : db.load(, FormatTime(DateAdd(A_Now, 1 - A_Index, "Days"), "yyyyMMdd"), 60 * 24 * 30)
-                
-                for guest in guests {
-                    ; non-hanzi name
-                    if (fullName.includes(", ")) {
-                        fullNameSplitted := fullName.split(", ")
-                        guestNameSplitted := guest["name"].split(", ")
-
-                        try {
-                            if (
-                                (fullNameSplitted[1].includes(guestNameSplitted[1]) || guestNameSplitted[1].includes(fullNameSplitted[1]))
-                                && (fullNameSplitted[2].includes(guestNameSplitted[2]) || guestNameSplitted[2].includes(fullNameSplitted[2]))
-                            ) {
-                                thisGuest.idNum := guest["idNum"]
-                                break
-                            } 
-                        } catch {
-                            thisGuest.idNum := ""
-                            if (!matchFailedGuests.find(guest => guest.name == thisGuest.name)) {
-                                matchFailedGuests.Push(thisGuest)
-                            }
-                        }
-
-                    ; hanzi name
-                    } else {
-                        if (guest["name"] == fullName) {
-                            thisGuest.idNum := guest["idNum"]
-                            break
-                        }
-                    }
-                }
-
-                if (thisGuest.HasOwnProp("idNum")) {
-                    departedGuests.Push(thisGuest)
-                    break
+            try {
+                thisGuest.idNum := lookup[fullName]
+            } catch {
+                if (!matchFailedGuests.find(guest => guest.name == thisGuest.name)) {
+                    matchFailedGuests.Push(thisGuest)
                 }
             }
+
+            ; loop 7 { ; check previous 7-day archives
+            ;     guests := A_Index == 1
+            ;         ? guestsArrivedToday
+            ;         : db.load(, FormatTime(DateAdd(A_Now, 1 - A_Index, "Days"), "yyyyMMdd"), 60 * 24 * 30)
+
+            ;     for guest in guests {
+            ;         ; non-hanzi name
+            ;         if (fullName.includes(", ")) {
+            ;             fullNameSplitted := fullName.split(", ")
+            ;             guestNameSplitted := guest["name"].split(", ")
+
+            ;             try {
+            ;                 if (
+            ;                     (fullNameSplitted[1].includes(guestNameSplitted[1]) || guestNameSplitted[1].includes(fullNameSplitted[1]))
+            ;                     && (fullNameSplitted[2].includes(guestNameSplitted[2]) || guestNameSplitted[2].includes(fullNameSplitted[2]))
+            ;                 ) {
+            ;                     thisGuest.idNum := guest["idNum"]
+            ;                     break
+            ;                 }
+            ;             } catch {
+            ;                 thisGuest.idNum := ""
+            ;                 if (!matchFailedGuests.find(guest => guest.name == thisGuest.name)) {
+            ;                     matchFailedGuests.Push(thisGuest)
+            ;                 }
+            ;             }
+
+            ;         ; hanzi name
+            ;         } else {
+            ;             if (guest["name"] == fullName) {
+            ;                 thisGuest.idNum := guest["idNum"]
+            ;                 break
+            ;             }
+            ;         }
+            ;     }
+
+            ;     if (thisGuest.HasOwnProp("idNum")) {
+            ;         departedGuests.Push(thisGuest)
+            ;         break
+            ;     }
+            ; }
 
         }
 
