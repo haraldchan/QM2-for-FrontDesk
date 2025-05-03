@@ -43,7 +43,8 @@ class PsbBatchCheckout_Action {
 
         loop 7 {
             for guest in this.db.load(, FormatTime(DateAdd(A_Now, 1 - A_Index, "Days"), "yyyyMMdd"), 60 * 24 * 30) {
-                lookup[guest["name"]] := lookup["idNum"]
+                fmtName := guest["name"].replace("👤", "").replace(",", "").replace(" ", "").toLower()
+                lookup[fmtName] := guest["idNum"]
             }
         }
 
@@ -68,62 +69,23 @@ class PsbBatchCheckout_Action {
 
             nameField := roomElements[A_Index - 1].selectSingleNode["GUEST_NAME"].text
             roomField := roomElements[A_Index - 1].selectSingleNode["ROOM"].text
+            separator := nameField.includes(",Mr") ? ",Mr" : ",Ms"
 
             fullName := RegExMatch(nameField, regHanzi)
                 ? nameField.substr(RegExMatch(nameField, regHanzi))
-                : nameField.replace("*", "").split(",M")[1].replace(",", ", ")
+                : nameField.replace("*", "").split(separator)[1].replace(",", ", ")
 
             thisGuest.name := fullName
             thisGuest.roomNum := Integer(roomField)
 
             try {
-                thisGuest.idNum := lookup[fullName]
+                thisGuest.idNum := lookup[fullName.replace(",", "").replace(" ", "").toLower()]
+                departedGuests.Push(thisGuest)
             } catch {
                 if (!matchFailedGuests.find(guest => guest.name == thisGuest.name)) {
                     matchFailedGuests.Push(thisGuest)
                 }
             }
-
-            ; loop 7 { ; check previous 7-day archives
-            ;     guests := A_Index == 1
-            ;         ? guestsArrivedToday
-            ;         : db.load(, FormatTime(DateAdd(A_Now, 1 - A_Index, "Days"), "yyyyMMdd"), 60 * 24 * 30)
-
-            ;     for guest in guests {
-            ;         ; non-hanzi name
-            ;         if (fullName.includes(", ")) {
-            ;             fullNameSplitted := fullName.split(", ")
-            ;             guestNameSplitted := guest["name"].split(", ")
-
-            ;             try {
-            ;                 if (
-            ;                     (fullNameSplitted[1].includes(guestNameSplitted[1]) || guestNameSplitted[1].includes(fullNameSplitted[1]))
-            ;                     && (fullNameSplitted[2].includes(guestNameSplitted[2]) || guestNameSplitted[2].includes(fullNameSplitted[2]))
-            ;                 ) {
-            ;                     thisGuest.idNum := guest["idNum"]
-            ;                     break
-            ;                 }
-            ;             } catch {
-            ;                 thisGuest.idNum := ""
-            ;                 if (!matchFailedGuests.find(guest => guest.name == thisGuest.name)) {
-            ;                     matchFailedGuests.Push(thisGuest)
-            ;                 }
-            ;             }
-
-            ;         ; hanzi name
-            ;         } else {
-            ;             if (guest["name"] == fullName) {
-            ;                 thisGuest.idNum := guest["idNum"]
-            ;                 break
-            ;             }
-            ;         }
-            ;     }
-
-            ;     if (thisGuest.HasOwnProp("idNum")) {
-            ;         departedGuests.Push(thisGuest)
-            ;         break
-            ;     }
-            ; }
 
         }
 
