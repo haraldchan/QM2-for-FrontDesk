@@ -50,8 +50,8 @@ const change = new Event('input', {
 
 findElements('span', '已上报').click()
 findElements('li', '证件号码').click()
-executeCheckout(guests[0])
-let index = 1
+
+let index = 0
 const loop = setInterval(() => {
 	if (index === guests.length) {
 		clearInterval(loop)
@@ -59,6 +59,6 @@ const loop = setInterval(() => {
 		return
 	}
 	console.log('Starting sequence...')
-	executeCheckout(guests[index], index, guests.length - 1)
+	executeCheckout(guests[index], index + 1, guests.length)
 	index++
 }, 5000)
