@@ -43,7 +43,8 @@ class PsbBatchCheckout_Action {
 
         loop 7 {
             for guest in this.db.load(, FormatTime(DateAdd(A_Now, 1 - A_Index, "Days"), "yyyyMMdd"), 60 * 24 * 30) {
-                fmtName := guest["name"].replace("👤", "").replace(",", "").replace(" ", "").toLower()
+                ; fmtName := guest["name"].replace("👤", "").replace(",", "").replace(" ", "").toLower()
+                fmtName := guest["name"].replaceThese(["👤", ",", " "], "").toLower()
                 lookup[fmtName] := guest["idNum"]
             }
         }
@@ -60,7 +61,6 @@ class PsbBatchCheckout_Action {
         matchFailedGuests := []
         regHanzi := "U)[\x{4E00}-\x{9FFF}]+" ; match hanzi name
 
-        ; guestsArrivedToday := db.load(,, 60 * 24) ; pre-load on day data for faster loop
         lookup := this.createLookup()
         roomElements := xmlDoc.getElementsByTagName("G_ROOM")
 
@@ -79,14 +79,14 @@ class PsbBatchCheckout_Action {
             thisGuest.roomNum := Integer(roomField)
 
             try {
-                thisGuest.idNum := lookup[fullName.replace(",", "").replace(" ", "").toLower()]
+                ; thisGuest.idNum := lookup[fullName.replace(",", "").replace(" ", "").toLower()]
+                thisGuest.idNum := lookup[fullName.replaceThese([",", " "], "").toLower()]
                 departedGuests.Push(thisGuest)
             } catch {
                 if (!matchFailedGuests.find(guest => guest.name == thisGuest.name)) {
                     matchFailedGuests.Push(thisGuest)
                 }
             }
-
         }
 
         xmlDoc := ""
