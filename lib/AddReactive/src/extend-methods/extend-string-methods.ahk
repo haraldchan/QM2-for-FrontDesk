@@ -17,8 +17,10 @@ defineStringMethods(str) {
         checkType(needles, Array)
 
         for needle in needles {
-            StrReplace(str, needle, replaceText, caseSense, &outputVarCount, limit)
+            str := StrReplace(str, needle, replaceText, caseSense, &outputVarCount, limit)
         }
+
+        return str
     }
 }
 
