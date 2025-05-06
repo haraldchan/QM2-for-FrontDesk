@@ -65,7 +65,11 @@ class PsbBatchCheckout_Action {
         roomElements := xmlDoc.getElementsByTagName("G_ROOM")
 
         loop roomElements.Length {
-            thisGuest := {}
+            thisGuest := {
+                name: "",
+                roomNum: "",
+                idNum: ""
+            }
 
             nameField := roomElements[A_Index - 1].selectSingleNode["GUEST_NAME"].text
             roomField := roomElements[A_Index - 1].selectSingleNode["ROOM"].text
