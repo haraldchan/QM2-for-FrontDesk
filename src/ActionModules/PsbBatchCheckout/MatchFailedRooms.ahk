@@ -1,4 +1,4 @@
-MatchFailedRooms(departedRooms, failedList) {
+MatchFailedRooms(departedRooms, failedList, prevFailedList) {
     App := Gui("+AlwaysOnTop", "匹配缺失")
     App.SetFont(, "微软雅黑")
     App.OnEvent("Close", (*) => App.Destroy())
@@ -7,9 +7,10 @@ MatchFailedRooms(departedRooms, failedList) {
         idNumInputs := App.GetCtrlByTypeAll("Edit")
         
         for guest in failedList {
-            i := A_Index
-            guest.idNum := idNumInputs.find(edit => edit.name == "idNum" . i).Value
+            guest.idNum := idNumInputs.find(edit => edit.name == guest.name).Value
         }
+
+        prevFailedList.set(failedList)
 
         appendedList := departedRooms.value.append(failedList.filter(g => g.idNum != ""))
         departedRooms.set(appendedList)
@@ -23,7 +24,7 @@ MatchFailedRooms(departedRooms, failedList) {
             App.AddText("xs10 w70 yp+40", "房号: " . guest.roomNum),
             App.AddText("x+20 w150", "姓名: " . guest.name),
             App.AddText("x+20 w50", "证件号: "),
-            App.AddEdit(("vidNum" . index) . " x+1 w150", "")
+            App.AddEdit(("v" . guest.name) . " x+1 w150", prevFailedList.value.find(g => g.name == guest.name).idNum)
         )),
         App.AddButton("x20 w100 h30", "完 成").OnEvent("Click", submitUpdatedIdNums),
         App.Show()

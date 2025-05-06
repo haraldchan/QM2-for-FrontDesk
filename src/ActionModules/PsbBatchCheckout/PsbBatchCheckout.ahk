@@ -9,6 +9,7 @@ PsbBatchCheckout(props) {
     pbc := Component(App, A_ThisFunc)
 
     departedRooms := signal([{ roomNum: "", name: "", id: "" }])
+    prevFailedList := signal([])
 
     handleGetDepartedRooms(forceReportDownload := false) {
         if (forceReportDownload && MsgBox("是否下载 FO03 - Departures？", popupTitle, "OKCancel") == "Cancel") {
@@ -33,7 +34,7 @@ PsbBatchCheckout(props) {
         res := PsbBatchCheckout_Action.getDepartedRooms(A_MyDocuments . "\" . filename . ".XML")
         ; res -> [departedGuests, matchFailedGuests]
         if (res[2].Length) {
-            MatchFailedRooms(departedRooms, res[2])
+            MatchFailedRooms(departedRooms, res[2], prevFailedList)
         }
 
         if (!res[1].Length) {
