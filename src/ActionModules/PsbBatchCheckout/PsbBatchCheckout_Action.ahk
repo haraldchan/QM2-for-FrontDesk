@@ -43,7 +43,6 @@ class PsbBatchCheckout_Action {
 
         loop 7 {
             for guest in this.db.load(, FormatTime(DateAdd(A_Now, 1 - A_Index, "Days"), "yyyyMMdd"), 60 * 24 * 30) {
-                ; fmtName := guest["name"].replace("👤", "").replace(",", "").replace(" ", "").toLower()
                 fmtName := guest["name"].replaceThese(["👤", ",", " "], "").toLower()
                 lookup[fmtName] := guest["idNum"]
             }
@@ -65,11 +64,11 @@ class PsbBatchCheckout_Action {
         roomElements := xmlDoc.getElementsByTagName("G_ROOM")
 
         loop roomElements.Length {
-            thisGuest := {
-                name: "",
-                roomNum: "",
-                idNum: ""
-            }
+            thisGuest := Map(
+                "name", "",
+                "roomNum", "",
+                "idNum", ""
+            )
 
             nameField := roomElements[A_Index - 1].selectSingleNode["GUEST_NAME"].text
             roomField := roomElements[A_Index - 1].selectSingleNode["ROOM"].text
@@ -79,15 +78,14 @@ class PsbBatchCheckout_Action {
                 ? nameField.substr(RegExMatch(nameField, regHanzi))
                 : nameField.replace("*", "").split(separator)[1].replace(",", ", ")
 
-            thisGuest.name := fullName
-            thisGuest.roomNum := Integer(roomField)
+            thisGuest["name"] := fullName
+            thisGuest["roomNum"] := Integer(roomField)
 
             try {
-                ; thisGuest.idNum := lookup[fullName.replace(",", "").replace(" ", "").toLower()]
-                thisGuest.idNum := lookup[fullName.replaceThese([",", " "], "").toLower()]
+                thisGuest["idNum"] := lookup[fullName.replaceThese([",", " "], "").toLower()]
                 departedGuests.Push(thisGuest)
             } catch {
-                if (!matchFailedGuests.find(guest => guest.name == thisGuest.name)) {
+                if (!matchFailedGuests.find(guest => guest["name"] == thisGuest["name"])) {
                     matchFailedGuests.Push(thisGuest)
                 }
             }
@@ -112,7 +110,6 @@ class PsbBatchCheckout_Action {
         utils.waitLoading()
 
         ; enter field "Acitivity By"
-        ;TODO: check flow. find out how to input multiple user
         Send "{Tab}"
         utils.waitLoading()
         Send "{Text}" . userCode.replace(" ", ",")
