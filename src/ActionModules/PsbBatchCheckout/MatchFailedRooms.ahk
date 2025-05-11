@@ -19,7 +19,7 @@ MatchFailedRooms(departedRooms, failedList, prevFailedList) {
     }
 
     return (
-        App.AddGroupBox("Section x10 w500 " . "r" . (failedList.Length * 1.9), "信息详情"),
+        App.AddGroupBox("Section x10 w500 " . "h" . (60 + failedList.Length * 40), "信息详情"),
         App.AddText("xs10 yp+20 w480", "以下 Departure 客人信息匹配失败, 请补全信息。"),
         failedList.map((guest, index) => (
             App.AddText("xs10 w70 yp+40", "房号: " . guest["roomNum"]),
