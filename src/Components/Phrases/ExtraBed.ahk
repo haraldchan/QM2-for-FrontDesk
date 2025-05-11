@@ -1,6 +1,7 @@
 ExtraBed(props) {
 	App := props.App
 	commonStyle := props.commonStyle
+	btnStyle := props.btnStyle
 
 	eb := Component(App, A_ThisFunc)
 
@@ -52,7 +53,7 @@ ExtraBed(props) {
 		App.AddRadio("vebIsChn xs10 y+5 h25 Checked", "中文"),
 		App.AddRadio("x+10 h25", "英文"),
 
-		App.AddReactiveButton("x270 y380 w90 h55", "复制`nComment`nAlert")
+		App.AddReactiveButton(btnStyle, "复制`nComment`nAlert")
 		   .OnEvent("Click", (*) => writeClipboard())
 	)
 

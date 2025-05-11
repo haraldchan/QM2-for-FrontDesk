@@ -1,6 +1,7 @@
 TableReserve(props) {
 	App := props.App
 	commonStyle := props.commonStyle
+	btnStyle := props.btnStyle
 
 	tr := Component(App, A_ThisFunc)
 	
@@ -16,7 +17,7 @@ TableReserve(props) {
 
         A_Clipboard := Format("已预订{1} {2}, {3}。 人数: {4}位，接订工号：{5}",
 			restaurantList[form.restaurant],
-			FormatTime(form.date, "LongDate"),
+			FormatTime(form.date, "MM月dd日"),
 			form.time,
 			form.accommodate,
 			form.staffId
@@ -43,7 +44,7 @@ TableReserve(props) {
 		App.AddText("xs10 y+10 h20 0x200", "对方工号"),
 		App.AddEdit("vstaffId x+10 w150 h20", ""),
 
-		App.AddReactiveButton("x270 y380 w90 h55 ", "复制`nComment`nAlert")
+		App.AddReactiveButton(btnStyle, "复制`nComment`nAlert")
 		   .OnEvent("Click", (*) => writeClipboard())
 	)
 

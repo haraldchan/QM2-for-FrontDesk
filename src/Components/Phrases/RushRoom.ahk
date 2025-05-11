@@ -1,6 +1,7 @@
 RushRoom(props) {
 	App := props.App
 	commonStyle := props.commonStyle
+	btnStyle := props.btnStyle
 
 	rr := Component(App, A_ThisFunc)
 
@@ -25,7 +26,7 @@ RushRoom(props) {
 
 		App.AddRadio("vmade xs10 y+10 h25 Checked", "已做卡"),
 		App.AddRadio("xp+70 h25", "未做卡"),
-		App.AddReactiveButton("x270 y380 w90 h55", "复制`nComment`nAlert")
+		App.AddReactiveButton(btnStyle, "复制`nComment`nAlert")
 		   .OnEvent("Click", (*) => writeClipboard())
 	)
 

@@ -1,6 +1,7 @@
 Upsell(props) {
 	App := props.App
 	commonStyle := props.commonStyle
+	btnStyle := props.btnStyle
 
 	ups := Component(App, A_ThisFunc)
 
@@ -34,7 +35,7 @@ Upsell(props) {
 		App.AddRadio("vupsIsChn xs10 y+15 h20 Checked", "中文"),
 		App.AddRadio("x+10 h20", "英文"),
 			
-		App.AddReactiveButton("x270 y380 w90 h55", "复制`nComment`nAlert")
+		App.AddReactiveButton(btnStyle, "复制`nComment`nAlert")
 		.OnEvent("Click", (*) => writeClipboard())	
 	)
 
