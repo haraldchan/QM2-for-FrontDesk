@@ -1,9 +1,9 @@
 ExtraBed(props) {
 	App := props.App
 	commonStyle := props.commonStyle
-	btnStyle := props.btnStyle
+	; btnStyle := props.btnStyle
 
-	eb := Component(App, A_ThisFunc)
+	comp := Component(App, A_ThisFunc)
 
 	charge := signal(345)
 	ebCharge := [
@@ -12,8 +12,8 @@ ExtraBed(props) {
 		{ label: "免费", price: 0 },
 	]
 
-	writeClipboard() {
-		form := eb.submit()
+	comp.writeClipboard := (*) {
+		form := comp.submit()
 		commentParams := [charge.value, form.ebNts, charge.value * form.ebNts]
 
 		switch charge.value {
@@ -28,13 +28,12 @@ ExtraBed(props) {
 				commentEng := Format("Free extra bed by {1} for {2}night(s). ", form.approver, form.ebNts)
 		}
 			
-		A_Clipboard := form.ebIsChn = true
-			? commentChn
-			: commentEng
-	    MsgBox(A_Clipboard, "已复制信息", "T1")
+		A_Clipboard := form.ebIsChn ? commentChn : commentEng
+	    
+		return MsgBox(A_Clipboard, "已复制信息", "T1")
 	}
 
-	eb.render := (this) => this.Add(
+	comp.render := (this) => this.Add(
 		App.AddGroupBox("Section r5 " . commonStyle, "Extra Bed - 加床"),
 
 		App.AddText("xs10 yp+30 h20 0x200", "价格"),
@@ -51,11 +50,11 @@ ExtraBed(props) {
 		App.AddEdit("vebNts xp+55 w40 Number", "1"),
 
 		App.AddRadio("vebIsChn xs10 y+5 h25 Checked", "中文"),
-		App.AddRadio("x+10 h25", "英文"),
+		App.AddRadio("x+10 h25", "英文")
 
-		App.AddReactiveButton(btnStyle, "复制`nComment`nAlert")
-		   .OnEvent("Click", (*) => writeClipboard())
+		; App.AddReactiveButton(btnStyle, "复制`nComment`nAlert")
+		;    .OnEvent("Click", (*) => writeClipboard())
 	)
 
-	return eb
+	return comp
 }

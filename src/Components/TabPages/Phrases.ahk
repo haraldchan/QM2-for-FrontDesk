@@ -19,6 +19,20 @@ Phrases(App) {
 		phraseComponents[phrase.name] := phrase
 	}
 
+	onMount(componentInstances) {
+		effect(selectedPhrase, phraseName => handleSwapWriteClipboard(phraseName))
+		handleSwapWriteClipboard(phraseName) {
+			App.getCtrlByName("phraseCopy")
+			   .OnEvent(
+					"Click", 
+					(*) => componentInstances[phraseComponents.indexOf(phraseName)].writeClipboard(*), 
+					-1
+				)
+		}
+
+		handleSwapWriteClipboard("RushRoom")
+	}
+
 	return (
 		phrases.keys().map(phrase =>
 			App.AddRadio((phrase.name = selectedPhrase.value ? "Checked" : "") . " w200 h25", phrases[phrase])
@@ -29,9 +43,12 @@ Phrases(App) {
 			phraseComponents, 
 			{ 
 				App: App, 
-				commonStyle: "x30 y400 w350", 
-				btnStyle: "x270 y430 w90 h55" 
-			}
-		)
+				commonStyle: "x30 y400 w350",  
+				; btnStyle: "x270 y430 w90 h55" 
+			},
+			&componentInstances
+		),
+		App.AddButton("vphraseCopy x270 y430 w90 h55", "复制`nComment`nAlert"),
+		onMount(componentInstances)
 	)
 }

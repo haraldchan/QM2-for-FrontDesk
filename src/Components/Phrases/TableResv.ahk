@@ -1,15 +1,15 @@
 TableReserve(props) {
 	App := props.App
 	commonStyle := props.commonStyle
-	btnStyle := props.btnStyle
+	; btnStyle := props.btnStyle
 
-	tr := Component(App, A_ThisFunc)
+	comp := Component(App, A_ThisFunc)
 	
 	restaurantList := ["宏图府", "玉堂春暖", "风味餐厅", "流浮阁"]
 	tomorrow := FormatTime(DateAdd(A_Now, 1, "Days"), "yyyyMMdd")
 
-	writeClipboard() {
-		form := tr.submit()
+	comp.writeClipboard := (*) {
+		form := comp.submit()
 
 		if (form.time = "" || form.accommodate = "" || form.staffId = "") {
 			return
@@ -23,10 +23,10 @@ TableReserve(props) {
 			form.staffId
 		)
 
-        MsgBox(A_Clipboard, "已复制信息", "T1")
+        return MsgBox(A_Clipboard, "已复制信息", "T1")
 	}
 
-	tr.render := (this) => this.Add(
+	comp.render := (this) => this.Add(
 		App.AddGroupBox("Section r7 " . commonStyle, "Table Reserve - 餐饮预订"),
 		; restaurant
 		App.AddText("xp+10 yp+30 h20 0x200", "预订餐厅"),
@@ -42,11 +42,11 @@ TableReserve(props) {
 		App.AddEdit("vaccommodate x+10 w150 h20 Number", ""),
 		; staff-id
 		App.AddText("xs10 y+10 h20 0x200", "对方工号"),
-		App.AddEdit("vstaffId x+10 w150 h20", ""),
+		App.AddEdit("vstaffId x+10 w150 h20", "")
 
-		App.AddReactiveButton(btnStyle, "复制`nComment`nAlert")
-		   .OnEvent("Click", (*) => writeClipboard())
+		; App.AddReactiveButton(btnStyle, "复制`nComment`nAlert")
+		;    .OnEvent("Click", (*) => writeClipboard())
 	)
 
-	return tr
+	return comp
 }
