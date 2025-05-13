@@ -1,7 +1,6 @@
 ExtraBed(props) {
 	App := props.App
 	commonStyle := props.commonStyle
-	; btnStyle := props.btnStyle
 
 	comp := Component(App, A_ThisFunc)
 
@@ -12,7 +11,8 @@ ExtraBed(props) {
 		{ label: "免费", price: 0 },
 	]
 
-	comp.writeClipboard := (*) {
+	comp.writeClipboard := writeClipboard
+	writeClipboard(*) {
 		form := comp.submit()
 		commentParams := [charge.value, form.ebNts, charge.value * form.ebNts]
 
@@ -51,9 +51,6 @@ ExtraBed(props) {
 
 		App.AddRadio("vebIsChn xs10 y+5 h25 Checked", "中文"),
 		App.AddRadio("x+10 h25", "英文")
-
-		; App.AddReactiveButton(btnStyle, "复制`nComment`nAlert")
-		;    .OnEvent("Click", (*) => writeClipboard())
 	)
 
 	return comp

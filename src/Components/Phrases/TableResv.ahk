@@ -1,14 +1,14 @@
 TableReserve(props) {
 	App := props.App
 	commonStyle := props.commonStyle
-	; btnStyle := props.btnStyle
 
 	comp := Component(App, A_ThisFunc)
 	
 	restaurantList := ["宏图府", "玉堂春暖", "风味餐厅", "流浮阁"]
 	tomorrow := FormatTime(DateAdd(A_Now, 1, "Days"), "yyyyMMdd")
 
-	comp.writeClipboard := (*) {
+	comp.writeClipboard := writeClipboard
+	writeClipboard(*) {
 		form := comp.submit()
 
 		if (form.time = "" || form.accommodate = "" || form.staffId = "") {
@@ -43,9 +43,6 @@ TableReserve(props) {
 		; staff-id
 		App.AddText("xs10 y+10 h20 0x200", "对方工号"),
 		App.AddEdit("vstaffId x+10 w150 h20", "")
-
-		; App.AddReactiveButton(btnStyle, "复制`nComment`nAlert")
-		;    .OnEvent("Click", (*) => writeClipboard())
 	)
 
 	return comp

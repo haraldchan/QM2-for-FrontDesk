@@ -1,14 +1,14 @@
 TableRequest(props) {
 	App := props.App
 	commonStyle := props.commonStyle
-	; btnStyle := props.btnStyle
 
 	comp := Component(App, A_ThisFunc)
 	
 	restaurantList := ["宏图府", "玉堂春暖", "风味餐厅", "流浮阁"]
 	tomorrow := FormatTime(DateAdd(A_Now, 1, "Days"), "yyyyMMdd")
 
-	comp.writeClipboard := (*) {
+	comp.writeClipboard := writeClipboard
+	writeClipboard(*) {
 		form := comp.submit()
 		for field, val in form.OwnProps() {
 			if (field == "trTel" && !val) {
@@ -64,9 +64,6 @@ TableRequest(props) {
 		; accommodate
 		App.AddText("xs10 y+10 h20 0x200", "用餐人数"),
 		App.AddEdit("vtrAccommodate x+10 w150 h20 Number", "")
-
-		; App.AddReactiveButton(btnStyle, "复制`nComment`nAlert")
-		;    .OnEvent("Click", (*) => writeClipboard())
 	)
 
 	return comp

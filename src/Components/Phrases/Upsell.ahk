@@ -1,11 +1,11 @@
 Upsell(props) {
 	App := props.App
 	commonStyle := props.commonStyle
-	; btnStyle := props.btnStyle
 
 	comp := Component(App, A_ThisFunc)
 
-	comp.writeClipboard := (*) {
+	comp.writeClipboard := writeClipboard
+	writeClipboard(*) {
 		form := comp.submit()
 
 		if (form.upsType = "" || form.diff = "" || form.upsNts = "") {
@@ -39,9 +39,6 @@ Upsell(props) {
 		; comment lang
 		App.AddRadio("vupsIsChn xs10 y+15 h20 Checked", "中文"),
 		App.AddRadio("x+10 h20", "英文")
-			
-		; App.AddReactiveButton(btnStyle, "复制`nComment`nAlert")
-		; .OnEvent("Click", (*) => writeClipboard())	
 	)
 
 	return comp

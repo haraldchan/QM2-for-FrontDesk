@@ -22,12 +22,13 @@ Phrases(App) {
 	onMount(componentInstances) {
 		effect(selectedPhrase, phraseName => handleSwapWriteClipboard(phraseName))
 		handleSwapWriteClipboard(phraseName) {
+			writeClipboard := ObjBindMethod(
+				componentInstances[phraseComponents.indexOf(phraseName)], 
+				"writeClipboard"
+			)
+			
 			App.getCtrlByName("phraseCopy")
-			   .OnEvent(
-					"Click", 
-					(*) => componentInstances[phraseComponents.indexOf(phraseName)].writeClipboard(*), 
-					-1
-				)
+			   .OnEvent("Click", (*) => writeClipboard(), -1)
 		}
 
 		handleSwapWriteClipboard("RushRoom")
@@ -38,16 +39,7 @@ Phrases(App) {
 			App.AddRadio((phrase.name = selectedPhrase.value ? "Checked" : "") . " w200 h25", phrases[phrase])
 			   .OnEvent("Click", (*) => selectedPhrase.set(phrase.name))
 		),
-		Dynamic(
-			selectedPhrase, 
-			phraseComponents, 
-			{ 
-				App: App, 
-				commonStyle: "x30 y400 w350",  
-				; btnStyle: "x270 y430 w90 h55" 
-			},
-			&componentInstances
-		),
+		Dynamic(selectedPhrase, phraseComponents, { App: App, commonStyle: "x30 y400 w350" }, &componentInstances),
 		App.AddButton("vphraseCopy x270 y430 w90 h55", "复制`nComment`nAlert"),
 		onMount(componentInstances)
 	)

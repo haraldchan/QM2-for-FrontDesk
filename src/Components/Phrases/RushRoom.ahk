@@ -1,13 +1,13 @@
 RushRoom(props) {
 	App := props.App
 	commonStyle := props.commonStyle
-	; btnStyle := props.btnStyle
 
 	comp := Component(App, A_ThisFunc)
 
-	comp.writeClipboard := (*) {
+	comp.writeClipboard := writeClipboard
+	writeClipboard(*) {
 		rushTime := App.getCtrlByName("rushTime").Value
-		keyMade := App.getCtrlByName("made").Value
+		keyMade := App.getCtrlByName("keyMade").Value
 
 		if (!rushTime) {
 			return
@@ -27,8 +27,6 @@ RushRoom(props) {
 
 		App.AddRadio("vkeyMade xs10 y+10 h25 Checked", "已做卡"),
 		App.AddRadio("xp+70 h25", "未做卡")
-		; App.AddReactiveButton(btnStyle, "复制`nComment`nAlert")
-		;    .OnEvent("Click", (*) => writeClipboard())
 	)
 
 	return comp
