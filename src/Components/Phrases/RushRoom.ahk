@@ -10,7 +10,7 @@ RushRoom(props) {
 		keyMade := App.getCtrlByName("keyMade").Value
 
 		if (!rushTime) {
-			return
+			return 0
 		}
 
 		A_Clipboard := keyMade

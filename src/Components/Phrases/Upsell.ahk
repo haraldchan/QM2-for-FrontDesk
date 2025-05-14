@@ -8,8 +8,8 @@ Upsell(props) {
 	writeClipboard(*) {
 		form := comp.submit()
 
-		if (form.upsType = "" || form.diff = "" || form.upsNts = "") {
-			return
+		if (!form.upsType || !form.diff || !form.upsNts) {
+			return 0
 		}
 
 		commentTemplate := form.upsIsChn
@@ -30,11 +30,11 @@ Upsell(props) {
 
 		; diff
 		App.AddText("xs10 y+10 h20 0x200", "每晚差价"),
-		App.AddEdit("vdiff x+10 w150 h20", ""),
+		App.AddEdit("vdiff Number x+10 w150 h20", ""),
 
 		; nts
 		App.AddText("xs10 y+10 h20 0x200", "升级晚数"),
-		App.AddEdit("vupsNts x+10 w150 h20", ""),
+		App.AddEdit("vupsNts Number x+10 w150 h20", ""),
 
 		; comment lang
 		App.AddRadio("vupsIsChn xs10 y+15 h20 Checked", "中文"),

@@ -12,7 +12,7 @@ TableReserve(props) {
 		form := comp.submit()
 
 		if (form.time = "" || form.accommodate = "" || form.staffId = "") {
-			return
+			return 0
 		}
 
         A_Clipboard := Format("已预订{1} {2}, {3}。 人数: {4}位，接订工号：{5}",
