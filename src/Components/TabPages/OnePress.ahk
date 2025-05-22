@@ -18,7 +18,7 @@ OnePress(App) {
         moduleComponents[module.name] := module
     }
 
-    effect(selectedModule, moduleName => handleModuleChange(moduleName))
+    effect(selectedModule, handleModuleChange)
     handleModuleChange(moduleName) {
         for module in modules {
             App.getCtrlByName(module.name . "Action").Opt(module.name = moduleName ? "+Default" : "-Default")

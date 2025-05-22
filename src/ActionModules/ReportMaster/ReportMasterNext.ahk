@@ -24,7 +24,7 @@ ReportMasterNext(App) {
         reportCategory.set(ctrl.Text)
     }
 
-    effect(reportCategory, cur => handleCategorySelect(cur))
+    effect(reportCategory, handleCategorySelect)
     handleCategorySelect(current) {
         btns := [App.getCtrlByName("onr"), App.getCtrlByName("odg"), App.getCtrlByName("misc")]
         for btn in btns {

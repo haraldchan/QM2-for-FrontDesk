@@ -20,7 +20,7 @@ Phrases(App) {
 	}
 
 	onMount(componentInstances) {
-		effect(selectedPhrase, phraseName => handleSwapWriteClipboard(phraseName))
+		effect(selectedPhrase, handleSwapWriteClipboard)
 		handleSwapWriteClipboard(phraseName) {
 			writeClipboard := ObjBindMethod(
 				componentInstances[phraseComponents.indexOf(phraseName)], 
