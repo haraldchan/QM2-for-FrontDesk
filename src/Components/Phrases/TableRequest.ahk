@@ -33,6 +33,21 @@ TableRequest(props) {
         return MsgBox(A_Clipboard, "已复制信息", "T1")
 	}
 
+	formDefault := {
+		trRoom: "",
+		trGuestName: "",
+		trTel: "",
+		trAccommodate: "",
+		trRestaurant: restaurantList[1],
+		trDate: tomorrow
+	}
+
+	resetForm(*) {
+		for name, val in formDefault.OwnProps {
+			App[name].Value := val
+		}
+	}
+
 	comp.render := (this) => this.Add(
 		App.AddGroupBox("Section r9 " . commonStyle, "Table Reserve - 餐饮预订"),
 
@@ -58,7 +73,9 @@ TableRequest(props) {
 		
 		; date time
 		App.AddText("xs10 yp+35 h25 0x200", "预订日期"),
-		App.AddDateTime("vtrDate x+10 w150 Choose" . tomorrow, " MM月dd日 HH:mm")
+		App.AddDateTime("vtrDate x+10 w150 Choose" . tomorrow, " MM月dd日 HH:mm"),
+
+		App.AddButton("x270 y500 w80 h30", "清空").OnEvent("Click", resetForm)
 	)
 
 	return comp
