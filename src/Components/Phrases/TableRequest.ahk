@@ -43,8 +43,12 @@ TableRequest(props) {
 	}
 
 	resetForm(*) {
-		for name, val in formDefault.OwnProps {
-			App[name].Value := val
+		for name, val in formDefault.OwnProps() {
+			if (name == "trRestaurant") {
+				App[name].Choose(val)
+			} else {
+				App[name].Value := val
+			}
 		}
 	}
 
@@ -75,7 +79,7 @@ TableRequest(props) {
 		App.AddText("xs10 yp+35 h25 0x200", "预订日期"),
 		App.AddDateTime("vtrDate x+10 w150 Choose" . tomorrow, " MM月dd日 HH:mm"),
 
-		App.AddButton("x270 y500 w80 h30", "清空").OnEvent("Click", resetForm)
+		App.ARButton("x270 y500 w90 h30", "清  空").OnEvent("Click", resetForm)
 	)
 
 	return comp
