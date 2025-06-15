@@ -39,7 +39,7 @@ TableRequest(props) {
 		trTel: "",
 		trAccommodate: "",
 		trRestaurant: restaurantList[1],
-		trDate: tomorrow
+		trDate: FormatTime(DateAdd(A_Now, 1, "Days"), "yyyyMMdd") . "080000"
 	}
 
 	resetForm(*) {
