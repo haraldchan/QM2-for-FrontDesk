@@ -1,7 +1,21 @@
-defineArrayMethods(arr) {
+class ArrayExt {
+    static patch() {
+        if (!ARConfig.useExtendMethods) {
+            return
+        }
 
-    arr.Prototype.some := some
-    some(arr, fn) {
+        for method, enabled in ARConfig.enableExtendMethods.array.OwnProps() {
+            if (method == "sort" && enabled) {
+                Array.Prototype._merge := ObjBindMethod(this, "_merge")
+            }
+
+            if (enabled) {
+                Array.Prototype.%method% := ObjBindMethod(this, method)
+            }
+        }
+    }
+
+    static some(arr, fn) {
         for item in arr {
             if (fn(item)) {
                 return true
@@ -10,8 +24,7 @@ defineArrayMethods(arr) {
         return false
     }
 
-    arr.Prototype.every := every
-    every(arr, fn) {
+    static every(arr, fn) {
         for item in arr {
             if (!fn(item))
                 return false
@@ -19,8 +32,7 @@ defineArrayMethods(arr) {
         return true
     }
 
-    arr.Prototype.filter := filter
-    filter(arr, fn) {
+    static filter(arr, fn) {
         newArray := []
 
         for item in arr {
@@ -31,8 +43,7 @@ defineArrayMethods(arr) {
         return newArray
     }
 
-    arr.Prototype.find := find
-    find(arr, fn) {
+    static find(arr, fn) {
         for item in arr {
             if (fn(item)) {
                 return item
@@ -42,8 +53,7 @@ defineArrayMethods(arr) {
         return ""
     }
 
-    arr.Prototype.findIndex := findIndex
-    findIndex(arr, fn) {
+    static findIndex(arr, fn) {
         for item in arr {
             if (fn(item)) {
                 return A_Index
@@ -51,8 +61,21 @@ defineArrayMethods(arr) {
         }
     }
 
-    arr.Prototype.map := map
-    map(arr, fn) {
+    static at(arr, index) {
+        if (Abs(index) > arr.Length || index == 0) {
+            throw ValueError("Index out of range.")
+        }
+
+        if (index > 0) {
+            return arr[index]
+        }
+
+        if (index < 0) {
+            return arr[arr.Length + 1 + index]
+        }
+    }
+
+    static map(arr, fn) {
         newArray := []
 
         if (fn.MaxParams = 1) {
@@ -68,8 +91,7 @@ defineArrayMethods(arr) {
         return newArray
     }
 
-    arr.Prototype.reduce := reduce
-    reduce(arr, fn, initialValue) {
+    static reduce(arr, fn, initialValue) {
         initIsSet := !(initialValue = 0)
         accumulator := initIsSet ? initialValue : arr[1]
         currentValue := initIsSet ? arr[1] : arr[2]
@@ -90,22 +112,22 @@ defineArrayMethods(arr) {
         return result
     }
 
-    arr.Prototype.with := with
-    with(arr, index, newValue) {
-        if (index > arr.Length) {
+    static with(arr, index, newValue) {
+        if (Abs(index) > arr.Length || index == 0) {
             throw ValueError("Index out of range")
         }
 
-        newArray := []
-        for item in arr {
-            newArray.Push(item)
+        newArray := [arr*]
+        if (index < 0) {
+            newArray[arr.Length + 1 + index] := newValue
+        } else {
+            newArray[index] := newValue
         }
-        newArray[index] := newValue
+
         return newArray
     }
 
-    arr.Prototype.append := append
-    append(arr, val) {
+    static append(arr, val) {
         newArray := [arr*]
 
         if (val is Array) {
@@ -118,13 +140,11 @@ defineArrayMethods(arr) {
         return newArray
     }
 
-    arr.Prototype.unshift := unshift
-    unshift(arr, val) {
+    static unshift(arr, val) {
         newArray := [arr*]
 
         if (val is Array) {
-
-            for item in val.toReversed() {
+            for item in val.reverse() {
                 newArray.InsertAt(1, item)
             }
         } else {
@@ -133,8 +153,7 @@ defineArrayMethods(arr) {
         return newArray
     }
 
-    arr.Prototype.toReversed := toReversed
-    toReversed(arr) {
+    static reverse(arr) {
         newArray := []
         index := arr.Length
 
@@ -146,8 +165,7 @@ defineArrayMethods(arr) {
         return newArray
     }
 
-    arr.Prototype.unique := unique
-    unique(arr) {
+    static unique(arr) {
         newArray := arr
 
         loop newArray.Length {
@@ -159,8 +177,7 @@ defineArrayMethods(arr) {
         return newArray
     }
 
-    arr.Prototype.flat := flat
-    flat(arr) {
+    static flat(arr) {
         newArray := []
 
         flatInner(arr) {
@@ -178,8 +195,7 @@ defineArrayMethods(arr) {
         return newArray
     }
 
-    arr.Prototype.join := join
-    join(arr, separator := ",") {
+    static join(arr, separator := ",") {
         joined := ""
 
         for item in arr {
@@ -194,39 +210,45 @@ defineArrayMethods(arr) {
         return joined
     }
 
-    arr.Prototype.slice := slice
-    slice(arr, start := 1, end := arr.Length) {
+    static slice(arr, start := 1, end := arr.Length + 1) {
         newArray := []
 
-        for item in arr {
-            if (A_Index < start) {
-                continue
-            }
+        if (start < 1 || start > arr.length || end < 1 || end > arr.length + 1) {
+            return false
+        }
 
-            if (A_Index == end && end != arr.Length) {
-                break
-            }
-
-            newArray.Push(item)
+        index := start
+        loop (end == arr.Length + 1 ? arr.Length + 1 : end) - start {
+            newArray.Push(arr[index])
+            index++
         }
 
         return newArray
     }
 
-    arr.Prototype.at := at
-    at(arr, index) {
-        if (Abs(index) > arr.Length || index == 0) {
-            throw ValueError("Index out of range.")
+    static _merge(arr1, arr2, compareFn) {
+        mergedList := []
+
+        while (arr1.Length && arr2.Length) {
+            mergedList.Push(
+                compareFn(arr1[1], arr2[1]) < 0 ? arr1.RemoveAt(1) : arr2.RemoveAt(1)
+            )
         }
 
-        if (index > 0) {
-            return arr[index]
+        (arr1.Length && mergedList.Push(arr1*))
+        (arr2.Length && mergedList.Push(arr2*))
+
+        return mergedList
+    }
+    static sort(arr, compareFn := default(a, b) => a - b) {
+        if (arr.Length == 1) {
+            return arr
         }
 
-        if (index < 0) {
-            return arr[arr.Length + 1 - index]
-        }
+        mid := Integer(arr.Length / 2 + 1)
+        left := this.slice(arr, , mid)
+        right := this.slice(arr, mid)
+
+        return this._merge(this.sort(left, compareFn), this.sort(right, compareFn), compareFn)
     }
 }
-
-defineArrayMethods(Array)

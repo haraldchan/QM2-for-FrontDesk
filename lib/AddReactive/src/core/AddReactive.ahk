@@ -30,15 +30,19 @@ class AddReactive {
             if (depend.value is Array) {
                 this.optionTexts := depend.value
             } else if (depend.value is Map) {
-                this.optionTexts := depend.value.keys()
-                this.optionsValues := depend.value.values()
+                ; this.optionTexts := depend.value.keys()
+                this.optionTexts := MapExt.keys(depend.value)
+                ; this.optionsValues := depend.value.values()
+                this.optionsValues := MapExt.values(depend.value)
             }
         } else if (controlType == "ListView") {
             this.titleKeys := content.keys
             this.formattedContent := content.HasOwnProp("titles")
                 ? content.titles
-                : this.titleKeys.map(key => (key is Array) ? key[key.Length] : key)
-            this.colWidths := content.HasOwnProp("widths") ? content.widths : this.titleKeys.map(item => "AutoHdr")
+                ; : this.titleKeys.map(key => (key is Array) ? key[key.Length] : key)
+                : ArrayExt.map(this.titleKeys, key => (key is Array) ? key[key.Length] : key)
+            ; this.colWidths := content.HasOwnProp("widths") ? content.widths : this.titleKeys.map(item => "AutoHdr")
+            this.colWidths := content.HasOwnProp("widths") ? content.widths : ArrayExt.map(this.titleKeys, item => "AutoHdr")
         } else {
             this.formattedContent := RegExMatch(content, "\{\d+\}") ? this._handleFormatStr(content, depend, key) : content
         }
@@ -62,7 +66,7 @@ class AddReactive {
         this.ctrl.arcWrapper := this
 
         ; add subscribe
-        if (this.depend = 0) {
+        if (!this.depend) {
             return
         } else if (this.depend is Array) {
             for dep in this.depend {
@@ -74,14 +78,16 @@ class AddReactive {
     }
 
     _handleArcName(options) {
-        optionsString := this.ctrlType = "ListView" ? options.lvOptions : options
+        optionsString := this.ctrlType == "ListView" ? options.lvOptions : options
 
         optionsArr := StrSplit(optionsString, " ")
-        arcNameIndex := optionsArr.findIndex(item => InStr(item, "$"))
+        ; arcNameIndex := optionsArr.findIndex(item => InStr(item, "$"))
+        arcNameIndex := ArrayExt.findIndex(optionsArr, item => InStr(item, "$"))
 
-        if (arcNameIndex != "") {
-            this.name := optionsArr.RemoveAt(optionsArr.findIndex(item => InStr(item, "$")))
-            this.GuiObject.arcs.Push(this)
+        if (arcNameIndex) {
+            ; this.name := optionsArr.RemoveAt(optionsArr.findIndex(item => InStr(item, "$")))
+            this.name := optionsArr.RemoveAt(arcNameIndex)
+            this.GuiObject.arcs[this.name] := this
         }
 
         formattedOptions := ""
@@ -89,7 +95,7 @@ class AddReactive {
             formattedOptions .= option . " "
         }
 
-        if (this.ctrlType = "ListView") {
+        if (this.ctrlType == "ListView") {
             options.lvOptions := formattedOptions
             return options
         }
@@ -99,9 +105,13 @@ class AddReactive {
 
     _filterDepends(depend) {
         if (depend is Array) {
-            checkValueObject := depend.find(d => d is Object && d.HasOwnProp("checkValue"))
+            ; checkValueObject := depend.find(d => d is Object && d.HasOwnProp("checkValue"))
+            checkValueObject := ArrayExt.find(depend, d => d is Object && d.HasOwnProp("checkValue"))
             if (checkValueObject != "") {
-                this.checkValueDepend := (depend.RemoveAt(depend.findIndex(d => d is Object && d.HasOwnProp("checkValue")))).checkValue
+                this.checkValueDepend := (depend.RemoveAt(
+                    ; depend.findIndex(d => d is Object && d.HasOwnProp("checkValue"))
+                    ArrayExt.findIndex(depend, d => d is Object && d.HasOwnProp("checkValue"))
+                )).checkValue
                 this.checkValueDepend.addSub(this)
             }
             return depend
@@ -117,7 +127,7 @@ class AddReactive {
     _handleFormatStr(formatStr, depend, key) {
         vals := []
 
-        if (key = 0) {
+        if (!key) {
             handleKeyless()
         } else if (key is Number) {
             handleKeyNumber()
@@ -126,7 +136,7 @@ class AddReactive {
         }
 
         handleKeyless() {
-            if (depend = 0) {
+            if (!depend) {
                 return
             }
 
@@ -150,7 +160,7 @@ class AddReactive {
         handleKeyObject() {
             if (key[1] is Array) {
                 for k in key {
-                    if (A_Index = 1) {
+                    if (A_Index == 1) {
                         continue
                     }
                     vals.Push(depend.value[key[1][1]][k])
@@ -176,7 +186,8 @@ class AddReactive {
                 itemIn := item
             }
 
-            rowData := this.titleKeys.map(key => getRowData(key, itemIn))
+            ; rowData := this.titleKeys.map(key => getRowData(key, itemIn))
+            rowData := ArrayExt.map(this.titleKeys, key => getRowData(key, itemIn))
             getRowData(key, itemIn, layer := 1) {
                 if (key is String) {
                     if (itemIn.Has(key)) {
@@ -237,8 +248,8 @@ class AddReactive {
 
         if (this.ctrl is Gui.ListView) {
             ; update from checkStatusDepend
-            if (this.checkStatusDepend = signal) {
-                this.ctrl.Modify(0, this.checkStatusDepend.value = true ? "-Checked" : "+Checked")
+            if (this.checkStatusDepend == signal) {
+                this.ctrl.Modify(0, this.checkStatusDepend.value == true ? "-Checked" : "+Checked")
                 return
             }
             ; update list items
@@ -247,7 +258,7 @@ class AddReactive {
 
         if (this.ctrl is Gui.CheckBox) {
             ; update from checkStatusDepend
-            if (this.checkStatusDepend = signal) {
+            if (this.checkStatusDepend == signal) {
                 this.ctrl.Value := this.CheckStatusDepend.value
                 return
             }
@@ -261,18 +272,32 @@ class AddReactive {
         if (this.ctrl is Gui.ComboBox || this.ctrl is Gui.DDL) {
             ; replace the list content
             this.ctrl.Delete()
-            this.ctrl.Add(signal.value is Array ? signal.value : signal.value.keys())
+            ; this.ctrl.Add(signal.value is Array ? signal.value : signal.value.keys())
+            this.ctrl.Add(signal.value is Array ? signal.value : MapExt.keys(signal.value))
             this.ctrl.Choose(1)
             if (signal.value is Array) {
                 this.optionTexts := signal.value
             } else {
-                this.optionsTexts := signal.value.keys()
-                this.optionsValues := signal.value.values()
+                ; this.optionsTexts := signal.value.keys()
+                this.optionsTexts := MapExt.keys(signal.value)
+                ; this.optionsValues := signal.value.values()
+                this.optionsValues := MapExt.values(signal.value)
             }
         }
     }
 
     ; APIs
+    /**
+     * Sets a depend signal for AddReactive Control.
+     * @param {Signal} depend 
+     */
+    SetDepend(depend) {
+        this.depend := this._filterDepends(depend)
+        this.update(this.depend)
+
+        return this
+    }
+
     /**
      * Registers one or more functions to be call when given event is raised. 
      * @param {<String, Func>} event key-value pairs of event-callback.
@@ -301,6 +326,10 @@ class AddReactive {
         return this
     }
 
+    /**
+     * Sets various options and styles for the appearance and behavior of the control.
+     * @param newOptions Specify one or more control-specific or general options and styles, each separated from the next with one or more spaces or tabs.
+     */
     Opt(newOptions) {
         this.ctrl.Opt(newOptions)
         return this
@@ -321,10 +350,25 @@ class AddReactive {
 
     /**
      * Sets the font reactively with depend signal and option map.
-     * @param {Map} optionMap 
-     * @param {Signal} [depend] 
+     * ```
+     * color := signal("red")
+     * options := Map(
+     *  "red", "cRed"
+     *  "blue", "cBlue"
+     *  "green", "cGreen"
+     * )
+     * 
+     * AddReactiveText("...", "Text").SetFontStyles(options, color)
+     * ; or
+     * AddReactiveText("...", "{1}", color).SetFontStyles(options)
+     * ```
+     * @param {Map} optionMap A Map with depend signal value as keys, font options as values
+     * @param {Signal} [depend] Signal dependency. If omitted, it will use the AddReactive.depend instead.
      */
     SetFontStyles(optionMap, depend := this.depend) {
+        checkType(optionMap, Map)
+        checkType(depend, signal)
+
         effect(depend, cur => this.ctrl.SetFont(optionMap.has(cur) ? optionMap[cur] : optionMap["default"]))
         return this
     }
@@ -339,5 +383,5 @@ class AddReactive {
 }
 
 Gui.Prototype.AddReactive := AddReactive
-Gui.Prototype.arcs := []
-Gui.Prototype.arcGroups := []
+Gui.Prototype.arcs := Map()
+Gui.Prototype.arcs.Default := ""
