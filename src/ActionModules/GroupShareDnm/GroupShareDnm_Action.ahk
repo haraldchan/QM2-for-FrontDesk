@@ -1,5 +1,6 @@
 class GroupShareDnm_Action {
     static isRunning := false
+    static ActiveWinIcon := A_ScriptDir . "src\Assets\opera-active-win.png"
 
 	static start() {
 		this.isRunning := true
@@ -24,9 +25,9 @@ class GroupShareDnm_Action {
     static USE(roomQty, ratecode, both, shareOnly, dnmOnly) {
         this.start()
 
-        if (both = true) {
+        if (both) {
             this.shareDnm(roomQty, ratecode)
-        } else if (dnmOnly = true) {
+        } else if (dnmOnly) {
             this.dnm(roomQty)
         } else {
             this.shareDnm(roomQty, ratecode, shareOnly)
@@ -36,6 +37,14 @@ class GroupShareDnm_Action {
     }
 
     static shareDnm(roomQty, ratecode, shareOnly := false, initX := 340, initY := 311) {
+        ; check if Advance panel is opened
+        ImageSearch(&topX, &topY, 0, 0, A_ScreenWidth, A_ScreenHeight, this.ActiveWinIcon)
+        ; TODO: add find the coord & color code of the yellow border 
+        if (PixelGetColor(topX + 1, topY + 1) != "0x080000") {
+            Send "!a"
+            utils.waitLoading()
+        }
+
         MouseMove initX, initY ; 340, 311
         utils.waitLoading()
         Click "Down"
