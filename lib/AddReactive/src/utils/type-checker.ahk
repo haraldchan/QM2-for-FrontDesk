@@ -26,31 +26,45 @@ checkType(val, typeChecking, errMsg := 0) {
             }
         }
 
-        throw TypeError(errMsg != 0
-            ? Format("{1}; `n`nCurrent Type: {2}", errMsg, Type(val))
-            : Format("Expect Type: {1}. Current Type: {2}", getTypeName(typeChecking), Type(val))
+        throw TypeError(
+            errMsg != 0
+                ? Format("{1}; `n`nCurrent Type: {2}", errMsg, Type(val))
+                : Format("Expect Type: {1}. Current Type: {2}", getTypeName(typeChecking), Type(val)),
+            -1,
+            val
         )
     } else if (typeChecking == Object.Prototype) {
         if (!isPlainObject(val)) {
-            throw TypeError(errMsg != 0
-                ? Format("{1}; `n`nCurrent Type: {2}", errMsg, Type(val))
-                : Format("Expect Type: {1}. Current Type: {2}", "Plain Object", Type(val))
+            throw TypeError(
+                errMsg != 0
+                    ? Format("{1}; `n`nCurrent Type: {2}", errMsg, Type(val))
+                    : Format("Expect Type: {1}. Current Type: {2}", "Plain Object", Type(val)),
+                    -1,
+                    val
             )    
         }
     } else if (typeChecking is Func && typeChecking.name == "IsTime") {
         if (!IsTime(val)) {
-            throw ValueError(errMsg != 0
-                ? Format("{1}; `n`nCurrent Type: {2}", errMsg, Type(val))
-                : Format("Invalid date-time stamp.")
+            throw ValueError(
+                errMsg != 0
+                    ? Format("{1}; `n`nCurrent Type: {2}", errMsg, Type(val))
+                    : Format("Invalid date-time stamp."),
+                -1,
+                val
             )    
         }
 
     } else if (!(val is typeChecking)) {
-        throw TypeError(errMsg != 0
-            ? Format("{1}; `n`nCurrent Type: {2}", errMsg, Type(val))
-            : Format("Expect Type: {1}. Current Type: {2}", getTypeName(typeChecking), Type(val))
+        throw TypeError(
+            errMsg != 0
+                ? Format("{1}; `n`nCurrent Type: {2}", errMsg, Type(val))
+                : Format("Expect Type: {1}. Current Type: {2}", getTypeName(typeChecking), Type(val)),
+            -1,
+            val
         )
     }
+
+    return true
 }
 
 checkTypeDepend(depend) {
@@ -60,13 +74,15 @@ checkTypeDepend(depend) {
     errMsg := "Parameter #3 (depend) is not a signal or an array containing signals"
     if (depend is Array) {
         for item in depend {
-            if (!(item is signal || item is computed)) {
-                throw TypeError(Format("{1}; `n`nCurrent Type: {2}", errMsg, Type(depend)))
+            if (!(item is signal)) {
+                throw TypeError(Format("{1}; `n`nCurrent Type: {2}", errMsg, Type(depend)), -1, depend)
             }
         }
-    } else if (!(depend is signal || depend is computed)) {
-        throw TypeError(Format("{1}; `n`nCurrent Type: {2}", errMsg, Type(depend)))
+    } else if (!(depend is signal)) {
+        throw TypeError(Format("{1}; `n`nCurrent Type: {2}", errMsg, Type(depend)), -1, depend)
     }
+
+    return true
 }
 
 checkTypeEvent(e) {
@@ -79,6 +95,8 @@ checkTypeEvent(e) {
     } else {
         checkType(e, Array, errMsg)
     }
+
+    return true
 }
 
 /**

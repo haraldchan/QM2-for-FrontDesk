@@ -17,19 +17,22 @@ class Duration {
         }
     }
 
+    ; integer
     static seconds(duration) => TimeUnit(duration, "Seconds")
     static minutes(duration) => TimeUnit(duration, "Minutes")
     static hours(duration) => TimeUnit(duration, "Hours")
     static days(duration) => TimeUnit(duration, "Days")
+    
+    ; string/date
+    static secondsBetween(fromDate, toDate) => DateDiff(toDate, fromDate, "Seconds") 
+    static minutesBetween(fromDate, toDate) => DateDiff(toDate, fromDate, "Minutes")
+    static hourBetween(fromDate, toDate) => DateDiff(toDate, fromDate, "Hours")
+    static daysBetween(fromDate, toDate) => DateDiff(toDate, fromDate, "Days")
 
-    static secondsTo(fromDate, toDate) => DateDiff(toDate, fromDate, "Seconds")
-    static minutesTo(fromDate, toDate) => DateDiff(toDate, fromDate, "Minutes")
-    static hoursTo(fromDate, toDate) => DateDiff(toDate, fromDate, "Hours")
-    static daysTo(fromDate, toDate) => DateDiff(toDate, fromDate, "Days")
-
-    static tomorrow(fromDate, time := "000000") => this.nextDay(fromDate, time)
-    static nextDay(fromDate, time := "000000") => FormatTime(DateAdd(fromDate, 1, "Days"), "yyyyMMdd") . time
-    static yesterday(fromDate, time := "000000") => FormatTime(DateAdd(fromDate, -1, "Days"), "yyyyMMdd") . time
+    static tomorrow(fromDate, time := 0) => this.nextDay(fromDate, time)
+    static nextDay(fromDate, time := 0) => time ? FormatTime(DateAdd(fromDate, 1, "Days"), "yyyyMMdd") . time : DateAdd(fromDate, 1, "Days")
+    static yesterday(fromDate, time := 0) => time ? FormatTime(DateAdd(fromDate, -1, "Days"), "yyyyMMdd") . time : DateAdd(fromDate, -1, "Days")
+    static toFormat(time, timeFormat) => checkType(time, IsTime) && FormatTime(time, timeFormat)
 }
 
 class TimeUnit {
