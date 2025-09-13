@@ -1,6 +1,5 @@
 class GroupShareDnm_Action {
     static isRunning := false
-    static ActiveWinIcon := A_ScriptDir . "src\Assets\opera-active-win.png"
 
 	static start() {
 		this.isRunning := true
@@ -38,7 +37,7 @@ class GroupShareDnm_Action {
 
     static shareDnm(roomQty, ratecode, shareOnly := false, initX := 340, initY := 311) {
         ; check if Advance panel is opened
-        ImageSearch(&topX, &topY, 0, 0, A_ScreenWidth, A_ScreenHeight, this.ActiveWinIcon)
+        ImageSearch(&topX, &topY, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["opera-active-win.PNG"])
         ; TODO: add find the coord & color code of the yellow border 
         if (PixelGetColor(topX + 1, topY + 1) != "0x080000") {
             Send "!a"
@@ -57,7 +56,7 @@ class GroupShareDnm_Action {
         utils.waitLoading()
         Send Format("{Text}{1}", ratecode)
 		if (!this.isRunning) {
-			msgbox("脚本已终止", popupTitle, "4096 T1")
+			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
 			return
 		}
 
@@ -103,7 +102,7 @@ class GroupShareDnm_Action {
             Send "!r"
             utils.waitLoading()
             if (!this.isRunning) {
-                msgbox("脚本已终止", popupTitle, "4096 T1")
+                msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
                 return
             }
 
@@ -122,7 +121,7 @@ class GroupShareDnm_Action {
             Send "!c"
             utils.waitLoading()
             if (!this.isRunning) {
-                msgbox("脚本已终止", popupTitle, "4096 T1")
+                msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
                 return
             }
             
@@ -138,7 +137,7 @@ class GroupShareDnm_Action {
             Send "{Tab}"
             utils.waitLoading()
             if (!this.isRunning) {
-                msgbox("脚本已终止", popupTitle, "4096 T1")
+                msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
                 return
             }
 
@@ -161,7 +160,7 @@ class GroupShareDnm_Action {
     static dnm(roomQty, initX := 696, initY := 614) {
         loop roomQty {
             if (!this.isRunning) {
-                msgbox("脚本已终止", popupTitle, "4096 T1")
+                msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
                 return
             }
             MouseMove initX, initY ; 696, 614

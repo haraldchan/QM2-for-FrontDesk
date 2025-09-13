@@ -63,7 +63,7 @@ class BatchKeysXl_Action {
             退房时间：{2}
             )", coDateInputFormatted, coTimeInput), "GroupKey", "OKCancel")
         if (infoConfirm = "Cancel") {
-            utils.cleanReload(winGroup)
+            utils.cleanReload(WIN_GROUP)
         }
 
         return [coDateInputFormatted, coTimeInput]
@@ -147,7 +147,7 @@ class BatchKeysXl_Action {
                 {2}
                 )", roomingList[A_Index], finMsg), "Batch Keys", "OKCancel 4096")
             if (checkConf = "Cancel") {
-                utils.cleanReload(winGroup)
+                utils.cleanReload(WIN_GROUP)
             }
         }
     }

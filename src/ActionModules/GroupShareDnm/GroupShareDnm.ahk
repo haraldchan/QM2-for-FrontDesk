@@ -16,7 +16,7 @@ GroupShareDnm(props) {
     action() {
         form := gsd.submit()
         if (form.gsdRmQty = "") {
-            MsgBox("请输入需要处理的房间数量", popupTitle, "4096 T1")
+            MsgBox("请输入需要处理的房间数量", POPUP_TITLE, "4096 T1")
             App.getCtrlByName("gsdRmQty").Focus()
             return
         }

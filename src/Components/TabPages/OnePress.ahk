@@ -4,12 +4,13 @@ OnePress(App) {
         PaymentRelation,  "生成 PayBy PayFor 信息",
         Cashiering,       "入账关联 - 快速打开Billing、入Deposit等",
         GroupShareDnm,    "预抵房间批量 Share/DoNotMove",
-        PsbBatchUpload,   "旅业二期（网页版）批量上报",
-        PsbBatchCheckout, "旅业二期（网页版）批量退房",
+        ; PsbBatchUpload,   "旅业二期（网页版）批量上报",
+        ; PsbBatchCheckout, "旅业二期（网页版）批量退房",
         BatchKeysXl,      "批量房卡制作（Excel 表辅助）", 
         BatchKeysSq,      "批量房卡制作（连续输入）", 
-        FetchFedexResv,   "抓取 FedEx Opera 订单信息"
-        BriefingSheets,   "生成 Briefing 报表"
+        FetchFedexResv,   "抓取 FedEx Opera 订单信息",
+        ; BriefingSheets,   "生成 Briefing 报表",
+        RateChecking,     "快速查看房价"
     )
 
     selectedModule := signal(modules.keys()[1].name)
@@ -23,7 +24,7 @@ OnePress(App) {
         for module in modules {
             App.getCtrlByName(module.name . "Action").Opt(module.name = moduleName ? "+Default" : "-Default")
         }
-        WinSetAlwaysOnTop (moduleName = "PaymentRelation"), popupTitle
+        WinSetAlwaysOnTop (moduleName = "PaymentRelation"), POPUP_TITLE
     }
 
     return (

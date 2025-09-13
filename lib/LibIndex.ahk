@@ -3,4 +3,3 @@
 #Include "./useDebug.ahk"
 #Include "./AddReactive/useAddReactive.ahk"
 #Include "./useFileDB.ahk"
-#Include "./useProfile/useProfile.ahk"

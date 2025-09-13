@@ -1,5 +1,4 @@
 class BalanceTransfer {
-    static alertImg := A_ScriptDir . "\src\Assets\alert.png"
     static isRunning := false
 
 	static start() {
@@ -64,7 +63,7 @@ class BalanceTransfer {
         utils.waitLoading()
 
         ; check if it is no post 
-        if (ImageSearch(&FoundX, &FoundY, 0, 0, A_ScreenWidth, A_ScreenWidth, this.alertImg)) {
+        if (ImageSearch(&FoundX, &FoundY, 0, 0, A_ScreenWidth, A_ScreenWidth, IMAGES["alert.png"])) {
             Send "{Enter}"
             utils.waitLoading()
         } 

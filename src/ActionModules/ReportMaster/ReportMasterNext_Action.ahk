@@ -161,7 +161,7 @@ class ReportMasterNext_Action {
         Sleep 100
         Send "!o"
 		if (!this.isRunning) {
-			msgbox("脚本已终止", popupTitle, "4096 T1")
+			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
 			return
 		}
 
@@ -189,7 +189,7 @@ class ReportMasterNext_Action {
 
         TrayTip Format("正在保存：{1}", saveFileName)
 		if (!this.isRunning) {
-			msgbox("脚本已终止", popupTitle, "4096 T1")
+			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
 			return
 		}
 

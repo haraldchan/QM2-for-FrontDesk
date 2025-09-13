@@ -48,7 +48,7 @@ class BlankShare_Action {
 			}
 
 			if (!this.isRunning) {
-            	msgbox("脚本已终止", popupTitle, "4096 T1")
+            	msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
             	return	
 			}
 			utils.waitLoading()
@@ -65,7 +65,7 @@ class BlankShare_Action {
 		Send "!r" ; room number field
         utils.waitLoading()
         if (!this.isRunning) {
-            msgbox("脚本已终止", popupTitle, "4096 T1")
+            msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
             return
         }
 
@@ -77,13 +77,13 @@ class BlankShare_Action {
         utils.waitLoading()
 
         CoordMode "Pixel", "Screen"
-        if (ImageSearch(&_, &_ ,0, 0, A_ScreenWidth, A_ScreenHeight, A_ScriptDir . "\src\assets\info.PNG")) {
+        if (ImageSearch(&_, &_ ,0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["info.png"])) {
         	Send "{Enter}"
         	return "not found"
         }
 
         if (!this.isRunning) {
-            msgbox("脚本已终止", popupTitle, "4096 T1")
+            msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
             return
         }
 
@@ -94,7 +94,7 @@ class BlankShare_Action {
         Sleep 200
         Send "{Enter}"
         if (!this.isRunning) {
-            msgbox("脚本已终止", popupTitle, "4096 T1")
+            msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
             return
         }
 	}
@@ -118,7 +118,7 @@ class BlankShare_Action {
 			utils.waitLoading()
 		}
 		if (!this.isRunning) {
-			msgbox("脚本已终止", popupTitle, "4096 T1")
+			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
 			return
 		}
 
@@ -134,7 +134,7 @@ class BlankShare_Action {
 		utils.waitLoading()
 
 		if (!this.isRunning) {
-			msgbox("脚本已终止", popupTitle, "4096 T1")
+			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
 			return
 		}
 
@@ -178,7 +178,7 @@ class BlankShare_Action {
 		utils.waitLoading()
 
 		if (!this.isRunning) {
-			msgbox("脚本已终止", popupTitle, "4096 T1")
+			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
 			return
 		}
 
@@ -226,7 +226,7 @@ class BlankShare_Action {
 		}
 	
 		if (!this.isRunning) {
-			msgbox("脚本已终止", popupTitle, "4096 T1")
+			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
 			return
 		}
 
@@ -257,7 +257,7 @@ class BlankShare_Action {
 			utils.waitLoading()
 
 			CoordMode "Pixel", "Screen"
-			if (ImageSearch(&foundX, &foundY, 0, 0, A_ScreenWidth, A_ScreenHeight, A_ScriptDir . "\src\assets\alert.PNG")) {
+			if (ImageSearch(&foundX, &foundY, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["alert.png"])) {
 				if (PixelGetColor(foundX + 303, foundY) == "0xD7D7D7") {
 					Send "!y"
 					utils.waitLoading()
@@ -273,7 +273,7 @@ class BlankShare_Action {
 		if (shareQty > 1) {
 			loop (shareQty - 1) {
 				if (!this.isRunning) {
-					msgbox("脚本已终止", popupTitle, "4096 T1")
+					msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
 					return
 				}
 				loop 5 {
@@ -306,7 +306,7 @@ class BlankShare_Action {
 					utils.waitLoading()
 		
 					CoordMode "Pixel", "Screen"
-					if (ImageSearch(&foundX, &foundY, 0, 0, A_ScreenWidth, A_ScreenHeight, A_ScriptDir . "\src\assets\alert.PNG")) {
+					if (ImageSearch(&foundX, &foundY, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["alert.PNG"])) {
 						if (PixelGetColor(foundX + 303, foundY) == "0xD7D7D7") {
 							Send "!y"
 							utils.waitLoading()

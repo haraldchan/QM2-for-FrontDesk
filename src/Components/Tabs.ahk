@@ -4,8 +4,8 @@
 Tabs(App) {
 
 	return (
-		Tab3 := App.AddTab3("w380 x15" . " Choose1", ["一键运行", "报表保存", "常用语句", "InOut助手"]),
-		Tab3.OnEvent("Change", (*) => WinSetAlwaysOnTop(false, popupTitle))
+		Tab3 := App.AddTab3("w380 x15" . " Choose1", ["一键运行", "报表保存", "常用语句"]),
+		Tab3.OnEvent("Change", (*) => WinSetAlwaysOnTop(false, POPUP_TITLE))
 
 		Tab3.UseTab(1),
 		OnePress(App),

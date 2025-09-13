@@ -3,7 +3,7 @@ class CityLedgerCo {
 
 	static start() {
 		if (!WinExist("ahk_class SunAwtFrame")) {
-			MsgBox("Opera PMS 未启动！", popupTitle, "4096 T2")
+			MsgBox("Opera PMS 未启动！", POPUP_TITLE, "4096 T2")
 			return
 		}
 		WinMaximize "ahk_class SunAwtFrame"

@@ -1,5 +1,4 @@
 class FetchFedexResv_Action {
-    static AnchorImage := A_ScriptDir . "\src\Assets\opera-active-win.PNG"
     static isRunning := false
 
     static start() {
@@ -62,7 +61,7 @@ class FetchFedexResv_Action {
         crew["name"] := name[1] . " " . name[2]
         utils.waitLoading()
 		if (!this.isRunning) {
-			msgbox("脚本已终止", popupTitle, "4096 T1")
+			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
 			return
 		}    
 
@@ -70,7 +69,7 @@ class FetchFedexResv_Action {
         crew["trip"] := this.getTripNum()
         utils.waitLoading()
 		if (!this.isRunning) {
-			msgbox("脚本已终止", popupTitle, "4096 T1")
+			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
 			return
 		}
 
@@ -78,7 +77,7 @@ class FetchFedexResv_Action {
         Send "!i"
         utils.waitLoading()
 		if (!this.isRunning) {
-			msgbox("脚本已终止", popupTitle, "4096 T1")
+			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
 			return
 		}
 
@@ -110,7 +109,7 @@ class FetchFedexResv_Action {
         Send "!o"
         utils.waitLoading()
 		if (!this.isRunning) {
-			msgbox("脚本已终止", popupTitle, "4096 T1")
+			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
 			return
 		}
 
@@ -141,7 +140,7 @@ class FetchFedexResv_Action {
     static getCrewName() {
         ; Send "!p"
         loop 10 {
-            if (ImageSearch(&FoundX, &FoundY, 0, 0, A_ScreenWidth, A_ScreenWidth, this.AnchorImage)) {
+            if (ImageSearch(&FoundX, &FoundY, 0, 0, A_ScreenWidth, A_ScreenWidth, IMAGES["opera-active-win.PNG"])) {
                 anchorX := FoundX + 270
                 anchorY := FoundY + 36
                 break
@@ -170,7 +169,7 @@ class FetchFedexResv_Action {
 
     static getTripNum() {
         loop 10 {
-            if (ImageSearch(&FoundX, &FoundY, 0, 0, A_ScreenWidth, A_ScreenWidth, this.AnchorImage)) {
+            if (ImageSearch(&FoundX, &FoundY, 0, 0, A_ScreenWidth, A_ScreenWidth, IMAGES["AltNameAnchor.PNG"])) {
                 anchorX := FoundX + 718
                 anchorY := FoundY + 376
                 break

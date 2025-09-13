@@ -48,7 +48,7 @@ ReportMasterNext(App) {
         }
 
         if (XL_FILE_PATH == "") {
-            MsgBox("未找到 OnDayGroup Excel 文件，请手动添加", popupTitle, "4096 T1")
+            MsgBox("未找到 OnDayGroup Excel 文件，请手动添加", POPUP_TITLE, "4096 T1")
             App.Opt("+OwnDialogs")
             XL_FILE_PATH := FileSelect(3, , "请选择 OnDayGroup Excel 文件")
             if (XL_FILE_PATH == "") {
@@ -120,11 +120,11 @@ ReportMasterNext(App) {
 	openMyDocs(reportName) {
 		WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
 		saveText := "已保存报表：`n`n" . reportName . "`n`n是否打开所在文件夹? "
-		openFolder := MsgBox(saveText, popupTitle, "OKCancel 4096")
+		openFolder := MsgBox(saveText, POPUP_TITLE, "OKCancel 4096")
 		if (openFolder = "OK") {
 			Run A_MyDocuments
 		} else {
-			utils.cleanReload(winGroup)
+			utils.cleanReload(WIN_GROUP)
 		}
 	}
 
@@ -146,7 +146,7 @@ ReportMasterNext(App) {
             selectedReport := []
             for row in LV.getCheckedRowNumbers() {
                 if (LV.getCheckedRowNumbers()[1] = "0") {
-                    MsgBox("未选中报表", popupTitle, "T2")
+                    MsgBox("未选中报表", POPUP_TITLE, "T2")
                     App.Show()
                     return
                 }
@@ -169,7 +169,7 @@ ReportMasterNext(App) {
             selectedBlocks := []
             for block in LV.getCheckedRowNumbers() {
                 if (LV.getCheckedRowNumbers()[1] = "0") {
-                    MsgBox("未选中团队", popupTitle, "T2")
+                    MsgBox("未选中团队", POPUP_TITLE, "T2")
                     App.Show()
                     return
                 }

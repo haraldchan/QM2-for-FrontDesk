@@ -43,7 +43,7 @@ class PaymentRelation_Action {
                 this.pasteInfo(true)
                 utils.waitLoading()
                 if (!this.isRunning) {
-                    msgbox("脚本已终止", popupTitle, "4096 T1")
+                    msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
                     return
                 }
             }
@@ -75,7 +75,7 @@ class PaymentRelation_Action {
             A_Clipboard := pfMessage
             this.pasteInfo(true)
             if (!this.isRunning) {
-                msgbox("脚本已终止", popupTitle, "4096 T1")
+                msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
                 return
             }
 
@@ -92,7 +92,7 @@ class PaymentRelation_Action {
                 Send "{Enter}"
                 utils.waitLoading() 
                 if (!this.isRunning) {
-                    msgbox("脚本已终止", popupTitle, "4096 T1")
+                    msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
                     return
                 }
 
@@ -104,7 +104,7 @@ class PaymentRelation_Action {
 
                 this.pasteInfo(true, pfMessage, pbMessage)
                 if (!this.isRunning) {
-                    msgbox("脚本已终止", popupTitle, "4096 T1")
+                    msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
                     return
                 }
             }
@@ -119,7 +119,7 @@ class PaymentRelation_Action {
         Send "!r" ; room number field
         utils.waitLoading()
         if (!this.isRunning) {
-            msgbox("脚本已终止", popupTitle, "4096 T1")
+            msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
             return
         }
 
@@ -139,13 +139,13 @@ class PaymentRelation_Action {
         utils.waitLoading()
 
         CoordMode "Pixel", "Screen"
-        if (ImageSearch(&_, &_ ,0, 0, A_ScreenWidth, A_ScreenHeight, A_ScriptDir . "\src\assets\info.PNG")) {
+        if (ImageSearch(&_, &_ ,0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["info.PNG"])) {
             Send "{Enter}"
             return "not found"
         }
 
         if (!this.isRunning) {
-            msgbox("脚本已终止", popupTitle, "4096 T1")
+            msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
             return
         }
 
@@ -160,7 +160,7 @@ class PaymentRelation_Action {
         }
 
         if (!this.isRunning) {
-            msgbox("脚本已终止", popupTitle, "4096 T1")
+            msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
             return
         }
     }
@@ -168,9 +168,7 @@ class PaymentRelation_Action {
     static pasteInfo(keepGoing := false, pfMessage := "", pbMessage := "", initX := 759, initY := 266) {
         this.start()
 
-        commentPos := (A_OSVersion = "6.1.7601")
-            ? "\\10.0.2.13\fd\19-个人文件夹\HC\Software - 软件及脚本\AHK_Scripts\QM2-for-FrontDesk-main\src\assets\commentWin7.PNG"
-            : "\\10.0.2.13\fd\19-个人文件夹\HC\Software - 软件及脚本\AHK_Scripts\QM2-for-FrontDesk-main\src\assets\comment.PNG"
+        commentPos := (A_OSVersion = "6.1.7601") ? IMAGES["commentWin7.PNG"] : IMAGES["comment.PNG"]
 
         if (ImageSearch(&FoundX, &FoundY, 0, 0, A_ScreenWidth, A_ScreenHeight, commentPos)) {
             anchorX := FoundX
@@ -250,7 +248,7 @@ class PaymentRelation_Action {
         }
 
         if (!this.isRunning) {
-            msgbox("脚本已终止", popupTitle, "4096 T1")
+            msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
             return
         }
 
@@ -270,7 +268,7 @@ class PaymentRelation_Action {
         MouseMove initX - 70, initY + 211 ; 689, 477
         utils.waitLoading()
         if (!this.isRunning) {
-            msgbox("脚本已终止", popupTitle, "4096 T1")
+            msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
             return
         }
 

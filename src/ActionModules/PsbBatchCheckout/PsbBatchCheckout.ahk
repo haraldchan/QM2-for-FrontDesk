@@ -12,7 +12,7 @@ PsbBatchCheckout(props) {
     prevFailedList := signal([])
 
     handleGetDepartedRooms(forceReportDownload := false) {
-        if (forceReportDownload && MsgBox("是否下载 FO03 - Departures？", popupTitle, "OKCancel") == "Cancel") {
+        if (forceReportDownload && MsgBox("是否下载 FO03 - Departures？", POPUP_TITLE, "OKCancel") == "Cancel") {
             return
         }
 
@@ -57,7 +57,7 @@ PsbBatchCheckout(props) {
                 return
             }
 
-            if (forceReportDownload && MsgBox("是否下载 User Activity Log？", popupTitle, "OKCancel") == "Cancel") {
+            if (forceReportDownload && MsgBox("是否下载 User Activity Log？", POPUP_TITLE, "OKCancel") == "Cancel") {
                 ctrl.Text := "Log 筛选"
                 return
             }
@@ -98,7 +98,7 @@ PsbBatchCheckout(props) {
         checkedRooms := []
         for row in LV.getCheckedRowNumbers() {
             if (LV.getCheckedRowNumbers()[1] == "0") {
-                MsgBox("未选中房号", popupTitle, "T2")
+                MsgBox("未选中房号", POPUP_TITLE, "T2")
                 App.Show()
                 return
             }

@@ -1,7 +1,6 @@
 #Include "./InOutHelper_Action.ahk"
 
 class InOutHelper_Action {
-	static AnchorImage := A_ScriptDir . "\src\Assets\AltNameAnchor.PNG"
 	static FOUND := "0x000080"
 	static NOT_FOUND := "0x008080"
 
@@ -289,11 +288,11 @@ class InOutHelper_Action {
 		loop {
 			Sleep 100
 			if (A_Index > 30) {
-				MsgBox("界面定位失败", popupTitle, "T2 4096")
-				utils.cleanReload(winGroup)
+				MsgBox("界面定位失败", POPUP_TITLE, "T2 4096")
+				utils.cleanReload(WIN_GROUP)
 			}
 
-			if (ImageSearch(&FoundX, &FoundY, 0, 0, A_ScreenWidth, A_ScreenWidth, this.AnchorImage)) {
+			if (ImageSearch(&FoundX, &FoundY, 0, 0, A_ScreenWidth, A_ScreenWidth, IMAGES["AltNameAnchor.PNG"])) {
 				x := Number(FoundX) + 350
 				y := Number(FoundY) + 80
 				break

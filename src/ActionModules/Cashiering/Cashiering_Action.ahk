@@ -67,7 +67,7 @@ class Cashiering_Action {
         Send Format("{Text}{1}", form.password)
 		
 		if (!this.isRunning) {
-			msgbox("脚本已终止", popupTitle, "4096 T1")
+			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
 			return
 		}
         Sleep 200
@@ -91,7 +91,7 @@ class Cashiering_Action {
         Sleep 100
 
 		if (!this.isRunning) {
-			msgbox("脚本已终止", popupTitle, "4096 T1")
+			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
 			return
 		}
         Send Format("{Text}{1}", supplement.Value)
