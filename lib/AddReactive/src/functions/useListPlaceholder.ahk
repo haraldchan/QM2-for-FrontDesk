@@ -19,7 +19,7 @@ class useListPlaceholder {
         _signal.set([this._setLoadingValue()])
     }
 
-    _setLoadingValue(){
+    _setLoadingValue() {
         loadingValue := OrderedMap()
 
         for key in this.columnKeys {

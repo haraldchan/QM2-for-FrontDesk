@@ -1,4 +1,7 @@
 class ARConfig {
+    static debugMode := true
+    static useDevtoolsUI := false
+
     static useExtendMethods := true
     static enableExtendMethods := {
         array: {
@@ -34,12 +37,15 @@ class ARConfig {
             split:         true,
             substr:        true,
         },
+        integer: {
+            times:     true
+        },
         map: {
             keys:      true,
             values:    true,
             getKey:    true,
             deepClone: true,
-
+            setDefault:   true,
         },
         gui: {
             getCtrlByName:    true,
@@ -48,8 +54,8 @@ class ARConfig {
             getCtrlByText:    true,
             getComponent:     true,
             listview: {
-                getCheckedRows: true,
-                getFocusedRows: true
+                getCheckedRowNumbers: true,
+                getFocusedRowNumbers: true
             }
         }
     }
@@ -58,19 +64,20 @@ class ARConfig {
     static enableExtendClasses := {
         duration: {
             integer: {
-                seconds:    true,
-                minutes:    true,
-                hours:      true,
-                days:       true,
-
+                seconds: true,
+                minutes: true,
+                hours:   true,
+                days:    true,
             },
             string: {
-                secondsTo:  true,
-                minutesTo:  true,
-                hoursTo:    true,
-                daysTo:     true,
-                tomorrow:   true,
-                nextDay:    true, 
+                secondsBetween:  true,
+                minutesBetween:  true,
+                hoursBetween:    true,
+                daysBetween:     true,
+                tomorrow:        true,
+                nextDay:         true,
+                yesterday:       true,
+                toFormat:        true, 
             }
         }
     }

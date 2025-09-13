@@ -46,7 +46,7 @@ class IndexList {
         this._saveTemplates(this.ctrlGroups[1])
         this._updateListContent(this.signal.value)
 
-        effect(this.signal, new => this._updateListContent(new))
+        effect(this.signal, this._updateListContent)
     }
 
     _saveTemplates(controlGroup) {
@@ -62,7 +62,7 @@ class IndexList {
     _updateListContent(newValue) {
         for ctrlGroup in this.ctrlGroups {
             index := A_Index
-            values := this.keys.map(key => newValue[index][key])
+            values := this.keys.map(key => key is Func ? key(newValue[index]) : newValue[index][key])
 
             for ctrl in ctrlGroup {
                 updatedText := ""
