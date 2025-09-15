@@ -7,25 +7,16 @@ class RateChecking_Action {
         WinMaximize "ahk_class SunAwtFrame"
         WinActivate "ahk_class SunAwtFrame"
         Sleep 500
-        ; WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
-        ; BlockInput true
     }
 
     static end() {
         this.isRunning := false
         Hotkey("F12", "Off")
-
-        ; BlockInput false
-        ; WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
     }
 
-    static USE(confNums) {
-        this.start()
-        
+    static USE(confNums) {        
         parsedConfNums := this.parseConfNums(confNums)
         this.checkRate(parsedConfNums)
-
-        this.end()
     }
 
     static parseConfNums(confNums) {
@@ -54,7 +45,42 @@ class RateChecking_Action {
 
     static checkRate(confNums) {
         for confNum in confNums {
-            ; use existing rate checking script here
+            this.start()
+            
+            ; clear -> search for confNum
+            Send "!r"
+            loop 6 {
+                Send "{Tab}"
+            }
+            Sleep 100
+            Send "{Text}" . confNum
+            utils.waitLoading()
+            Send "!h"
+            utils.waitLoading()
+
+            ; skip if not found
+            if (ImageSearch(&outX, &outY, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["info.png"])) {
+                Send "{Enter}"
+                utils.waitLoading()
+                continue
+            }
+
+            ; show room rate
+            showRate := msgbox("打开 Rate Info?",,"OKCANCEL 4096")
+            if (showRate == "Cancel") {
+                continue
+            }            
+            Send "!t"
+            utils.waitLoading()
+            Send "!f"
+            utils.waitLoading()
+
+            if (msgbox("关闭当前预订",, "OK 4096") == "OK") {
+                Send "!c"
+                utils.waitLoading()
+                Send "!c"
+                utils.waitLoading()
+            }
         }
     }
 }
