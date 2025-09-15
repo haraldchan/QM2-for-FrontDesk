@@ -24,6 +24,10 @@ RateChecking(props) {
     }
 
     handleHistoryNavigate(scf, direction) {
+        if (!history.Length) {
+            return
+        }
+
         if (direction == "Up") {
             if (curPtr == 1) {
                 scf.Value := history[1]
@@ -64,10 +68,10 @@ RateChecking(props) {
     }
 
     comp.render := (this) => this.Add(
-        App.AddGroupBox("Section r6 " . s.xPos . s.yPos . s.wide, "快速查看房价"),
+        App.AddGroupBox("Section r5 " . s.xPos . s.yPos . s.wide, "快速查看房价"),
         ; conf number(s)
         App.AddText("xs10 w150 h20 0x200 yp+30", "订单确认号 (空格分割)"),
-        App.AREdit("vsuptConfNums y+5 w200 h20 0x200", ""),
+        App.AREdit("vsuptConfNums y+10 w200 h20 0x200", ""),
         App.ARButton("vRateCheckingAction xs10 y+10 w100", "查看房价")
            .OnEvent("Click", action),
         onMount()
