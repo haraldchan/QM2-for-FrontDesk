@@ -32,4 +32,29 @@ class StringExt {
 
         return str
     }
+
+    static repeat(str, times) {
+        newStr := ""
+        
+        loop times {
+            newStr .= str
+        }
+
+        return newStr
+    }
+
+    static slice(str, start, end := StrLen(str)) {
+        newStr := ""
+
+        loop parse str {
+            if A_Index < start {
+                continue
+            }
+
+            newStr .= A_LoopField
+
+        } until A_Index == end - 1
+
+        return newStr
+    }
 }

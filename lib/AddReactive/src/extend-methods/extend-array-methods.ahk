@@ -211,18 +211,17 @@ class ArrayExt {
     }
 
     ; include start, exclude end
-    static slice(arr, start := 1, end := arr.Length + 1) {
+    static slice(arr, start, end := arr.Length + 1) {
         newArray := []
 
-        if (start < 1 || start > arr.length || end < 1 || end > arr.length + 1) {
-            return false
-        }
+        loop {
+            if (A_Index < start) {
+                continue
+            }
 
-        index := start
-        loop (end == arr.Length + 1 ? arr.Length + 1 : end) - start {
-            newArray.Push(arr[index])
-            index++
-        }
+            newArray.Push(arr[A_Index])
+
+        } until A_Index == end - 1
 
         return newArray
     }
@@ -247,7 +246,7 @@ class ArrayExt {
         }
 
         mid := Integer(arr.Length / 2 + 1)
-        left := this.slice(arr, , mid)
+        left := this.slice(arr, 1, mid)
         right := this.slice(arr, mid)
 
         return this._merge(this.sort(left, compareFn), this.sort(right, compareFn), compareFn)

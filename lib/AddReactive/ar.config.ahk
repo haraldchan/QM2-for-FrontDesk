@@ -35,7 +35,8 @@ class ARConfig {
             replace:       true,
             replaceThese:  true,
             split:         true,
-            substr:        true,
+            substr:        true,            
+            slice:         true
         },
         integer: {
             times:     true

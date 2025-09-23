@@ -30,10 +30,7 @@ class RateChecking_Action {
             }
 
             if (StrLen(confNum) < StrLen(splitted[1])) {
-                moddedConfNum := splitted[1].split("")
-                                            .slice(1, StrLen(splitted[1]) - StrLen(confNum) + 1)
-                                            .append(confNum)
-                                            .join("")
+                moddedConfNum := splitted[1].slice(1, StrLen(splitted[1]) - StrLen(confNum) + 1) . confNum
                 parsed.Push(moddedConfNum)
             } else {
                 parsed.Push(confNum)
