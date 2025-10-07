@@ -169,7 +169,7 @@ class FetchFedexResv_Action {
 
     static getTripNum() {
         loop 10 {
-            if (ImageSearch(&FoundX, &FoundY, 0, 0, A_ScreenWidth, A_ScreenWidth, IMAGES["AltNameAnchor.PNG"])) {
+            if (ImageSearch(&FoundX, &FoundY, 0, 0, A_ScreenWidth, A_ScreenWidth, IMAGES["opera-active-win.PNG"])) {
                 anchorX := FoundX + 718
                 anchorY := FoundY + 376
                 break
