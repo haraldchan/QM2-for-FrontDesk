@@ -27,7 +27,7 @@ class CityLedgerCo {
 		this.start()
 
 		isBlue := "0x004080"
-		PixelGetColor(600, 830) = isBlue
+		PixelGetColor(600, 830) == isBlue
 			? this.fullWin()
 			: this.smallWin()
 		
@@ -40,7 +40,7 @@ class CityLedgerCo {
 		Click
 		Sleep 10
 		Send "!o"
-		Sleep 10
+		utils.waitLoading()
 		Send "{Blind}{Text}CL"
 		if (!this.isRunning) {
 			this.end()
@@ -49,25 +49,27 @@ class CityLedgerCo {
 
 		Sleep 10
 		Send "!f"
-		Sleep 10
+		utils.waitLoading()
 		Send "!p"
-		Sleep 10
-		Send "{Esc}"
-		Sleep 10
+		utils.waitLoading()
+		Send "!n"
+		utils.waitLoading()
+		Sleep 100
 
-		; Move to Close button
-		; MouseMove 894, 722
-		; Move to Win.1
-		MouseMove 664, 539
-		Sleep 10
-		Click
+		loop {
+			if (ImageSearch(&foundX, &foundY, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["alert.png"])) {
+				MouseMove foundX, foundY
+				Click
+				break
+			}
 
-		Sleep 3500
-		; WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
-		; WinActivate "ahk_class SunAwtFrame"
-		Send "{Escape}"
+			Sleep 100
+		} until (A_Index > 20)
+
+		Send "!n"
+		utils.waitLoading()
+
 		MouseMove 352, 269
-
 		this.end()
 	}
 
