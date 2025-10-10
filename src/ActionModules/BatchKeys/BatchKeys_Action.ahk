@@ -41,15 +41,18 @@ class BatchKeysXl_Action {
         lastRow := groupRooms.Cells(groupRooms.Rows.Count, "A").End(-4162).Row
 
         roomingList := this.getRoomingList(lastRow, groupRooms)
-        unpack([&coDateXls, &coTimeXls], this.getCheckoutDateTimeXls(lastRow, groupRooms))
+        co := this.getCheckoutDateTimeXls(lastRow, groupRooms)
+        coDateXls := co[1]
+        coTimeXls := co[2]
 
         GroupKeysXl.Close()
         Xl.Quit()
 
-        this.start()
-
         loop lastRow {
+            this.start() 
+
             room := roomingList[A_Index]
+
             coDate := !coDateXls[A_Index] ? coDateTimeFromInput[1] : coDateXls[A_Index]   
             etd := !coTimeXls[A_Index] ? coDateTimeFromInput[2] : coTimeXls[A_Index]
 
@@ -72,9 +75,9 @@ class BatchKeysXl_Action {
                 return
             }
             BlockInput true
-        }
 
-        this.end()
+            this.end()
+        }
     }
 
     /**
