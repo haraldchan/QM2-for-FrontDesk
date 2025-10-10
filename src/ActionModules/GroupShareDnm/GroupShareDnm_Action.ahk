@@ -37,9 +37,8 @@ class GroupShareDnm_Action {
 
     static shareDnm(roomQty, ratecode, shareOnly := false, initX := 340, initY := 311) {
         ; check if Advance panel is opened
-        ImageSearch(&topX, &topY, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["opera-active-win.PNG"])
-        ; TODO: add find the coord & color code of the yellow border 
-        if (PixelGetColor(topX + 1, topY + 1) != "0x080000") {
+        CoordMode "Pixel", "Screen"
+        if (PixelGetColor(198, 297) != "0xFFFF00") {
             Send "!a"
             utils.waitLoading()
         }
