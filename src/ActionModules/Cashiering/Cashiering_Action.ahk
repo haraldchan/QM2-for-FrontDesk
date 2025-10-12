@@ -128,7 +128,15 @@ class Cashiering_Action {
         WinActivate "ahk_class SunAwtFrame"
         Sleep 100
         Send "!p"
-        Sleep 100
+        utils.waitLoading()
+        Sleep 200
+        if (ImageSearch(&foundX, &foundY, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["alert.png"])) {
+            MouseMove foundX, foundY
+            Click
+            Send "!y"
+            utils.waitLoading()
+        }
+
         Send "8888"
         Sleep 100
         Send "{Tab}"
