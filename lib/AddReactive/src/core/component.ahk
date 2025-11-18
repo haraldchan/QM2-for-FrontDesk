@@ -17,7 +17,7 @@ class Component {
         checkType(name, String, "Parameter #1 is not a string")
         this.GuiObj := GuiObj
         this.name := name
-        this.props := {}
+        this._props := {}
         this.ctrls := []
         this.children := () => {}
         this.childComponents := []
@@ -35,7 +35,7 @@ class Component {
      * @returns {Component}
      */
     Add(controls*) {
-        saveControls(ctrlsArray, controls) {
+        _saveControls(ctrlsArray, controls) {
             for control in controls {
                 ; native control
                 if (control is Gui.Control) {
@@ -51,13 +51,13 @@ class Component {
 
                 ; Array
                 if (control is Array) {
-                    saveControls(ctrlsArray, control)
+                    _saveControls(ctrlsArray, control)
                 }
 
                 ; IndexList
                 if (control is IndexList) {
                     for listControl in control.ctrlGroups {
-                        saveControls(ctrlsArray, listControl)
+                        _saveControls(ctrlsArray, listControl)
                     }
                 }
 
@@ -65,11 +65,16 @@ class Component {
                 if (control is Component) {
                     this.childComponents.Push(control)
                 }
+
+                ; StackBox
+                if (control is StackBox) {
+                    _saveControls(ctrlsArray, control.ctrls)
+                }
             }
         }
 
         ctrls := []
-        saveControls(ctrls, controls)
+        _saveControls(ctrls, controls)
         this.ctrls.Push(ctrls*)
 
         return this
@@ -84,15 +89,15 @@ class Component {
         
         for name, val in props.OwnProps() {
             if (name == this.name) {
-                this.props := val
+                this._props := val
             }
         }
     }
 
     defineChildren() {
-        if (this.props.HasOwnProp("children")) {
-            checkType(this.props.children, Func)
-            this.children := this.props.children.Bind(this.GuiObj)
+        if (this._props.HasOwnProp("children")) {
+            checkType(this._props.children, Func)
+            this.children := this._props.children.Bind(this.GuiObj)
         }
     }
 
