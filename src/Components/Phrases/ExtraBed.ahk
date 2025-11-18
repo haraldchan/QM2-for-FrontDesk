@@ -1,5 +1,4 @@
-ExtraBed(props) {
-	App := props.App
+ExtraBed(App, props) {
 	commonStyle := props.commonStyle
 
 	comp := Component(App, A_ThisFunc)

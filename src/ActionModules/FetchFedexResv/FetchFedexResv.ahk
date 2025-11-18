@@ -1,7 +1,6 @@
 #Include "./FetchFedexResv_Action.ahk"
 
-FetchFedexResv(props) {
-    App := props.App
+FetchFedexResv(App, props) {
     styles := props.styles
 
     ffr := Component(App, A_ThisFunc)

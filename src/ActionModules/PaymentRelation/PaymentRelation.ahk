@@ -1,8 +1,6 @@
 #Include "./PaymentRelation_Action.ahk"
 
-PaymentRelation(props) {
-    App := props.App, 
-    
+PaymentRelation(App, props) {    
     s := useProps(props.styles, {
         useCopyBtn: true,
         xPos: "x30 ",

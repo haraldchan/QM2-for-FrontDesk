@@ -1,7 +1,6 @@
 #Include "./Cashiering_Action.ahk"
 
-Cashiering(props) {
-    App := props.App, 
+Cashiering(App, props) {
     styles := props.styles
 
     c := Component(App, A_ThisFunc)

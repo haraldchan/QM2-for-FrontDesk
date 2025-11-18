@@ -1,5 +1,4 @@
-Upsell(props) {
-	App := props.App
+Upsell(App, props) {
 	commonStyle := props.commonStyle
 
 	comp := Component(App, A_ThisFunc)

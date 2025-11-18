@@ -1,7 +1,6 @@
 #Include "./GroupShareDnm_Action.ahk"
 
-GroupShareDnm(props) {
-    App := props.App, 
+GroupShareDnm(App, props) {
     styles := props.styles
 
     gsd := Component(App, A_ThisFunc)

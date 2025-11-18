@@ -1,5 +1,4 @@
-RushRoom(props) {
-	App := props.App
+RushRoom(App, props) {
 	commonStyle := props.commonStyle
 
 	comp := Component(App, A_ThisFunc)

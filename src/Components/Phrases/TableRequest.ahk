@@ -1,5 +1,4 @@
-TableRequest(props) {
-	App := props.App
+TableRequest(App, props) {
 	commonStyle := props.commonStyle
 
 	comp := Component(App, A_ThisFunc)

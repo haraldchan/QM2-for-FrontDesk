@@ -1,7 +1,6 @@
 #Include "./BatchKeys_Action.ahk"
 
-BatchKeysSq(props) {
-    App := props.App
+BatchKeysSq(App, props) {
     styles := props.styles
 
     bk := Component(App, A_ThisFunc)

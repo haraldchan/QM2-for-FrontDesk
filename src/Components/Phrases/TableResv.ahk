@@ -1,5 +1,4 @@
-TableReserve(props) {
-	App := props.App
+TableReserve(App, props) {
 	commonStyle := props.commonStyle
 
 	comp := Component(App, A_ThisFunc)

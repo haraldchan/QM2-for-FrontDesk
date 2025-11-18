@@ -39,7 +39,7 @@ Phrases(App) {
 			App.AddRadio((phrase.name = selectedPhrase.value ? "Checked" : "") . " w200 h25", phrases[phrase])
 			   .OnEvent("Click", (*) => selectedPhrase.set(phrase.name))
 		),
-		Dynamic(selectedPhrase, phraseComponents, { App: App, commonStyle: "x30 y400 w350" }, &componentInstances),
+		Dynamic(App, selectedPhrase, phraseComponents, { commonStyle: "x30 y400 w350" }, &componentInstances),
 		App.AddButton("vphraseCopy x270 y430 w90 h55", "复制`nComment`nAlert"),
 		onMount(componentInstances)
 	)

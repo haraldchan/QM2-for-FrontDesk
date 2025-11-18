@@ -1,8 +1,6 @@
 #Include "./BlankShare_Action.ahk"
 
-BlankShare(props) {
-    App := props.App
-    
+BlankShare(App, props) {    
     bs := Component(App, A_ThisFunc, props)
 
     s := useProps(props.styles, {

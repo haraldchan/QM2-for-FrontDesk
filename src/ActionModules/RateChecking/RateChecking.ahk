@@ -1,7 +1,6 @@
 #Include "./RateChecking_Action.ahk"
 
-RateChecking(props) {
-    App := props.App
+RateChecking(App, props) {
     comp := Component(App, A_ThisFunc)
 
     s := useProps(props.styles, {
