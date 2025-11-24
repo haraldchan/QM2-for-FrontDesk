@@ -52,64 +52,51 @@ class Cashiering_Action {
 
         this.start()
 
-        Sleep 500
         Send "!t"
-        MouseMove 710, 378
-        Sleep 500
-        Click 1
-        Sleep 500
+        utils.waitLoading()
+        Send "dep"
+        utils.waitLoading()
         Send "!p"
-        Sleep 200
-        MouseMove 584, 446
-        Sleep 300
-        Send "{BackSpace}"
-        Sleep 100
+        utils.waitLoading()
         Send Format("{Text}{1}", form.password)
-		
-		if (!this.isRunning) {
-			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
-			return
-		}
-        Sleep 200
-        MouseMove 707, 397
-        Sleep 500
+        utils.waitLoading()
+        
+        if (!this.isRunning) {
+            msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
+            return
+        }
+
         Send "{Enter}"
-        Sleep 100
+        utils.waitLoading()
         Send Format("{Text}{1}", form.paymentType)
         Sleep 200
-        MouseMove 944, 387
-        Sleep 450
         Send "{Tab}"
         Sleep 200
         Send "{Tab}"
         Sleep 200
         Send Format("{Text}{1}", amount.Value)
         Sleep 200
-        MouseMove 577, 326
-        Sleep 100
         Send "{Tab}"
-        Sleep 100
+        Sleep 200
 
-		if (!this.isRunning) {
-			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
-			return
-		}
+        if (!this.isRunning) {
+            msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
+            return
+        }
         Send Format("{Text}{1}", supplement.Value)
-        Sleep 100
-        MouseMove 596, 421
-        Sleep 500
+
         Send "!o"
-        Sleep 300
+        utils.waitLoading()
         Send "{Escape}"
-        Sleep 200
+        utils.waitLoading()
         Send "{Escape}"
-        Sleep 200
+        utils.waitLoading()
         Send "{Escape}"
-        Sleep 200
+        utils.waitLoading()
         Send "!c"
-        Sleep 200
+        utils.waitLoading()
         Send "!c"
-        Sleep 200
+        utils.waitLoading()
 
         this.end()
     }
