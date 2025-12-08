@@ -1,8 +1,10 @@
-#Include "../lib/LibIndex.ahk"
-#Include "../src/ActionModules/ActionModuleIndex.ahk"
-#Include "./Components/Tabs.ahk"
-#Include "./PersistScripts/PersistScriptsControl.ahk"
+#Include "./action-modules/action-module-index.ahk"
+#Include "./components/tabs.ahk"
+#Include "./persist-scripts/persist-scripts-control.ahk"
 
+/**
+ * @param {Svaner} App 
+ */
 App(App) {
 	description := "
 	(
@@ -19,6 +21,6 @@ App(App) {
 		
 		; Action Module Tabs
 		Tabs(App),
-		App.getCtrlByName("firstRadio").Focus()
+		App["firstRadio"].Focus()
 	)
 }

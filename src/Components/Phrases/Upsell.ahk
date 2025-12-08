@@ -1,6 +1,9 @@
+/**
+ * @param {Svaner} App 
+ * @param {Object} props
+ * @returns {Component}
+ */
 Upsell(App, props) {
-	commonStyle := props.commonStyle
-
 	comp := Component(App, A_ThisFunc)
 
 	comp.writeClipboard := writeClipboard
@@ -16,28 +19,34 @@ Upsell(App, props) {
 			: "Add RMB{1}(per night) upgrade to {2} for {3}Nights, total RMB{4} EXTRA"
 
 		A_Clipboard := Format(commentTemplate, form.diff, form.upsType, form.upsNts, form.diff * form.upsNts)
-		
+
 		return MsgBox(A_Clipboard, "已复制信息", "T1")
 	}
 
 	comp.render := (this) => this.Add(
-		App.AddGroupBox("Section r6 " . commonStyle, "Upselling - 房间升级"),
-
-		; room type
-		App.AddText("xs10 yp+30 h20 0x200", "升级房型"),
-		App.AddEdit("vupsType x+10 w150 h20"),
-
-		; diff
-		App.AddText("xs10 y+10 h20 0x200", "每晚差价"),
-		App.AddEdit("vdiff Number x+10 w150 h20", ""),
-
-		; nts
-		App.AddText("xs10 y+10 h20 0x200", "升级晚数"),
-		App.AddEdit("vupsNts Number x+10 w150 h20", ""),
-
-		; comment lang
-		App.AddRadio("vupsIsChn xs10 y+15 h20 Checked", "中文"),
-		App.AddRadio("x+10 h20", "英文")
+		StackBox(App, 
+			{
+				name: "upselling-stack-box",
+				groupbox: {
+					title: "Upselling - 房间升级",
+					options: "Section r7 @use:phrase-box-xyw"
+				}
+			},
+			() => [
+				; room type
+				App.AddText("xs10 yp+30 h20 0x200", "升级房型"),
+				App.AddEdit("vups-type x+10 w150 h20"),
+				; diff
+				App.AddText("xs10 y+10 h20 0x200", "每晚差价"),
+				App.AddEdit("vdiff Number x+10 w150 h20", ""),
+				; nts
+				App.AddText("xs10 y+10 h20 0x200", "升级晚数"),
+				App.AddEdit("vups-nts Number x+10 w150 h20", ""),
+				; comment lang
+				App.AddRadio("vups-is-chn xs10 y+15 h20 Checked", "中文"),
+				App.AddRadio("x+10 h20", "英文")
+			]
+		)
 	)
 
 	return comp
