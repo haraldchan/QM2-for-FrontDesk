@@ -22,7 +22,7 @@ PersistScriptsControl(App) {
 		HotString("::bt", (*) => BalanceTransfer.USE())
 
 		; Deposit Entry
-		OnClipboardChange((*) => DepositEntry.USE())
+		OnClipboardChange((*) => DepositEntry.USE(App["deposit-entry-on"]))
 	}
 
 	App.defineDirectives(
