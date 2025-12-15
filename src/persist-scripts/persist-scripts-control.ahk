@@ -1,53 +1,68 @@
-#Include "./balance-transfer.ahk"
-#Include "./city-ledger-co.ahk"
-#Include "./scan-invoke.ahk"
+#Include balance-transfer.ahk
+#Include city-ledger-co.ahk
+#Include scan-invoke.ahk
+#Include deposit-entry.ahk
 
 /**
  * @param {Svaner} App 
  */
 PersistScriptsControl(App) {
-	setHotkeys() {
+	onMount() {
 		; City Ledger
-		HotIf (*) => App.getCtrlByName("CityLedgerOn").Value
+		HotIf (*) => App["city-ledger-on"].Value
 		Hotkey("^o", (*) => CityLedgerCo.USE())
 		Hotkey("MButton", (*) => CityLedgerCo.USE())
 
 		; Invoke Scan
-		HotIf (*) => App.getCtrlByName("ScanInvoke").Value
+		HotIf (*) => App["scan-invoke-on"].Value
 		Hotkey("^+s", (*) => ScanInvoke(), "On")
 
 		; Balance Transfer
-		HotIf (*) => App.getCtrlByName("BalanceTransferOn").Value
+		HotIf (*) => App["balance-transfer-on"].Value
 		HotString("::bt", (*) => BalanceTransfer.USE())
+
+		; Deposit Entry
+		OnClipboardChange((*) => DepositEntry.USE())
 	}
 
-	openScanFolder(*) => Run("\\10.0.2.13\fd\01 FO PASSPORT SCANNING")
+	App.defineDirectives(
+		"@use:psc-label", "xs10 yp+25 w130 h25",
+		"@use:psc-desc", "w150 h25 x+10 0x200",
+		"@func:bold", ctrl => ctrl.SetFont("bold")
+	)
 
 	return (
-		StackBox(App, {
-			name: "persist-scripts-stack-box",
-			fontOptions: "bold",
-			groupbox: {
-				title: "常驻脚本",
-				options: "Section x15 y+10 w375 h100",
-			}
-		},
+		StackBox(
+			App, 
+			{
+				name: "persist-scripts-stack-box",
+				fontOptions: "bold",
+				groupbox: {
+					title: "常驻脚本",
+					options: "Section x15 y+10 w375 h130",
+				}
+			},
 			() => [
 				; City Ledger
-				App.AddCheckbox("vCityLedgerOn xs10 ys+20 w130 h25", "City Ledger"),
-				App.AddText("w150 h25 x+10 0x200", "热键: Ctrl + O | 鼠标滚轮键"),
-				
+				App.AddCheckbox("vcity-ledger-on @use:psc-label", "City Ledger"),
+				App.AddText("@use:psc-desc", "热键: Ctrl + O | 鼠标滚轮键"),
+			
 				; Scan Invoke
-				App.AddCheckbox("vScanInvoke xs10 yp+25 w130 h25 Checked", "启动扫描"),
-				App.AddText("w110 h25 x+10 0x200", "热键: Ctrl+Shift+S"),
-				App.AddButton("x+10 h23", "Scan 文件夹").onClick(openScanFolder),
-				
+				App.AddCheckbox("vscan-invoke-on @use:psc-label Checked", "启动扫描"),
+				App.AddText("@use:psc-desc", "热键: Ctrl+Shift+S"),
+				App.AddLink("xp+105 yp+5 w80 @func:bold", "{1}", { text: "(Scan 文件夹)", href: "\\10.0.2.13\fd\01 FO PASSPORT SCANNING" }),
+				; App.AddLink("xp+105 yp+5", "{1}", { text: "Scan 文件夹", href: "C:\Users\haraldchan\Code" }),
+			
 				; Balance Transfer
-				App.AddCheckbox("vBalanceTransferOn xs10 yp+25 w130 h25 Checked", "Balance Transfer"),
-				App.AddText("w150 h25 x+10 0x200", "输入: BT"),
+				App.AddCheckbox("vbalance-transfer-on @use:psc-label yp+20 Checked", "Balance Transfer"),
+				App.AddText("@use:psc-desc", "输入: BT"),
+			
+				; Deposit Entry
+				App.AddCheckbox("vdeposit-entry-on @use:psc-label Checked", "押金录入"),
+				App.AddText("@use:psc-desc", "监听: 绿云复制卡号"),
 			]
 		),
-		; binding
-		setHotkeys()
+		
+		onMount()
 	)
 }
