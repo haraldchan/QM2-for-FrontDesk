@@ -1,12 +1,12 @@
 #SingleInstance Force
 ; svaner
-#Include "../../useSvaner.ahk"
+#Include ..\..\useSvaner.ahk
 ; store
-#Include "./stores/mouse-store.ahk"
+#Include stores\mouse-store.ahk
 ; components
-#Include "./information.ahk"
-#Include "./record.ahk"
-#Include "./settings.ahk"
+#Include information.ahk
+#Include record.ahk
+#Include settings.ahk
 
 
 MouseSpySvaner := Svaner({

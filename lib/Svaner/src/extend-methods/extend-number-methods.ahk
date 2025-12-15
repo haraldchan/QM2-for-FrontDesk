@@ -7,10 +7,6 @@ class NumberExt {
      * Patches the Integer prototype with extended methods if enabled in ARConfig.
      */
     static patch() {
-        if (!ARConfig.useExtendMethods) {
-            return
-        }
-
         for method, enabled in ARConfig.enableExtendMethods.integer.OwnProps() {
             if (enabled) {
                 Integer.Prototype.%method% := ObjBindMethod(this, method)

@@ -17,6 +17,8 @@ shareCheckStatus(CheckBox, ListView, depend := 0) {
         effect(depend, cur => CheckBox.Value := cur)
     }
 
+    ListView.Modify(0, CheckBox.Value == true ? "+Check" : "-Check")
+
     _handleCheckAll(*) {
         ListView.Modify(0, CheckBox.Value == true ? "+Check" : "-Check")
         if (useInternalSignal) {

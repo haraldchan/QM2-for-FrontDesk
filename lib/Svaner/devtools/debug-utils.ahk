@@ -1,4 +1,4 @@
-#Include "../useSvaner.ahk"
+#Include ..\useSvaner.ahk
 
 class debugger extends signal {
 	notifyChange() {

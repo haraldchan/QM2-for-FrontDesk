@@ -7,10 +7,6 @@ class MapExt {
      * Patches the Map prototype with extended methods if enabled in ARConfig.
      */
     static patch() {
-        if (!ARConfig.useExtendMethods) {
-            return
-        }
-
         for method, enabled in ARConfig.enableExtendMethods.map.OwnProps() {
             if (enabled) {
                 Map.Prototype.%method% := ObjBindMethod(this, method)

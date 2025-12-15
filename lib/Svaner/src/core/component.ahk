@@ -128,9 +128,14 @@ class Component {
 
     /**
      * Collects the values from named controls of the component and composes them into an Object.
-     * @returns {Object} 
+    /**
+     * 
+     * @param {true | false} hide 
+     * @param {true | false} asMap 
+     * @param {true | false} kebabToCamel 
+     * @returns {Object | Map} 
      */
-    submit(hide := false) {
+    submit(hide := false, asMap := false, kebabToCamel := true) {
         if (hide) {
             this.svaner.gui.hide()
         }
@@ -138,12 +143,19 @@ class Component {
         formData := {}
         for ctrl in this.ctrls {
             if (ctrl.name) {
-                keyName := pipe(
-                    n => StrSplit(n, "-"),
-                    n => ArrayExt.map(n, item => A_Index == 1 ? item : StrTitle(item)),
-                    n => ArrayExt.join(n, "")
-                )(ctrl.name)
-                formData.DefineProp(keyName, { Value: ctrl.Value })
+                if (kebabToCamel) {
+                    keyName := pipe(
+                        n => StrSplit(n, "-"),
+                        n => ArrayExt.map(n, item => A_Index == 1 ? item : StrTitle(item)),
+                        n => ArrayExt.join(n, "")
+                    )(ctrl.name)
+                }
+                else {
+                    keyName := ctrl.name
+                }
+                asMap 
+                    ? formData.DefineProp(keyName, { Value: ctrl.Value }) 
+                    : formData[keyName] := ctrl.Value
             }
         }
 

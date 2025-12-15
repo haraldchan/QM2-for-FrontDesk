@@ -16,12 +16,20 @@ class StackBox {
      *     groupbox: { 
      *         title: "This is a StackBox",
      *         options: "Section w250 r9",
+     *         events: {
+     *             click: (*) => ...,
+     *             ...
+     *         }
      *     },
      * 
      *     ; (optional) Use a CheckBox as title
      *     checkbox: {
      *         title: "StackBox with CheckBox title",
      *         options: "Checked w250"
+     *         events: {
+     *             click: (*) => ...,
+     *             ...
+     *         }
      *     }, 
      * }
      * ```
@@ -51,6 +59,8 @@ class StackBox {
         ; GroupBox option
         this.gbOptions := this.svaner.__parseOptions(options.groupbox.options)
         this.gbTitle := options.groupbox.HasOwnProp("title") && !options.HasOwnProp("checkbox") ? options.groupbox.title : ""
+        this.gbEvents := options.groupbox.HasOwnProp("events") ? options.groupbox.events : ""
+
         ; CheckBox option
         this.checkbox := options.HasOwnProp("checkbox") ? options.checkbox : ""
         if (this.checkbox) {
@@ -60,6 +70,8 @@ class StackBox {
                 this.cbOptions := this.svaner.__parseOptions(this.checkbox.options)
 
             }
+
+            this.cbEvents := options.checkbox.HasOwnProp("events") ? options.checkbox.events : ""
         }
 
         ; mount controls
@@ -100,7 +112,21 @@ class StackBox {
 
             ; Dynamic
             if (control is Dynamic) {
-                this._saveCtrls(savedCtrls, control.components)
+                this._saveCtrls(savedCtrls, MapExt.values(control.instanceMap))
+            }
+        }
+    }
+
+    _addEvents(gb, cb) {
+        if (this.gbEvents) {
+            for eventName, callback in this.gbEvents.OwnProps() {
+                gb.OnEvent(eventName, callback)
+            }
+        }
+
+        if (this.checkbox && this.cbEvents) {
+            for eventName, callback in this.cbEvents.OwnProps() {
+                cb.OnEvent(eventName, callback)
             }
         }
     }
@@ -133,6 +159,9 @@ class StackBox {
             this.ctrls.Push(this.cbCtrl)
         }
 
+        ; add events
+        this._addEvents(this.gbCtrl, this.HasOwnProp("cbCtrl") ? this.cbCtrl : 0)
+
         ; mount controls
         this._saveCtrls(this.ctrls, this.renderCallback())
 
@@ -142,7 +171,7 @@ class StackBox {
         }
 
         ; bottom
-        bottom := App.AddText(Format("xs10 h20 w{1} y{2} h0", gbWidth, gbY + gbHeight - 20))
+        bottom := App.AddText(Format("xs10 h20 w{1} y{2} h0 border", gbWidth, gbY + gbHeight))
         this.ctrls.InsertAt(this.checkbox ? 3 : 2, bottom)
     }
 }

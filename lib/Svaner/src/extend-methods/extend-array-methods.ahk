@@ -6,10 +6,6 @@ class ArrayExt {
      * Patches Array prototype with enabled methods from ARConfig.
      */
     static patch() {
-        if (!ARConfig.useExtendMethods) {
-            return
-        }
-
         for method, enabled in ARConfig.enableExtendMethods.array.OwnProps() {
             if (method == "sort" && enabled) {
                 Array.Prototype._merge := ObjBindMethod(this, "_merge")

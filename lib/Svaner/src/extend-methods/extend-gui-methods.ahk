@@ -7,10 +7,6 @@ class GuiExt {
      * Patches the Gui and ListView prototypes with extended methods if enabled in ARConfig.
      */
     static patch() {
-        if (!ARConfig.useExtendMethods) {
-            return
-        }
-
         for method, status in ARConfig.enableExtendMethods.gui.OwnProps() {
             if (method == "listview") {
                 for lvMethod, lvStatus in status.OwnProps() {

@@ -1,5 +1,5 @@
-#Include "./record/clickstep-options.ahk"
-#Include "./record/keyrecord-options.ahk"
+#Include record\clickstep-options.ahk
+#Include record\keyrecord-options.ahk
 
 /**
  * @param {Svaner} App 

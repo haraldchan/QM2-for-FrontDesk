@@ -6,7 +6,7 @@ class TypeChecker {
      * @param {String} errMsg Error message to show
      */
     static checkType(val, typeChecking, errMsg := 0) {
-        if (val = 0 || val = "") {
+        if (!val) {
             return
         }
 
@@ -90,21 +90,6 @@ class TypeChecker {
         else if (!(depend is signal)) {
             throw TypeError(Format("{1}; `n`nCurrent Type: {2}", errMsg, Type(depend)), -1, depend)
         } 
-
-        return true
-    }
-
-
-    static checkTypeEvent(e) {
-        if (e = 0) {
-            return
-        }
-        errMsg := "Fifth(event) parameter is not an [ event, callback ] array."
-        if (e is Array && e.Length != 2) {
-            throw TypeError(errMsg)
-        } else {
-            this.checkType(e, Array, errMsg)
-        }
 
         return true
     }
