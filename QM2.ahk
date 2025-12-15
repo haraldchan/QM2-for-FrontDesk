@@ -1,19 +1,23 @@
+; configs
 #Requires AutoHotkey v2.0
 #SingleInstance Force
-#Include "./lib/lib-index.ahk"
-#Include "./src/App.ahk"
-TraySetIcon A_ScriptDir . "\src\assets\QMTray.ico"
-TrayTip "QM 2 运行中…按下 F9 开始使用脚本"
-CoordMode "Mouse", "Screen"
-CoordMode "Pixel", "Screen"
+; includes
+#Include lib\lib-index.ahk
+#Include src\App.ahk
 
 ; global consts
-VERSION := "2.8.0"
+VERSION := "2.8.1"
 POPUP_TITLE := "QM2 for FrontDesk " . VERSION
 WIN_GROUP := ["ahk_class SunAwtFrame", "旅客信息", "ahk_class 360se6_Frame"]
 IMAGES := useImages(A_ScriptDir . "\src\Assets")
 
-; Gui
+; init setup
+TraySetIcon IMAGES["QMTray.ico"]
+TrayTip "QM 2 运行中…按下 F9 开始使用脚本"
+CoordMode "Mouse", "Screen"
+CoordMode "Pixel", "Screen"
+
+; attach App
 QM := Svaner({
     gui: {
         title: POPUP_TITLE
