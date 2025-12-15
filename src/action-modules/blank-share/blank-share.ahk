@@ -1,4 +1,4 @@
-#Include "./blank-share-action.ahk"
+#Include blank-share-action.ahk
 
 /**
  * @param {Svaner} App

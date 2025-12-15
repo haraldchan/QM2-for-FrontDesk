@@ -1,4 +1,4 @@
-#Include "./rate-checking-action.ahk"
+#Include rate-checking-action.ahk
 
 /**
  * @param {Svaner} App

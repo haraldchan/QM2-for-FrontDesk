@@ -1,6 +1,6 @@
-#Include "./action-modules/action-module-index.ahk"
-#Include "./components/tabs.ahk"
-#Include "./persist-scripts/persist-scripts-control.ahk"
+#Include action-modules\action-module-index.ahk
+#Include components\tabs.ahk
+#Include persist-scripts\persist-scripts-control.ahk
 
 /**
  * @param {Svaner} App 

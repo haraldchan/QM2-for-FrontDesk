@@ -1,4 +1,4 @@
-#Include "./fetch-fedex-resv-action.ahk"
+#Include fetch-fedex-resv-action.ahk
 
 /**
  * @param {Svaner} App 

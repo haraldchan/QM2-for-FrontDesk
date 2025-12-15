@@ -1,4 +1,4 @@
-#Include "./batch-keys-action.ahk"
+#Include batch-keys-action.ahk
 
 /**
  * @param {Svaner} App 

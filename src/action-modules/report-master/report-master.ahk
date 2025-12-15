@@ -1,4 +1,4 @@
-#Include "./report-master-action.ahk"
+#Include report-master-action.ahk
 
 /**
  * @param {Svaner} App

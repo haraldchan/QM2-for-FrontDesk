@@ -1,4 +1,4 @@
-#Include "./group-share-dnm-action.ahk"
+#Include group-share-dnm-action.ahk
 
 /**
  * @param {Svaner} App 

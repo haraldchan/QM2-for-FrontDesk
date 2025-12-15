@@ -1,7 +1,7 @@
-#Include "../phrases/rush-room.ahk"
-#Include "../phrases/table-request.ahk"
-#Include "../phrases/upsell.ahk"
-#Include "../phrases/extra-bed.ahk"
+#Include ..\phrases\rush-room.ahk
+#Include ..\phrases\table-request.ahk
+#Include ..\phrases\upsell.ahk
+#Include ..\phrases\extra-bed.ahk
 
 /**
  * @param {Svaner} App

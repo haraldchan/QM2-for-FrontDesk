@@ -1,5 +1,5 @@
-#Include "./tab-pages/one-press.ahk"
-#Include "./tab-pages/phrases.ahk"
+#Include tab-pages\one-press.ahk
+#Include tab-pages\phrases.ahk
 
 /**
  * @param {Svaner} App 

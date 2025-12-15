@@ -1,4 +1,4 @@
-#Include "./payment-relation-action.ahk"
+#Include payment-relation-action.ahk
 
 /** 
  * @param {Svaner} App

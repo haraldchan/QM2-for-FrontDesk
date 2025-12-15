@@ -1,4 +1,4 @@
-#Include "./cashiering-action.ahk"
+#Include cashiering-action.ahk
 
 /**
  * @param {Svaner} App 
