@@ -28,13 +28,13 @@ Cashiering(App, props) {
 
     getFormData() {
         return {
-            password: App.getCtrlByName("pwd").Value,
-            paymentType: paymentType.getKey(App.getCtrlByName("pt").Text)
+            password: App["pwd"].Value,
+            paymentType: paymentType.getKey(App["pt"].Text)
         }
     }
 
     handlePwsVisible(ctrl, _) {
-        App.getCtrlByName("pwd").Opt(ctrl.Value = false ? "+Password*" : "-Password*")
+        App["pwd"].Opt(ctrl.Value = false ? "+Password*" : "-Password*")
     }
 
     setHotkeys() {
