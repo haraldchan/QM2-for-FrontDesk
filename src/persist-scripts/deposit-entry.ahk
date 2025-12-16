@@ -1,5 +1,3 @@
-#Include C:\Users\haraldchan\Code\QM2-for-FrontDesk\lib\Svaner
-
 /**
  * @typedef {Object} Deposit
  * @property {"VS" | "MC" | "AE" | "JC" | "UP"} cardType
@@ -26,6 +24,10 @@ class DepositEntry {
         }
 
         if (RegExMatch(A_Clipboard, "^;\d+=\d+\?$")) {
+            ; dismiss success popup
+            Send "{Enter}"
+            Sleep 200
+            
             parsedCard := A_Clipboard.replaceThese([";", "?"]).split("=")
 
             cardType := this.validateType(parsedCard[1]),
@@ -44,8 +46,6 @@ class DepositEntry {
             }
 
             this.promptCompleteInfo(depositInfo)
-
-            ; this.entry(depositInfo)
         }
     }
 
@@ -66,8 +66,8 @@ class DepositEntry {
             depositInfo.amount := Prompt["amount"].Value
             depositInfo.auth := Prompt["auth"].Value
 
-            MsgBox JSON.stringify(depositInfo)
             destroyPrompt()
+            this.entry(depositInfo)
         }
 
 
@@ -82,7 +82,7 @@ class DepositEntry {
             Prompt.AddGroupBox("Section w330 r7", "押金信息"),
             ; card type
             Prompt.AddText("xs10 yp+23 w80 h25 0x200", "支付类型"),
-            Prompt.AddRadio("x+1 w45 h25", "UP"),
+            Prompt.AddRadio("x+1 w45 h25", "&UP"),
             Prompt.AddRadio("x+1 w45 h25", "VS"),
             Prompt.AddRadio("x+1 w45 h25", "MC"),
             Prompt.AddRadio("x+1 w45 h25", "AE"),
@@ -176,6 +176,10 @@ class DepositEntry {
         Send "{Text}" . depositInfo.exp
         Send "!s"
         utils.waitLoading()
+        loop 3 {
+            Send "{Esc}"
+            utils.waitLoading()
+        }
 
         ; enter deposit amount & auth
         Send "!t"
