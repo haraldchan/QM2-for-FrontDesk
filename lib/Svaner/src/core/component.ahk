@@ -153,9 +153,8 @@ class Component {
                 else {
                     keyName := ctrl.name
                 }
-                asMap 
-                    ? formData.DefineProp(keyName, { Value: ctrl.Value }) 
-                    : formData[keyName] := ctrl.Value
+                
+                asMap ? formData[keyName] := ctrl.Value : formData.DefineProp(keyName, { Value: ctrl.Value }) 
             }
         }
 
