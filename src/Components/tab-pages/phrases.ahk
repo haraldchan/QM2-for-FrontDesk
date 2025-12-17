@@ -31,13 +31,24 @@ Phrases(App) {
 		handleSwapWriteClipboard("RushRoom")
 	}
 
+	defineRadioStyle(index) {
+		switch index {
+			case 1:
+				return "Checked w200 h25"
+			case phrases.keys().Length:
+				return "vphrases-last-radio w200 h25"
+			default:
+				return "w200 h25"
+		}
+	}
+
 	App.defineDirectives(
-		"@use:phrase-box-xyw", "x30 y350 w350"
+		"@use:phrase-box-xyw", "x30 @relative[y+10]:phrases-last-radio w350"
 	)
 
 	return (
 		phrases.keys().map(phrase =>
-			App.AddRadio((phrase.name = selectedPhrase.value ? "Checked" : "") . " w200 h25", phrases[phrase])
+			App.AddRadio(defineRadioStyle(A_Index), phrases[phrase])
 			   .onClick((*) => selectedPhrase.set(phrase.name))
 		),
 		App.AddButton("vphrase-copy x270 y380 w90 h55", "复制`nComment`nAlert"),

@@ -81,7 +81,7 @@ PaymentRelation(App, props := {}) {
                 name: "pay-for-stack-box",
                 groupbox: {
                     title: "P/F房(支付人)",
-                    options: "vpayfor-panel Section @use:box-x @use:box-y" . (s.useCopyBtn ? " r7 " : " r5 ") . s.panelWide
+                    options: "vpayfor-panel Section @use:box-x @relative[y+10]:last-radio" . (s.useCopyBtn ? " r7 " : " r5 ") . s.panelWide
                 } 
             },
             () => [

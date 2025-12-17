@@ -32,14 +32,24 @@ OnePress(App) {
 
     App.defineDirectives(
         "@use:box-x", "x30",
-        "@use:box-y", "y460",
         "@use:box-w", "w350",
-        "@use:box-xyw", "@use:box-x @use:box-y @use:box-w"
+        "@use:box-xyw", "@use:box-x @relative[y+10]:last-radio @use:box-w"
     )
+
+    defineRadioStyle(index) {
+        switch index {
+            case 1:
+                return "vfirst-radio Checked x30 y+10 h20"
+            case modules.keys().Length:
+                return "vlast-radio Checked x30 y+10 h20"
+            default:
+                return "x30 y+10 h20"
+        }
+    }
 
     return (
         modules.keys().map(module =>
-            App.AddRadio(A_Index = 1 ? "vfirstRadio Checked x30 y+10 h20" : "x30 y+10 h20", modules[module])
+            App.AddRadio(defineRadioStyle(A_Index), modules[module])
                .onClick((*) => selectedModule.set(module.name))
         ),
         Dynamic(App, selectedModule, moduleComponents),
