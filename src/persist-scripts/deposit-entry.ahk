@@ -83,10 +83,10 @@ class DepositEntry {
             ; card type
             Prompt.AddText("xs10 yp+23 w80 h25 0x200", "支付类型"),
             Prompt.AddRadio("x+1 w45 h25", "&UP"),
-            Prompt.AddRadio("x+1 w45 h25", "VS"),
-            Prompt.AddRadio("x+1 w45 h25", "MC"),
-            Prompt.AddRadio("x+1 w45 h25", "AE"),
-            Prompt.AddRadio("x+1 w45 h25", "JC"),
+            Prompt.AddRadio("x+1 w45 h25", "&VS"),
+            Prompt.AddRadio("x+1 w45 h25", "&MC"),
+            Prompt.AddRadio("x+1 w45 h25", "&AE"),
+            Prompt.AddRadio("x+1 w45 h25", "&JC"),
             
             ; card info
             Prompt.AddText("xs10 yp+30 w80 h25 0x200", "卡号信息"),
