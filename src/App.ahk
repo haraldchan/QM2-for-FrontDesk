@@ -21,6 +21,6 @@ App(App) {
 		
 		; Action Module Tabs
 		Tabs(App),
-		App["firstRadio"].Focus()
+		App["first-radio"].Focus()
 	)
 }
