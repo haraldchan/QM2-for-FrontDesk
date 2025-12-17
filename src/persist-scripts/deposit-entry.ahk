@@ -29,6 +29,7 @@ class DepositEntry {
             Sleep 200
             
             parsedCard := A_Clipboard.replaceThese([";", "?"]).split("=")
+            A_Clipboard := ""
 
             cardType := this.validateType(parsedCard[1]),
                 cardNum := parsedCard[1],
@@ -60,7 +61,10 @@ class DepositEntry {
         destroyPrompt(*) => Prompt.Destroy()
         
         completeInfo(*) {
-            depositInfo.cardType := Prompt.getCtrlByTypeAll("Radio").find(radio => radio.Value == true).Text
+            depositInfo.cardType := Prompt.getCtrlByTypeAll("Radio")
+                                          .find(radio => radio.Value == true)
+                                          .Text
+                                          .replace("&", "")
             depositInfo.cardNum := Prompt["card-num"].Value
             depositInfo.exp := Prompt["exp"].Value
             depositInfo.amount := Prompt["amount"].Value
