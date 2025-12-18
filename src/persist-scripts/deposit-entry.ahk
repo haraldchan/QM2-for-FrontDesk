@@ -19,35 +19,33 @@ class DepositEntry {
      * @param {Gui.CheckBox} controlCheckBox 
      */
     static USE(controlCheckBox) {
-        if (controlCheckBox.Value == false) {
+        if (controlCheckBox.Value == false || !RegExMatch(A_Clipboard, "^;\d+=\d+\?$")) {
             return
         }
-
-        if (RegExMatch(A_Clipboard, "^;\d+=\d+\?$")) {
-            ; dismiss success popup
-            Send "{Enter}"
-            Sleep 200
+        
+        ; dismiss success popup
+        Send "{Enter}"
+        Sleep 200
             
-            parsedCard := A_Clipboard.replaceThese([";", "?"]).split("=")
-            A_Clipboard := ""
+        parsedCard := A_Clipboard.replaceThese([";", "?"]).split("=")
+        A_Clipboard := " "
 
-            cardType := this.validateType(parsedCard[1]),
-                cardNum := parsedCard[1],
-                exp := parsedCard[2].substr(3, 4) . parsedCard[2].substr(1, 2),
-                auth := cardType == "UP" && (cardNum.startsWith(1) || cardNum.startsWith(2))
-                    ? cardNum.substr(1, 1) . cardNum.substr(-5)
-                : ""
+        cardType := this.validateType(parsedCard[1]),
+            cardNum := parsedCard[1],
+            exp := parsedCard[2].substr(3, 4) . parsedCard[2].substr(1, 2),
+            auth := cardType == "UP" && (cardNum.startsWith(1) || cardNum.startsWith(2))
+                ? cardNum.substr(1, 1) . cardNum.substr(-5)
+            : ""
 
-            depositInfo := {
-                cardType: cardType,
-                cardNum: cardNum,
-                exp: exp,
-                amount: "",
-                auth: auth
-            }
-
-            this.promptCompleteInfo(depositInfo)
+        depositInfo := {
+            cardType: cardType,
+            cardNum: cardNum,
+            exp: exp,
+            amount: "",
+            auth: auth
         }
+
+        this.promptCompleteInfo(depositInfo)
     }
 
     /**
@@ -162,6 +160,12 @@ class DepositEntry {
         Send "{Text}" . depositInfo.cardType
         Send "{Tab}"
         utils.waitLoading()
+
+        CoordMode("Pixel", "Screen")
+        if (PixelGetColor(outX  + 130, outY + 164) == "0x000080") {
+            Send "!c"
+            utils.waitLoading()
+        }
 
         ; attach card to profile prompt, choose "No"
         loop {
