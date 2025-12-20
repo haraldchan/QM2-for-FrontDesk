@@ -51,7 +51,7 @@ Phrases(App) {
 			App.AddRadio(defineRadioStyle(A_Index), phrases[phrase])
 			   .onClick((*) => selectedPhrase.set(phrase.name))
 		),
-		App.AddButton("vphrase-copy x270 y380 w90 h55", "复制`nComment`nAlert"),
+		App.AddButton("vphrase-copy x270 @relative[y+30]:phrases-last-radio w90 h55", "复制为`nComment`nAlert"),
 		Dynamic(App, selectedPhrase, phraseComponents,, &componentInstances),
 		onMount(componentInstances)
 	)
