@@ -18,18 +18,29 @@ class DepositEntry {
     /**
      * @param {Gui.CheckBox} controlCheckBox 
      */
-    static USE(controlCheckBox) {
+    static copyFromMipay(controlCheckBox) {
         if (controlCheckBox.Value == false || !RegExMatch(A_Clipboard, "^;\d+=\d+\?$")) {
             return
         }
 
         cardInfoCopied := A_Clipboard
         ; dismiss success popup
-        if (WinActive("ahk_class oHotel")) {
-            ; TODO: copy room number field
-            ; CoordMode("Mouse", "Window") -> move to room -> click 3 -> ^c -> room := A_Clipboard
+        if (WinActive("ahk_exe oHotel.exe")) {
+            BlockInput true
             Send "{Enter}"
             Sleep 200
+
+            CoordMode "Mouse", "Client"
+            MouseMove 231, 74
+            Sleep 100
+            Click 3
+            Sleep 100
+            Send "^c"
+            Sleep 100
+            CoordMode "Mouse", "Screen"
+            BlockInput false
+
+            room := StrLen(A_Clipboard) == 3 ? "0" . A_Clipboard : A_Clipboard
         }
 
         parsedCard := cardInfoCopied.replaceThese([";", "?"]).split("=")
@@ -45,7 +56,7 @@ class DepositEntry {
             exp: exp,
             amount: "",
             auth: auth,
-            room: ""
+            room: room
         }
 
         this.promptCompleteInfo(depositInfo)
@@ -70,11 +81,15 @@ class DepositEntry {
             depositInfo.exp := Prompt["exp"].Value
             depositInfo.amount := Prompt["amount"].Value
             depositInfo.auth := Prompt["auth"].Value
+            depositInfo.room := Prompt["room"].Value
 
             SetTimer(() => destroyPrompt(), -100)
 
             if (Prompt["de-delegate"].Value == true) {
-                MsgBox("建设中...",, "T1")
+                ; MsgBox("建设中...",, "T1")
+                WinActivate("ahk_class SunAwtFrame")
+                Sleep 100
+                this.USE(depositInfo)
                 ; sendQmPost(depositInfo)
             } else {
                 this.entry(depositInfo)
@@ -86,12 +101,11 @@ class DepositEntry {
             isDelegate.set(ctrl.Value)
 
             Prompt["room"].Enabled := isDelegate.value
-            Prompt["room"].Value := depositInfo.room || "房间号"
             Prompt["room"].Focus()
         }
 
         sendQmPost(depositInfo) {
-            agent := useServerAgent({ pool: A_ScriptDir . "\src\Servers\qm-pool" })
+            agent := useServerAgent({ pool: "\\10.0.2.13\fd\19-个人文件夹\HC\Software - 软件及脚本\AHK_Scripts\ClipFlow\src\Servers\qm-pool" })
             agent.POST({
                 module: "DepositEntry",
                 form: depositInfo
@@ -125,9 +139,9 @@ class DepositEntry {
             Prompt.AddEdit("vamount x+1 w150 h25", ""),
             Prompt.AddEdit("vauth x+1 w70 h25", depositInfo.auth),
             ; server delegate
-            Prompt.AddCheckbox("vde-delegate xs10 yp+30 w80 h25", "后台代行")
+            Prompt.AddCheckbox("vde-delegate xs10 yp+30 w80 h25 Disabled", "后台代行")
             .onEvent("Click", delegateDepositEntry),
-            Prompt.AddEdit("vroom x+1 w150 h25 Disabled", "(房间号)"),
+            Prompt.AddEdit("vroom x+1 w150 h25 Disabled", (depositInfo.room || "(房间号)")),
             ; btns
             Prompt.AddButton("x175 w80 h25", "取消 (&C)").OnEvent("Click", destroyPrompt),
             Prompt.AddButton("x+5 w80 h25", "确定 (&O)").OnEvent("Click", completeInfo),
@@ -205,13 +219,13 @@ class DepositEntry {
         utils.waitLoading()
 
         ; enter cardNum & exp
-        Send Format("{Text}{1}`t{2}", depositInfo.cardNum, depositInfo.exp)
+        Send Format("{Text}{1}`n{2}", depositInfo.cardNum, depositInfo.exp)
         Sleep 100
         Send "!s"
         utils.waitLoading()
-        loop 2 {
+        loop 3 {
             Send "{Esc}"
-            utils.waitLoading()
+            utils.waitLoading(100)
         }
 
         ; enter deposit amount & auth
@@ -221,11 +235,50 @@ class DepositEntry {
         Send "!a"
         Send "!m"
         utils.waitLoading()
-        Send Format("{Text}{1}`t{2}", depositInfo.amount, depositInfo.auth)
+        Send Format("{Text}{1}`n{2}", depositInfo.amount, depositInfo.auth)
         Sleep 100
         Send "!o"
         utils.waitLoading()
         Send "!c"
         utils.waitLoading()
+    }
+
+    static USE(depositInfo) {
+        ; clear form
+        Send "!r"
+        utils.waitLoading()
+
+        ; search room
+        Send "{Text}" . depositInfo.room
+
+        Sleep 1001313247532480153521231 
+        Send "!h"
+        utils.waitLoading()
+        if (ImageSearch(&outX, &outY, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["info.PNG"])) {
+            Send "{Enter}"
+            return
+        }
+
+        ; get main-profile
+        ImageSearch(&outX, &outY, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["opera-active-win.PNG"])
+        Click outX + 672, outY + 222, "Right"
+        Sleep 100
+        Send "{Down}"
+        Sleep 100
+        Send "{Enter}"
+        utils.waitLoading()
+
+        ; dismiss alerts
+        loop {
+            ; if there is a alert box
+            if (PixelGetColor(551, 421) != "0xFFFFFF") {
+                break
+            }
+
+            Send "{Enter}"
+            Sleep 250
+        }
+
+        this.entry(depositInfo)
     }
 }
