@@ -4,7 +4,7 @@ mouseStore := useStore("mouseStore", {
         curMouseInfo: {
             Screen: { x: 0, y: 0 },
             Client: { x: 0, y: 0 },
-            window: WinExist("ahk_exe explorer.exe"),
+            window: WinExist("A"),
             control: 0,
             color: "0xFFFFFF"
         },

@@ -4,7 +4,7 @@
  * @param {String} MouseSpyWindowTitle 
  */
 MouseSpy_Settings(App, config, MouseSpyWindowTitle) {
-    unpack({ 
+    unpack(mouseStore, { 
         curMouseInfo:      &curMouseInfo,
         anchorPos:         &anchorPos,
         followMouse:       &followMouse,
@@ -13,7 +13,7 @@ MouseSpy_Settings(App, config, MouseSpyWindowTitle) {
             handleMousePosUpdate: &handleMousePosUpdate,
             moveToAnchor:  &moveToAnchor
         }
-    }, mouseStore)
+    })
 
     hotkeySetup := {
         markAnchor: {

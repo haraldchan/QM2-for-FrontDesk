@@ -5,7 +5,7 @@
  * @param {String} suspendText 
  */
 MouseSpy_Information(App, config, AppWindowTitle, suspendText) {
-    unpack({ 
+    unpack(mouseStore, { 
         curMouseCoordMode: &curMouseCoordMode,
         curMouseInfo:      &curMouseInfo,
         anchorPos:         &anchorPos,
@@ -14,7 +14,7 @@ MouseSpy_Information(App, config, AppWindowTitle, suspendText) {
             updater:       &updater,
             moveToAnchor:  &moveToAnchor
         }
-    }, mouseStore)
+    })
 
     effect(followMouse, isFollowing => 
         SetTimer(updater, isFollowing ? config["misc"]["updateInterval"] : 0)
