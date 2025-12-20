@@ -22,27 +22,30 @@ class DepositEntry {
         if (controlCheckBox.Value == false || !RegExMatch(A_Clipboard, "^;\d+=\d+\?$")) {
             return
         }
-        
+
+        cardInfoCopied := A_Clipboard
         ; dismiss success popup
-        Send "{Enter}"
-        Sleep 200
-            
-        parsedCard := A_Clipboard.replaceThese([";", "?"]).split("=")
-        A_Clipboard := " "
+        if (WinActive("ahk_class oHotel")) {
+            ; TODO: copy room number field
+            ; CoordMode("Mouse", "Window") -> move to room -> click 3 -> ^c -> room := A_Clipboard
+            Send "{Enter}"
+            Sleep 200
+        }
+
+        parsedCard := cardInfoCopied.replaceThese([";", "?"]).split("=")
 
         cardType := this.validateType(parsedCard[1]),
             cardNum := parsedCard[1],
             exp := parsedCard[2].substr(3, 4) . parsedCard[2].substr(1, 2),
-            auth := cardType == "UP" && (cardNum.startsWith(1) || cardNum.startsWith(2))
-                ? cardNum.substr(1, 1) . cardNum.substr(-5)
-            : ""
+            auth := cardType == "UP" && (cardNum.startsWith(1) || cardNum.startsWith(2)) ? cardNum.substr(1, 1) . cardNum.substr(-5) : ""
 
         depositInfo := {
             cardType: cardType,
             cardNum: cardNum,
             exp: exp,
             amount: "",
-            auth: auth
+            auth: auth,
+            room: ""
         }
 
         this.promptCompleteInfo(depositInfo)
@@ -57,31 +60,55 @@ class DepositEntry {
         Prompt.OnEvent("Close", p => p.Destroy())
 
         destroyPrompt(*) => Prompt.Destroy()
-        
+
         completeInfo(*) {
             depositInfo.cardType := Prompt.getCtrlByTypeAll("Radio")
-                                          .find(radio => radio.Value == true)
-                                          .Text
-                                          .replace("&", "")
+                .find(radio => radio.Value == true)
+                .Text
+                .replace("&", "")
             depositInfo.cardNum := Prompt["card-num"].Value
             depositInfo.exp := Prompt["exp"].Value
             depositInfo.amount := Prompt["amount"].Value
             depositInfo.auth := Prompt["auth"].Value
 
-            destroyPrompt()
-            this.entry(depositInfo)
+            SetTimer(() => destroyPrompt(), -100)
+
+            if (Prompt["de-delegate"].Value == true) {
+                MsgBox("建设中...",, "T1")
+                ; sendQmPost(depositInfo)
+            } else {
+                this.entry(depositInfo)
+            }
         }
 
+        isDelegate := signal(false)
+        delegateDepositEntry(ctrl, _) {
+            isDelegate.set(ctrl.Value)
+
+            Prompt["room"].Enabled := isDelegate.value
+            Prompt["room"].Value := depositInfo.room || "房间号"
+            Prompt["room"].Focus()
+        }
+
+        sendQmPost(depositInfo) {
+            agent := useServerAgent({ pool: A_ScriptDir . "\src\Servers\qm-pool" })
+            agent.POST({
+                module: "DepositEntry",
+                form: depositInfo
+            })
+        }
 
         onMount() {
             Prompt.Show()
-        
+
             Prompt[depositInfo.cardType].Value := true
             Prompt["amount"].Focus()
+
+            isDelegate.set(Prompt["de-delegate"].Value)
         }
 
         return (
-            Prompt.AddGroupBox("Section w330 r7", "押金信息"),
+            Prompt.AddGroupBox("Section w330 h150", "押金信息").SetFont("bold"),
             ; card type
             Prompt.AddText("xs10 yp+23 w80 h25 0x200", "支付类型"),
             Prompt.AddRadio("x+1 w45 h25", "&UP"),
@@ -89,23 +116,21 @@ class DepositEntry {
             Prompt.AddRadio("x+1 w45 h25", "&MC"),
             Prompt.AddRadio("x+1 w45 h25", "&AE"),
             Prompt.AddRadio("x+1 w45 h25", "&JC"),
-            
             ; card info
             Prompt.AddText("xs10 yp+30 w80 h25 0x200", "卡号信息"),
             Prompt.AddEdit("vcard-num x+1 w150 h25 0x200", depositInfo.cardNum),
             Prompt.AddEdit("vexp x+1 w70 h25", depositInfo.exp),
-
             ; amount auth
             Prompt.AddText("xs10 yp+30 w80 h25 0x200", "金额/授权号"),
-            Prompt.AddEdit("vamount x+1 w150 h25 0x200", ""),
-            Prompt.AddEdit("vauth x+1 w70 h25 0x200", depositInfo.auth),
-
+            Prompt.AddEdit("vamount x+1 w150 h25", ""),
+            Prompt.AddEdit("vauth x+1 w70 h25", depositInfo.auth),
+            ; server delegate
+            Prompt.AddCheckbox("vde-delegate xs10 yp+30 w80 h25", "后台代行")
+            .onEvent("Click", delegateDepositEntry),
+            Prompt.AddEdit("vroom x+1 w150 h25 Disabled", "(房间号)"),
             ; btns
-            Prompt.AddButton("xs150 yp+40 w80 h25", "取消 (&C)")
-                  .OnEvent("Click", destroyPrompt),
-            Prompt.AddButton("x+5 w80 h25", "确定 (&O)")
-                  .OnEvent("Click", completeInfo),
-
+            Prompt.AddButton("x175 w80 h25", "取消 (&C)").OnEvent("Click", destroyPrompt),
+            Prompt.AddButton("x+5 w80 h25", "确定 (&O)").OnEvent("Click", completeInfo),
             onMount()
         )
     }
@@ -154,15 +179,16 @@ class DepositEntry {
 
         ; move to payment field
         MouseMove outX + 447, outY + 257
-        utils.waitLoading()
+        Sleep 100
         Click 3
         Sleep 100
         Send "{Text}" . depositInfo.cardType
         Send "{Tab}"
         utils.waitLoading()
 
+        ; dismiss pre-exist card select
         CoordMode("Pixel", "Screen")
-        if (PixelGetColor(outX  + 130, outY + 164) == "0x000080") {
+        if (PixelGetColor(outX + 130, outY + 164) == "0x000080") {
             Send "!c"
             utils.waitLoading()
         }
@@ -179,12 +205,11 @@ class DepositEntry {
         utils.waitLoading()
 
         ; enter cardNum & exp
-        Send "{Text}" . depositInfo.cardNum
-        Send "{Tab}"
-        Send "{Text}" . depositInfo.exp
+        Send Format("{Text}{1}`t{2}", depositInfo.cardNum, depositInfo.exp)
+        Sleep 100
         Send "!s"
         utils.waitLoading()
-        loop 3 {
+        loop 2 {
             Send "{Esc}"
             utils.waitLoading()
         }
@@ -196,9 +221,8 @@ class DepositEntry {
         Send "!a"
         Send "!m"
         utils.waitLoading()
-        Send "{Text}" . depositInfo.amount
-        Send "{Tab}"
-        Send "{Text}" . depositInfo.auth
+        Send Format("{Text}{1}`t{2}", depositInfo.amount, depositInfo.auth)
+        Sleep 100
         Send "!o"
         utils.waitLoading()
         Send "!c"
