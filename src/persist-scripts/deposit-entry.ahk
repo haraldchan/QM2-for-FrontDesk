@@ -31,7 +31,7 @@ class DepositEntry {
             Sleep 200
 
             CoordMode "Mouse", "Client"
-            MouseMove 231, 74
+            MouseMove 231, 78
             Sleep 100
             Click 3
             Sleep 100
@@ -86,11 +86,7 @@ class DepositEntry {
             SetTimer(() => destroyPrompt(), -100)
 
             if (Prompt["de-delegate"].Value == true) {
-                ; MsgBox("建设中...",, "T1")
-                WinActivate("ahk_class SunAwtFrame")
-                Sleep 100
-                this.USE(depositInfo)
-                ; sendQmPost(depositInfo)
+                sendQmPost(depositInfo)
             } else {
                 this.entry(depositInfo)
             }
@@ -105,7 +101,7 @@ class DepositEntry {
         }
 
         sendQmPost(depositInfo) {
-            agent := useServerAgent({ pool: "\\10.0.2.13\fd\19-个人文件夹\HC\Software - 软件及脚本\AHK_Scripts\ClipFlow\src\Servers\qm-pool" })
+            agent := useServerAgent({ pool: "\\10.0.2.13\fd\19-个人文件夹\HC\Software - 软件及脚本\AHK_Scripts\ClipFlow\src\Servers\test-pool" })
             agent.POST({
                 module: "DepositEntry",
                 form: depositInfo
@@ -139,7 +135,7 @@ class DepositEntry {
             Prompt.AddEdit("vamount x+1 w150 h25", ""),
             Prompt.AddEdit("vauth x+1 w70 h25", depositInfo.auth),
             ; server delegate
-            Prompt.AddCheckbox("vde-delegate xs10 yp+30 w80 h25 Disabled", "后台代行")
+            Prompt.AddCheckbox("vde-delegate xs10 yp+30 w80 h25", "后台代行")
             .onEvent("Click", delegateDepositEntry),
             Prompt.AddEdit("vroom x+1 w150 h25 Disabled", (depositInfo.room || "(房间号)")),
             ; btns
@@ -181,6 +177,10 @@ class DepositEntry {
     static entry(depositInfo) {
         if (!WinExist("ahk_class SunAwtFrame")) {
             return
+        }
+
+        if (depositInfo is Map) {
+            depositInfo := JSON.parse(JSON.stringify(depositInfo),, false)   
         }
 
         WinActivate("ahk_class SunAwtFrame")
@@ -244,6 +244,10 @@ class DepositEntry {
     }
 
     static USE(depositInfo) {
+        if (depositInfo is Map) {
+            depositInfo := JSON.parse(JSON.stringify(depositInfo),, false)   
+        }
+
         ; clear form
         Send "!r"
         utils.waitLoading()
@@ -251,9 +255,12 @@ class DepositEntry {
         ; search room
         Send "{Text}" . depositInfo.room
 
-        Sleep 1001313247532480153521231 
+        Sleep 100
         Send "!h"
         utils.waitLoading()
+
+        CoordMode "Pixel", "Screen"
+        CoordMode "Mouse", "Screen"
         if (ImageSearch(&outX, &outY, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["info.PNG"])) {
             Send "{Enter}"
             return
@@ -266,6 +273,8 @@ class DepositEntry {
         Send "{Down}"
         Sleep 100
         Send "{Enter}"
+        utils.waitLoading()
+        Send "!e"
         utils.waitLoading()
 
         ; dismiss alerts
@@ -280,5 +289,12 @@ class DepositEntry {
         }
 
         this.entry(depositInfo)
+        utils.waitLoading()
+
+        Send "!o"
+        loop 3 {
+            Send "{Esc}"
+            utils.waitLoading(100)
+        }
     }
 }
