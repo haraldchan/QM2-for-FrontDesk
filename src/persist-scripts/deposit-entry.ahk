@@ -22,7 +22,6 @@ class DepositEntry {
         if (controlCheckBox.Value == false || !RegExMatch(A_Clipboard, "^;\d+=\d+\?$")) {
             return
         }
-
         cardInfoCopied := A_Clipboard
         ; dismiss success popup
         if (WinActive("ahk_exe oHotel.exe")) {
@@ -56,7 +55,7 @@ class DepositEntry {
             exp: exp,
             amount: "",
             auth: auth,
-            room: room
+            room: IsSet(room) ? room : ""
         }
 
         this.promptCompleteInfo(depositInfo)
@@ -66,7 +65,11 @@ class DepositEntry {
      * @param {Deposit} depositInfo 
      */
     static promptCompleteInfo(depositInfo) {
-        Prompt := Gui("+AlwaysOnTop")
+        if (WinExist("Deposit Entry")) {
+            WinClose("Deposit Entry")
+        }
+
+        Prompt := Gui("+AlwaysOnTop", "Deposit Entry")
         Prompt.SetFont(, "微软雅黑")
         Prompt.OnEvent("Close", p => p.Destroy())
 
@@ -135,9 +138,8 @@ class DepositEntry {
             Prompt.AddEdit("vamount x+1 w150 h25", ""),
             Prompt.AddEdit("vauth x+1 w70 h25", depositInfo.auth),
             ; server delegate
-            Prompt.AddCheckbox("vde-delegate xs10 yp+30 w80 h25", "后台代行")
-            .onEvent("Click", delegateDepositEntry),
-            Prompt.AddEdit("vroom x+1 w150 h25 Disabled", (depositInfo.room || "(房间号)")),
+            Prompt.AddCheckbox("vde-delegate xs10 yp+30 w80 h25", "后台代行").onEvent("Click", delegateDepositEntry),
+            Prompt.AddEdit("vroom x+1 w150 h25", (depositInfo.room || "(房间号)")),
             ; btns
             Prompt.AddButton("x175 w80 h25", "取消 (&C)").OnEvent("Click", destroyPrompt),
             Prompt.AddButton("x+5 w80 h25", "确定 (&O)").OnEvent("Click", completeInfo),
