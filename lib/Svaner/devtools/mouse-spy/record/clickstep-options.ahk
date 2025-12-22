@@ -46,14 +46,14 @@ MouseSpy_Record_ClickStepOptions(App, props) {
         curMode := logMouseCoordMode.value
 
         if (useRelative.value) {
-            x := curAnchorPos[curMode]["x"] - prevAnchorPos[curMode]["x"]
-            y := curAnchorPos[curMode]["y"] - prevAnchorPos[curMode]["y"]
+            x := curAnchorPos.%curMode%.x - prevAnchorPos.%curMode%.x
+            y := curAnchorPos.%curMode%.y - prevAnchorPos.%curMode%.y
 
             xCoord := "x" . (x < 0 ? " - " . Abs(x) : " + " . x)
             yCoord := "y" . (y < 0 ? " - " . Abs(y) : " + " . y)
         } else {
-            xCoord := curAnchorPos[curMode]["x"]
-            yCoord := curAnchorPos[curMode]["y"]
+            xCoord := curAnchorPos.%curMode%.x
+            yCoord := curAnchorPos.%curMode%.y
         }
 
         newLog := Format(

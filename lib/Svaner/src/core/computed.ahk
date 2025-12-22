@@ -47,10 +47,12 @@ class computed extends signal {
                 }
             }
 
-            this.value := this._mapify(this.mutation.Call(values*))
+            ; this.value := this._mapify(this.mutation.Call(values*))
+            this.value := this.mutation.Call(values*)
         } else {
             this.signal.addComp(this)
-            this.value := this._mapify(this.mutation.Call(this.signal.value))
+            ; this.value := this._mapify(this.mutation.Call(this.signal.value))
+            this.value := this.mutation.Call(this.signal.value)
         }
 
         ; ; debug mode
@@ -87,9 +89,11 @@ class computed extends signal {
                     values.Push(s.value)
                 }
             }
-            this.value := this._mapify(this.mutation.Call(values*))
+            ; this.value := this._mapify(this.mutation.Call(values*))
+            this.value := this.mutation.Call(values*)
         } else {
-            this.value := this._mapify(this.mutation.Call(subbedSignal.value))
+            ; this.value := this._mapify(this.mutation.Call(subbedSignal.value))
+            this.value := this.mutation.Call(subbedSignal.value)
         }
 
         ; notify all subscribers to update

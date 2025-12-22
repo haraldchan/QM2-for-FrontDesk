@@ -18,12 +18,12 @@ class DebuggerList {
 	 */
 	static addDebugger(debugger) {
 		listed := {
-			signalName: debugger.value["signalName"],
-			signalType: debugger.value["signalType"],
-			value: (debugger.value["signalInstance"].value is Object) 
-				? JSON.stringify(debugger.value["signalInstance"].value, 0, "") 
-				: debugger.value["signalInstance"].value,
-			caller: ArrayExt.at(debugger.value["callerChain"], -1)["callerName"],
+			signalName: debugger.value.signalName,
+			signalType: debugger.value.signalType,
+			value: (debugger.value.signalInstance.value is Object) 
+				? JSON.stringify(debugger.value.signalInstance.value, 0, "") 
+				: debugger.value.signalInstance.value,
+			caller: ArrayExt.at(debugger.value.callerChain, -1)["callerName"],
 			debugger: debugger
 		}
 
@@ -37,9 +37,9 @@ class DebuggerList {
 		new := [this.debuggers.value*]
 
 		for d in new {
-			d["value"] := d["debugger"].value["signalInstance"].value is Object 
-				? JSON.stringify(d["debugger"].value["signalInstance"].value, 0, "")
-				: d["debugger"].value["signalInstance"].value
+			d.value := d.debugger.value.signalInstance.value is Object 
+				? JSON.stringify(d.debugger.value.signalInstance.value, 0, "")
+				: d.debugger.value.signalInstance.value
 		}
 
 		this.debuggers.set(new)

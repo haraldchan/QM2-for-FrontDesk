@@ -11,29 +11,30 @@
  */
 
 /**
- * @param {Map} debuggerMap
+ * @param {Object} debuggerObj
  */
-ReactiveDetails(debuggerMap) {
+ReactiveDetails(debuggerObj) {
     App := Svaner({
         gui: { 
-            title: debuggerMap["signalName"] 
+            title: debuggerObj.signalName
         },
         font: { 
             name: "Tahoma" 
         }
     })
 
-    signalName := debuggerMap["signalName"]
-    signalType := debuggerMap["signalType"]
-    signalInstance := debuggerMap["debugger"].value["signalInstance"]
+    signalName := debuggerObj.signalName
+    signalType := debuggerObj.signalType
+    signalInstance := debuggerObj.debugger.value.signalInstance
 
     createListViewContent(signalValue) {
         /** @type {Gui.ListView} */
         LV := App["lv-primitive"]
+
         LV.ModifyCol(1, 100)
         LV.ModifyCol(2, 200)
         
-        for indexOrKey, value in signalValue {
+        for indexOrKey, value in (signalValue is Map ? signalValue : signalValue.OwnProps()) {
             LV.Add(, indexOrKey, value)    
         }
     }
@@ -56,7 +57,7 @@ ReactiveDetails(debuggerMap) {
         else if (signalInstance.value is Array && ArrayExt.every(signalInstance.value, item => item is Object)) {
             App.AddListView(
                 { lvOptions: "vlv-structure @lv:label-tip w300" },
-                { keys: MapExt.keys(signalInstance.value[1]) },
+                { keys: MapExt.keys(JSON.parse(JSON.stringify(signalInstance.value[1])))},
                 signalInstance
             )
         }

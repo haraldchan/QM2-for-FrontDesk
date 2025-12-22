@@ -57,7 +57,8 @@ KeyRecorder_Logger(ih, vk, sc, state, replaceSleep) {
         keyName, 
         isModifier ? (" " . state) : "",
         match(replaceSleep.isReplace(), Map(
-            replace => replace == true,      replaceSleep.stepFiller() . "`r`n",
+            replace => replace == true,
+            replaceSleep.stepFiller() . "`r`n",
             replace => !replace && elapsed,  "Sleep " . elapsed . "`r`n",
             replace => !replace && !elapsed, ""
         ))

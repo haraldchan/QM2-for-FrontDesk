@@ -14,8 +14,8 @@ Reactives(App) {
         widths: [120, 100, 100]
     }
 
-    signals := computed(DebuggerList.debuggers, cur => ArrayExt.filter(cur, item => item["signalType"] == "signal"))
-    computeds := computed(DebuggerList.debuggers, cur => ArrayExt.filter(cur, item => item["signalType"] == "computed"))
+    signals := computed(DebuggerList.debuggers, cur => ArrayExt.filter(cur, item => item.signalType == "signal"))
+    computeds := computed(DebuggerList.debuggers, cur => ArrayExt.filter(cur, item => item.signalType == "computed"))
     
     handleShowSignalDetails(LV, row, signalList) {
         if (row == 0 || row > 10000) {

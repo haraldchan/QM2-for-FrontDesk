@@ -13,7 +13,8 @@ class signal {
      * @return {Signal}
      */
     __New(initialValue, options := { name: "", forceUpdate: false }) {
-        this.value := this._mapify(initialValue)
+        ; this.value := this._mapify(initialValue)
+        this.value := initialValue
         this.initValue := this.value
         this.prevValue := 0
         
@@ -63,9 +64,6 @@ class signal {
 
         prevValue := this.value
         this.value := newSignalValue is Func ? newSignalValue(this.value) : newSignalValue
-        if (this.value.base == Object.Prototype || this.value is Array || this.value is Map) {
-            this.value := this._mapify(this.value)
-        }
 
         ; validates new value if it matches the Struct
         this._validateType(this.type, this.value)
@@ -113,15 +111,17 @@ class signal {
             throw TypeError(Format("update can only handle Array/Object/Map; `n`nCurrent Type: {2}", Type(newValue)))
         }
 
-        updater := this._mapify(this.value)
+        updater := this.value
         if (key is Array) {
             this._setExactMatch(key, updater, newValue)
         } else {
-
             this._setFirstMatch(key, updater, newValue)
         }
-
+        
+        prevStatusOfForceUpdate := this.forceUpdate
+        this.forceUpdate := true
         this.set(updater)
+        this.forceUpdate := prevStatusOfForceUpdate
     }
 
     /**
@@ -132,11 +132,16 @@ class signal {
     ; find nested key by exact query path
     _setExactMatch(keys, item, newValue, index := 1) {
         if (index == keys.Length) {
-            item[keys[index]] := newValue is Func ? newValue(item[keys[index]]) : newValue
+            if (item.base == Object.Prototype) {
+                item.%keys[index]% := newValue is Func ? newValue(item.%keys[index]%) : newValue
+            }
+            else {
+                item[keys[index]] := newValue is Func ? newValue(item[keys[index]]) : newValue   
+            }
             return
         }
 
-        for k, v in item {
+        for k, v in (item.base == Object.Prototype ? item.OwnProps() : item) {
             if (k == keys[index]) {
                 this._setExactMatch(keys, v, newValue, index + 1)
             }
@@ -145,15 +150,18 @@ class signal {
 
     ; find the first matching key
     _setFirstMatch(key, item, newValue) {
-        if (item.Has(key)) {
-            item[key] := newValue is Func ? newValue(item[key]) : newValue
+        if (item.base == Object.Prototype ? item.HasOwnProp(key) : item.Has(key)) {
+            if (item.base == Object.Prototype) {
+                item.%key% := newValue is Func ? newValue(item.%key%) : newValue
+            }
+            else {
+                item[key] := newValue is Func ? newValue(item[key]) : newValue
+            }
             return
         }
 
-        for k, v in item {
-            if (v is Map 
-            ; || v is Struct.StructInstance
-            ) {
+        for k, v in (item.base == Object.Prototype ? item.OwnProps() : item) {
+            if (v is Map || v.base == Object.Prototype) {
                 this._setFirstMatch(key, v, newValue)
             }
         }

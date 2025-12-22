@@ -22,11 +22,11 @@ MouseSpy_Information(App, config, AppWindowTitle, suspendText) {
     )
 
     SetTimer(updater, config["misc"]["updateInterval"])
-    effect(curMouseInfo, cur => App["color-indicator"].SetFont(Format("s13 c{1}", StrReplace(cur["color"], "0x", ""))))
+    effect(curMouseInfo, cur => App["color-indicator"].SetFont(Format("s13 c{1}", StrReplace(cur.color, "0x", ""))))
     
     curWindowInfo := computed(curMouseInfo, updateWindowInfoUpdate, { name: "curWindowInfo" })
     updateWindowInfoUpdate(curMouseInfo) {
-        w := curMouseInfo["window"]
+        w := curMouseInfo.window
         try {
             ahkExe := WinGetProcessName(w)
         } catch {
@@ -45,8 +45,8 @@ MouseSpy_Information(App, config, AppWindowTitle, suspendText) {
     distance := computed( 
         [curMouseInfo, anchorPos], 
         (curMP, curAP) => (
-            x := curMP["Screen"]["x"] - curAP["Screen"]["x"],
-            y := curMP["Screen"]["y"] - curAP["Screen"]["y"],
+            x := curMP.Screen.x - curAP.Screen.x,
+            y := curMP.Screen.y - curAP.Screen.y,
             { 
                 x: x < 0 ? " - " . Abs(x) : " + " . x, 
                 y: y < 0 ? " - " . Abs(y) : " + " . y
@@ -135,11 +135,11 @@ MouseSpy_Information(App, config, AppWindowTitle, suspendText) {
             () => [
                 ; Screen
                 App.AddText("xs10 yp+25 w60 h20 0x200", "Screen:"),
-                App.AddEdit("@use:edit-long", "{1}, {2}", curMouseInfo, [v => v["Screen"]["x"], v => v["Screen"]["y"]]),
+                App.AddEdit("@use:edit-long", "{1}, {2}", curMouseInfo, [v => v.Screen.x, v => v.Screen.y]),
 
                 ; Client
                 App.AddText("xs10 yp+25 w60 h20 0x200", "Client:"),
-                App.AddEdit("@use:edit-long", "{1}, {2}", curMouseInfo, [v => v["Client"]["x"], v => v["Client"]["y"]]),
+                App.AddEdit("@use:edit-long", "{1}, {2}", curMouseInfo, [v => v.Client.x, v => v.Client.y]),
 
                 ; color
                 App.AddText("xs10 yp+25 w50 h20 0x200", "Color: "),
@@ -159,9 +159,9 @@ MouseSpy_Information(App, config, AppWindowTitle, suspendText) {
             },
             () => [
                 App.AddText("@use:label-text", "Screen:"), 
-                App.AddEdit("x+10 w80 ReadOnly", "{1}, {2}", anchorPos, [v => v["Screen"]["x"], v => v["Screen"]["y"]]),
+                App.AddEdit("x+10 w80 ReadOnly", "{1}, {2}", anchorPos, [v => v.Screen.x, v => v.Screen.y]),
                 App.AddText("x+30 w50 h20 0x200", "Client:"), 
-                App.AddEdit("x+10 w80 ReadOnly", "{1}, {2}", anchorPos, [v => v["Client"]["x"], v => v["Client"]["y"]]),
+                App.AddEdit("x+10 w80 ReadOnly", "{1}, {2}", anchorPos, [v => v.Client.x, v => v.Client.y]),
 
                 ; relative distance
                 App.AddText("@use:label-text" . " yp+30", "Distance:"),

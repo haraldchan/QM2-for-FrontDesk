@@ -35,8 +35,7 @@ MouseSpy(App) {
     
     return (
         ; { follow switch
-        App.AddCheckBox("vfollow-status x10 w100 h20 Checked", "Follow Mouse")
-           .onClick((ctrl, _) => mouseStore.followMouse.set(ctrl.value)),
+        App.AddCheckBox("vfollow-status x10 w100 h20 Checked", "Follow Mouse", { check: mouseStore.followMouse }).bind(),
         App.AddText("vsuspend-status x+10 h20 w260 0x200 +Right", "{1}", suspendText),
         ; }
 

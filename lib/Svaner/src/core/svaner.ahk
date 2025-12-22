@@ -404,7 +404,8 @@ class Svaner {
             parsedItemOptions := options.HasOwnProp("itemOptions")
                 ? this.__parseOptions(options.itemOptions)
                 : { parsed: "", callbacks: "" }
-        } else {
+        } 
+        else {
             ; Native ListView
             parsedOptions := this.__parseOptions(options)
         }
@@ -471,7 +472,7 @@ class Svaner {
 
 
     /**
-     * 
+     * Add a Progress control to Gui.
      * @param {String} options 
      * @param {Integer} startingPos 
      * @returns {Gui.Progress} 
@@ -525,7 +526,7 @@ class Svaner {
 
 
     /**
-     * 
+     * Add StatusBar control to Gui
      * @param {String} options 
      * @param {String} startingText 
      * @returns {Gui.StatusBar} 
@@ -541,7 +542,7 @@ class Svaner {
 
 
     /**
-     * 
+     * Add Tab3 control to Gui
      * @param {String} options 
      * @param {String[]} pages 
      * @returns {Gui.Tab} 
@@ -654,13 +655,15 @@ class Svaner {
                     this.optionTexts := MapExt.keys(this.depend.value)
                     this.optionsValues := MapExt.values(this.depend.value)
                 }
-            } else if (controlType == "ListView") {
+            }
+            else if (controlType == "ListView") {
                 this.titleKeys := this.content.keys
                 this.formattedContent := this.content.HasOwnProp("titles")
                     ? this.content.titles
                     : ArrayExt.map(this.titleKeys, key => (key is Array) ? key[key.Length] : key)
                 this.colWidths := this.content.HasOwnProp("widths") ? this.content.widths : ArrayExt.map(this.titleKeys, item => "AutoHdr")
-            } else {
+            }
+            else {
                 this.formattedContent := RegExMatch(this.content, "\{\d+\}") ? this._handleFormatStr(this.content, this.depend, this.key) : this.content
             }
 
@@ -703,11 +706,13 @@ class Svaner {
             ; add subscribe
             if (!this.depend) {
                 return
-            } else if (this.depend is Array) {
+            }
+            else if (this.depend is Array) {
                 for dep in this.depend {
                     dep.addSub(this)
                 }
-            } else {
+            }
+            else {
                 this.depend.addSub(this)
             }
         }
@@ -720,12 +725,13 @@ class Svaner {
         _handleOptionsFormatting(options) {
             if (this.ctrlType == "ListView") {
                 optionsString := options.lvOptions
-            } else if (this.ctrlType == "TreeView") {
+            }
+            else if (this.ctrlType == "TreeView") {
                 optionsString := options.tvOptions
-            } else {
+            }
+            else {
                 optionsString := options
             }
-
 
             optionsArr := StrSplit(optionsString, " ")
             arcNameIndex := ArrayExt.findIndex(optionsArr, item => InStr(item, "$"))
@@ -743,7 +749,8 @@ class Svaner {
             if (this.ctrlType == "ListView") {
                 options.lvOptions := formattedOptions
                 return options
-            } else if (this.ctrlType == "TreeView") {
+            }
+            else if (this.ctrlType == "TreeView") {
                 options.tvOptions := formattedOptions
                 return options
             }
@@ -778,11 +785,14 @@ class Svaner {
 
             if (!key) {
                 this._fmtStr_handleKeyless(depend, vals)
-            } else if (key is Number) {
+            }
+            else if (key is Number) {
                 this._fmtStr_handleKeyNumber(depend, key, vals)
-            } else if (key is Func) {
+            }
+            else if (key is Func) {
                 this._fmtStr_handleKeyFunc(depend, key, vals)
-            } else {
+            }
+            else {
                 this._fmtStr_handleKeyObject(depend, key, vals)
             }
 
@@ -797,9 +807,11 @@ class Svaner {
                 for dep in depend {
                     vals.Push(dep.value)
                 }
-            } else if (depend.value is Array) {
+            }
+            else if (depend.value is Array) {
                 vals := depend.value
-            } else {
+            }
+            else {
                 vals.Push(depend.value)
             }
         }
@@ -816,11 +828,12 @@ class Svaner {
                 index := key.HasOwnProp("index") ? key.index : A_Index
 
                 for k in key.keys {
-                    vals.Push(k is Func ? k(depend.value[index]) : depend.value[index][k])
+                    vals.Push(k is Func ? k(depend.value[index]) : (depend.value[index] is Map ? depend.value[index][k] : depend.value[index].%k%))
                 }
-            } else {
+            }
+            else {
                 for k in key {
-                    vals.Push(k is Func ? k(depend.value) : depend.value[k])
+                    vals.Push(k is Func ? k(depend.value) : (depend.value is Map ? depend.value[k] : depend.value.%k%))
                 }
             }
         }
@@ -835,16 +848,21 @@ class Svaner {
                 ; item -> Object || Map || OrderedMap
                 if (item.base == Object.Prototype) {
                     itemIn := JSON.parse(JSON.stringify(item))
-                } else if (item is Map) {
+                }
+                else if (item is Map) {
                     itemIn := item
                 }
 
                 rowData := ArrayExt.map(this.titleKeys, key => getRowData(key, itemIn))
                 getRowData(key, itemIn, layer := 1) {
                     if (key is String) {
-                        if (itemIn.Has(key)) {
+                        if (itemIn.base == Object.Prototype && itemIn.HasOwnProp(key)) {
+                            return itemIn.%key%
+                        }
+                        else if (itemIn is Map && itemIn.Has(key)) {
                             return itemIn[key]
-                        } else {
+                        }
+                        else {
                             return this._listview_getFirstMatch(key, itemIn)
                         }
                     }
@@ -859,25 +877,28 @@ class Svaner {
 
             this.ctrl.Modify(1, "Select")
             this.ctrl.Focus()
-
-
         }
         _listview_getExactMatch(keys, item, index) {
-            if !(item is Map) {
+            if !(item is Map || item.base == Object.Prototype) {
                 return item
             }
 
-            return this._listview_getExactMatch(keys, item[keys[index]], index + 1)
+            itemToGet := item is Map ? item[keys[index]] : item.%keys[index]%
+
+            return this._listview_getExactMatch(keys, itemToGet, index + 1)
         }
         _listview_getFirstMatch(key, item) {
-            if (item.Has(key)) {
+            if (item is Map && item.Has(key)) {
                 return item[key]
+            }
+            else if (item.base == Object.Prototype && item.HasOwnProp(key)) {
+                return item.%key%
             }
 
             for k, v in item {
-                if (v is Map) {
+                if (v is Map || v.base == Object.Prototype) {
                     res := this._listview_getFirstMatch(key, v)
-                    if (res != "") {
+                    if (res) {
                         return res
                     }
                 }
