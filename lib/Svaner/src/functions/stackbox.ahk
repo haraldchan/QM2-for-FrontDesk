@@ -9,8 +9,10 @@ class StackBox {
      * options := {
      *     ; available options
      *     name: "stack-box",
-     *     fontOptions: "s12 bold",
-     *     fontName: "Times New Roman",
+     *     font: {
+     *         name: "Times New Roman",
+     *         options: "s12 bold"
+     *     }
      *          
      *     ; GroupBox options
      *     groupbox: { 
@@ -51,8 +53,9 @@ class StackBox {
             this.svaner.components[this.name] := this
         }
 
-        this.fontName := options.HasOwnProp("fontName") ? options.fontName : ""
-        this.fontOptions := options.HasOwnProp("fontOptions") ? options.fontOptions : ""
+        this.fontName := options.HasOwnProp("font") && options.font.HasOwnProp("name") ? options.font.name : ""
+        this.fontOptions := options.HasOwnProp("font") && options.font.HasOwnProp("options") ? options.font.options : ""        
+
         this.renderCallback := (*) => renderCallback()
         this.ctrls := []
 
