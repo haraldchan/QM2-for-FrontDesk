@@ -3,31 +3,25 @@
  */
 OnePress(App) {
     modules := OrderedMap(
-        BlankShare,       "生成空白(NRR) Share",
-        PaymentRelation,  "生成 PayBy PayFor 信息",
-        Cashiering,       "入账关联 - 快速打开Billing、入Deposit等",
-        GroupShareDnm,    "预抵房间批量 Share/DoNotMove",
-        ; PsbBatchUpload,   "旅业二期（网页版）批量上报",
-        ; PsbBatchCheckout, "旅业二期（网页版）批量退房",
-        BatchKeysXl,      "批量房卡制作（Excel 表辅助）", 
-        BatchKeysSq,      "批量房卡制作（连续输入）", 
-        FetchFedexResv,   "抓取 FedEx Opera 订单信息",
-        ; BriefingSheets,   "生成 Briefing 报表",
-        RateChecking,     "快速查看房价"
+        "生成空白(NRR) Share", BlankShare,
+        "生成 PayBy PayFor 信息", PaymentRelation,
+        "入账关联 - 快速打开Billing、入Deposit等", Cashiering,
+        "批量房卡制作 (Excel 表辅助)", BatchKeysXl,
+        "批量房卡制作 (连续输入)", BatchKeysSq,
+        "抓取 FedEx Opera 订单信息", FetchFedexResv,
+        "快速查看房价", RateChecking
     )
 
-    selectedModule := signal(modules.keys()[1].name)
-    moduleComponents := OrderedMap()
-    for module in modules {
-        moduleComponents[module.name] := module
-    }
+    selectedModule := signal(modules.keys()[1])
 
-    effect(selectedModule, handleModuleChange)
-    handleModuleChange(moduleName) {
-        for module in modules {
-            App[StrLower(module.name) . "-action"].Opt(module.name = moduleName ? "+Default" : "-Default")
+    handleModuleChange(ctrl, _) {
+        moduleName := modules[ctrl.Text]
+        selectedModule.set(ctrl.Text)
+
+        for desc, module in modules {
+            App[StrLower(module.name) . "-action"].Opt(desc == ctrl.Text ? "+Default" : "-Default")
         }
-        WinSetAlwaysOnTop (moduleName = "PaymentRelation"), POPUP_TITLE
+        WinSetAlwaysOnTop (moduleName == "PaymentRelation"), POPUP_TITLE
     }
 
     App.defineDirectives(
@@ -41,18 +35,19 @@ OnePress(App) {
             case 1:
                 return "vfirst-radio Checked x30 y+10 h20"
             case modules.keys().Length:
-                return "vlast-radio Checked x30 y+10 h20"
+                return "vlast-radio x30 y+10 h20"
             default:
                 return "x30 y+10 h20"
         }
     }
 
     return (
-        modules.keys().map(module =>
-            App.AddRadio(defineRadioStyle(A_Index), modules[module])
-               .onClick((*) => selectedModule.set(module.name))
+        modules.keys().map(desc =>
+            App.AddRadio(defineRadioStyle(A_Index), desc)
+               .onClick(handleModuleChange)
         ),
-        Dynamic(App, selectedModule, moduleComponents),
-        App[StrLower(selectedModule.value) . "-action"].Opt("+Default")
+        ; Dynamic(App, selectedModule, moduleComponents),
+        Dynamic(App, selectedModule, modules),
+        App[StrLower(modules[selectedModule.value].name) . "-action"].Opt("+Default")
     )
 }
