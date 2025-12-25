@@ -86,7 +86,7 @@ class BalanceTransfer {
         Sleep 100
         Send "{Tab}"
         Sleep 100
-        Send "{Text}" . Format("-{1}", balance)
+        Send "{Text}" . Format("{1}", Integer(balance) < 0 ? "-" . balance : balance)
         Sleep 100
         loop 5 {
             Send "{Tab}"
@@ -101,6 +101,5 @@ class BalanceTransfer {
         Send "!c"
         
         this.end()
-        ; MsgBox("已完成.", "Balance Transfer", "T1 4096")
     }
 }
