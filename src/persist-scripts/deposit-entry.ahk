@@ -8,6 +8,26 @@
  */
 
 class DepositEntry {
+    static isRunning := false
+
+	static start() {
+		WinMaximize "ahk_class SunAwtFrame"
+		WinActivate "ahk_class SunAwtFrame"
+		WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
+		BlockInput true
+
+		Hotkey("F12", (*) => this.end(), "On")
+		this.isRunning := true
+	}
+	
+	static end() {
+		BlockInput false
+		WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
+		
+		Hotkey("F12", (*) => {}, "Off")
+		this.isRunning := false
+	}
+
     static regex := {
         visa: "^4\d{12}(\d{3})?$",
         master: "^(5[1-5]\d{14}|2(2[2-9]\d{12}|[3-6]\d{13}|7[01]\d{12}|720\d{12}))$",
@@ -177,6 +197,8 @@ class DepositEntry {
      * @param {Deposit} depositInfo 
      */
     static entry(depositInfo) {
+        this.start()
+
         if (!WinExist("ahk_class SunAwtFrame")) {
             return
         }
@@ -184,6 +206,21 @@ class DepositEntry {
         if (depositInfo is Map) {
             depositInfo := JSON.parse(JSON.stringify(depositInfo),, false)   
         }
+
+        ; dismiss alerts
+        loop {
+            ; if there is a alert box
+            if (PixelGetColor(551, 421) != "0xFFFFFF") {
+                break
+            }
+
+            Send "{Enter}"
+            Sleep 250
+        }
+		if (!this.isRunning) {
+			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
+			return
+		}
 
         WinActivate("ahk_class SunAwtFrame")
         loop {
@@ -201,6 +238,10 @@ class DepositEntry {
         Send "{Text}" . depositInfo.cardType
         Send "{Tab}"
         utils.waitLoading()
+		if (!this.isRunning) {
+			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
+			return
+		}
 
         ; dismiss pre-exist card select
         CoordMode("Pixel", "Screen")
@@ -219,6 +260,10 @@ class DepositEntry {
         } until (A_Index > 5)
         Send "{Esc}"
         utils.waitLoading()
+		if (!this.isRunning) {
+			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
+			return
+		}
 
         ; enter cardNum & exp
         Send Format("{Text}{1}`n{2}", depositInfo.cardNum, depositInfo.exp)
@@ -278,17 +323,6 @@ class DepositEntry {
         utils.waitLoading()
         Send "!e"
         utils.waitLoading()
-
-        ; dismiss alerts
-        loop {
-            ; if there is a alert box
-            if (PixelGetColor(551, 421) != "0xFFFFFF") {
-                break
-            }
-
-            Send "{Enter}"
-            Sleep 250
-        }
 
         this.entry(depositInfo)
         utils.waitLoading()
