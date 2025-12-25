@@ -22,12 +22,12 @@ PersistScriptsControl(App) {
 		HotString("::bt", (*) => BalanceTransfer.USE())
 
 		; Deposit Entry
-		OnClipboardChange((*) => DepositEntry.USE(App["deposit-entry-on"]))
+		OnClipboardChange((*) => DepositEntry.copyFromMipay(App["deposit-entry-on"]))
 	}
 
 	App.defineDirectives(
-		"@use:psc-label", "xs10 yp+25 w130 h25",
-		"@use:psc-desc", "w150 h25 x+10 0x200",
+		"@use:psc-label", "xs10 yp+25 w130 h20",
+		"@use:psc-desc", "w150 h20 x+10 0x200",
 		"@func:bold", ctrl => ctrl.SetFont("bold")
 	)
 
@@ -36,7 +36,9 @@ PersistScriptsControl(App) {
 			App, 
 			{
 				name: "persist-scripts-stack-box",
-				fontOptions: "bold",
+				font: { 
+					options: "bold"
+				},
 				groupbox: {
 					title: "常驻脚本",
 					options: "Section x15 y+10 w375 h130",
@@ -44,13 +46,13 @@ PersistScriptsControl(App) {
 			},
 			() => [
 				; City Ledger
-				App.AddCheckbox("vcity-ledger-on @use:psc-label", "City Ledger"),
+				App.AddCheckbox("vcity-ledger-on @use:psc-label Checked yp+20", "City Ledger"),
 				App.AddText("@use:psc-desc", "热键: Ctrl + O | 鼠标滚轮键"),
 			
 				; Scan Invoke
 				App.AddCheckbox("vscan-invoke-on @use:psc-label Checked", "启动扫描"),
 				App.AddText("@use:psc-desc", "热键: Ctrl+Shift+S"),
-				App.AddButton("xp+105 w80 h25", "Scan 文件夹").onClick((*) => Run("\\10.0.2.13\fd\01 FO PASSPORT SCANNING")),
+				App.AddButton("xp+105 w80 h20", "Scan 文件夹").onClick((*) => Run("\\10.0.2.13\fd\01 FO PASSPORT SCANNING")),
 
 				; Balance Transfer
 				App.AddCheckbox("vbalance-transfer-on @use:psc-label Checked", "Balance Transfer"),
