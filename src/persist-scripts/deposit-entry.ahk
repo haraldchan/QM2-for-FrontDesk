@@ -10,23 +10,23 @@
 class DepositEntry {
     static isRunning := false
 
-	static start() {
-		WinMaximize "ahk_class SunAwtFrame"
-		WinActivate "ahk_class SunAwtFrame"
-		WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
-		BlockInput true
+    static start() {
+        WinMaximize "ahk_class SunAwtFrame"
+        WinActivate "ahk_class SunAwtFrame"
+        WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
+        BlockInput true
 
-		Hotkey("F12", (*) => this.end(), "On")
-		this.isRunning := true
-	}
-	
-	static end() {
-		BlockInput false
-		WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
-		
-		Hotkey("F12", (*) => {}, "Off")
-		this.isRunning := false
-	}
+        Hotkey("F12", (*) => this.end(), "On")
+        this.isRunning := true
+    }
+    
+    static end() {
+        BlockInput false
+        WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
+        
+        Hotkey("F12", (*) => {}, "Off")
+        this.isRunning := false
+    }
 
     static regex := {
         visa: "^4\d{12}(\d{3})?$",
@@ -124,7 +124,7 @@ class DepositEntry {
         }
 
         sendQmPost(depositInfo) {
-            agent := useServerAgent({ pool: "\\10.0.2.13\fd\19-个人文件夹\HC\Software - 软件及脚本\AHK_Scripts\ClipFlow\src\Servers\test-pool" })
+            agent := useServerAgent({ pool: "\\10.0.2.13\fd\19-个人文件夹\HC\Software - 软件及脚本\AHK_Scripts\ClipFlow\src\Servers\qm-pool" })
             agent.POST({
                 module: "DepositEntry",
                 form: depositInfo
@@ -202,6 +202,7 @@ class DepositEntry {
         if (!WinExist("ahk_class SunAwtFrame")) {
             return
         }
+        WinActivate("ahk_class SunAwtFrame")
 
         if (depositInfo is Map) {
             depositInfo := JSON.parse(JSON.stringify(depositInfo),, false)   
@@ -217,12 +218,11 @@ class DepositEntry {
             Send "{Enter}"
             Sleep 250
         }
-		if (!this.isRunning) {
-			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
-			return
-		}
+        if (!this.isRunning) {
+            msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
+            return
+        }
 
-        WinActivate("ahk_class SunAwtFrame")
         loop {
             if (ImageSearch(&outX, &outY, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["opera-active-win.PNG"])) {
                 break
@@ -236,12 +236,13 @@ class DepositEntry {
         Click 3
         Sleep 100
         Send "{Text}" . depositInfo.cardType
+        Sleep 100
         Send "{Tab}"
         utils.waitLoading()
-		if (!this.isRunning) {
-			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
-			return
-		}
+        if (!this.isRunning) {
+            msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
+            return
+        }
 
         ; dismiss pre-exist card select
         CoordMode("Pixel", "Screen")
@@ -260,10 +261,10 @@ class DepositEntry {
         } until (A_Index > 5)
         Send "{Esc}"
         utils.waitLoading()
-		if (!this.isRunning) {
-			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
-			return
-		}
+        if (!this.isRunning) {
+            msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
+            return
+        }
 
         ; enter cardNum & exp
         Send Format("{Text}{1}`n{2}", depositInfo.cardNum, depositInfo.exp)
@@ -283,11 +284,13 @@ class DepositEntry {
         Send "!m"
         utils.waitLoading()
         Send Format("{Text}{1}`n{2}", depositInfo.amount, depositInfo.auth)
-        Sleep 100
+        Sleep 200
         Send "!o"
         utils.waitLoading()
         Send "!c"
         utils.waitLoading()
+
+        this.end()
     }
 
     static USE(depositInfo) {
