@@ -64,11 +64,10 @@ class Svaner {
 
     /**
      * Retrieves the GuiControl object associated with the specified condition.
-     * @param {String | Func} ctrlSearchCondition directive/function to search target control.
-     *                                            
-     *                                            prefixes: - "type:{type-name}": returns the first type matched control
-     *                                                      - "typeAll:{type-name}": returns all type matched control in an array.
-     *                                                      - "component:{component-name}": returns a component.
+     * @param {String | Func} ctrlSearchCondition directive/function to search target control.                                        
+     * prefixes: - "type:{type-name}": returns the first type matched control
+     *           - "typeAll:{type-name}": returns all type matched control in an array.
+     *           - "component:{component-name}": returns a component.
      * @returns {Gui.Control | Array<Gui.Control>}
      */
     __Item[ctrlSearchCondition] {
@@ -78,15 +77,15 @@ class Svaner {
             }
 
             switch {
-                case InStr(ctrlSearchCondition, "type:"):
+                case StringExt.startsWith(ctrlSearchCondition, "type:"):
                     ; by type
                     return GuiExt.getCtrlByType(this.gui, StrReplace(ctrlSearchCondition, "type:", ""))
 
-                case InStr(ctrlSearchCondition, "typeAll:"):
+                case StringExt.startsWith(ctrlSearchCondition, "typeAll:"):
                     ; by type all
                     return GuiExt.getCtrlByTypeAll(this.gui, StrReplace(ctrlSearchCondition, "typeAll:", ""))
 
-                case InStr(ctrlSearchCondition, "component:"):
+                case StringExt.startsWith(ctrlSearchCondition, "component:"):
                     ; search component
                     return GuiExt.getComponent(this, StrReplace(ctrlSearchCondition, "component:"))
 

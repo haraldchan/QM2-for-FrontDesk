@@ -56,6 +56,7 @@ class ARConfig {
             values:        true,
             getKey:        true,
             deepClone:     true,
+            forEach:       true,
             setDefault:    true,
         },
         gui: {
