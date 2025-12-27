@@ -47,7 +47,7 @@ BatchKeysSq(App, props) {
             {
                 name: "batch-keys-sq",
                 groupbox: {
-                    options: "Section r7 @use:box-xyw",
+                    options: "Section r7 @use:box",
                     title: "批量房卡制作（连续输入）"
                 }
             },

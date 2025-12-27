@@ -55,7 +55,7 @@ Cashiering(App, props) {
                 name: "cashiering-stack-box",
                 groupbox: {
                     title: "入账关联",
-                    options: "Section r11 @use:box-xyw",
+                    options: "Section r11 @use:box",
                 }
             },
             () => [

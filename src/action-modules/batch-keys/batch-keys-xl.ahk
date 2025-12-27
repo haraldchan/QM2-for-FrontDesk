@@ -44,7 +44,7 @@ BatchKeysXl(App, props){
             {
                 name: "batch-keys-xl-stack-box",
                 groupbox: {
-                    options: "Section r9 @use:box-xyw",
+                    options: "Section r9 @use:box",
                     title: "批量房卡制作（Excel 表辅助）"
                 }
             },

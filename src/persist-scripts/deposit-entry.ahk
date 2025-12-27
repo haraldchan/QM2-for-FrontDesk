@@ -36,6 +36,30 @@ class DepositEntry {
     }
 
     /**
+     * @param {String} cardInfo 
+     * @returns {"VS" | "MC" | "AE" | "JC" | "UP"} 
+     */
+    static validateType(cardInfo) {
+        switch {
+            ; Visa
+            case RegExMatch(cardInfo, this.regex.visa):
+                return "VS"
+                ; MasterCard
+            case RegExMatch(cardInfo, this.regex.master):
+                return "MC"
+                ; Amex
+            case RegExMatch(cardInfo, this.regex.amex):
+                return "AE"
+                ; JCB
+            case RegExMatch(cardInfo, this.regex.jcb):
+                return "JC"
+                ; Union Pay
+            default:
+                return "UP"
+        }
+    }
+
+    /**
      * @param {Gui.CheckBox} controlCheckBox 
      */
     static copyFromMipay(controlCheckBox) {
@@ -91,9 +115,13 @@ class DepositEntry {
 
         Prompt := Gui("+AlwaysOnTop", "Deposit Entry")
         Prompt.SetFont(, "微软雅黑")
-        Prompt.OnEvent("Close", p => p.Destroy())
+        Prompt.OnEvent("Close", destroyPrompt)
 
-        destroyPrompt(*) => Prompt.Destroy()
+        destroyPrompt(*) {
+            ; restore card info
+            A_Clipboard := Format("{1}`t{2}", depositInfo.cardNum, depositInfo.exp)
+            Prompt.Destroy()
+        }
 
         completeInfo(*) {
             depositInfo.cardType := Prompt.getCtrlByTypeAll("Radio")
@@ -165,32 +193,6 @@ class DepositEntry {
             Prompt.AddButton("x+5 w80 h25", "确定 (&O)").OnEvent("Click", completeInfo),
             onMount()
         )
-    }
-
-    /**
-     * @param {String} cardNum 
-     * @returns {"VS" | "MC" | "AE" | "JC" | "UP"} 
-     */
-    static validateType(cardNum) {
-        message := "Card No.:{1} is a {2} card."
-
-        switch {
-            ; Visa
-            case RegExMatch(cardNum, this.regex.visa):
-                return "VS"
-                ; MasterCard
-            case RegExMatch(cardNum, this.regex.master):
-                return "MC"
-                ; Amex
-            case RegExMatch(cardNum, this.regex.amex):
-                return "AE"
-                ; JCB
-            case RegExMatch(cardNum, this.regex.jcb):
-                return "JC"
-                ; Union Pay
-            default:
-                return "UP"
-        }
     }
 
     /**
