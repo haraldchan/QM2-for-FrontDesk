@@ -9,10 +9,8 @@ class StackBox {
      * options := {
      *     ; available options
      *     name: "stack-box",
-     *     font: {
-     *         name: "Times New Roman",
-     *         options: "s12 bold"
-     *     }
+     *     fontOptions: "s12 bold",
+     *     fontName: "Times New Roman",
      *          
      *     ; GroupBox options
      *     groupbox: { 

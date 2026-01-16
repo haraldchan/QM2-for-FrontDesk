@@ -3,6 +3,7 @@
  * @property { { options?: String, title?: String } } gui
  * @property { { options?: String, name?: String } } font
  * @property { { [key: String]: ()=>void } } events
+ * @property { { border?: false } } devOpt
  */
 
 class Svaner {
@@ -27,7 +28,21 @@ class Svaner {
      * @param {SvanerConfigs} SvanerConfigs 
      * @returns {Svaner}
      */
-    __New(SvanerConfigs) {
+    __New(SvanerConfigs := {
+        gui: {
+            options: "",
+            title: A_ScriptName
+        },
+        font: {
+            name: "Tahoma"
+        },
+        events: {
+            close: (thisGui) => thisGui.Destroy()
+        },
+        devOpt: {
+            border: false
+        }
+    }) {
         ; create gui
         if (SvanerConfigs.HasOwnProp("gui")) {
             guiOptions := SvanerConfigs.gui.HasOwnProp("options") ? SvanerConfigs.gui.options : ""
@@ -52,6 +67,10 @@ class Svaner {
                 SvanerConfigs.font.HasOwnProp("options") ? SvanerConfigs.font.options : "",
                 SvanerConfigs.font.HasOwnProp("name") ? SvanerConfigs.font.name : ""
             )
+        }
+
+        if (SvanerConfigs.HasOwnProp("devOpt")) {
+            this.devOpt := SvanerConfigs.devOpt
         }
 
         ; components
@@ -104,7 +123,7 @@ class Svaner {
      */
     __parseOptions(optionString) {
         if (!InStr(optionString, "@")) {
-            return { parsed: optionString, callbacks: ""}
+            return { parsed: this.HasOwnProp("devOpt") ? optionString . " Border " : optionString, callbacks: "" }
         }
 
         parsed := ""
@@ -121,7 +140,7 @@ class Svaner {
         }
 
         return { 
-            parsed: parsed, 
+            parsed: this.HasOwnProp("devOpt") ? parsed . " Border " : parsed, 
             callbacks: optCallbacks.Length ? optCallbacks : ""
         }
     }
@@ -240,7 +259,7 @@ class Svaner {
      * @param {String} options Options/Directives apply to the control.
      * @param {String} dateFormat Date Format to show.
      * @param {signal} [depend] Subsribed signal.
-     * @returns {Gui.DateTime} 
+     * @returns {SvanerDateTime | Gui.DateTime} 
      */
     AddDateTime(options, dateFormat := "YYYYMMDDHH24MISS", depend?) {
         parsedOptions := this.__parseOptions(options)
@@ -322,7 +341,7 @@ class Svaner {
 
 
     /**
-     * 
+     * Add a Hotkey control to Gui.
      * @param {String} options 
      * @returns {Gui.Hotkey} 
      */
@@ -337,7 +356,7 @@ class Svaner {
 
 
     /**
-     * 
+     * Add a Link control to Gui.
      * @param {String} options 
      * @param {String} text 
      * @param {Object | Array} [linkInfo] 
@@ -373,15 +392,17 @@ class Svaner {
 
 
     /**
-     * 
-     * @param {String} options 
-     * @param {Array} list 
+     * Add a ListBox/SvanerListBox control to Gui.
+     * @param {String} options Options/Directives apply to the control.
+     * @param {Array | signal} listOrDepend List items/ Subsribed signal.
      * @returns {Gui.ListBox} 
      */
-    AddListBox(options, list) {
+    AddListBox(options, listOrDepend) {
         parsedOptions := this.__parseOptions(options)
 
-        control := this.gui.AddListBox(parsedOptions.parsed, list)
+        control := listOrDepend is signal
+            ? SvanerListBox(this.gui, parsedOptions.parsed,, listOrDepend)
+            : this.gui.AddListBox(parsedOptions.parsed, listOrDepend)
         this.__applyCallbackDirectives(control, parsedOptions.callbacks)
 
         return control
@@ -633,19 +654,6 @@ class Svaner {
             this.depend := depend ? this._filterDepends(depend) : 0
             this.key := key
 
-            ; ListView options
-            if (controlType == "ListView") {
-                this.lvOptions := this.options.lvOptions
-                this.itemOptions := this.options.HasOwnProp("itemOptions") ? this.options.itemOptions : ""
-                this.checkedRows := []
-            }
-
-            ; TreeView options
-            if (controlType == "TreeView") {
-                this.tvOptions := this.options.tvOptions
-                this.itemOptions := this.options.HasOwnProp("itemOptions") ? this.options.itemOptions : ""
-            }
-
             ; textString handling
             if (controlType == "ComboBox" || controlType == "DropDownList") {
                 if (this.depend.value is Array) {
@@ -666,38 +674,47 @@ class Svaner {
                 this.formattedContent := RegExMatch(this.content, "\{\d+\}") ? this._handleFormatStr(this.content, this.depend, this.key) : this.content
             }
 
-            ; add control
-            if (controlType == "ListView") {
-                this.ctrl := this.GuiObject.Add(this.ctrlType, this.lvOptions, this.formattedContent)
-                this._handleListViewUpdate()
-                for width in this.colWidths {
-                    this.ctrl.ModifyCol(A_Index, width)
-                }
-            } 
-            else if (controlType == "TreeView") {
-                this.ctrl := this.GuiObject.AddTreeView(this.tvOptions)
-                this.shadowTree := SvanerTreeView.ShadowTree(this.ctrl)
-                this._handleTreeViewUpdate()
-            }
-            else if (controlType == "CheckBox") {
-                this.ctrl := this.GuiObject.Add(this.ctrlType, this.options, this.formattedContent)
+            ; mount control
+            switch {
+                case controlType == "ListView":
+                    this.lvOptions := this.options.lvOptions
+                    this.itemOptions := this.options.HasOwnProp("itemOptions") ? this.options.itemOptions : ""
+                    this.checkedRows := []
 
-                if (this.checkStatusDepend) {
-                    this.ctrl.value := this.checkStatusDepend.value
-                }
-            }
-            else if (controlType == "ComboBox" || controlType == "DropDownList") {
-                this.ctrl := this.GuiObject.Add(this.ctrlType, this.options, this.optionTexts)
-            }
-            else if (controlType == "MonthCal") {
-                this.ctrl := this.GuiObject.Add(this.ctrlType, this.options, this.depend.value)
-            }
-            else if (controlType == "DateTime") {
-                this.ctrl := this.GuiObject.Add(this.ctrlType, this.options, this.content)
-                this.update(this.depend)
-            }
-            else {
-                this.ctrl := this.GuiObject.Add(this.ctrlType, this.options, this.formattedContent)
+                    this.ctrl := this.GuiObject.Add(this.ctrlType, this.lvOptions, this.formattedContent)
+                    this._handleListViewUpdate()
+                    for width in this.colWidths {
+                        this.ctrl.ModifyCol(A_Index, width)
+                    }
+                case controlType == "TreeView":
+                    this.tvOptions := this.options.tvOptions
+                    this.itemOptions := this.options.HasOwnProp("itemOptions") ? this.options.itemOptions : ""
+
+                    this.ctrl := this.GuiObject.AddTreeView(this.tvOptions)
+                    this.shadowTree := SvanerTreeView.ShadowTree(this.ctrl)
+                    this._handleTreeViewUpdate()
+                case controlType == "CheckBox":
+                    this.ctrl := this.GuiObject.Add(this.ctrlType, this.options, this.formattedContent)
+
+                    if (this.checkStatusDepend) {
+                        this.ctrl.value := this.checkStatusDepend.value
+                    }
+                case (controlType == "ComboBox" || controlType == "DropDownList" || controlType == "ListBox"):
+                    if (this.depend.value is Array) {
+                        this.optionTexts := this.depend.value
+                    } else if (this.depend.value is Map) {
+                        this.optionTexts := MapExt.keys(this.depend.value)
+                        this.optionsValues := MapExt.values(this.depend.value)
+                    }
+
+                    this.ctrl := this.GuiObject.Add(this.ctrlType, this.options, this.optionTexts)
+                case controlType == "MonthCal":
+                    this.ctrl := this.GuiObject.Add(this.ctrlType, this.options, this.depend.value)
+                case controlType == "DateTime":
+                    this.ctrl := this.GuiObject.Add(this.ctrlType, this.options, this.content)
+                    this.update(this.depend)                  
+                default:
+                    this.ctrl := this.GuiObject.Add(this.ctrlType, this.options, this.formattedContent)
             }
             
             this.ctrl.svanerWrapper := this

@@ -1,6 +1,13 @@
 class signal {
     /**
+     * @typedef {Object} SignalOptions
+     * @property {String} [name] 
+     * @property {true | false} [forceUpdate=false]
+     * @property {true | false} [asMap=false]
+     */
+    /**
      * Creates a reactive signal variable.
+     * @param {Any} initialValue The initial value of the signal.This argument is ignored after the initial render. 
      * ```
      * count := signal(0)
      * current := count.value ; current: 0
@@ -9,18 +16,29 @@ class signal {
      * count.set(3)
      * count.set(cur => cur + 2)
      * ```
-     * @param {any} initialValue The initial value of the signal.This argument is ignored after the initial render.
+     * 
+     * @param {SignalOptions} [options]
+     * ```
+     * counter := signal({ num: 1 }, 
+     *   {   
+     *      name: "counter",  ; named signals can be pick up by DevToolsUI
+     *      forceUpdate: true ; triggers subscribers update and effects when set/update was called, even if the value is the same as previous
+     *      asMap: true       ; converts object-type value to Map -> Map("num", 1)
+     *   }
+     * ) 
+     * ```
      * @return {Signal}
      */
-    __New(initialValue, options := { name: "", forceUpdate: false }) {
-        ; this.value := this._mapify(initialValue)
-        this.value := initialValue
-        this.initValue := this.value
-        this.prevValue := 0
-        
+    __New(initialValue, options := { name: "", forceUpdate: false, asMap: false }) {
         ; options
         this.name := options.HasOwnProp("name") ? options.name : ""
         this.forceUpdate := options.HasOwnProp("forceUpdate") ? options.forceUpdate : false
+        this.asMap := options.HasOwnProp("asMap") ? options.asMap : false
+
+        ; initialize value
+        this.value := this.asMap ? this._mapify(initialValue) : initialValue
+        this.initValue := this.value
+        this.prevValue := 0
 
         ; subscribers
         this.subs := []
@@ -32,7 +50,7 @@ class signal {
 
         ; debugger
         this.debugger := false
-        
+
         ; debug mode
         if (!IsSet(DebugUtils) && !IsSet(debugger)) {
             return
@@ -62,8 +80,10 @@ class signal {
         }
         this.prevValue := this.value
 
-        prevValue := this.value
         this.value := newSignalValue is Func ? newSignalValue(this.value) : newSignalValue
+        if (this.asMap) {
+            this.value := this._mapify(this.value)
+        }
 
         ; validates new value if it matches the Struct
         this._validateType(this.type, this.value)
@@ -85,7 +105,7 @@ class signal {
                 if (effect.effectFn.MaxParams == 1) {
                     e(this.value)
                 } else if (effect.effectFn.MaxParams == 2) {
-                    e(this.value, prevValue)
+                    e(this.value, this.prevValue)
                 } else {
                     e()
                 }
@@ -103,7 +123,7 @@ class signal {
 
     /**
      * Updates a specific field of Object/Map value.
-     * @param {Array|any} key index/key of the field.
+     * @param {Array | Any} key index/key of the field.
      * @param newValue New value to assign of mutation function.
      */
     update(key, newValue) {
@@ -117,7 +137,7 @@ class signal {
         } else {
             this._setFirstMatch(key, updater, newValue)
         }
-        
+
         prevStatusOfForceUpdate := this.forceUpdate
         this.forceUpdate := true
         this.set(updater)
@@ -136,7 +156,7 @@ class signal {
                 item.%keys[index]% := newValue is Func ? newValue(item.%keys[index]%) : newValue
             }
             else {
-                item[keys[index]] := newValue is Func ? newValue(item[keys[index]]) : newValue   
+                item[keys[index]] := newValue is Func ? newValue(item[keys[index]]) : newValue
             }
             return
         }
@@ -208,7 +228,7 @@ class signal {
                     if (!ArrayExt.find(datatype, t => t == valueToValidate)) {
                         errMsg := Format("Type mismatch.`n`nAssignables: {1}", ArrayExt.join(datatype, " | "))
                         throw ValueError(errMsg, -1, valueToValidate)
-                    } 
+                    }
             }
         }
         else {
@@ -229,7 +249,7 @@ class signal {
      * Interface for computed instances to subscribe.
      * @param {computed} computed 
      */
-    addComp(computed) {        
+    addComp(computed) {
         this.comps.Push(computed)
     }
 

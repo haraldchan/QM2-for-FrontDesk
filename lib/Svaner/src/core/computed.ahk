@@ -1,25 +1,39 @@
 class computed extends signal {
     /**
+     * @typedef {Object} ComputedOptions
+     * @property {String} [name]
+     * @property {true | false} [asMap=false]
+     */
+    /**
      * Create a computed signal which derives a reactive value.
      * ```
      * count := signal(2)
      * 
      * doubled := computed(count, c => c * 2) ; doubled.value : 4
      * ```
-     * @param {signal | signal[]} depend The signal derives from.
+     * @param {signal | Array<signal>} depend The signal derives from.
      * @param {Func} mutation computation function expression.
-     * @return {computed}
+     * @param {ComputedOptions} [options]
+     * ```
+     * doubled := computed(count, c => { doubled: c * 2 }, 
+     *   {   
+     *      name: "doubled",  ; named signals can be pick up by DevToolsUI
+     *      asMap: true       ; converts object-type value to Map -> Map("num", 1)
+     *   }
+     * ) 
+     * ```     * @return {computed}
      */
-    __New(depend, mutation, options := { name: "" }) {
+    __New(depend, mutation, options := { name: "", asMap: false }) {
         TypeChecker.checkType(depend, [signal, computed, Array], "First parameter is not a signal.")
         TypeChecker.checkType(mutation, Func, "Second parameter is not a Function.")
 
+        ; options
+        this.name := options.HasOwnProp("name") ? options.name : ""
+        this.asMap := options.HasOwnProp("asMap") ? options.asMap : false
+        
         this.signal := depend
         this.mutation := mutation
         this.prevValue := 0
-
-        ; options
-        this.name := options.HasOwnProp("name") ? options.name : ""
 
         ; subscribers
         this.subs := []
@@ -48,11 +62,11 @@ class computed extends signal {
             }
 
             ; this.value := this._mapify(this.mutation.Call(values*))
-            this.value := this.mutation.Call(values*)
+            this.value := this.asMap ? this._mapify(this.mutation.Call(values*)) : this.mutation.Call(values*)
         } else {
             this.signal.addComp(this)
             ; this.value := this._mapify(this.mutation.Call(this.signal.value))
-            this.value := this.mutation.Call(this.signal.value)
+            this.value := this.asMap ? this._mapify(this.mutation.Call(this.signal.value)) : this.mutation.Call(this.signal.value)
         }
 
         ; ; debug mode
@@ -90,10 +104,10 @@ class computed extends signal {
                 }
             }
             ; this.value := this._mapify(this.mutation.Call(values*))
-            this.value := this.mutation.Call(values*)
+            this.value := this.asMap ? this._mapify(this.mutation.Call(values*)) : this.mutation.Call(values*)
         } else {
             ; this.value := this._mapify(this.mutation.Call(subbedSignal.value))
-            this.value := this.mutation.Call(subbedSignal.value)
+            this.value := this.asMap ? this._mapify(this.mutation.Call(subbedSignal.value)) : this.mutation.Call(subbedSignal.value)
         }
 
         ; notify all subscribers to update

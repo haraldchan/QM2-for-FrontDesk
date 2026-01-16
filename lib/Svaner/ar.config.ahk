@@ -47,6 +47,7 @@ class ARConfig {
             slice:         true,
             startsWith:    true,
             endsWith:      true,
+            toCase:        true
         },
         integer: {
             times:         true
