@@ -1,7 +1,7 @@
-#Include balance-transfer.ahk
-#Include city-ledger-co.ahk
-#Include scan-invoke.ahk
-#Include deposit-entry.ahk
+#Include scripts\balance-transfer.ahk
+#Include scripts\city-ledger-co.ahk
+#Include scripts\scan-invoke.ahk
+#Include scripts\deposit-entry.ahk
 
 /**
  * @param {Svaner} App 

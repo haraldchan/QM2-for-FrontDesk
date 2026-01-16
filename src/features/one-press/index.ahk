@@ -1,3 +1,5 @@
+#Include action-modules\action-module-index.ahk
+
 /**
  * @param {Svaner} App 
  */

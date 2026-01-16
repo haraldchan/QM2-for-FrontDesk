@@ -1,24 +1,24 @@
-class ReportMasterNext_Action {
-	static isRunning := false
+class ReportMasterNext {
+    static isRunning := false
 
-	static start() {
+    static start() {
         this.isRunning := true
-		HotIf (*) => this.isRunning
-		Hotkey("F12", (*) => this.end(), "On")
+        HotIf (*) => this.isRunning
+        Hotkey("F12", (*) => this.end(), "On")
 
-		WinMaximize "ahk_class SunAwtFrame"
-		WinActivate "ahk_class SunAwtFrame"
-		WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
-		BlockInput true
-	}
-	
-	static end() {
-		this.isRunning := false
-		Hotkey("F12", "Off")
+        WinMaximize "ahk_class SunAwtFrame"
+        WinActivate "ahk_class SunAwtFrame"
+        WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
+        BlockInput true
+    }
 
-		WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
-		BlockInput false
-	}
+    static end() {
+        this.isRunning := false
+        Hotkey("F12", "Off")
+
+        WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
+        BlockInput false
+    }
 
     static reportList := {
         onr: [{
@@ -160,10 +160,10 @@ class ReportMasterNext_Action {
         Send "{Enter}"
         Sleep 100
         Send "!o"
-		if (!this.isRunning) {
-			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
-			return
-		}
+        if (!this.isRunning) {
+            msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
+            return
+        }
 
         ; run saving actions, return filename
         reportFn := reportInfoObj.saveFn
@@ -178,7 +178,7 @@ class ReportMasterNext_Action {
 
         Sleep 1000
         Send "!f"
-        
+
         WinWait("Please Select a Directory to Download")
         Sleep 200
         Send "{Backspace}"
@@ -188,10 +188,10 @@ class ReportMasterNext_Action {
         Send "{Enter}"
 
         TrayTip Format("正在保存：{1}", saveFileName)
-		if (!this.isRunning) {
-			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
-			return
-		}
+        if (!this.isRunning) {
+            msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
+            return
+        }
 
         ; isWindows7 := StrSplit(A_OSVersion, ".")[1] == 6
         loop 30 {
@@ -200,7 +200,7 @@ class ReportMasterNext_Action {
                 return
             }
             sleep 1000
-            if (Winwait("Warning",, 20)) {
+            if (Winwait("Warning", , 20)) {
                 WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
                 Sleep 100
                 WinActivate "Warning"
