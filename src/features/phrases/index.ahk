@@ -32,13 +32,15 @@ Phrases(App) {
 	}
 
 	defineRadioStyle(index) {
+		defaultStyle := " x30 y+10 h20 "
+
 		switch index {
 			case 1:
-				return "Checked w200 h25"
+				return "Checked" . defaultStyle
 			case phrases.keys().Length:
-				return "vphrases-last-radio w200 h25"
+				return "vphrases-last-radio" . defaultStyle
 			default:
-				return "w200 h25"
+				return defaultStyle
 		}
 	}
 

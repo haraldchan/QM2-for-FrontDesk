@@ -104,7 +104,7 @@ OnDayGroupReports(App, curActiveTab) {
             reportObj := ReportMasterNext.reportList.groupArr
             reportObj.blockName := block["blockName"]
             reportObj.blockCode := block["blockCode"]
-            ReportMasterNext.reportFiling(reportObj, App["odg-file-type"]Type)
+            ReportMasterNext.reportFiling(reportObj, App["odg-file-type"])
             savedReports .= block["blockName"] . "`n"
         }
         ReportMasterNext.end()
@@ -144,7 +144,7 @@ OnDayGroupReports(App, curActiveTab) {
         ; footer
         App.AddCheckBox("vodg-check-all Checked y+10 h25", "全选"),
         App.AddDDL("vodg-file-type w50 x+160 Choose1", ["PDF", "XML", "TXT", "XLS"]),
-        App.AddButton("vodg-report-save h25 w80 x+10 Default", "保存报表"),
+        App.AddButton("vodg-report-save h25 w80 x+10 Default", "保存报表").onClick(saveReports),
         onMount()
     )
 }
