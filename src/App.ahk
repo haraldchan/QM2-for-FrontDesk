@@ -41,6 +41,7 @@ App(App) {
 		OnDayGroupReports(App, curActiveTab)
 
 		Tab3.UseTab("其他报表"),
+		MiscReports(App),
 
 		Tab3.UseTab(),
 		App["first-radio"].Focus()
