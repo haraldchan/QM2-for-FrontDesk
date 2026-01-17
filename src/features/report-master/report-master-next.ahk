@@ -751,6 +751,31 @@ class ReportMasterNext {
         return fileName
     }
 
+    /**
+     * @param {Array<String>} spCodes 
+     * @param {Integer} [initX=600] 
+     * @param {Integer} [initY=482] 
+     * @returns {String} 
+     */
+    static specials(spCodes, fileName, initX := 600, initY := 482) {
+        fileName := Format("{1}-{2}", fileName, FormatTime(A_Now, "yyyyMMdd"))
+        Sleep 200
+        ; report options here
+        MouseMove initX, initY ; 600, 482
+        Sleep 200
+        Click
+        Sleep 200
+        Send "{Text}" . spCodes.join(",")
+        Sleep 100
+        MouseMove initX + 16, initY + 56 ; 616, 538
+        Sleep 200
+        return fileName
+    }
+
+    static packages(pkgCodes, initX := 600, initY := 482) {
+
+    }
+
     static upsellPkg() {
         fileName := Format("{1} Upsell", FormatTime(A_Now, "yyyyMMdd"))
         Sleep 200
