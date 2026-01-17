@@ -261,7 +261,7 @@ class Svaner {
      * @param {signal} [depend] Subsribed signal.
      * @returns {SvanerDateTime | Gui.DateTime} 
      */
-    AddDateTime(options, dateFormat := "YYYYMMDDHH24MISS", depend?) {
+    AddDateTime(options, dateFormat := "yyyy/MM/dd", depend?) {
         parsedOptions := this.__parseOptions(options)
 
         control := IsSet(depend) 
