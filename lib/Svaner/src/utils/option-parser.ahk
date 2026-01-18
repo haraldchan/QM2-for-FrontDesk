@@ -62,6 +62,14 @@ class OptionParser {
         else if (this.presetDirectives.Has(opt)) {
             return Format(" {1} ", this.presetDirectives[opt])
         }
+        ; ddl field heigh
+        else if (StringExt.startsWith(opt, "@ddl:h")) {
+            CB_SETITEMHEIGHT := 0x0153
+            FIELD := -1
+            height := Integer(StrReplace(opt, "@ddl:h", ""))
+
+            return this.callbackDirectives[opt] := ctrl => PostMessage(CB_SETITEMHEIGHT, FIELD, height, ctrl)
+        }
         ; custom directives
         else if (this.customUseDirectives.Has(opt)) {
             return this._parseCustomUseDirectives(opt, callbackArray)
@@ -80,6 +88,7 @@ class OptionParser {
         }
     }
 
+
     _parseCustomUseDirectives(opt, callbackArray) {
         if (!InStr(this.customUseDirectives[opt], "@")) {
             return Format(" {1} ", this.customUseDirectives[opt])
@@ -97,6 +106,7 @@ class OptionParser {
 
         return parsed
     }
+
 
     _handleAlignDirectives(opt) {
         splittedOpts := StrSplit(opt, ":")
@@ -121,6 +131,7 @@ class OptionParser {
 
         return parsedPos
     }
+
 
     _handleRelativeDirectives(opt) {
         splittedOpts := StrSplit(opt, ":")
