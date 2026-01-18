@@ -46,8 +46,8 @@ MiscReports(App) {
     return (
         App.AddListBox("vmisc-list x30 y+15 w260 r4 Choose1", miscReports.keys())
            .onChange((ctrl, _) => selectedMiscReport.set(ctrl.Text)),
-        App.AddDDL("vmisc-file-type @align[y]:misc-list x+10 w80 Choose1", ["PDF", "XML", "TXT", "XLS"]),
-        App.AddButton("vmisc-report-save @align[x]:misc-file-type y+10 h25 w80 Default", "保存报表"),
+        App.AddDDL("vmisc-file-type @align[y]:misc-list x+10 w80 @ddl:h36 Choose1", ["PDF", "XML", "TXT", "XLS"]),
+        App.AddButton("vmisc-report-save @align[x]:misc-file-type y+16 h25 w80 Default", "保存报表"),
        
         ; options
         Dynamic(App, selectedMiscReport, miscReports)
@@ -59,6 +59,27 @@ MiscReports(App) {
  */
 MR_Packages_Options(App, props) {
     comp := Component(App, A_ThisFunc)
+
+    pkgCodePresets := OrderedMap(
+        "自定义", "",
+        "早餐", "BFNP BFPP BFC",
+        "Upsell", "%UP",
+        "一盅两件", "DXTC DXTCF",
+    )
+
+    selectedPkgPreset := signal("")
+    
+    handleSetPkgPreset(ctrl, _) {
+        selectedPkgPreset.set(pkgCodePresets[ctrl.Text])
+    }
+
+    handleSaveCustomPresetInput(ctrl, _) {
+        if (App["pkg-presets"].Text != "自定义") {
+            return
+        }
+
+        pkgCodePresets["自定义"] := ctrl.Value.trim()
+    }
 
     comp.render := this => this.Add(
         StackBox(
@@ -76,7 +97,10 @@ MR_Packages_Options(App, props) {
                 App.AddDateTime("vpkg-to-date x+10 h20 w100"),
                 ; pkg codes
                 App.AddText("xs10 yp+30 w100 h20 0x200", "Pkg.Code(空格分隔)"),
-                App.AddEdit("vpkg-codes x+10 h20 w210"),
+                App.AddEdit("vpkg-codes x+10 w145 h20 ", "{1}", selectedPkgPreset)
+                   .onBlur(handleSaveCustomPresetInput),
+                App.AddDDL("vpkg-presets x+5 w60 @ddl:h30 Choose1", pkgCodePresets.keys())
+                   .onChange(handleSetPkgPreset),
                 ; save file name
                 App.AddText("xs10 yp+30 w100 h20 0x200", "保存文件名"),
                 App.AddEdit("vpkg-save-filename x+10 h20 w210")
