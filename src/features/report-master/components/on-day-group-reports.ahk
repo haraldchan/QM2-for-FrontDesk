@@ -123,8 +123,8 @@ OnDayGroupReports(App, curActiveTab) {
     }
 
     return (
-        App.AddDateTime("vodg-date x30 y+15 h25", "yyyy/MM/dd").onChange(handleBlockInfoUpdate),
-        App.AddButton("x+20 h25 w80", "打开位置").onClick(handleOpenOdgDir),
+        App.AddDateTime("vodg-date x30 y+15 w260 h25", "yyyy/MM/dd").onChange(handleBlockInfoUpdate),
+        App.AddButton("x+10 h25 w80", "打开位置").onClick(handleOpenOdgDir),
         ; report listview
         App.AddListView(
             ; options
@@ -143,7 +143,7 @@ OnDayGroupReports(App, curActiveTab) {
         ),
         ; footer
         App.AddCheckBox("vodg-check-all Checked y+10 h25", "全选"),
-        App.AddDDL("vodg-file-type w50 x+160 Choose1", ["PDF", "XML", "TXT", "XLS"]),
+        App.AddDDL("vodg-file-type x+160 w50 @ddl:h36 Choose1", ["PDF", "XML", "TXT", "XLS"]),
         App.AddButton("vodg-report-save h25 w80 x+10 Default", "保存报表").onClick(saveReports),
         onMount()
     )
