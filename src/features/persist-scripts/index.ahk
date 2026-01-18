@@ -7,6 +7,17 @@
  * @param {Svaner} App 
  */
 PersistScriptsControl(App) {
+	handleOpenScanFolder(*) {
+		scanFolderPath := "\\10.0.2.13\fd\01 FO PASSPORT SCANNING"
+		
+		if (!DirExist(scanFolderPath)) {
+			MsgBox(Format("证件扫描文件夹 <{1}> 未找到", scanFolderPath), POPUP_TITLE, "T5 0x10")
+			return
+		}
+
+		Run(scanFolderPath)
+	}
+
 	onMount() {
 		; City Ledger
 		HotIf (*) => App["city-ledger-on"].Value
@@ -52,7 +63,7 @@ PersistScriptsControl(App) {
 				; Scan Invoke
 				App.AddCheckbox("vscan-invoke-on @use:psc-label Checked", "启动扫描"),
 				App.AddText("@use:psc-desc", "热键: Ctrl+Shift+S"),
-				App.AddButton("xp+105 w80 h20", "Scan 文件夹").onClick((*) => Run("\\10.0.2.13\fd\01 FO PASSPORT SCANNING")),
+				App.AddButton("xp+105 w80 h20", "Scan 文件夹").onClick(handleOpenScanFolder),
 
 				; Balance Transfer
 				App.AddCheckbox("vbalance-transfer-on @use:psc-label Checked", "Balance Transfer"),
