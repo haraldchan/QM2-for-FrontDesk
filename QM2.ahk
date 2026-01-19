@@ -27,7 +27,8 @@ QM := Svaner({
     },
     events: {
         close: (*) => utils.quitApp("QM2", POPUP_TITLE, WIN_GROUP)
-    }
+    },
+    ; devOpt: { border: true }
 })
 App(QM)
 QM.Show()
