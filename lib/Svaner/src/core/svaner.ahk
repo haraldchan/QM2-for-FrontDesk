@@ -887,8 +887,9 @@ class Svaner {
                         return this._listview_getExactMatch(key, itemIn, 1)
                     }
                 }
-
-                this.ctrl.Add(this.itemOptions, rowData*)
+                try {
+                    this.ctrl.Add(this.itemOptions, rowData*)
+                }
             }
 
             this.ctrl.Modify(1, "Select")
