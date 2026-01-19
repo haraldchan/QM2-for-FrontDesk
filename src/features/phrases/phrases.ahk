@@ -45,7 +45,9 @@ Phrases(App) {
 	}
 
 	App.defineDirectives(
-		"@use:phrase-box-xyw", "x30 @relative[y+10]:phrases-last-radio w350"
+		"@use:phrase-box-xyw", "x30 @relative[y+10]:phrases-last-radio w350",
+		"@use:phrases-text", "xs10 yp+30 w50 h20 0x200",
+		"@use:phrases-edit", "x+10 w150 h20 "
 	)
 
 	return (

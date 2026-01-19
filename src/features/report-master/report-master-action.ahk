@@ -1,4 +1,4 @@
-class ReportMasterNext {
+class ReportMaster_Action {
     static isRunning := false
 
     static start() {
