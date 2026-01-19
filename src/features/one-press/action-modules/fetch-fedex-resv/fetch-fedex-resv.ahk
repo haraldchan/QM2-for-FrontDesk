@@ -33,9 +33,9 @@ FetchFedexResv(App, props) {
                 }
             },
             () => [
-                App.AddText("xs10 yp+30 h20", "房号：   "),
+                App.AddText("xs10 yp+20 w50 h20 0x200", "房号:"),
                 App.AddEdit("vroom-num x+10"),
-                App.AddText("xs10 yp+30 h20", "确认号："),
+                App.AddText("xs10 yp+30 w50 h20 0x200", "确认号："),
                 App.AddEdit("vconf-num x+10"),
                 App.AddButton("vfetchfedexresv-action xs10 y+10 w100 ", "抓取订单信息").onClick(action)
             ]

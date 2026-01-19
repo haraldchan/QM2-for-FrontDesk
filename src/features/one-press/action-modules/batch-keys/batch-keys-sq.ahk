@@ -53,7 +53,7 @@ BatchKeysSq(App, props) {
             },
             () => [
                 ; form
-                App.AddText("@use:bks-text", "房号 (空格分隔)："),
+                App.AddText("@use:bks-text yp+20", "房号 (空格分隔)："),
                 App.AddEdit("vrooms @use:bks-edit" , ""),
                 App.AddText("@use:bks-text", "退房日期、时间："),
                 App.AddDateTime("vco-datetime x+10 w200 Choose" . stdCheckout, "yyyy-MM-dd HH:mm"),

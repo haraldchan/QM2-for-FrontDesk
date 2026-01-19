@@ -57,48 +57,43 @@ TableRequest(App, props) {
 		}
 	}
 
-	App.defineDirectives(
-		"@use:tr-text", "xs10 yp+35 h25 0x200",
-		"@use:tr-edit", "x+10 w150 h25"
-	)
-
 	comp.render := (this) => this.Add(
 		StackBox(App,
 			{
 				name: "table-request-stack-box",
 				groupbox: {
 					title: "Table Reserve - 餐饮预订",
-					options: "Section r12 @use:phrase-box-xyw"
+					options: "Section r11 @use:phrase-box-xyw"
 				}
 			},
 			() => [
 				; room
-				App.AddText("@use:tr-text yp+30", "预订房号"),
-				App.AddEdit("vtr-room @use:tr-edit", ""),
+				App.AddText("@use:phrases-text yp+20", "预订房号"),
+				App.AddEdit("vtr-room @use:phrases-edit", ""),
 				
 				; name
-				App.AddText("@use:tr-text", "客人姓名"),
-				App.AddEdit("vtr-guestname @use:tr-edit", ""),
+				App.AddText("@use:phrases-text", "客人姓名"),
+				App.AddEdit("vtr-guestname @use:phrases-edit", ""),
 				
 				; tel
-				App.AddText("@use:tr-text", "预留电话"),
-				App.AddEdit("vtr-tel @use:tr-edit", ""),
+				App.AddText("@use:phrases-text", "预留电话"),
+				App.AddEdit("vtr-tel @use:phrases-edit", ""),
 				
 				; accommodate
-				App.AddText("@use:tr-text", "用餐人数"),
-				App.AddEdit("vtr-accommodate @use:tr-edit Number", ""),
+				App.AddText("@use:phrases-text", "用餐人数"),
+				App.AddEdit("vtr-accommodate @use:phrases-edit Number", ""),
 				
 				; restaurant
-				App.AddText("@use:tr-text", "预订餐厅"),
-				App.AddDDL("vtr-restaurant w150 x+10 Choose1", restaurantList),
+				App.AddText("@use:phrases-text", "预订餐厅"),
+				App.AddDDL("vtr-restaurant w150 @ddl:h30 x+10 Choose1", restaurantList),
 				
 				; date time
-				App.AddText("@use:tr-text", "预订日期"),
+				App.AddText("@use:phrases-text", "预订日期"),
 				App.AddDateTime("vtr-date x+10 w150 Choose" . A_Now.tomorrow("080000"), " MM月dd日 HH:mm"),
 				
 				; clerk
-				App.AddText("@use:tr-text", "接订员工"),
-				App.AddEdit("vtr-clerk @use:tr-edit", ""),
+				App.AddText("@use:phrases-text", "接订员工"),
+				App.AddEdit("vtr-clerk @use:phrases-edit", ""),
 				
 				; btns
 				App.AddButton("@align[wx]:phrase-copy @relative[y+5]:phrase-copy h30", "已预定...")

@@ -35,6 +35,11 @@ ExtraBed(App, props) {
 		return MsgBox(A_Clipboard, "已复制信息", "T1")
 	}
 
+	handleChargeSelect(ctrl, price) {
+		charge.set(price)
+		App["approver"].Enabled := ctrl.Text == "免费"
+	}
+
 	comp.render := (this) => this.Add(
 		StackBox(App,
 			{
@@ -45,21 +50,22 @@ ExtraBed(App, props) {
 				}
 			},
 			() => [
-				App.AddText("xs10 yp+30 h20 0x200", "价格"),
-
+				; charge
+				App.AddText("@use:phrases-text yp+20", "加床价格"),
 				ebCharge.map((item, index) =>
-					App.AddRadio((index == 1 ? "xp+30 h15 Checked" : "x+10 h15"), item.label)
-					.onClick((*) => charge.set(item.price))
+					App.AddRadio((index == 1 ? "x+10 h20 Checked" : "x+3 h20"), item.label)
+					.onClick((ctrl, _) => handleChargeSelect(ctrl, item.price))
 				),
-
-				App.AddText("xs10 y+15 h20 0x200", "批准人"),
-				App.AddEdit("vapprover xp+45 h20 w50", "Frankie"),
-
-				App.AddText("xp+60 h20 0x200", "加床晚数"),
-				App.AddEdit("veb-nts xp+55 w40 Number", "1"),
-
-				App.AddRadio("veb-is-chn xs10 y+5 h25 Checked", "中文"),
-				App.AddRadio("x+10 h25", "英文")
+				; nts
+				App.AddText("@use:phrases-text ", "加床晚数"),
+				App.AddEdit("veb-nts Number @use:phrases-edit", "1"),
+				; approver
+				App.AddText("@use:phrases-text", "批准人"),
+				App.AddEdit("vapprover Disabled @use:phrases-edit", "Frankie"),
+				; comment lang
+				App.AddText("@use:phrases-text", "显示语言"),
+				App.AddRadio("veb-is-chn x+10 w50 h20 Checked", "中文"),
+				App.AddRadio("x+15 h20", "英文")
 			]
 		)
 	)

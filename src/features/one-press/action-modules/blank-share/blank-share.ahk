@@ -34,7 +34,7 @@ BlankShare(App, props := {}) {
             },
             () => [
                 ; room number(s)
-                App.AddText("xs10 w100 h20 0x200 yp+30", "房号 (空格分割)"),
+                App.AddText("xs10 w100 h20 0x200 yp+20", "房号 (空格分割)"),
                 App.AddEdit("vshare-room-nums x+5 w200 h20 0x200", f.shareRoomNums),
                 ; share qty
                 App.AddText("xs10 w100 h20 0x200 yp+30", "空白 Share 数量"),

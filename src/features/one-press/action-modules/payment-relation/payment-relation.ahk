@@ -86,7 +86,7 @@ PaymentRelation(App, props := {}) {
             },
             () => [
                 ; pay for
-                App.AddText("@use:pr-text", "房号"),
+                App.AddText("@use:pr-text yp+20", "房号"),
                 App.AddEdit("vpf-room Number @use:pr-edit", f.pfRoom),
 
                 App.AddText("@use:pr-text", "姓名/确认号 "),
@@ -113,7 +113,7 @@ PaymentRelation(App, props := {}) {
             },
             () => [
                 ; pay by
-                App.AddText("@use:pr-text", "房号"),
+                App.AddText("@use:pr-text yp+20", "房号"),
                 App.AddEdit("vpb-room Number @use:pr-edit", f.pbRoom),
                 App.AddText("@use:pr-text", "姓名/确认号 "),
                 App.AddEdit("vpb-name @use:pr-edit", f.pbName),
