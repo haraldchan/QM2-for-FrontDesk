@@ -1,4 +1,4 @@
-#Include one-press\index.ahk
-#Include persist-scripts\index.ahk
-#Include phrases\index.ahk
-#Include report-master\index.ahk
+#Include one-press\one-press.ahk
+#Include persist-scripts\persist-scripts.ahk
+#Include phrases\phrases.ahk
+#Include report-master\report-master.ahk
