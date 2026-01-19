@@ -96,18 +96,18 @@ OnDayGroupReports(App, curActiveTab) {
             selectedBlocks.Push(onDayBlockInfo.value[block])
         }
 
-        ReportMasterNext.start()
+        ReportMaster_Action.start()
         for block in selectedBlocks {
-            if (!ReportMasterNext.isRunning && A_Index > 1) {
+            if (!ReportMaster_Action.isRunning && A_Index > 1) {
                 return
             }
-            reportObj := ReportMasterNext.reportList.groupArr
+            reportObj := ReportMaster_Action.reportList.groupArr
             reportObj.blockName := block["blockName"]
             reportObj.blockCode := block["blockCode"]
-            ReportMasterNext.reportFiling(reportObj, App["odg-file-type"])
+            ReportMaster_Action.reportFiling(reportObj, App["odg-file-type"])
             savedReports .= block["blockName"] . "`n"
         }
-        ReportMasterNext.end()
+        ReportMaster_Action.end()
 
         WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
         saveText := "已保存报表：`n`n" . savedReports . "`n`n是否打开所在文件夹? "

@@ -28,18 +28,18 @@ OverNightReports(App) {
         }
 
         for row in selectedRows {
-            selectedReport.Push(ReportMasterNext.reportList.onr[row])
+            selectedReport.Push(ReportMaster_Action.reportList.onr[row])
         }
 
-        ReportMasterNext.start()
+        ReportMaster_Action.start()
         for report in selectedReport {
-            if (!ReportMasterNext.isRunning && A_Index > 1) {
+            if (!ReportMaster_Action.isRunning && A_Index > 1) {
                 return
             }
-            ReportMasterNext.reportFiling(report, App["onr-file-type"])
+            ReportMaster_Action.reportFiling(report, App["onr-file-type"])
             savedReports .= report.name . "`n"
         }
-        ReportMasterNext.end()
+        ReportMaster_Action.end()
 
         WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
         saveText := "已保存报表：`n`n" . savedReports . "`n`n是否打开所在文件夹? "
@@ -70,7 +70,7 @@ OverNightReports(App) {
                 widths: [120, 200]
             },
             ; report infos
-            signal(ReportMasterNext.reportList.onr)
+            signal(ReportMaster_Action.reportList.onr)
         ),
         ; footer
         App.AddCheckBox("vonr-check-all Checked y+10 h25", "全选"),
