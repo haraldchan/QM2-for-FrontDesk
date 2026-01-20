@@ -16,14 +16,22 @@ MiscReports(App) {
                 searchStr: "pkgforecast",
                 name: App["pkg-save-filename"].Value.trim(),
                 saveFn: ReportMaster_Action.packages,
-                args: [App["pkg-codes"].Value.trim().split(" ")]
+                args: [
+                    App["pkg-codes"].Value.trim(),
+                    App["pkg-save-filename"].Value.trim()
+                    App["pkg-fr-date"].Value,
+                    App["pkg-to-date"].Value,
+                ]
             },
             "WSHGZ - Specials",
             {
                 searchStr: "Wshgz_special",
                 name: App["sp-save-filename"].Value.trim(),
                 saveFn: ReportMaster_Action.specials,
-                args: [App["sp-codes"].Value.trim().split(" ")]
+                args: [
+                    App["sp-codes"].Value.trim(), 
+                    App["sp-save-filename"].Value.trim()
+                ]
             },
         ))
 
