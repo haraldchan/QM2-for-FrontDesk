@@ -46,7 +46,7 @@ MiscReports(App) {
     return (
         App.AddListBox("vmisc-list x30 y+15 w260 r4 Choose1", miscReports.keys())
            .onChange((ctrl, _) => selectedMiscReport.set(ctrl.Text)),
-        App.AddDDL("vmisc-file-type @align[y]:misc-list x+10 w80 @ddl:h36 Choose1", ["PDF", "XML", "TXT", "XLS"]),
+        App.AddDDL("vmisc-file-type @align[y]:misc-list x+10 w80 Choose1", ["PDF", "XML", "TXT", "XLS"]),
         App.AddButton("vmisc-report-save @align[x]:misc-file-type y+16 h25 w80 Default", "保存报表"),
        
         ; options
@@ -99,7 +99,7 @@ MR_Packages_Options(App, props) {
                 App.AddText("xs10 yp+30 w100 h20 0x200", "Pkg.Code(空格分隔)"),
                 App.AddEdit("vpkg-codes x+10 w145 h20 ", "{1}", selectedPkgPreset)
                    .onBlur(handleSaveCustomPresetInput),
-                App.AddDDL("vpkg-presets x+5 w60 @ddl:h30 Choose1", pkgCodePresets.keys())
+                App.AddDDL("vpkg-presets x+5 w60 Choose1", pkgCodePresets.keys())
                    .onChange(handleSetPkgPreset),
                 ; save file name
                 App.AddText("xs10 yp+30 w100 h20 0x200", "保存文件名"),

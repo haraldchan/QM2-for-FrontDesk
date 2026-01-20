@@ -76,7 +76,7 @@ RateChecking(App, props) {
             },
             () => [
                 ; conf number(s)
-                App.AddText("xs10 w150 h20 0x200 yp+20", "订单确认号 (空格分割)"),
+                App.AddText("xs10 w150 h20 0x200 yp+25", "订单确认号 (空格分割)"),
                 App.AddEdit("vsupt-conf-nums y+10 w200 h20 0x200", ""),
                 App.AddButton("vratechecking-action xs10 y+10 w100", "查看房价").onClick(action),
                 onMount()

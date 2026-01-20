@@ -39,7 +39,7 @@ GroupShareDnm(App, props) {
             },
             () => [
                 ; room Qty
-                App.AddText("xs10 yp+30 w100 h20 Checked 0x200", "批量处理房间数量"),
+                App.AddText("xs10 yp+25 w100 h20 Checked 0x200", "批量处理房间数量"),
                 App.AddEdit("vgsd-rm-qty x+5 h20 0x200 w100", ""),
 
                 ; rate code

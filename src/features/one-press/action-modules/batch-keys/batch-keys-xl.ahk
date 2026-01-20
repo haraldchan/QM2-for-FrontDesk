@@ -50,7 +50,7 @@ BatchKeysXl(App, props){
             },
             () => [
                 ; xl file selector
-                App.AddEdit("vfile-path xs10 yp+20 h25 w150 ReadOnly", "{1}", xlPath),
+                App.AddEdit("vfile-path xs10 yp+25 h25 w150 ReadOnly", "{1}", xlPath),
                 App.AddButton("vselect-xl-btn h25 w70 x+10", "选择文件")
                    .onClick(handleSelectXl),
                 App.AddButton("vopen-xl-btn h25 w70 x+10", "打开表格")

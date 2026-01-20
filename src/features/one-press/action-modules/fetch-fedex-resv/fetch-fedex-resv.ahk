@@ -33,7 +33,7 @@ FetchFedexResv(App, props) {
                 }
             },
             () => [
-                App.AddText("xs10 yp+20 w50 h20 0x200", "房号:"),
+                App.AddText("xs10 yp+25 w50 h20 0x200", "房号:"),
                 App.AddEdit("vroom-num x+10"),
                 App.AddText("xs10 yp+30 w50 h20 0x200", "确认号："),
                 App.AddEdit("vconf-num x+10"),

@@ -143,7 +143,7 @@ OnDayGroupReports(App, curActiveTab) {
         ),
         ; footer
         App.AddCheckBox("vodg-check-all Checked y+10 h25", "全选"),
-        App.AddDDL("vodg-file-type x+160 w50 @ddl:h36 Choose1", ["PDF", "XML", "TXT", "XLS"]),
+        App.AddDDL("vodg-file-type x+160 w50 Choose1", ["PDF", "XML", "TXT", "XLS"]),
         App.AddButton("vodg-report-save h25 w80 x+10 Default", "保存报表").onClick(saveReports),
         onMount()
     )

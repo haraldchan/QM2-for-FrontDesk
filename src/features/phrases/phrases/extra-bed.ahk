@@ -51,7 +51,7 @@ ExtraBed(App, props) {
 			},
 			() => [
 				; charge
-				App.AddText("@use:phrases-text yp+20", "加床价格"),
+				App.AddText("@use:phrases-text yp+25", "加床价格"),
 				ebCharge.map((item, index) =>
 					App.AddRadio((index == 1 ? "x+10 h20 Checked" : "x+3 h20"), item.label)
 					.onClick((ctrl, _) => handleChargeSelect(ctrl, item.price))

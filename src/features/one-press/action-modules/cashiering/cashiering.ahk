@@ -60,7 +60,7 @@ Cashiering(App, props) {
             },
             () => [
                 ; opera password
-                App.AddText("xs10 yp+20 h20 0x200", "Opera 密码"),
+                App.AddText("xs10 yp+25 h20 0x200", "Opera 密码"),
                 App.AddEdit("vpwd Password* h20 w200 x+10", "{1}", password).bind(),
                 App.AddCheckBox("h20 x+10", "显示").onClick(handlePwsVisible),
                 
@@ -72,8 +72,8 @@ Cashiering(App, props) {
 
                 ; deposit payments
                 App.AddGroupBox("r2 xs10 y+10 w330", " Deposit "),
-                App.AddText("xp+10 yp+20 h25 0x200", "支付类型"),
-                App.AddDDL("vpt x+10 w130 @ddl:h37 Choose2", paymentType.values()),
+                App.AddText("xp+10 yp+25 h25 0x200", "支付类型"),
+                App.AddDDL("vpt x+10 w130 Choose2", paymentType.values()),
                 App.AddButton("vcashiering-action x+13 w100 h25", "录入 Deposit")
                    .onClick((*) => Cashiering_Action.depositEntry(getFormData())),
             ]

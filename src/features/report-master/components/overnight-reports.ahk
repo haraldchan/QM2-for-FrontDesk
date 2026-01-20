@@ -74,7 +74,7 @@ OverNightReports(App) {
         ),
         ; footer
         App.AddCheckBox("vonr-check-all Checked y+10 h25", "全选"),
-        App.AddDDL("vonr-file-type w50 @ddl:h36 x+160 Choose1", ["PDF", "XML", "TXT", "XLS"]),
+        App.AddDDL("vonr-file-type w50 x+160 Choose1", ["PDF", "XML", "TXT", "XLS"]),
         App.AddButton("vonr-report-save h25 w80 x+10 Default", "保存报表").onClick(saveReports),
         onMount()
     )

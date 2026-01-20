@@ -68,7 +68,7 @@ TableRequest(App, props) {
 			},
 			() => [
 				; room
-				App.AddText("@use:phrases-text yp+20", "预订房号"),
+				App.AddText("@use:phrases-text yp+25", "预订房号"),
 				App.AddEdit("vtr-room @use:phrases-edit", ""),
 				
 				; name
@@ -85,7 +85,7 @@ TableRequest(App, props) {
 				
 				; restaurant
 				App.AddText("@use:phrases-text", "预订餐厅"),
-				App.AddDDL("vtr-restaurant w150 @ddl:h30 x+10 Choose1", restaurantList),
+				App.AddDDL("vtr-restaurant w150 x+10 Choose1", restaurantList),
 				
 				; date time
 				App.AddText("@use:phrases-text", "预订日期"),

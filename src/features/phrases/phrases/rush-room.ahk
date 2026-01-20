@@ -32,7 +32,7 @@ RushRoom(App, props) {
 				}
 			},
 			() => [
-				App.AddText("@use:phrases-text yp+20", "赶房时间"),
+				App.AddText("@use:phrases-text yp+25", "赶房时间"),
 				App.AddEdit("vrush-time @use:phrases-edit", "14:00"),
 				App.AddText("@use:phrases-text ", "房卡情况"),
 				App.AddRadio("vkey-made x+10 h20 Checked", "已做卡"),

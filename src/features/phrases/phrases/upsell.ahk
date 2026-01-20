@@ -34,7 +34,7 @@ Upsell(App, props) {
 			},
 			() => [
 				; room type
-				App.AddText("@use:phrases-text yp+20", "升级房型"),
+				App.AddText("@use:phrases-text yp+25", "升级房型"),
 				App.AddEdit("vups-type x+10 w150 h20"),
 				; diff
 				App.AddText("@use:phrases-text", "每晚差价"),
