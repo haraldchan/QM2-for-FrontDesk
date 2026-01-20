@@ -752,28 +752,86 @@ class ReportMaster_Action {
     }
 
     /**
-     * @param {Array<String>} spCodes 
+     * @param {String} spCodes 
+     * @param {String} fileNameInput
      * @param {Integer} [initX=600] 
      * @param {Integer} [initY=482] 
      * @returns {String} 
      */
-    static specials(spCodes, fileName, initX := 600, initY := 482) {
-        fileName := Format("{1}-{2}", fileName, FormatTime(A_Now, "yyyyMMdd"))
-        Sleep 200
+    static specials(spCodes, fileNameInput, initX := 600, initY := 482) {
+        fileName := Format("{1}-{2}", FormatTime(A_Now, "yyyyMMdd"), fileNameInput)
         ; report options here
-        MouseMove initX, initY ; 600, 482
-        Sleep 200
-        Click
-        Sleep 200
-        Send "{Text}" . spCodes.join(",")
-        Sleep 100
-        MouseMove initX + 16, initY + 56 ; 616, 538
-        Sleep 200
+        loop 2 {
+            Send "{Tab}"
+            Sleep 200
+        }
+        Send spCodes.replace(" ", ",")
+
         return fileName
     }
 
-    static packages(pkgCodes, initX := 600, initY := 482) {
+    /**
+     * @param {String} pkgCodes 
+     * @param {String} fileNameInput 
+     * @param {String} frDate 
+     * @param {String} toDate 
+     * @param {Integer} initX 
+     * @param {Integer} initY 
+     * @returns {String}
+     */
+    static packages(pkgCodes, fileNameInput, frDate, toDate, initX := 600, initY := 482) {
+        fmtFrDate := FormatTime(frDate, "MMddyyyy")
+        fmtToDate := FormatTime(toDate, "MMddyyyy")
+        fileNameDate := fmtFrDate == fmtToDate ? fmtFrDate : fmtFrDate . "-" . fmtToDate
+        fileName := Format("{1}-{2}", fileNameDate, fileNameInput)
 
+        ; dates
+        Send "{Tab}"
+        Sleep 100
+        Send "{Text}" . fmtFrDate
+        Sleep 100
+        Send "{Tab}"
+        Sleep 100
+        Send "{Text}" . fmtToDate
+        Sleep 100
+
+        ; package codes(products)
+        loop 2 {
+            Send "{Tab}"
+            Sleep 100
+        }
+
+        if (!pkgCodes.includes("%")) {
+            Send "{Text}" . pkgCodes.replace(" ", ",")
+        }
+        else {
+            Send "{Text}%"
+            Sleep 100
+            Send "{Enter}"
+            utils.waitLoading()
+            Send "{Text}" . pkgCodes ; products input
+            Sleep 100
+            Send "!h" ; search
+            utils.waitLoading()
+            Send "!a" ; select all
+            utils.waitLoading()
+            Send "!o" ; ok
+            utils.waitLoading()
+        }
+
+        ; include pseudo rooms(apartments/presidential)
+        Send "!e"
+        Sleep 100
+
+        ; remove GroupBy condition
+        loop 3 {
+            Send "{Tab}"
+            Sleep 100
+        }
+        Send "{Down}"
+        Sleep 100
+
+        return fileName
     }
 
     static upsellPkg() {
@@ -994,5 +1052,4 @@ class ReportMaster_Action {
 
         return fileName
     }
-
 }
