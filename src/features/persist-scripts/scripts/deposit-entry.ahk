@@ -186,11 +186,11 @@ class DepositEntry {
             Prompt.AddEdit("vamount x+1 w150 h25", ""),
             Prompt.AddEdit("vauth x+1 w70 h25", depositInfo.auth),
             ; server delegate
-            Prompt.AddCheckbox("vde-delegate xs10 yp+30 w80 h25", "后台代行").onEvent("Click", delegateDepositEntry),
+            Prompt.AddCheckbox("vde-delegate Checked xs10 yp+30 w80 h25", "后台代行").onEvent("Click", delegateDepositEntry),
             Prompt.AddEdit("vroom x+1 w150 h25", (depositInfo.room || "(房间号)")),
             ; btns
             Prompt.AddButton("x175 w80 h25", "取消 (&C)").OnEvent("Click", destroyPrompt),
-            Prompt.AddButton("x+5 w80 h25", "确定 (&O)").OnEvent("Click", completeInfo),
+            Prompt.AddButton("x+5 w80 h25 Default", "确定 (&O)").OnEvent("Click", completeInfo),
             onMount()
         )
     }
