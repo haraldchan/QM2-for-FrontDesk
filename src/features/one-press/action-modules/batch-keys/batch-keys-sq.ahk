@@ -62,7 +62,7 @@ BatchKeysSq(App, props) {
 
                 ; bts
                 App.AddButton("vbatchkeyssq-action xs10 y+10 w100", "开始制卡").onClick(action),
-                App.AddCheckBox("venable-28f x+15 h30 0x200", "可开启28楼电梯")
+                App.AddCheckBox("venable-28f x+15 h20 0x200 @align[h]:batchkeyssq-action", "可开启28楼电梯")
             ]
         )
     )
