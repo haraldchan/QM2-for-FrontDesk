@@ -39,11 +39,6 @@ BatchKeysXl(App, props){
         )
     }
 
-    App.defineDirectives(
-        "@use:bkx-text", "xs10 yp+30 w100 h25 0x200",
-        "@use:bkx-edit", "w200 x+10 h25 0x200"
-    )
-
     comp.render := (this) => this.Add(
         StackBox(App,
             {
@@ -55,28 +50,27 @@ BatchKeysXl(App, props){
             },
             () => [
                 ; xl file selector
-                App.AddText("@use:bkx-text yp+25", "Excel 表格位置"),
+                App.AddText("@use:form-text yp+25", "Excel 表格位置"),
                 App.AddEdit("vfile-path x+10 h25 w130 ReadOnly", "{1}", xlPath),
                 App.AddButton("vselect-xl-btn h25 w40 x+5", "选择")
                    .onClick(handleSelectXl),
                 App.AddButton("vopen-xl-btn h25 w40 x+5", "打开")
                    .onClick((*) => Run(xlPath.value)),
                 ; desktop mode
-                App.AddText("@use:bkx-text", "桌面文件模式"),
+                App.AddText("@use:form-text", "桌面文件模式"),
                 App.AddCheckBox("vuse-desktop-xl h25 x+10", "使用桌面 Group Keys.xls")
                    .onClick(handleToogleDesktopMode),
 
                 ; divider
-                App.AddText("@use:bkx-text w330 h0 0x10", ""),
+                App.AddText("@use:form-text w330 h0 0x10", ""),
                 ; default date-time
-                App.AddText("@use:bkx-text yp+10 w330 h25", "表格中未设定日期时间，将使用以下设置").SetFont("bold"),
-                App.AddText("@use:bkx-text", "退房日期及时间"),
+                App.AddText("@use:form-text yp+10 w330 h25", "表格中未设定日期时间，将使用以下设置").SetFont("bold"),
+                App.AddText("@use:form-text", "退房日期及时间"),
                 App.AddDateTime("vco-datetime-xl x+10 w200 Choose" . A_Now.tomorrow("130000"), "yyyy-MM-dd HH:mm"),
 
                 ; btns
-                App.AddButton("vbatchkeysxl-action xs10 y+10 w100", "开始制卡")
-                   .onClick(action),
-                App.AddCheckBox("venable-28f-xl x+15 @align[h]:batchkeysxl-action", "可开启28楼电梯")
+                App.AddButton("vbatch-keys-xl-action xs10 y+20 w100", "开始制卡").onClick(action),
+                App.AddCheckBox("venable-28f-xl x+15 @align[h]:batch-keys-xl-action", "可开启28楼电梯")
             ]
         )
     )

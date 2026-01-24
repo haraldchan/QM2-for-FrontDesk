@@ -81,7 +81,7 @@ PaymentRelation(App, props := {}) {
                 name: "pay-for-stack-box",
                 groupbox: {
                     title: "P/F房(支付人)",
-                    options: "vpayfor-panel Section @use:box-x @relative[y+10]:last-radio" . (s.useCopyBtn ? " r7 " : " r5 ") . s.panelWide
+                    options: "vpayfor-panel Section @use:bold @use:box-x @relative[y+10]:op-radio-group" . Format(" h{1} ", s.useCopyBtn ? 170 : 130) . s.panelWide
                 } 
             },
             () => [
@@ -108,7 +108,7 @@ PaymentRelation(App, props := {}) {
                 name: "pay-by-stack-box",
                 groupbox: {
                     title: "P/B房(被支付人)",
-                    options: "vpayby-panel Section x+3 @align[yw]:payfor-panel" . (s.useCopyBtn ? " r7 " : " r5 ")
+                    options: "vpayby-panel Section @use:bold x+3 @align[ywh]:payfor-panel"
                 }
             },
             () => [
@@ -123,7 +123,7 @@ PaymentRelation(App, props := {}) {
         ),
 
         ; btns  
-        App.AddButton("vpaymentrelation-action w300 h40 @align[x]:payfor-panel" . (s.useCopyBtn ? " y+25 " : " y+75 "), "{1}", actionType)
+        App.AddButton("vpayment-relation-action w300 h40 @align[x]:payfor-panel y+10", "{1}", actionType)
            .onClick(action)
            .onContextMenu(handlePasteModeSwitch),
         App.AddButton("w40 h40 x+10", "清空").onClick(clear)

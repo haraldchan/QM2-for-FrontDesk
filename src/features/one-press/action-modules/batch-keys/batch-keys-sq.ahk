@@ -37,11 +37,6 @@ BatchKeysSq(App, props) {
 
     stdCheckout := FormatTime(DateAdd(A_Now, 1, "Days"), "yyyyMMdd") . "130000"
 
-    App.defineDirectives(
-        "@use:bks-text", "xs10 yp+30 w100 h25 0x200",
-        "@use:bks-edit", "w200 x+10 h25 0x200"
-    )
-
     comp.render := (this) => this.Add(
         StackBox(App,
             {
@@ -53,16 +48,16 @@ BatchKeysSq(App, props) {
             },
             () => [
                 ; form
-                App.AddText("@use:bks-text yp+25", "房号 (空格分隔)："),
-                App.AddEdit("vrooms @use:bks-edit" , ""),
-                App.AddText("@use:bks-text", "退房日期、时间："),
+                App.AddText("@use:form-text yp+25", "房号 (空格分隔)"),
+                App.AddEdit("vrooms @use:form-edit" , ""),
+                App.AddText("@use:form-text", "退房日期、时间"),
                 App.AddDateTime("vco-datetime x+10 w200 Choose" . stdCheckout, "yyyy-MM-dd HH:mm"),
-                App.AddText("@use:bks-text", "确认号/Party号："),
-                App.AddEdit("vcpb-num @use:bks-edit" , ""),
+                App.AddText("@use:form-text", "确认号/Party号"),
+                App.AddEdit("vcpb-num @use:form-edit" , ""),
 
                 ; bts
-                App.AddButton("vbatchkeyssq-action xs10 y+10 w100", "开始制卡").onClick(action),
-                App.AddCheckBox("venable-28f x+15 h20 0x200 @align[h]:batchkeyssq-action", "可开启28楼电梯")
+                App.AddButton("vbatch-keys-sq-action xs10 y+20 w100", "开始制卡").onClick(action),
+                App.AddCheckBox("venable-28f x+15 h20 0x200 @align[h]:batch-keys-sq-action", "可开启28楼电梯")
             ]
         )
     )
