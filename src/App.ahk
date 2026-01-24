@@ -11,8 +11,7 @@ App(App) {
 		F12:       强制停止脚本/重载
 	)"
 
-	tabTitles := ["一键运行", "常用语句", "夜班报表", "团单信息", "其他报表"]
-	curActiveTab := signal(tabTitles[1])
+	curActiveTab := signal(1)
 
 	onTabChange(tab3, _) {
 		WinSetAlwaysOnTop(false, POPUP_TITLE)
@@ -22,28 +21,17 @@ App(App) {
 	return (
 		; desc
 		StrSplit(description, "`n").map(fragment => App.AddText("y+5", fragment)),
-
+		
+		; persist scripts
 		PersistScriptsControl(App),
-		
-		; Action Module Tabs
-		Tab3 := App.AddTab3("w380 x15" . " Choose1", tabTitles).onChange(onTabChange),
-		
-		Tab3.UseTab("一键运行"),
-		OnePress(App),
 
-		Tab3.UseTab("常用语句"),
-		Phrases(App),
-
-		Tab3.UseTab("夜班报表"),
-		OverNightReports(App)
-
-		Tab3.UseTab("团单信息"),
-		OnDayGroupReports(App, curActiveTab)
-
-		Tab3.UseTab("其他报表"),
-		MiscReports(App),
-
-		Tab3.UseTab(),
-		App["first-radio"].Focus()
+		; op action modules/ phrases/ report master
+		App.AddTab3("w380 x15 Choose1", OrderedMap(
+			"一键运行", () => OnePress(App),
+			"常用语句", () => Phrases(App),
+			"夜班报表", () => OverNightReports(App),
+			"团单信息", () => OnDayGroupReports(App, curActiveTab),
+			"其他报表", () => MiscReports(App),
+		)).onChange(onTabChange)
 	)
 }
