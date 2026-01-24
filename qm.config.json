@@ -1,6 +1,19 @@
 {
-  "app":{
-    "moduleSelected":1,
-    "tabPos":1
+  "persist-scripts-switch": {
+    "balance-transfer": true,
+    "city-ledger": false,
+    "deposit-entry": false,
+    "scan-invoke": true
+  },
+  "report-master": {
+    "misc-reports": {
+      "packages": {
+        "presets": {
+          "早餐": "BFNP BFPP BFC",
+          "Upsell": "%UP",
+          "一盅两件": "DXTC DXTCF"
+        }
+      }
+    }
   }
 }

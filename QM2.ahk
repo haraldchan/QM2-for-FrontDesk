@@ -6,10 +6,11 @@
 #Include src\App.ahk
 
 ; global consts
-VERSION := "2.8.2"
+VERSION := "2.8.3"
 POPUP_TITLE := "QM2 for FrontDesk " . VERSION
 WIN_GROUP := ["ahk_class SunAwtFrame", "旅客信息", "ahk_class 360se6_Frame"]
 IMAGES := useImages(A_ScriptDir . "\src\Assets")
+CONFIG := useConfigJSON("./qm.config.json", "qm.config.json")
 
 ; init setup
 TraySetIcon IMAGES["QMTray.ico"]
@@ -35,7 +36,13 @@ QM.Show()
 
 ; hotkey setup
 F9:: QM.Show()
-^F12:: utils.cleanReload(WIN_GROUP)
+^F12:: {
+	if (FileExist(CONFIG.path)) {
+		FileDelete(CONFIG.path)
+	}
+    CONFIG.createLocal()
+    utils.cleanReload(WIN_GROUP)
+}
 
 #HotIf WinActive(POPUP_TITLE)
 Esc:: QM.Hide()
