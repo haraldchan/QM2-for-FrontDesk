@@ -87,7 +87,7 @@ class Svaner {
      * prefixes: - "type:{type-name}": returns the first type matched control
      *           - "typeAll:{type-name}": returns all type matched control in an array.
      *           - "component:{component-name}": returns a component.
-     * @returns {Gui.Control | Array<Gui.Control>}
+     * @returns {Gui.Control | Array<Gui.Control> | Component}
      */
     __Item[ctrlSearchCondition] {
         get {
@@ -106,7 +106,8 @@ class Svaner {
 
                 case StringExt.startsWith(ctrlSearchCondition, "component:"):
                     ; search component
-                    return GuiExt.getComponent(this, StrReplace(ctrlSearchCondition, "component:"))
+                    ; return GuiExt.getComponent(this, StrReplace(ctrlSearchCondition, "component:"))
+                    return this.components[StrReplace(ctrlSearchCondition, "component:")]
 
                 default:
                     ; by name
@@ -154,7 +155,7 @@ class Svaner {
         if (!callbacks) {
             return
         }
-            
+
         for callback in callbacks {
             callback(control)
         }
@@ -564,14 +565,22 @@ class Svaner {
     /**
      * Add Tab3 control to Gui
      * @param {String} options 
-     * @param {String[]} pages 
+     * @param {Array<String> | Array<Map<String | Integer, ()=>void>>} pages 
      * @returns {Gui.Tab} 
      */
     AddTab3(options := "", pages := []) {
         parsedOptions := this.__parseOptions(options)
 
-        control := this.gui.AddTab3(parsedOptions.parsed, pages)
+        control := this.gui.AddTab3(parsedOptions.parsed, pages is Map ? MapExt.keys(pages) : pages)
         this.__applyCallbackDirectives(control, parsedOptions.callbacks)
+
+        if (pages is Map) {
+            for pageTitle, pageFunc in pages {
+                control.UseTab(pageTitle)
+                pageFunc()
+            }
+            control.UseTab()
+        }
 
         return control
     }

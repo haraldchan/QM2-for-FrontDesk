@@ -9,9 +9,11 @@ class StackBox {
      * options := {
      *     ; available options
      *     name: "stack-box",
-     *     fontOptions: "s12 bold",
-     *     fontName: "Times New Roman",
-     *          
+     *     font: {
+     *         name: "Times New Roman",
+     *         options: "s12 bold"
+     *     }
+     * 
      *     ; GroupBox options
      *     groupbox: { 
      *         title: "This is a StackBox",
@@ -69,7 +71,6 @@ class StackBox {
     
             if (this.checkbox.HasOwnProp("options")) {
                 this.cbOptions := this.svaner.__parseOptions(this.checkbox.options)
-
             }
 
             this.cbEvents := options.checkbox.HasOwnProp("events") ? options.checkbox.events : ""
@@ -151,6 +152,7 @@ class StackBox {
         this.gbCtrl.SetFont(this.fontOptions, this.fontName)
         this.ctrls.Push(this.gbCtrl)
         this.gbCtrl.GetPos(&gbX, &gbY, &gbWidth, &gbHeight)
+        this.svaner.__applyCallbackDirectives(this.gbCtrl, this.gbOptions.callbacks)
 
         ; mount CheckBox if using check box as title
         if (this.checkbox) {
@@ -158,6 +160,7 @@ class StackBox {
             this.cbCtrl.SetFont(this.fontOptions, this.fontName)
             this.cbCtrl.OnEvent("Click", (ctrl, _) => this.setEnable(ctrl.Value))
             this.ctrls.Push(this.cbCtrl)
+            this.svaner.__applyCallbackDirectives(this.cbCtrl, this.cbOptions.callbacks)
         }
 
         ; add events
