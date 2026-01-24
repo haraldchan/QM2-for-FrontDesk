@@ -98,27 +98,6 @@ class ReportMaster_Action {
             name: "Guest In House w/o Due Out(VIP INH)",
             saveFn: this.vipInh
         }],
-        misc: [{
-            searchStr: "Wshgz_special",
-            name: "Specials - 当天水果5 报表",
-            saveFn: this.special
-        }, {
-            searchStr: "pkgforecast",
-            name: "Upselling - 当天 Upsell 报表",
-            saveFn: this.upsellPkg
-        }, {
-            searchStr: "pkgforecast",
-            name: "Afternoon Tea - 当天 大堂吧下午茶 报表",
-            saveFn: this.lobbyBarAFT
-        }, {
-            searchStr: "pkgforecast",
-            name: "Morning Tea - 宏图府早茶 报表",
-            saveFn: this.hongtuMorningTea
-        }, {
-            searchStr: "pkgforecast",
-            name: "Morning Tea - 丝绸之路早茶 报表",
-            saveFn: this.silkroadMorningTea
-        }],
         groupArr: {
             searchStr: "GRPRMLIST",
             name: "Group Arrival - 当天预抵团单",
@@ -759,6 +738,10 @@ class ReportMaster_Action {
      * @returns {String} 
      */
     static specials(spCodes, fileNameInput, initX := 600, initY := 482) {
+        if (!spCodes) {
+            return
+        }
+
         fileName := Format("{1}-{2}", FormatTime(A_Now, "yyyyMMdd"), fileNameInput)
         ; report options here
         loop 2 {
@@ -780,6 +763,10 @@ class ReportMaster_Action {
      * @returns {String}
      */
     static packages(pkgCodes, fileNameInput, frDate, toDate, initX := 600, initY := 482) {
+        if (!pkgCodes) {
+            return
+        }
+
         fmtFrDate := FormatTime(frDate, "MMddyyyy")
         fmtToDate := FormatTime(toDate, "MMddyyyy")
         fileNameDate := fmtFrDate == fmtToDate ? fmtFrDate : fmtFrDate . "-" . fmtToDate
@@ -831,156 +818,6 @@ class ReportMaster_Action {
         Send "{Down}"
         Sleep 100
 
-        return fileName
-    }
-
-    static upsellPkg() {
-        fileName := Format("{1} Upsell", FormatTime(A_Now, "yyyyMMdd"))
-        Sleep 200
-        Send "{Tab}"
-        Sleep 200
-        Send "^c"
-        Sleep 200
-        Send "{Tab}"
-        Sleep 200
-        Send "^v"
-        MouseMove 764, 373
-        Sleep 200
-        Click
-        Sleep 200
-        Send "!n"
-        Sleep 200
-        Send "{Text}%US"
-        Sleep 200
-        Send "!h"
-        Sleep 200
-        Send "!a"
-        Sleep 200
-        Send "!o"
-        Sleep 200
-        return fileName
-    }
-
-    static lobbyBarAFT() {
-        fileName := Format("{1} 大堂吧下午茶", FormatTime(A_Now, "yyyyMMdd"))
-        Sleep 200
-        Send "{Tab}"
-        Sleep 200
-        Send "^c"
-        Sleep 200
-        Send "{Tab}"
-        Sleep 200
-        Send "^v"
-        MouseMove 764, 373
-        Sleep 200
-        Click
-        Sleep 200
-        Send "!n"
-        Sleep 200
-        Send "{Text}ATPR-2"
-        Sleep 200
-        Send "!h"
-        Sleep 200
-        Send "!a"
-        Sleep 200
-        Send "!o"
-        Sleep 200
-        return fileName
-    }
-
-    static hongtuMorningTea() {
-        WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
-        BlockInput false
-        query := MsgBox("保存报表日期？`n`n(Y)  - 今天`n(N) - 昨天", "Report Master", "4096 YN")
-        Sleep 100
-        WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
-        BlockInput true
-
-        queryDate := query = "Yes" ? A_Now : DateAdd(A_Now, -1, "Days")
-        fileName := Format("{1} 宏图府早茶", FormatTime(queryDate, "yyyyMMdd"))
-        Sleep 500
-        MouseMove 659, 271
-        Sleep 200
-        Click
-        Sleep 200
-        Send "!c"
-        Sleep 200
-        Send FormatTime(queryDate, "MMddyyyy")
-        Sleep 200
-
-        MouseMove 659, 300
-        Sleep 200
-        Click
-        Sleep 200
-        Send "!c"
-        Sleep 200
-        Send FormatTime(queryDate, "MMddyyyy")
-        Sleep 200
-
-        MouseMove 764, 373
-        Sleep 200
-        Click
-        Sleep 200
-        Send "!n"
-        Sleep 200
-        Send "{Tab}"
-        Sleep 200
-        Send "{Text}%宏图府"
-        Sleep 200
-        Send "!h"
-        Sleep 200
-        Send "!a"
-        Sleep 200
-        Send "!o"
-        Sleep 200
-        return fileName
-    }
-
-    static silkroadMorningTea() {
-        WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
-        BlockInput false
-        query := MsgBox("保存报表日期？`n`n(Y)  - 今天`n(N) - 昨天", "Report Master", "4096 YN")
-        Sleep 100
-        WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
-        BlockInput true
-
-        queryDate := query = "Yes" ? A_Now : DateAdd(A_Now, -1, "Days")
-        fileName := Format("{1} 丝绸之路早茶", FormatTime(queryDate, "yyyyMMdd"))
-        Sleep 500
-        MouseMove 659, 271
-        Sleep 200
-        Click
-        Sleep 200
-        Send "!c"
-        Sleep 200
-        Send FormatTime(queryDate, "MMddyyyy")
-        Sleep 200
-
-        MouseMove 659, 300
-        Sleep 200
-        Click
-        Sleep 200
-        Send "!c"
-        Sleep 200
-        Send FormatTime(queryDate, "MMddyyyy")
-        Sleep 200
-
-        MouseMove 764, 373
-        Sleep 200
-        Click
-        Sleep 200
-        Send "!n"
-        Sleep 200
-        Send "{Tab}"
-        Sleep 200
-        Send "{Text}%丝绸之路"
-        Sleep 200
-        Send "!h"
-        Sleep 200
-        Send "!a"
-        Sleep 200
-        Send "!o"
-        Sleep 200
         return fileName
     }
 
