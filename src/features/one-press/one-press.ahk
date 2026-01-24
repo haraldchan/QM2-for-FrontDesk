@@ -17,11 +17,11 @@ OnePress(App) {
     selectedModule := signal(modules.keys()[1])
 
     handleModuleChange(ctrl, _) {
-        moduleName := modules[ctrl.Text]
+        moduleName := modules[ctrl.Text].name
         selectedModule.set(ctrl.Text)
 
         for desc, module in modules {
-            App[StrLower(module.name) . "-action"].Opt(desc == ctrl.Text ? "+Default" : "-Default")
+            App[module.name.toCase("kebab") . "-action"].Opt(desc == ctrl.Text ? "+Default" : "-Default")
         }
         WinSetAlwaysOnTop (moduleName == "PaymentRelation"), POPUP_TITLE
     }
@@ -29,26 +29,34 @@ OnePress(App) {
     App.defineDirectives(
         "@use:box-x", "x30",
         "@use:box-w", "w350",
-        "@use:box", "@use:box-x @relative[y+10]:last-radio @use:box-w"
+        "@use:bold", ctrl => ctrl.setFont("bold"),
+        "@use:box", "@use:box-x @relative[y+10]:op-radio-group @use:box-w @use:bold",
+        "@use:form-text", "xs10 yp+30 w100 h25 0x200",
+        "@use:form-edit", "x+10 w200 h25 0x200"
     )
 
-    defineRadioStyle(index) {
-        defaultStyle := "x30 y+10 h20"
-
-        switch index {
-            case 1:
-                return "vfirst-radio Checked " . defaultStyle
-            case modules.keys().Length:
-                return "vlast-radio " . defaultStyle
-            default:
-                return defaultStyle
+    onMount() {
+        SetTimer(focusFirstRadio)
+        focusFirstRadio(*) {
+            if (WinExist(POPUP_TITLE)) {
+                ControlClick(App["component:$op-radio-group"].ctrls.find(c => c is Gui.Radio))
+                SetTimer(, 0)
+            }
         }
     }
 
     return (
-        modules.forEach((desc, module) => App.AddRadio(defineRadioStyle(A_Index), desc).onClick(handleModuleChange)),
+        StackBox(App, 
+            {
+                name: "op-radio-group",
+                groupbox: { options: "vop-radio-group Section x30 y+10 w350 Hidden " . Format("h{1}", 30 * modules.keys().Length) } 
+            },
+            () => modules.entries().map((entry, index) => 
+                App.AddRadio(index == 1 ? "xs1 h20 yp+1" : "xs1 h20 yp+30" , entry[1]).onClick(handleModuleChange)
+            )
+        ),
         Dynamic(App, selectedModule, modules),
         
-        App[StrLower(modules[selectedModule.value].name) . "-action"].Opt("+Default")
+        onMount()
     )
 }
