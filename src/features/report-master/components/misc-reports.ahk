@@ -14,11 +14,11 @@ MiscReports(App) {
             "FO13 - Packages", 
             {
                 searchStr: "pkgforecast",
-                name: App["pkg-save-filename"].Value.trim(),
+                name: App["pkg-save-filename"].Value.trim() || "FO13 - Packages",
                 saveFn: ReportMaster_Action.packages,
                 args: [
                     App["pkg-codes"].Value.trim(),
-                    App["pkg-save-filename"].Value.trim()
+                    App["pkg-save-filename"].Value.trim() || "FO13 - Packages",
                     App["pkg-fr-date"].Value,
                     App["pkg-to-date"].Value,
                 ]
@@ -26,11 +26,11 @@ MiscReports(App) {
             "WSHGZ - Specials",
             {
                 searchStr: "Wshgz_special",
-                name: App["sp-save-filename"].Value.trim(),
+                name: App["sp-save-filename"].Value.trim() || "WSHGZ - Specials",
                 saveFn: ReportMaster_Action.specials,
                 args: [
                     App["sp-codes"].Value.trim(), 
-                    App["sp-save-filename"].Value.trim()
+                    App["sp-save-filename"].Value.trim() || "WSHGZ - Specials"
                 ]
             },
         ))
@@ -55,7 +55,8 @@ MiscReports(App) {
         App.AddListBox("vmisc-list x30 y+15 w260 r4 Choose1", miscReports.keys())
            .onChange((ctrl, _) => selectedMiscReport.set(ctrl.Text)),
         App.AddDDL("vmisc-file-type @align[y]:misc-list x+10 w80 Choose1", ["PDF", "XML", "TXT", "XLS"]),
-        App.AddButton("vmisc-report-save @align[x]:misc-file-type y+16 h25 w80 Default", "保存报表"),
+        App.AddButton("vmisc-report-save @align[x]:misc-file-type y+16 h25 w80 Default", "保存报表")
+           .onClick(saveReports),
        
         ; options
         Dynamic(App, selectedMiscReport, miscReports)
@@ -68,12 +69,10 @@ MiscReports(App) {
 MR_Packages_Options(App, props) {
     comp := Component(App, A_ThisFunc)
 
-    pkgCodePresets := OrderedMap(
-        "自定义", "",
-        "早餐", "BFNP BFPP BFC",
-        "Upsell", "%UP",
-        "一盅两件", "DXTC DXTCF",
-    )
+    pkgCodePresets := OrderedMap("自定义", "")
+    for preset, codes in CONFIG.read(["report-master", "misc-reports", "packages", "presets"]) {
+        pkgCodePresets[preset] := codes
+    }
 
     selectedPkgPreset := signal("")
     
@@ -95,7 +94,7 @@ MR_Packages_Options(App, props) {
                 name: "mr-packages-options",
                 groupbox: {
                     title: "Packages 报表选项",
-                    options: "Section vmr-pkg-options x30 y+15 w350 h130"
+                    options: "Section vmr-pkg-options x30 y+15 w350 h130 @use:bold"
                 }
             },
             () => [
@@ -131,7 +130,7 @@ MR_Specials_Options(App, props) {
                 name: "mr-specials-options",
                 groupbox: {
                     title: "Specials 报表选项",
-                    options: "Section @align[xy]:mr-pkg-options w350 h100"
+                    options: "Section @align[xy]:mr-pkg-options w350 h100 @use:bold"
                 }
             },
             () => [
