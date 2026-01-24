@@ -17,11 +17,16 @@ OnDayGroupReports(App, curActiveTab) {
             return
         }
 
-        ; onDayBlockInfo.set(getBlockInfo())
+        blocks := getBlockInfo() || onDayBlockInfo.initValue
+        onDayBlockInfo.set(blocks)
     }
 
     getBlockInfo(yyyy := A_Year, MM := A_MM, dd := A_DD) {
         monthFolder := Format(dirFormat, yyyy, MM)
+        if (!DirExist(monthFolder)) {
+            MsgBox("On-day Group 文件夹未找到。", POPUP_TITLE, "T5 4096")
+            return
+        }
 
         loop files monthFolder . "\*" {
             if (InStr(A_LoopFileName, yyyy . MM . dd)) {
@@ -63,7 +68,8 @@ OnDayGroupReports(App, curActiveTab) {
     }
 
     handleBlockInfoUpdate(ctrl, _) {
-        ; onDayBlockInfo.set(getBlockInfo(ctrl.Value.toFormat("yyyy,MM,dd").split(",")*))
+        blocks := getBlockInfo(ctrl.Value.toFormat("yyyy,MM,dd").split(",")*) || onDayBlockInfo.initValue
+        onDayBlockInfo.set(blocks)
     }
 
     handleOpenOdgDir(*) {
