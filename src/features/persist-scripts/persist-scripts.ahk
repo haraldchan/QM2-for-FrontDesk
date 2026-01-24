@@ -18,7 +18,15 @@ PersistScriptsControl(App) {
 		Run(scanFolderPath)
 	}
 
+	handlePersistSwitch(cb, _) {
+		CONFIG.write(cb.name.replace("-on", ""), cb.value)
+	}
+
 	onMount() {
+		for script, enabled in CONFIG.read("persist-scripts-switch") {
+			App[script . "-on"].Value := enabled
+		}
+
 		; City Ledger
 		HotIf (*) => App["city-ledger-on"].Value
 		Hotkey("^o", (*) => CityLedgerCo.USE())
@@ -57,20 +65,20 @@ PersistScriptsControl(App) {
 			},
 			() => [
 				; City Ledger
-				App.AddCheckbox("vcity-ledger-on @use:psc-label Checked yp+20", "City Ledger"),
+				App.AddCheckbox("vcity-ledger-on @use:psc-label yp+20", "City Ledger").onClick(handlePersistSwitch),
 				App.AddText("@use:psc-desc", "热键: Ctrl + O | 鼠标滚轮键"),
 			
 				; Scan Invoke
-				App.AddCheckbox("vscan-invoke-on @use:psc-label Checked", "启动扫描"),
+				App.AddCheckbox("vscan-invoke-on @use:psc-label", "启动扫描").onClick(handlePersistSwitch),
 				App.AddText("@use:psc-desc", "热键: Ctrl+Shift+S"),
 				App.AddButton("xp+105 w80 h20", "Scan 文件夹").onClick(handleOpenScanFolder),
 
 				; Balance Transfer
-				App.AddCheckbox("vbalance-transfer-on @use:psc-label Checked", "Balance Transfer"),
+				App.AddCheckbox("vbalance-transfer-on @use:psc-label", "Balance Transfer").onClick(handlePersistSwitch),
 				App.AddText("@use:psc-desc", "输入: BT"),
 			
 				; Deposit Entry
-				App.AddCheckbox("vdeposit-entry-on @use:psc-label Checked", "押金录入"),
+				App.AddCheckbox("vdeposit-entry-on @use:psc-label", "押金录入").onClick(handlePersistSwitch),
 				App.AddText("@use:psc-desc", "监听: 绿云复制卡号"),
 			]
 		),
