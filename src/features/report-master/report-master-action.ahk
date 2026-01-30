@@ -737,18 +737,25 @@ class ReportMaster_Action {
      * @param {Integer} [initY=482] 
      * @returns {String} 
      */
-    static specials(spCodes, fileNameInput, initX := 600, initY := 482) {
+    static specials(spCodes, fileNameInput, frDate, toDate, initX := 600, initY := 482) {
         if (!spCodes) {
             return
         }
 
         fileName := Format("{1}-{2}", FormatTime(A_Now, "yyyyMMdd"), fileNameInput)
         ; report options here
-        loop 2 {
-            Send "{Tab}"
-            Sleep 200
-        }
+        Send "{Text}" . frDate
+        Sleep 200
+        Send "{Tab}"
+        Sleep 200
+
+        Send "{Text}" . toDate
+        Sleep 200
+        Send "{Tab}"
+        Sleep 200
+
         Send spCodes.replace(" ", ",")
+        Sleep 200
 
         return fileName
     }
