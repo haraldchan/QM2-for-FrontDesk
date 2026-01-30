@@ -110,7 +110,7 @@ OnDayGroupReports(App, curActiveTab) {
             reportObj := ReportMaster_Action.reportList.groupArr
             reportObj.blockName := block["blockName"]
             reportObj.blockCode := block["blockCode"]
-            ReportMaster_Action.reportFiling(reportObj, App["odg-file-type"])
+            ReportMaster_Action.reportFiling(reportObj, App["odg-file-type"].Text)
             savedReports .= block["blockName"] . "`n"
         }
         ReportMaster_Action.end()

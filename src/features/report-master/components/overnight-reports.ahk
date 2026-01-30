@@ -36,7 +36,7 @@ OverNightReports(App) {
             if (!ReportMaster_Action.isRunning && A_Index > 1) {
                 return
             }
-            ReportMaster_Action.reportFiling(report, App["onr-file-type"])
+            ReportMaster_Action.reportFiling(report, App["onr-file-type"].Text)
             savedReports .= report.name . "`n"
         }
         ReportMaster_Action.end()
