@@ -29,7 +29,7 @@ FetchFedexResv(App, props) {
                 name: "fetch-fedex-resv-stack-box",
                 groupbox: {
                     title: "FedEx 订单信息抓取",
-                    options: "Section r6 @use:box"
+                    options: "Section h140 @use:box"
                 }
             },
             () => [

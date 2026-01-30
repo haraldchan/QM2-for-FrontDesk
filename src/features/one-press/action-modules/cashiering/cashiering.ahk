@@ -65,13 +65,13 @@ Cashiering(App, props) {
                 App.AddCheckBox("h20 x+10", "显示").onClick(handlePwsVisible),
                 
                 ; hot string commands list
-                App.AddGroupBox("r5 xs10 yp+25 w330", "快捷指令 "),
+                App.AddGroupBox("xs10 yp+25 w330 h125", "快捷指令 "),
                 hotStringCommands.split("`n").map(fragment =>
                     App.AddText((A_Index = 1 ? "xp+10 " : "") . "yp+20", fragment)
                 ),
 
                 ; deposit payments
-                App.AddGroupBox("r2 xs10 y+10 w330", " Deposit "),
+                App.AddGroupBox("xs10 yp+25 w330 h60", " Deposit "),
                 App.AddText("xp+10 yp+25 h25 0x200", "支付类型"),
                 App.AddDDL("vpt x+10 w130 Choose2", paymentType.values()),
                 App.AddButton("vcashiering-action x+13 w100 h25", "录入 Deposit")

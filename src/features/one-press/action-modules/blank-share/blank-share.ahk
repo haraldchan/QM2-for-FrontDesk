@@ -29,7 +29,7 @@ BlankShare(App, props := {}) {
                 name: "blank-share-stack-box",
                 groupbox: {
                     title: "生成空白(NRR) Share",
-                    options: "vbs-stackbox Section r7 @use:box",
+                    options: "vbs-stackbox Section h165 @use:box",
                 }
             },
             () => [
