@@ -3,37 +3,41 @@
  */
 MiscReports(App) {
     miscReports := Map(
-        "FO13 - Packages", MR_Packages_Options,
-        "WSHGZ - Specials", MR_Specials_Options,
+        "FO13 - Packages", (*) => MiscReportOptions(App, { reportType: "packages", groupboxTitle: "FO13 - Packages" }),
+        "WSHGZ - Specials", (*) => MiscReportOptions(App, { reportType: "specials", groupboxTitle: "WSHGZ - Specials" }),
     )
 
     selectedMiscReport := signal(miscReports.keys()[1])
 
-    saveReports(*) {
-        reportInfo := match(selectedMiscReport.value, Map(
-            "FO13 - Packages", 
-            {
-                searchStr: "pkgforecast",
-                name: App["pkg-save-filename"].Value.trim() || "FO13 - Packages",
-                saveFn: ReportMaster_Action.packages,
-                args: [
-                    App["pkg-codes"].Value.trim(),
-                    App["pkg-save-filename"].Value.trim() || "FO13 - Packages",
-                    App["pkg-fr-date"].Value,
-                    App["pkg-to-date"].Value,
-                ]
-            },
-            "WSHGZ - Specials",
-            {
-                searchStr: "Wshgz_special",
-                name: App["sp-save-filename"].Value.trim() || "WSHGZ - Specials",
-                saveFn: ReportMaster_Action.specials,
-                args: [
-                    App["sp-codes"].Value.trim(), 
-                    App["sp-save-filename"].Value.trim() || "WSHGZ - Specials"
-                ]
-            },
+    defineReportInfo() {
+        prefix := selectedMiscReport.value.split(" - ").at(-1)
+
+        searchStr := match(selectedMiscReport.value, Map(
+            "FO13 - Packages", "pkgforecast",
+            "WSHGZ - Specials", "Wshgz_special"
         ))
+
+        return {
+            searchStr: searchStr,
+            name: App[prefix . "-save-filename"].Value.trim() || App[prefix . "-presets"].Text.replace("自定义", App[prefix . "-codes"].Value.trim()),
+            saveFn: ReportMaster_Action.%prefix%,
+            args: [
+                App[prefix . "-codes"].Value.trim(),
+                App[prefix . "-save-filename"].Value.trim() || App[prefix . "-presets"].Text.replace("自定义", App[prefix . "-codes"].Value.trim()),
+                App[prefix . "-fr-date"].Value.toFormat("MMddyyyy"),
+                App[prefix . "-to-date"].Value.toFormat("MMddyyyy"),
+            ]
+        }
+    }
+
+    saveReports(*) {
+        reportInfo := defineReportInfo()
+
+        if (!reportInfo.args[1]) {
+            return
+        }
+
+        ; MsgBox JSON.stringify(reportInfo)
 
         ReportMaster_Action.start()
         ReportMaster_Action.reportFiling(reportInfo, App["misc-file-type"].Text)
@@ -43,7 +47,7 @@ MiscReports(App) {
         saveText := "已保存报表：`n`n" . Format("{1}-{2}", FormatTime(A_Now, "yyyyMMdd"), reportInfo.name) . "`n`n是否打开所在文件夹? "
         if (MsgBox(saveText, POPUP_TITLE, "OKCancel 4096") == "OK") {
             Run Format(
-                'explorer /select, "{1}"', 
+                'explorer /select, "{1}"',
                 A_MyDocuments . Format("\{1}-{2}.{3}", FormatTime(A_Now, "yyyyMMdd"), reportInfo.name, App["misc-file-type"].Text)
             )
         } else {
@@ -53,11 +57,10 @@ MiscReports(App) {
 
     return (
         App.AddListBox("vmisc-list x30 y+15 w260 r4 Choose1", miscReports.keys())
-           .onChange((ctrl, _) => selectedMiscReport.set(ctrl.Text)),
+        .onChange((ctrl, _) => selectedMiscReport.set(ctrl.Text)),
         App.AddDDL("vmisc-file-type @align[y]:misc-list x+10 w80 Choose1", ["PDF", "XML", "TXT", "XLS"]),
         App.AddButton("vmisc-report-save @align[x]:misc-file-type y+16 h25 w80 Default", "保存报表")
-           .onClick(saveReports),
-       
+        .onClick(saveReports),
         ; options
         Dynamic(App, selectedMiscReport, miscReports)
     )
@@ -66,80 +69,51 @@ MiscReports(App) {
 /**
  * @param {Svaner} App 
  */
-MR_Packages_Options(App, props) {
-    comp := Component(App, A_ThisFunc)
+MiscReportOptions(App, props) {
+    comp := Component(App, props.reportType . "_" . props.reportType.toUpper())
 
-    pkgCodePresets := OrderedMap("自定义", "")
-    for preset, codes in CONFIG.read(["report-master", "misc-reports", "packages", "presets"]) {
-        pkgCodePresets[preset] := codes
+    productCodePresets := OrderedMap("自定义", "")
+    for preset, codes in CONFIG.read(["report-master", "misc-reports", props.reportType, "presets"]) {
+        productCodePresets[preset] := codes
     }
 
-    selectedPkgPreset := signal("")
-    
-    handleSetPkgPreset(ctrl, _) {
-        selectedPkgPreset.set(pkgCodePresets[ctrl.Text])
+    selectedPreset := signal("")
+
+    handleSetPreset(ctrl, _) {
+        selectedPreset.set(productCodePresets[ctrl.Text])
     }
 
     handleSaveCustomPresetInput(ctrl, _) {
-        if (App["pkg-presets"].Text != "自定义") {
+        if (App[props.reportType . "-presets"].Text != "自定义") {
             return
         }
 
-        pkgCodePresets["自定义"] := ctrl.Value.trim()
+        productCodePresets["自定义"] := ctrl.Value.trim()
     }
 
     comp.render := this => this.Add(
         StackBox(
             App, {
-                name: "mr-packages-options",
+                name: Format("mr-{1}-options", props.reportType),
                 groupbox: {
-                    title: "Packages 报表选项",
-                    options: "Section vmr-pkg-options x30 y+15 w350 h130 @use:bold"
+                    title: props.groupboxTitle,
+                    options: "Section x30 @relative[y+15]:misc-list w350 h130 @use:bold"
                 }
             },
             () => [
                 ; date range
                 App.AddText("xs10 yp+30 w100 h20 0x200", "报表日期范围"),
-                App.AddDateTime("vpkg-fr-date x+10 h20 w100"),
-                App.AddDateTime("vpkg-to-date x+10 h20 w100"),
-                ; pkg codes
+                App.AddDateTime("v" . props.reportType . "-fr-date x+10 h20 w100"),
+                App.AddDateTime("v" . props.reportType . "-to-date x+10 h20 w100"),
+                ; codes
                 App.AddText("xs10 yp+30 w100 h20 0x200", "Pkg.Code(空格分隔)"),
-                App.AddEdit("vpkg-codes x+10 w145 h20 ", "{1}", selectedPkgPreset)
-                   .onBlur(handleSaveCustomPresetInput),
-                App.AddDDL("vpkg-presets x+5 w60 Choose1", pkgCodePresets.keys())
-                   .onChange(handleSetPkgPreset),
+                App.AddEdit("v" . props.reportType . "-codes x+10 w145 h20 ", "{1}", selectedPreset)
+                .onBlur(handleSaveCustomPresetInput),
+                App.AddDDL("v" . props.reportType . "-presets x+5 w60 Choose1", productCodePresets.keys())
+                .onChange(handleSetPreset),
                 ; save file name
                 App.AddText("xs10 yp+30 w100 h20 0x200", "保存文件名"),
-                App.AddEdit("vpkg-save-filename x+10 h20 w210")
-            ]
-        )
-    )
-
-    return comp
-}
-
-/**
- * @param {Svaner} App 
- */
-MR_Specials_Options(App, props) {
-    comp := Component(App, A_ThisFunc)
-
-    comp.render := this => this.Add(
-        StackBox(
-            App, {
-                name: "mr-specials-options",
-                groupbox: {
-                    title: "Specials 报表选项",
-                    options: "Section @align[xy]:mr-pkg-options w350 h100 @use:bold"
-                }
-            },
-            () => [
-                ; special codes
-                App.AddText("xs10 yp+30 w100 h20 0x200", "Sp.Code(空格分隔)"),
-                App.AddEdit("vsp-codes x+10 h20 w210"),
-                ; save file name
-                App.AddText("xs10 yp+30 w100 h20 0x200", "保存文件名"),
-                App.AddEdit("vsp-save-filename x+10 h20 w210")
+                App.AddEdit("v" . props.reportType . "-save-filename x+10 h20 w210")
             ]
         )
     )
