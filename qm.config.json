@@ -13,6 +13,11 @@
           "Upsell": "%UP",
           "一盅两件": "DXTC DXTCF"
         }
+      },
+      "specials": {
+        "presets": {
+          "水果5": "水果5"
+        }
       }
     }
   }
