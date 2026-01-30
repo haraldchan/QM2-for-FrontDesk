@@ -43,7 +43,7 @@ Phrases(App) {
                 groupbox: { options: "vphrases-radio-group Section x30 y+10 w350 Hidden " . Format("h{1}", 30 * phrases.keys().Length) } 
             },
 			() => phrases.keys().map(phrase =>
-				App.AddRadio(A_Index == 1 ? "xs1 h20 yp+1" : "xs1 h20 yp+30", phrases[phrase])
+				App.AddRadio(A_Index == 1 ? "Checked xs1 yp+1 h20" : "xs1 yp+30 h20", phrases[phrase])
 				   .onClick((*) => selectedPhrase.set(phrase.name))
 			),
 			
