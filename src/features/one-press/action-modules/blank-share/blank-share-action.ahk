@@ -23,20 +23,20 @@ class BlankShare_Action {
 
 	static USE(form) {
 		form := JSON.parse(JSON.stringify(form))
-		roomNums := Trim(form["shareRoomNums"])
-		shareQty := Trim(form["shareQty"])
+		roomNumsInput := Trim(form["shareRoomNums"])
+		shareQtyInput := Trim(form["shareQty"])
 		checkIn := form["checkIn"]
 
 		this.start()
 		; single room share(s)
 		if (!roomNums) {
-			this.makeShare(checkIn, shareQty)
+			this.makeShare(checkIn, shareQtyInput)
 			return
 		}
 
 		; multi room share(s)
-		shareQty := shareQty.includes(" ") ? shareQty.split(" ") : [shareQty]
-		roomNums := roomNums.includes(" ") ? roomNums.split(" ") : [roomNums]
+		shareQty := shareQtyInput.includes(" ") ? shareQtyInput.split(" ") : [shareQtyInput]
+		roomNums := roomNumsInput.includes(" ") ? roomNumsInput.split(" ") : [roomNumsInput]
 		for room in roomNums {
 			if (shareQty[A_Index] == 0) {
 				continue
@@ -47,18 +47,28 @@ class BlankShare_Action {
 				continue
 			}
 
+			this.search(room)
+			existShares := this.getExistShares()
+			if (existShares < shareQty[A_Index]) {
+				sharesToMake := shareQty[A_Index] - existShares
+			}
+
 			if (!this.isRunning) {
             	msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
             	return	
 			}
 			utils.waitLoading()
-			this.makeShare(checkIn, shareQty[A_Index], true)
+			this.makeShare(checkIn, sharesToMake, true)
 			utils.waitLoading()
 		}
 
 		this.end()
 	}
 
+	/**
+	 * @param {String} roomNum 
+	 * @returns {void | String} 
+	 */
 	static search(roomNum) {
         formattedRoom := StrLen(roomNum) == 3 ? "0" . roomNum : roomNum
 
@@ -88,7 +98,8 @@ class BlankShare_Action {
         }
 
         ; sort by Prs.
-        Click 838, 378, "Right" 
+        ImageSearch(&outX, &outY, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["opera-active-win.PNG"])
+        Click outX + 672, outY + 222, "Right"
         Sleep 200
         Send "{Down}"
         Sleep 200
@@ -99,6 +110,37 @@ class BlankShare_Action {
         }
 	}
 
+	/**
+	 * @returns {Integer} 
+	 */
+	static getExistShares() {
+		existShareCount := 0
+
+        ImageSearch(&outX, &outY, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["opera-active-win.PNG"])
+		x := outX + 645
+		y := outY + 241
+
+		loop {
+			Send "{Down}"
+			utils.waitLoading()
+			if (PixelGetColor(x, y) == "0x000080") {
+				shareCount++
+				y += 22
+			} else {
+				break
+			}
+		}
+
+		return existShareCount
+	}
+
+	/**
+	 * @param {true | false} checkIn 
+	 * @param {Integer} shareQty 
+	 * @param {true | false} keepGoing 
+	 * @param {Integer} initX 
+	 * @param {Integer} initY 
+	 */
 	static makeShare(checkIn, shareQty, keepGoing := false, initX := 949, initY := 599) {
 		this.start()
 
