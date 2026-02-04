@@ -6,9 +6,7 @@ class useServerAgent {
             expiration: 480,    ; delete posts after (exp) MINUTES
             collectRange: 15, ; collect post from recent MINUTES
             safePost: true,   ; whether ping before sending a post
-            isListening: serverSettings is Map 
-                ? serverSettings["isListening"] 
-                : serverSettings.isListening ; isListening depend signal
+            isListening: ""
         })
 
         this.pool := s.pool
