@@ -29,7 +29,7 @@ class BlankShare_Action {
 
 		this.start()
 		; single room share(s)
-		if (!roomNums) {
+		if (!roomNumsInput) {
 			this.makeShare(checkIn, shareQtyInput)
 			return
 		}
@@ -47,10 +47,14 @@ class BlankShare_Action {
 				continue
 			}
 
-			this.search(room)
+			; this.search(room)
 			existShares := this.getExistShares()
+
 			if (existShares < shareQty[A_Index]) {
 				sharesToMake := shareQty[A_Index] - existShares
+				this.search(room)
+			} else {
+				continue
 			}
 
 			if (!this.isRunning) {
@@ -58,7 +62,7 @@ class BlankShare_Action {
             	return	
 			}
 			utils.waitLoading()
-			this.makeShare(checkIn, sharesToMake, true)
+			this.makeShare(checkIn, sharesToMake ?? 0, true)
 			utils.waitLoading()
 		}
 
@@ -114,17 +118,18 @@ class BlankShare_Action {
 	 * @returns {Integer} 
 	 */
 	static getExistShares() {
+		CoordMode "Pixel", "Screen"
 		existShareCount := 0
 
         ImageSearch(&outX, &outY, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["opera-active-win.PNG"])
-		x := outX + 645
-		y := outY + 241
+		x := outX + 635
+		y := outY + 264
 
 		loop {
 			Send "{Down}"
 			utils.waitLoading()
 			if (PixelGetColor(x, y) == "0x000080") {
-				shareCount++
+				existShareCount++
 				y += 22
 			} else {
 				break
