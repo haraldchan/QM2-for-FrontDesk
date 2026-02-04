@@ -6,7 +6,7 @@
 #Include src\App.ahk
 
 ; global consts
-VERSION := "2.8.4"
+VERSION := "2.8.5"
 POPUP_TITLE := "QM2 for FrontDesk " . VERSION
 WIN_GROUP := ["ahk_class SunAwtFrame", "旅客信息", "ahk_class 360se6_Frame"]
 IMAGES := useImages(A_ScriptDir . "\src\Assets")
@@ -45,4 +45,5 @@ F9:: QM.Show()
 }
 
 #HotIf WinActive(POPUP_TITLE)
+
 Esc:: QM.Hide()
