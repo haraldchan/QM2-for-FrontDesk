@@ -106,7 +106,7 @@ MiscReportOptions(App, props) {
                 App.AddDateTime("v" . props.reportType . "-fr-date x+10 h20 w100"),
                 App.AddDateTime("v" . props.reportType . "-to-date x+10 h20 w100"),
                 ; codes
-                App.AddText("xs10 yp+30 w100 h20 0x200", "Pkg.Code(空格分隔)"),
+                App.AddText("xs10 yp+30 w100 h20 0x200", "Code(空格分隔)"),
                 App.AddEdit("v" . props.reportType . "-codes x+10 w145 h20 ", "{1}", selectedPreset)
                 .onBlur(handleSaveCustomPresetInput),
                 App.AddDDL("v" . props.reportType . "-presets x+5 w60 Choose1", productCodePresets.keys())
