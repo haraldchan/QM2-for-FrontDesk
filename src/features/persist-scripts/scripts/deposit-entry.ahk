@@ -19,11 +19,11 @@ class DepositEntry {
         Hotkey("F12", (*) => this.end(), "On")
         this.isRunning := true
     }
-    
+
     static end() {
         BlockInput false
         WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
-        
+
         Hotkey("F12", (*) => {}, "Off")
         this.isRunning := false
     }
@@ -88,10 +88,15 @@ class DepositEntry {
 
         parsedCard := cardInfoCopied.replaceThese([";", "?"]).split("=")
 
-        cardType := this.validateType(parsedCard[1]),
-            cardNum := parsedCard[1],
-            exp := parsedCard[2].substr(3, 4) . parsedCard[2].substr(1, 2),
-            auth := cardType == "UP" && (cardNum.startsWith(1) || cardNum.startsWith(2)) ? cardNum.substr(1, 1) . cardNum.substr(-5) : ""
+        cardType := this.validateType(parsedCard[1])
+        cardNum := parsedCard[1]
+        exp := parsedCard[2].substr(3, 4) . parsedCard[2].substr(1, 2)
+        auth := cardType == "UP" && (cardNum.startsWith(1) || cardNum.startsWith(2)) ? cardNum.substr(1, 1) . cardNum.substr(-5) : ""
+
+        if (cardType != "UP" && InStr(cardNum, "000000",, 7)) {
+            MsgBox("外卡卡号不完整，请手动录入。", "Deposit Entry", "4096 T2")
+            return
+        }
 
         depositInfo := {
             cardType: cardType,
@@ -207,7 +212,7 @@ class DepositEntry {
         WinActivate("ahk_class SunAwtFrame")
 
         if (depositInfo is Map) {
-            depositInfo := JSON.parse(JSON.stringify(depositInfo),, false)   
+            depositInfo := JSON.parse(JSON.stringify(depositInfo), , false)
         }
 
         ; dismiss alerts
@@ -297,7 +302,7 @@ class DepositEntry {
 
     static USE(depositInfo) {
         if (depositInfo is Map) {
-            depositInfo := JSON.parse(JSON.stringify(depositInfo),, false)   
+            depositInfo := JSON.parse(JSON.stringify(depositInfo),, false)
         }
 
         ; clear form
