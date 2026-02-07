@@ -18,6 +18,14 @@ App(App) {
 		curActiveTab.set(tab3.Text)
 	}
 
+    onMount() {
+        firstRadio := App["component:$op-radio-group"].ctrls.find(c => c is Gui.Radio)
+        firstRadio.Value := true
+        firstRadio.Focus()
+
+        App["blank-share-action"].Opt("Default")
+    }
+
 	return (
 		; desc
 		StrSplit(description, "`n").map(fragment => App.AddText("y+5", fragment)),
@@ -32,6 +40,8 @@ App(App) {
 			"夜班报表", () => OverNightReports(App),
 			"团单信息", () => OnDayGroupReports(App, curActiveTab),
 			"其他报表", () => MiscReports(App),
-		)).onChange(onTabChange)
+		)).onChange(onTabChange),
+
+		onMount()
 	)
 }

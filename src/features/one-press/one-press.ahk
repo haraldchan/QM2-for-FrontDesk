@@ -35,16 +35,6 @@ OnePress(App) {
         "@use:form-edit", "x+10 w200 h25 0x200"
     )
 
-    onMount() {
-        SetTimer(focusFirstRadio)
-        focusFirstRadio(*) {
-            if (WinExist(POPUP_TITLE)) {
-                ControlClick(App["component:$op-radio-group"].ctrls.find(c => c is Gui.Radio))
-                SetTimer(, 0)
-            }
-        }
-    }
-
     return (
         StackBox(App, 
             {
@@ -55,8 +45,6 @@ OnePress(App) {
                 App.AddRadio(index == 1 ? "xs1 h20 yp+1" : "xs1 h20 yp+30" , entry[1]).onClick(handleModuleChange)
             )
         ),
-        Dynamic(App, selectedModule, modules),
-        
-        onMount()
+        Dynamic(App, selectedModule, modules)
     )
 }
