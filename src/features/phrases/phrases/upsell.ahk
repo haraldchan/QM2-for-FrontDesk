@@ -29,7 +29,7 @@ Upsell(App, props) {
 				name: "upselling-stack-box",
 				groupbox: {
 					title: "Upselling - 房间升级",
-					options: "Section r6 @use:phrase-box-xyw"
+					options: "Section h150 @use:phrase-box-xyw"
 				}
 			},
 			() => [

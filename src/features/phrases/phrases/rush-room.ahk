@@ -28,7 +28,7 @@ RushRoom(App, props) {
 				name: "rush-room-stack-box",
 				groupbox: {
 					title: "Rush Room - 赶房与Key Keep",
-					options: "Section r4 @use:phrase-box-xyw"
+					options: "Section h90 @use:phrase-box-xyw"
 				}
 			},
 			() => [

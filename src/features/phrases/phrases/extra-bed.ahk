@@ -46,7 +46,7 @@ ExtraBed(App, props) {
 				name: "extra-bed-stack-box",
 				groupbox: {
 					title: "Extra Bed - 加床",
-					options: "Section r6 @use:phrase-box-xyw"
+					options: "Section h150 @use:phrase-box-xyw"
 				}
 			},
 			() => [

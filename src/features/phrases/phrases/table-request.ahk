@@ -63,7 +63,7 @@ TableRequest(App, props) {
 				name: "table-request-stack-box",
 				groupbox: {
 					title: "Table Reserve - 餐饮预订",
-					options: "Section r11 @use:phrase-box-xyw"
+					options: "Section h245 @use:phrase-box-xyw"
 				}
 			},
 			() => [
