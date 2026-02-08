@@ -10,7 +10,7 @@
       "packages": {
         "presets": {
           "早餐": "BFNP BFPP BFC",
-          "Upsell": "%UP",
+          "Upsell": "%US",
           "一盅两件": "DXTC DXTCF"
         }
       },
