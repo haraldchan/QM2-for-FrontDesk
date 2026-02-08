@@ -774,19 +774,17 @@ class ReportMaster_Action {
             return
         }
 
-        fmtFrDate := FormatTime(frDate, "MMddyyyy")
-        fmtToDate := FormatTime(toDate, "MMddyyyy")
-        fileNameDate := fmtFrDate == fmtToDate ? fmtFrDate : fmtFrDate . "-" . fmtToDate
+        fileNameDate := frDate == toDate ? frDate : frDate . "-" . toDate
         fileName := Format("{1}-{2}", fileNameDate, fileNameInput)
 
         ; dates
         Send "{Tab}"
         Sleep 100
-        Send "{Text}" . fmtFrDate
+        Send "{Text}" . frDate
         Sleep 100
         Send "{Tab}"
         Sleep 100
-        Send "{Text}" . fmtToDate
+        Send "{Text}" . toDate
         Sleep 100
 
         ; package codes(products)
