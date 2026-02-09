@@ -105,6 +105,14 @@ class ReportMaster_Action {
         }
     }
 
+    /**
+     * 
+     * @param reportInfoObj 
+     * @param fileType 
+     * @param {Integer} initX 
+     * @param {Integer} initY 
+     * @returns {void | String} 
+     */
     static reportFiling(reportInfoObj, fileType, initX := 433, initY := 598) {
 
         fileTypeSelectPointer := Map(
@@ -172,7 +180,6 @@ class ReportMaster_Action {
             return
         }
 
-        ; isWindows7 := StrSplit(A_OSVersion, ".")[1] == 6
         loop 30 {
             if (!this.isRunning) {
                 this.end()
@@ -193,7 +200,7 @@ class ReportMaster_Action {
                 break
             }
 
-            if (A_Index = 30) {
+            if (A_Index == 30) {
                 MsgBox("保存出错，脚本已终止。", "ReportMaster", "T1 4096")
                 this.end()
                 return
@@ -205,6 +212,8 @@ class ReportMaster_Action {
         Click
         Sleep 200
         Send "!c"
+
+        return saveFileName
     }
 
     static comp() {
