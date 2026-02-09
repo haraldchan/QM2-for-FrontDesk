@@ -1,11 +1,11 @@
 class useServerAgent {
     __New(serverSettings) {
         s := useProps(serverSettings, {
-            pool: "",         ; post pool dir path
-            interval: 3000,   ; post checking interval MILLISECONDS
+            pool: "",           ; post pool dir path
+            interval: 3000,     ; post checking interval MILLISECONDS
             expiration: 480,    ; delete posts after (exp) MINUTES
-            collectRange: 15, ; collect post from recent MINUTES
-            safePost: true,   ; whether ping before sending a post
+            collectRange: 15,   ; collect post from recent MINUTES
+            safePost: false,    ; whether ping before sending a post
             isListening: ""
         })
 
