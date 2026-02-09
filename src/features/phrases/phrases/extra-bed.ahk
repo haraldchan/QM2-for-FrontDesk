@@ -44,6 +44,7 @@ ExtraBed(App, props) {
 		StackBox(App,
 			{
 				name: "extra-bed-stack-box",
+				font: { options: "bold" },
 				groupbox: {
 					title: "Extra Bed - 加床",
 					options: "Section h150 @use:phrase-box-xyw"

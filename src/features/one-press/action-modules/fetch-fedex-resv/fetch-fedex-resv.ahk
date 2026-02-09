@@ -27,6 +27,7 @@ FetchFedexResv(App, props) {
         StackBox(App,
             {
                 name: "fetch-fedex-resv-stack-box",
+                font: { options: "bold" },
                 groupbox: {
                     title: "FedEx 订单信息抓取",
                     options: "Section h140 @use:box"

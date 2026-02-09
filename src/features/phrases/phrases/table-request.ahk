@@ -61,6 +61,7 @@ TableRequest(App, props) {
 		StackBox(App,
 			{
 				name: "table-request-stack-box",
+				font: { options: "bold" },
 				groupbox: {
 					title: "Table Reserve - 餐饮预订",
 					options: "Section h245 @use:phrase-box-xyw"

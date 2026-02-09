@@ -53,6 +53,7 @@ Cashiering(App, props) {
         StackBox(App, 
             {
                 name: "cashiering-stack-box",
+                font: { options: "bold" },
                 groupbox: {
                     title: "入账关联",
                     options: "Section h250 @use:box",

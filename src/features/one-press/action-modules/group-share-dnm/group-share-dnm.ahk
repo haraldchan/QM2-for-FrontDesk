@@ -32,6 +32,7 @@ GroupShareDnm(App, props) {
         StackBox(App,
             {
                 name: "group-share-dnm-stack-box",
+                font: { options: "bold" },
                 groupbox: {
                     title: "预抵房间批量 Share/DoNotMove",
                     options: "Section r9 @use:box",

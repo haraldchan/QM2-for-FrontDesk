@@ -79,9 +79,10 @@ PaymentRelation(App, props := {}) {
         StackBox(App, 
             {
                 name: "pay-for-stack-box",
+                font: { options: "bold" },
                 groupbox: {
                     title: "P/F房(支付人)",
-                    options: "vpayfor-panel Section @use:bold @use:box-x @relative[y+10]:op-radio-group" . Format(" h{1} ", s.useCopyBtn ? 170 : 130) . s.panelWide
+                    options: "vpayfor-panel Section @use:box-x @relative[y+10]:op-radio-group" . Format(" h{1} ", s.useCopyBtn ? 170 : 130) . s.panelWide
                 } 
             },
             () => [
@@ -106,9 +107,10 @@ PaymentRelation(App, props := {}) {
         StackBox(App,
             {
                 name: "pay-by-stack-box",
+                font: { options: "bold" },
                 groupbox: {
                     title: "P/B房(被支付人)",
-                    options: "vpayby-panel Section @use:bold x+3 @align[ywh]:payfor-panel"
+                    options: "vpayby-panel Section x+3 @align[ywh]:payfor-panel"
                 }
             },
             () => [

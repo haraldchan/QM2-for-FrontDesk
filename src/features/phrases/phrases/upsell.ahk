@@ -27,6 +27,7 @@ Upsell(App, props) {
 		StackBox(App, 
 			{
 				name: "upselling-stack-box",
+				font: { options: "bold" },
 				groupbox: {
 					title: "Upselling - 房间升级",
 					options: "Section h150 @use:phrase-box-xyw"

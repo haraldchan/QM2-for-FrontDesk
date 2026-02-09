@@ -69,6 +69,7 @@ RateChecking(App, props) {
         StackBox(App, 
             {
                 name: "rate-checking-stack-box",
+                font: { options: "bold" },
                 groupbox: {
                     title: "快速查看房价",
                     options: "Section h110 @use:box"

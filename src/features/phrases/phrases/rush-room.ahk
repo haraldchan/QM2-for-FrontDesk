@@ -26,6 +26,7 @@ RushRoom(App, props) {
 		StackBox(App, 
 			{
 				name: "rush-room-stack-box",
+				font: { options: "bold" },
 				groupbox: {
 					title: "Rush Room - 赶房与Key Keep",
 					options: "Section h90 @use:phrase-box-xyw"

@@ -41,6 +41,7 @@ BatchKeysSq(App, props) {
         StackBox(App,
             {
                 name: "batch-keys-sq",
+                font: { options: "bold" },
                 groupbox: {
                     options: "Section h170 @use:box",
                     title: "批量房卡制作（连续输入）"

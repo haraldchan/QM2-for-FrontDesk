@@ -92,9 +92,10 @@ MiscReportOptions(App, props) {
         StackBox(
             App, {
                 name: Format("mr-{1}-options", props.reportType),
+                font: { options: "bold" },
                 groupbox: {
                     title: props.groupboxTitle,
-                    options: "Section x30 @relative[y+15]:misc-list w350 h130 @use:bold"
+                    options: "Section x30 @relative[y+15]:misc-list w350 h130"
                 }
             },
             () => [

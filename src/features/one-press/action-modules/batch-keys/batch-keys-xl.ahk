@@ -43,6 +43,7 @@ BatchKeysXl(App, props){
         StackBox(App,
             {
                 name: "batch-keys-xl-stack-box",
+                font: { options: "bold" },
                 groupbox: {
                     options: "Section h210 @use:box",
                     title: "批量房卡制作（Excel 表辅助）"
