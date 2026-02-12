@@ -1,25 +1,25 @@
 class GroupShareDnm_Action {
     static isRunning := false
 
-	static start() {
-		this.isRunning := true
-		HotIf (*) => this.isRunning
-		Hotkey("F12", (*) => this.end(), "On")
+    static start() {
+        this.isRunning := true
+        HotIf (*) => this.isRunning
+        Hotkey("F12", (*) => this.end(), "On")
 
-		WinMaximize "ahk_class SunAwtFrame"
-		WinActivate "ahk_class SunAwtFrame"
-		Sleep 500
-		WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
-		BlockInput true
-	}
-	
-	static end() {
-		this.isRunning := false
-		Hotkey("F12", "Off")
+        WinMaximize "ahk_class SunAwtFrame"
+        WinActivate "ahk_class SunAwtFrame"
+        Sleep 500
+        WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
+        BlockInput true
+    }
 
-		BlockInput false
-		WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
-	}
+    static end() {
+        this.isRunning := false
+        Hotkey("F12", "Off")
+
+        BlockInput false
+        WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
+    }
 
     static USE(roomQty, ratecode, both, shareOnly, dnmOnly) {
         this.start()
@@ -54,10 +54,10 @@ class GroupShareDnm_Action {
         Send "{Backspace}"
         utils.waitLoading()
         Send Format("{Text}{1}", ratecode)
-		if (!this.isRunning) {
-			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
-			return
-		}
+        if (!this.isRunning) {
+            msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
+            return
+        }
 
         loop roomQty {
             BlockInput true
@@ -123,7 +123,7 @@ class GroupShareDnm_Action {
                 msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
                 return
             }
-            
+
             MouseMove initX - 19, initY + 196 ; 321, 507
             utils.waitLoading()
             Click "Down"
@@ -156,6 +156,7 @@ class GroupShareDnm_Action {
         }
     }
 
+    ; TODO: re-evaluate the coords with opera-active-win anchor
     static dnm(roomQty, initX := 696, initY := 614) {
         loop roomQty {
             if (!this.isRunning) {
@@ -166,17 +167,26 @@ class GroupShareDnm_Action {
             utils.waitLoading()
             Send "!r"
             utils.waitLoading()
-            MouseMove initX - 117, initY - 87 ; 579, 527
-            utils.waitLoading()
-            Click
-            utils.waitLoading()
-            Click
-            utils.waitLoading()
-            Click
-            MouseMove initX - 223, initY - 100 ; 473, 514
-            utils.waitLoading()
-            Click
-            utils.waitLoading()
+
+            ; dismiss alerts
+            CoordMode("Pixel", "Screen")
+            loop {
+                ; if there is a alert box
+                if (PixelGetColor(551, 421) != "0xFFFFFF") {
+                    break
+                }
+
+                Send "{Enter}"
+                Sleep 250
+            }
+            ; check if room is dnm already
+            if (PixelGetColor(66, 66) != "0xFF0000") { ; room number field
+                MouseMove initX - 223, initY - 100 ; 473, 514
+                utils.waitLoading()
+                Click
+                utils.waitLoading()
+            }
+
             Send "!o"
             utils.waitLoading()
         }
