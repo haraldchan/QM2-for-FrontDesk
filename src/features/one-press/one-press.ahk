@@ -8,6 +8,7 @@ OnePress(App) {
         "生成空白(NRR) Share", BlankShare,
         "生成 PayBy PayFor 信息", PaymentRelation,
         "入账关联 - 快速打开Billing、入Deposit等", Cashiering,
+        "预抵房间批量 Share/DoNotMove", GroupShareDnm,
         "批量房卡制作 (Excel 表辅助)", BatchKeysXl,
         "批量房卡制作 (连续输入)", BatchKeysSq,
         "抓取 FedEx Opera 订单信息", FetchFedexResv,
