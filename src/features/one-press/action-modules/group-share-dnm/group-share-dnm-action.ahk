@@ -157,31 +157,35 @@ class GroupShareDnm_Action {
     }
 
     ; TODO: re-evaluate the coords with opera-active-win anchor
-    static dnm(roomQty, initX := 696, initY := 614) {
+    static dnm(roomQty) {
         loop roomQty {
             if (!this.isRunning) {
                 msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
                 return
             }
-            MouseMove initX, initY ; 696, 614
-            utils.waitLoading()
             Send "!r"
             utils.waitLoading()
+            Sleep 200
+
+            CoordMode "Pixel", "Screen"
+            ImageSearch(&x, &y, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["opera-active-win.PNG"])
+            Sleep 200
 
             ; dismiss alerts
-            CoordMode("Pixel", "Screen")
             loop {
                 ; if there is a alert box
-                if (PixelGetColor(551, 421) != "0xFFFFFF") {
+                if (PixelGetColor(x + 20, y + 166) != "0xFFFFFF") {
                     break
                 }
 
                 Send "{Enter}"
-                Sleep 250
+                utils.waitLoading()
             }
+
             ; check if room is dnm already
-            if (PixelGetColor(66, 66) != "0xFF0000") { ; room number field
-                MouseMove initX - 223, initY - 100 ; 473, 514
+            ImageSearch(&x, &y, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["opera-active-win.PNG"])
+            if (PixelGetColor(x + 124, y + 304) != "0xFF0000") { ; room number field
+                MouseMove x + 275, y + 333
                 utils.waitLoading()
                 Click
                 utils.waitLoading()
@@ -190,8 +194,5 @@ class GroupShareDnm_Action {
             Send "!o"
             utils.waitLoading()
         }
-
-        Sleep 100
-        MsgBox("已完成批量DoNotMove，合共" . roomQty . "房。", "Do Not Move", "4096 T1")
     }
 }
