@@ -146,7 +146,7 @@ class BlankShare_Action {
 	 * @param {Integer} initX 
 	 * @param {Integer} initY 
 	 */
-	static makeShare(checkIn, shareQty, keepGoing := false, initX := 949, initY := 599) {
+	static makeShare(checkIn, shareQty, keepGoing := false) {
 		this.start()
 
 		; create share
@@ -185,83 +185,37 @@ class BlankShare_Action {
 			return
 		}
 
-
 		; open resv
 		Send "!r"
 		utils.waitLoading()
+		Sleep 100
 
 
 		; delete comment
+		CoordMode "Pixel"
+		ImageSearch(&x, &y, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["opera-active-win.PNG"])
+		MouseMove x + 752, y + 415
+		Click
+		utils.waitLoading()
 		loop {
-			; delete multiple
-			CoordMode "Pixel"
-			if (!PixelSearch(&_, &_, initX - 328, initY, initX, initY, "0xFFFF00")) {
+			Send "!d"
+			utils.waitLoading()
+			if (!ImageSearch(&_, &_, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["alert.PNG"])) {
 				break
 			}
-
-			MouseMove initX, initY ; 949, 599
-			utils.waitLoading()
-			Click
-			utils.waitLoading()
-			Send "!d"
-			MouseMove initX - 338, initY - 53 ; 611, 546
-			utils.waitLoading()
-			Click
-			utils.waitLoading()
-			Send "!c"
+			Send "!y"
 			utils.waitLoading()
 		}
-
-		MouseMove initX, initY ; 949, 599
-		utils.waitLoading()
-		Click
-		utils.waitLoading()
-		Send "!d"
-		MouseMove initX - 338, initY - 53 ; 611, 546
-		utils.waitLoading()
-		Click
-		utils.waitLoading()
+		; close comment win
 		Send "!c"
 		utils.waitLoading()
-
 		if (!this.isRunning) {
 			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
 			return
 		}
 
-
-		; check multiple RateCode
-		; from := [initX - 682, initY - 107] ; 267, 492
-		; to := [initX - 585, initY - 62] ; 364, 537
-		; if (PixelSearch(&_, &_, from[1], from[2], to[1], to[2], "0xFFFF00")) {
-		; 	Send "!i"
-		; 	utils.waitLoading()
-		; 	Send "!c"
-		; 	utils.waitLoading()
-		; 	Send "{Tab}"
-		; 	utils.waitLoading()
-
-		; 	; copy orignal nts
-		; 	Send "^c"
-		; 	utils.waitLoading()
-		; 	originalNts := A_Clipboard
-		; 	Send "{Text}0"
-		; 	utils.waitLoading()
-		; 	Send "{Tab}"
-		; 	utils.waitLoading()
-		; 	loop 4 {
-		; 		Send "{Esc}"
-		; 		utils.waitLoading()
-		; 	}
-		; }
-
 		; change RateCode to NRR
-		MouseMove initX - 625, initY - 92 ; 324, 507
-		utils.waitLoading()
-		Click "Down"
-		MouseMove initX - 737, initY - 79 ; 212, 520
-		utils.waitLoading()
-		Click "Up"
+		MouseClickDrag "L", x + 131, y + 324, x + 40, y + 324 
 		utils.waitLoading()
 		Send "{Text}NRR"
 		utils.waitLoading()
@@ -276,28 +230,6 @@ class BlankShare_Action {
 			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
 			return
 		}
-
-
-		; restore original nts
-		; if (PixelSearch(&_, &_, from[1], from[2], to[1], to[2], "0xFFFF00")) {
-		; 	Send "!i"
-		; 	utils.waitLoading()
-		; 	Send "!c"
-		; 	utils.waitLoading()
-		; 	Send "{Tab}"
-		; 	utils.waitLoading()
-
-		; 	; restore orignal nts
-		; 	Send "{Text}" . originalNts
-		; 	utils.waitLoading()
-		; 	Send "{Tab}"
-		; 	utils.waitLoading()
-		; 	loop 4 {
-		; 		Send "{Esc}"
-		; 		utils.waitLoading()
-		; 	}
-		; }
-
 
 		if (checkIn) {
 			Send "!i"
