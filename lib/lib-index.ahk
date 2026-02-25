@@ -1,5 +1,5 @@
 #Include utils.ahk
-#Include useConfigJSON.ahk
+#Include use-json-config.ahk
 #Include Svaner/useSvaner.ahk
-#Include useFileDB.ahk
-#Include useServerAgent.ahk
+#Include use-file-db.ahk
+#Include use-server-agent.ahk
