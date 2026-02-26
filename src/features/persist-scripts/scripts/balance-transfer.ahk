@@ -69,9 +69,10 @@ class BalanceTransfer {
         } 
 
         ; post balance transfer transactions
-        Send "8888"
+        Send "{Text}8888"
         Sleep 100
         Send "{Tab}"
+        Sleep 100
         Send "{Text}" . balance
         Sleep 100
         loop 5 {
@@ -82,11 +83,11 @@ class BalanceTransfer {
         Sleep 100 
         Send "{Enter}"
         Sleep 100
-        Send "8888"
+        Send "{Text}8888"
         Sleep 100
         Send "{Tab}"
         Sleep 100
-        Send "{Text}" . Format("{1}", Integer(balance) < 0 ? "-" . balance : balance)
+        Send "{Text}" . Format("{1}",  0 - Integer(balance))
         Sleep 100
         loop 5 {
             Send "{Tab}"
