@@ -68,6 +68,10 @@ OnDayGroupReports(App, curActiveTab) {
     }
 
     handleBlockInfoUpdate(ctrl, _) {
+        if (DateDiff(ctrl.Value.toFormat("yyyyMMdd"), A_Now.toFormat("yyyyMMdd"), "Days") > 0) {
+            return
+        }
+
         blocks := getBlockInfo(ctrl.Value.toFormat("yyyy,MM,dd").split(",")*) || onDayBlockInfo.initValue
         onDayBlockInfo.set(blocks)
     }
