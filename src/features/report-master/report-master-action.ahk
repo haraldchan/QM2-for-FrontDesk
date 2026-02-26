@@ -753,12 +753,12 @@ class ReportMaster_Action {
 
         fileName := Format("{1}-{2}", FormatTime(A_Now, "yyyyMMdd"), fileNameInput)
         ; report options here
-        Send "{Text}" . frDate
+        Send "{Text}" . frDate.toFormat("MMddyyyy")
         Sleep 200
         Send "{Tab}"
         Sleep 200
 
-        Send "{Text}" . toDate
+        Send "{Text}" . toDate.toFormat("MMddyyyy")
         Sleep 200
         Send "{Tab}"
         Sleep 200
@@ -783,17 +783,20 @@ class ReportMaster_Action {
             return
         }
 
-        fileNameDate := frDate == toDate ? frDate : frDate . "-" . toDate
+        fmtFrDate := frDate.toFormat("yyyyMMdd")
+        fmtToDate := frDate.toFormat("yyyyMMdd")
+
+        fileNameDate := fmtFrDate == fmtToDate ? fmtFrDate : fmtFrDate . "-" . fmtToDate
         fileName := Format("{1}-{2}", fileNameDate, fileNameInput)
 
         ; dates
         Send "{Tab}"
         Sleep 100
-        Send "{Text}" . frDate
+        Send "{Text}" . frDate.toFormat("MMddyyyy")
         Sleep 100
         Send "{Tab}"
         Sleep 100
-        Send "{Text}" . toDate
+        Send "{Text}" . toDate.toFormat("MMddyyyy")
         Sleep 100
 
         ; package codes(products)
