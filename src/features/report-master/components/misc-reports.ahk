@@ -24,8 +24,8 @@ MiscReports(App) {
             args: [
                 App[prefix . "-codes"].Value.trim(),
                 App[prefix . "-save-filename"].Value.trim() || App[prefix . "-presets"].Text.replace("自定义", App[prefix . "-codes"].Value.trim()),
-                App[prefix . "-fr-date"],
-                App[prefix . "-to-date"],
+                App[prefix . "-fr-date"].Value,
+                App[prefix . "-to-date"].Value,
             ]
         }
     }
