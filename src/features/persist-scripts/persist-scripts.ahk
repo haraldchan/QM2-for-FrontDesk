@@ -1,7 +1,6 @@
 #Include scripts\balance-transfer.ahk
 #Include scripts\city-ledger-co.ahk
 #Include scripts\scan-invoke.ahk
-#Include scripts\deposit-entry.ahk
 
 /**
  * @param {Svaner} App 
@@ -39,9 +38,6 @@ PersistScriptsControl(App) {
 		; Balance Transfer
 		HotIf (*) => App["balance-transfer-on"].Value
 		HotString("::bt", (*) => BalanceTransfer.USE())
-
-		; Deposit Entry
-		OnClipboardChange((*) => DepositEntry.copyFromMipay(App["deposit-entry-on"]))
 	}
 
 	App.defineDirectives(
@@ -55,12 +51,10 @@ PersistScriptsControl(App) {
 			App, 
 			{
 				name: "persist-scripts-stack-box",
-				font: { 
-					options: "bold"
-				},
+				font: { options: "bold" },
 				groupbox: {
 					title: "常驻脚本",
-					options: "Section x15 y+10 w375 h130",
+					options: "Section x15 y+10 w375 h100",
 				}
 			},
 			() => [
@@ -75,11 +69,7 @@ PersistScriptsControl(App) {
 
 				; Balance Transfer
 				App.AddCheckbox("vbalance-transfer-on @use:psc-label", "Balance Transfer").onClick(handlePersistSwitch),
-				App.AddText("@use:psc-desc", "输入: BT"),
-			
-				; Deposit Entry
-				App.AddCheckbox("vdeposit-entry-on @use:psc-label", "押金录入").onClick(handlePersistSwitch),
-				App.AddText("@use:psc-desc", "监听: 绿云复制卡号"),
+				App.AddText("@use:psc-desc", "输入: BT")
 			]
 		),
 		
