@@ -8,8 +8,8 @@
  */
 Phrases(App) {
 	phrases := OrderedMap(
-		RushRoom,  	  "Rush Room - 赶房与Key Keep",
 		TableRequest, "Table Request - 餐厅订位",
+		RushRoom,  	  "Rush Room - 赶房与Key Keep",
 		Upsell, 	  "Upselling - 房间升级",
 		ExtraBed, 	  "Extra Bed - 加床",
 	)
@@ -28,7 +28,7 @@ Phrases(App) {
 			App["phrase-copy"].onClick(writeClipboard, -1)
 		}
 
-		handleSwapWriteClipboard("RushRoom")
+		handleSwapWriteClipboard(phrases.keys()[1].name)
 	}
 
 	App.defineDirectives(
@@ -48,7 +48,7 @@ Phrases(App) {
 			),
 			
         ),
-		App.AddButton("vphrase-copy @relative[x-100;y+30]:phrases-radio-group w90 h55", "复制为`nComment`nAlert"),
+		App.AddButton("vphrase-copy @relative[x-100;y+30]:phrases-radio-group w90 h50", "复制语句"),
 		Dynamic(App, selectedPhrase, phraseComponents,, &componentInstances),
 		onMount(componentInstances)
 	)
