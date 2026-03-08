@@ -22,16 +22,6 @@ TableRequest(App, props) {
 			}
 		}
 
-		; A_Clipboard := Format("请预订: {1}房-{3}({4}), {5} {6} {7}位",
-		; 	(ctrl.name == "phrase-copy" ? "请" : "已"),
-		; 	form.trRoom,
-		; 	form.trGuestName,
-		; 	form.trTel,
-		; 	restaurantList[form.trRestaurant],
-		; 	FormatTime(form.trDate, "MM月dd日 HH:mm"),
-		; 	form.trAccommodate,
-		; )
-
 		bookedMsg := Format("
 			(
 				请预订：{1} {2}
