@@ -22,16 +22,48 @@ TableRequest(App, props) {
 			}
 		}
 
-		A_Clipboard := Format("{1}预订: {2}房-{3}({4}), {5} {6} {7}位{8}",
-			(ctrl.name == "phrase-copy" ? "请" : "已"),
+		; A_Clipboard := Format("请预订: {1}房-{3}({4}), {5} {6} {7}位",
+		; 	(ctrl.name == "phrase-copy" ? "请" : "已"),
+		; 	form.trRoom,
+		; 	form.trGuestName,
+		; 	form.trTel,
+		; 	restaurantList[form.trRestaurant],
+		; 	FormatTime(form.trDate, "MM月dd日 HH:mm"),
+		; 	form.trAccommodate,
+		; )
+
+		bookedMsg := Format("
+			(
+				请预订：{1} {2}
+				房号：{3}(#{4})
+				客人：{5}
+				人数：{6}
+				时间：{7}
+				电话：{8}
+
+				↓复制此行粘贴用↓
+				{5}`t{6}`t{7}`t{4}`t{3}`t{8}
+			)",
+			FormatTime(form.trDate, "MM月dd日"),
+			restaurantList[form.trRestaurant],
 			form.trRoom,
+			form.trConf,
+			form.trGuestName,
+			form.trAccommodate,
+			FormatTime(form.trDate, "HH:mm"),
+			form.trTel
+		)
+
+		; ”2月3日 08:00 宏图府 3位 陈先生(34200342)
+		bookedAlert := Format("已预订: {1} {2} {3}位 {4}({5})",
+			FormatTime(form.trDate, "MM月dd日 HH:mm"),
+			restaurantList[form.trRestaurant],
+			form.trAccommodate,
 			form.trGuestName,
 			form.trTel,
-			restaurantList[form.trRestaurant],
-			FormatTime(form.trDate, "MM月dd日 HH:mm"),
-			form.trAccommodate,
-			form.trClerk ? Format(", 接订员工: {}", form.trClerk) : ""
 		)
+
+		A_Clipboard := ctrl.Text == "已预订..." ? bookedAlert : bookedMsg
 
 		return MsgBox(A_Clipboard, "已复制信息", "T1")
 	}
@@ -39,12 +71,12 @@ TableRequest(App, props) {
 	resetForm(*) {
 		formDefault := {
 			trRoom: "",
+			trConf: "",
 			trGuestName: "",
 			trTel: "",
 			trAccommodate: "",
 			trRestaurant: restaurantList[1],
-			trDate: A_Now.tomorrow("080000"),
-			trClerk: ""
+			trDate: A_Now.tomorrow("080000")
 		}
 
 		for name, val in formDefault.OwnProps() {
@@ -64,13 +96,15 @@ TableRequest(App, props) {
 				font: { options: "bold" },
 				groupbox: {
 					title: "Table Reserve - 餐饮预订",
-					options: "Section h245 @use:phrase-box-xyw"
+					options: "Section h215 @use:phrase-box-xyw"
 				}
 			},
 			() => [
 				; room
 				App.AddText("@use:phrases-text yp+25", "预订房号"),
-				App.AddEdit("vtr-room @use:phrases-edit", ""),
+				App.AddEdit("vtr-room @use:phrases-edit w50", ""),
+				App.AddText("@use:phrases-text x+1 yp+0 w10 Right", "#"),
+				App.AddEdit("vtr-conf @use:phrases-edit x+1 w89", ""),
 				
 				; name
 				App.AddText("@use:phrases-text", "客人姓名"),
@@ -92,12 +126,8 @@ TableRequest(App, props) {
 				App.AddText("@use:phrases-text", "预订日期"),
 				App.AddDateTime("vtr-date x+10 w150 Choose" . A_Now.tomorrow("080000"), " MM月dd日 HH:mm"),
 				
-				; clerk
-				App.AddText("@use:phrases-text", "接订员工"),
-				App.AddEdit("vtr-clerk @use:phrases-edit", ""),
-				
 				; btns
-				App.AddButton("@align[wx]:phrase-copy @relative[y+5]:phrase-copy h30", "已预定...")
+				App.AddButton("@align[wx]:phrase-copy @relative[y+5]:phrase-copy h30", "已预订...")
 				   .onClick((ctrl, _) => writeClipboard(comp, ctrl, _)),
 				App.AddButton("@align[wx]:phrase-copy @relative[y+40]:phrase-copy h30", "清  空")
 				   .onClick(resetForm)
