@@ -3,7 +3,7 @@
  * @param {signal} curActiveTab
  */
 OnDayGroupReports(App, curActiveTab) {
-    dirFormat := "\\10.0.2.13\fd\9-ON DAY GROUP DETAILS\{1}\{1}{2}"
+    dirFormat := CONFIG.read("on-day-group-folder") . "\{1}\{1}{2}"
 
     onDayBlockInfo := signal([Map(
         "blockName", "",
@@ -139,7 +139,7 @@ OnDayGroupReports(App, curActiveTab) {
         App.AddListView(
             ; options
             {
-                lvOptions: "vodg-list Checked Grid NoSortHdr -ReadOnly -Multi @lv:label-tip x30 y+15 w350 r20",
+                lvOptions: "vodg-list Checked Grid NoSortHdr -ReadOnly -Multi @lv:label-tip x30 y+15 w350 r10",
                 itemOptions: "Check"
             },
             ; col-details
