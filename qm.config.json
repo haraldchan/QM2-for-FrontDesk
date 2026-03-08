@@ -2,10 +2,10 @@
   "persist-scripts-switch": {
     "balance-transfer": true,
     "city-ledger": false,
-    "deposit-entry": false,
     "scan-invoke": true
   },
   "report-master": {
+    "on-day-group-folder": "\\\\10.0.2.13\\fd\\9-ON DAY GROUP DETAILS",
     "misc-reports": {
       "packages": {
         "presets": {
