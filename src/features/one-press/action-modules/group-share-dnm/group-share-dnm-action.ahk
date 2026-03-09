@@ -21,15 +21,23 @@ class GroupShareDnm_Action {
         WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
     }
 
-    static USE(roomQty, ratecode, both, shareOnly, dnmOnly) {
+    static USE(form) {
         this.start()
 
-        if (both) {
-            this.shareDnm(roomQty, ratecode)
-        } else if (dnmOnly) {
-            this.dnm(roomQty)
-        } else {
-            this.shareDnm(roomQty, ratecode, shareOnly)
+        if (form.shareDnm) {
+            this.shareDnm(form.gsdRmQty, form.useRc)
+        }
+
+        if (form.shareOnly) {
+            this.shareDnm(form.gsdRmQty, form.useRc, true)
+        }
+
+        if (form.dnmOnly) {
+            this.dnm(form.gsdRmQty)
+        }
+
+        if (form.removeDnm) {
+            this.dnm(form.gsdRmQty, true)
         }
 
         this.end()
@@ -157,7 +165,7 @@ class GroupShareDnm_Action {
     }
 
     ; TODO: re-evaluate the coords with opera-active-win anchor
-    static dnm(roomQty) {
+    static dnm(roomQty, isRemove := false) {
         loop roomQty {
             if (!this.isRunning) {
                 msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
@@ -184,7 +192,7 @@ class GroupShareDnm_Action {
 
             ; check if room is dnm already
             ImageSearch(&x, &y, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["opera-active-win.PNG"])
-            if (PixelGetColor(x + 124, y + 304) != "0xFF0000") { ; room number field
+            if (PixelGetColor(x + 124, y + 304) != "0xFF0000" || isRemove) { ; room number field
                 MouseMove x + 275, y + 333
                 utils.waitLoading()
                 Click

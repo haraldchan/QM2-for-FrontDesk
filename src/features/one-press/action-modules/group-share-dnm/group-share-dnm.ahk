@@ -35,7 +35,7 @@ GroupShareDnm(App, props) {
                 font: { options: "bold" },
                 groupbox: {
                     title: "预抵房间批量 Share/DoNotMove",
-                    options: "Section h210 @use:box",
+                    options: "Section h230 @use:box",
                 }
             },
             () => [
@@ -52,6 +52,7 @@ GroupShareDnm(App, props) {
                 App.AddRadio("vshare-dnm xs10 y+10 h20 Checked 0x200", "Share 及 DoNotMove"),
                 App.AddRadio("vshare-only xs10 y+5 h20 0x200", "仅做 Share"),
                 App.AddRadio("vdnm-only xs10 y+5 h20 0x200", "仅做 DoNotMove"),
+                App.AddRadio("vdnm-remove xs10 y+5 h20 0x200", "解除 DoNotMove(主管权限)"),
                 App.AddButton("vgroup-share-dnm-action Default xs10 y+10 w100", "启 动")
                    .onClick(action)
             ]
