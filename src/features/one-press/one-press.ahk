@@ -30,7 +30,6 @@ OnePress(App) {
     App.defineDirectives(
         "@use:box-x", "x30",
         "@use:box-w", "w350",
-        ; "@use:bold", ctrl => ctrl.setFont("bold"),
         "@use:box", "@use:box-x @relative[y+10]:op-radio-group @use:box-w",
         "@use:form-text", "xs10 yp+30 w100 h25 0x200",
         "@use:form-edit", "x+10 w200 h25 0x200"
