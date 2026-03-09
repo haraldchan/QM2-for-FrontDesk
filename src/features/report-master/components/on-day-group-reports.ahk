@@ -4,6 +4,7 @@
  */
 OnDayGroupReports(App, curActiveTab) {
     dirFormat := CONFIG.read("on-day-group-folder") . "\{1}\{1}{2}"
+    XL_FILE_PATH := ""
 
     onDayBlockInfo := signal([Map(
         "blockName", "",
@@ -28,7 +29,7 @@ OnDayGroupReports(App, curActiveTab) {
             return
         }
 
-        loop files monthFolder . "\*" {
+        loop files monthFolder . "\*.xlsx" {
             if (InStr(A_LoopFileName, yyyy . MM . dd)) {
                 XL_FILE_PATH := A_LoopFileFullPath
                 break
@@ -51,7 +52,7 @@ OnDayGroupReports(App, curActiveTab) {
             blockCodeReceived := OnDayGroupDetails.Cells(A_Index + 3, 1).Text
             blockNameReceived := OnDayGroupDetails.Cells(A_Index + 3, 2).Text
             commentReceived := OnDayGroupDetails.Cells(A_Index + 3, 4).Text
-            if (blockCodeReceived = "" || blockCodeReceived = "Group StayOver") {
+            if (!blockCodeReceived || blockCodeReceived = "Group StayOver") {
                 break
             }
 
@@ -61,6 +62,7 @@ OnDayGroupReports(App, curActiveTab) {
                 "comment", commentReceived
             ))
         }
+        XL_FILE_PATH := ""
         Xl.Workbooks.Close()
         Xl.Quit()
 
@@ -69,11 +71,17 @@ OnDayGroupReports(App, curActiveTab) {
 
     handleBlockInfoUpdate(ctrl, _) {
         if (DateDiff(ctrl.Value.toFormat("yyyyMMdd"), A_Now.toFormat("yyyyMMdd"), "Days") > 0) {
+            onDayBlockInfo.reset()
             return
         }
 
-        blocks := getBlockInfo(ctrl.Value.toFormat("yyyy,MM,dd").split(",")*) || onDayBlockInfo.initValue
-        onDayBlockInfo.set(blocks)
+        blocks := getBlockInfo(ctrl.Value.toFormat("yyyy,MM,dd").split(",")*)
+        if (!blocks || !blocks.Length) {
+            onDayBlockInfo.reset()
+        }
+        else {
+            onDayBlockInfo.set(blocks)
+        }
     }
 
     handleOpenOdgDir(*) {
