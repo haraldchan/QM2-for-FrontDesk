@@ -25,7 +25,7 @@ class GroupShareDnm_Action {
         this.start()
 
         if (form.shareDnm) {
-            this.shareDnm(form.gsdRmQty, form.useRc)
+            this.shareDnm(form.gsdRmQty, form.ratecodeField)
         }
 
         if (form.shareOnly) {
@@ -36,7 +36,7 @@ class GroupShareDnm_Action {
             this.dnm(form.gsdRmQty)
         }
 
-        if (form.removeDnm) {
+        if (form.dnmRemove) {
             this.dnm(form.gsdRmQty, true)
         }
 
