@@ -31,7 +31,6 @@ BatchKeysSq(App, props) {
             confNum: confNum,
             enable28f: App["enable-28f"].Value
         }
-        MsgBox(JSON.stringify(formData))
         BatchKeysSq_Action.USE(formData)
     }
 
