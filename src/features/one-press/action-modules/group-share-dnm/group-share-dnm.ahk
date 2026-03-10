@@ -25,7 +25,7 @@ GroupShareDnm(App, props) {
             return
         }
 
-        GroupShareDnm_Action.USE(form.gsdRmQty, form.useRc, form.shareDnm, form.shareOnly, form.dnmOnly)
+        GroupShareDnm_Action.USE(form)
     }
 
     comp.render := (this) => this.Add(
