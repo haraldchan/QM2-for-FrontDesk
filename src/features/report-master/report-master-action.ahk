@@ -778,7 +778,7 @@ class ReportMaster_Action {
      * @param {Integer} initY 
      * @returns {String}
      */
-    static packages(pkgCodes, fileNameInput, frDate, toDate, initX := 600, initY := 482) {
+    static packages(pkgCodes, fileNameInput, frDate, toDate, groupByPkg := true, initX := 600, initY := 482) {
         if (!pkgCodes) {
             return
         }
@@ -828,12 +828,14 @@ class ReportMaster_Action {
         Sleep 100
 
         ; remove GroupBy condition
-        loop 3 {
-            Send "{Tab}"
+        if (!groupByPkg) {
+            loop 3 {
+                Send "{Tab}"
+                Sleep 100
+            }
+            Send "{Down}"
             Sleep 100
         }
-        Send "{Down}"
-        Sleep 100
 
         return fileName
     }

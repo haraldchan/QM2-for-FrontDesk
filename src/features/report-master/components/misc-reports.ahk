@@ -10,14 +10,14 @@ MiscReports(App) {
     selectedMiscReport := signal(miscReports.keys()[1])
 
     defineReportInfo() {
-        prefix := selectedMiscReport.value.split(" - ").at(-1)
+        prefix := selectedMiscReport.value.split(" - ").at(-1).toLower()
 
         searchStr := match(selectedMiscReport.value, Map(
             "FO13 - Packages", "pkgforecast",
             "WSHGZ - Specials", "Wshgz_special"
         ))
 
-        return {
+        reportInfo := {
             searchStr: searchStr,
             name: App[prefix . "-save-filename"].Value.trim() || App[prefix . "-presets"].Text.replace("自定义", App[prefix . "-codes"].Value.trim()),
             saveFn: ReportMaster_Action.%prefix%,
@@ -28,6 +28,12 @@ MiscReports(App) {
                 App[prefix . "-to-date"].Value,
             ]
         }
+
+        if (prefix == "packages") {
+            reportInfo.args.Push(App["group-by-pkg"].Value)
+        }
+
+        return reportInfo
     }
 
     saveReports(*) {
@@ -52,10 +58,10 @@ MiscReports(App) {
 
     return (
         App.AddListBox("vmisc-list x30 y+15 w260 r4 Choose1", miscReports.keys())
-        .onChange((ctrl, _) => selectedMiscReport.set(ctrl.Text)),
+           .onChange((ctrl, _) => selectedMiscReport.set(ctrl.Text)),
         App.AddDDL("vmisc-file-type @align[y]:misc-list x+10 w80 Choose1", ["PDF", "XML", "TXT", "XLS"]),
         App.AddButton("vmisc-report-save @align[x]:misc-file-type y+16 h25 w80 Default", "保存报表")
-        .onClick(saveReports),
+           .onClick(saveReports),
         ; options
         Dynamic(App, selectedMiscReport, miscReports)
     )
@@ -93,7 +99,7 @@ MiscReportOptions(App, props) {
                 font: { options: "bold" },
                 groupbox: {
                     title: props.groupboxTitle,
-                    options: "Section x30 @relative[y+15]:misc-list w350 h130"
+                    options: "Section x30 @relative[y+15]:misc-list w350 " . (props.reportType == "packages" ? "h155" : "h130")
                 }
             },
             () => [
@@ -104,12 +110,14 @@ MiscReportOptions(App, props) {
                 ; codes
                 App.AddText("xs10 yp+30 w100 h20 0x200", "Code(空格分隔)"),
                 App.AddEdit("v" . props.reportType . "-codes x+10 w145 h20 ", "{1}", selectedPreset)
-                .onBlur(handleSaveCustomPresetInput),
+                   .onBlur(handleSaveCustomPresetInput),
                 App.AddDDL("v" . props.reportType . "-presets x+5 w60 Choose1", productCodePresets.keys())
-                .onChange(handleSetPreset),
+                   .onChange(handleSetPreset),
                 ; save file name
                 App.AddText("xs10 yp+30 w100 h20 0x200", "保存文件名"),
-                App.AddEdit("v" . props.reportType . "-save-filename x+10 h20 w210")
+                App.AddEdit("v" . props.reportType . "-save-filename x+10 h20 w210"),
+                ; groupby option for packages
+                props.reportType == "packages" && App.AddCheckBox("vgroup-by-pkg xs10 yp+35 h20 0x200 Checked", "按 Package Code 分组")
             ]
         )
     )
