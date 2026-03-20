@@ -2,18 +2,18 @@ class BalanceTransfer {
     static isRunning := false
 
 	static start() {
-		WinMaximize "ahk_class SunAwtFrame"
-		WinActivate "ahk_class SunAwtFrame"
-		WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
-		BlockInput true
+		WinMaximize("ahk_class SunAwtFrame")
+		WinActivate("ahk_class SunAwtFrame")
+		WinSetAlwaysOnTop(true, "ahk_class SunAwtFrame")
+		BlockInput(true)
 
 		Hotkey("F12", (*) => this.end(), "On")
 		this.isRunning := true
 	}
 	
 	static end() {
-		BlockInput false
-		WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
+		BlockInput(false)
+		WinSetAlwaysOnTop(false, "ahk_class SunAwtFrame")
 		
 		Hotkey("F12", (*) => {}, "Off")
 		this.isRunning := false
@@ -31,7 +31,7 @@ class BalanceTransfer {
                 }
             }
 
-            WinActivate "ahk_class SunAwtFrame"
+            WinActivate("ahk_class SunAwtFrame")
             this.BalanceTransfer_Action(formData)
         }
 
@@ -59,47 +59,47 @@ class BalanceTransfer {
         this.start()
 
         ; Post
-        Send "!p"
+        Send("!p")
         utils.waitLoading()
 
         ; check if it is no post 
         if (ImageSearch(&FoundX, &FoundY, 0, 0, A_ScreenWidth, A_ScreenWidth, IMAGES["alert.png"])) {
-            Send "{Enter}"
+            Send("{Enter}")
             utils.waitLoading()
         } 
 
         ; post balance transfer transactions
-        Send "{Text}8888"
-        Sleep 100
-        Send "{Tab}"
-        Sleep 100
-        Send "{Text}" . balance
-        Sleep 100
+        Send("{Text}8888")
+        Sleep(100)
+        Send("{Tab}")
+        Sleep(100)
+        Send("{Text}" . balance)
+        Sleep(100)
         loop 5 {
-            Send "{Tab}"
-            Sleep 10
+            Send("{Tab}")
+            Sleep(10)
         }
-        Send Format("{Text}{1}", fromMsg)
-        Sleep 100 
-        Send "{Enter}"
-        Sleep 100
-        Send "{Text}8888"
-        Sleep 100
-        Send "{Tab}"
-        Sleep 100
-        Send "{Text}" . Format("{1}",  0 - Integer(balance))
-        Sleep 100
+        Send(Format("{Text}{1}", fromMsg))
+        Sleep(100) 
+        Send("{Enter}")
+        Sleep(100)
+        Send("{Text}8888")
+        Sleep(100)
+        Send("{Tab}")
+        Sleep(100)
+        Send("{Text}" . Format("{1}",  0 - Integer(balance)))
+        Sleep(100)
         loop 5 {
-            Send "{Tab}"
-            Sleep 10
+            Send("{Tab}")
+            Sleep(10)
         }
-        Send Format("{Text}{1}", toMsg)
-        Sleep 100
-        Send "{Enter}"
-        Sleep 100
-        Send "!o"
+        Send(Format("{Text}{1}", toMsg))
+        Sleep(100)
+        Send("{Enter}")
+        Sleep(100)
+        Send("!o")
         utils.waitLoading()
-        Send "!c"
+        Send("!c")
         
         this.end()
     }

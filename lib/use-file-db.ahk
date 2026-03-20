@@ -48,7 +48,7 @@ class useFileDB {
 			return
 		}
 		FileAppend(jsonString, this.main . dateFolder . fileName, "UTF-8")
-		Sleep 100
+		Sleep(100)
 		; cleanup outdated if cleanPeriod is unset/0
 		if (this.cleanPeriodDays > 0) {
 			this.cleanup()
@@ -221,7 +221,7 @@ class useFileDB {
 	restoreArchiveOneDay(restoreDate) {
 		monthFolder := "\" . SubStr(restoreDate, 1, 6)
 		loop files, (this.backup . monthFolder . "\*.json") {
-			msgbox A_LoopFileName
+			msgbox(A_LoopFileName)
 			if (!InStr(A_LoopFileName, restoreDate)) {
 				continue
 			}

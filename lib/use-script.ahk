@@ -10,7 +10,7 @@ class useScript {
             paramString .= " " . param
         }
 
-        Run scriptFilename . " " . paramString
+        Run(scriptFilename . " " . paramString)
     }
 
     /**
@@ -26,6 +26,6 @@ class useScript {
         }
 
         FileAppend(s, tempFile, "UTF-8")
-        Run tempFile
+        Run(tempFile)
     }
 }

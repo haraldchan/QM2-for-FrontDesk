@@ -3,22 +3,22 @@ class BlankShare_Action {
 
 	static start() {
 		this.isRunning := true
-		HotIf (*) => this.isRunning
+		HotIf((*) => this.isRunning)
 		Hotkey("F12", (*) => this.end(), "On")
 
-		WinMaximize "ahk_class SunAwtFrame"
-		WinActivate "ahk_class SunAwtFrame"
-		Sleep 500
-		WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
-		BlockInput true
+		WinMaximize("ahk_class SunAwtFrame")
+		WinActivate("ahk_class SunAwtFrame")
+		Sleep(500)
+		WinSetAlwaysOnTop(true, "ahk_class SunAwtFrame")
+		BlockInput(true)
 	}
 
 	static end() {
 		this.isRunning := false
 		Hotkey("F12", "Off")
 
-		BlockInput false
-		WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
+		BlockInput(false)
+		WinSetAlwaysOnTop(false, "ahk_class SunAwtFrame")
 	}
 
 	static USE(form) {
@@ -76,23 +76,23 @@ class BlankShare_Action {
 	static search(roomNum) {
         formattedRoom := StrLen(roomNum) == 3 ? "0" . roomNum : roomNum
 
-		Send "!r" ; room number field
+		Send("!r") ; room number field
         utils.waitLoading()
         if (!this.isRunning) {
             msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
             return
         }
 
-        Send "{Text}" . formattedRoom
+        Send("{Text}" . formattedRoom)
         utils.waitLoading()
 
 
-        Send "!h" ; alt+h => search
+        Send("!h") ; alt+h => search
         utils.waitLoading()
 
-        CoordMode "Pixel", "Screen"
+        CoordMode("Pixel", "Screen")
         if (ImageSearch(&_, &_ ,0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["info.png"])) {
-        	Send "{Enter}"
+        	Send("{Enter}")
         	return "not found"
         }
 
@@ -103,11 +103,11 @@ class BlankShare_Action {
 
         ; sort by Prs.
         ImageSearch(&outX, &outY, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["opera-active-win.PNG"])
-        Click outX + 672, outY + 222, "Right"
-        Sleep 200
-        Send "{Down}"
-        Sleep 200
-        Send "{Enter}"
+        Click(outX + 672, outY + 222, "Right")
+        Sleep(200)
+        Send("{Down}")
+        Sleep(200)
+        Send("{Enter}")
         if (!this.isRunning) {
             msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
             return
@@ -118,7 +118,7 @@ class BlankShare_Action {
 	 * @returns {Integer} 
 	 */
 	static getExistShares() {
-		CoordMode "Pixel", "Screen"
+		CoordMode("Pixel", "Screen")
 		existShareCount := 0
 
         ImageSearch(&outX, &outY, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["opera-active-win.PNG"])
@@ -126,7 +126,7 @@ class BlankShare_Action {
 		y := outY + 264
 
 		loop {
-			Send "{Down}"
+			Send("{Down}")
 			utils.waitLoading()
 			if (PixelGetColor(x, y) == "0x000080") {
 				existShareCount++
@@ -150,18 +150,18 @@ class BlankShare_Action {
 		this.start()
 
 		; create share
-		Send "!t"
+		Send("!t")
 		utils.waitLoading()
-		Send "!s"
+		Send("!s")
 		utils.waitLoading()
-		Send "!m"
+		Send("!m")
 		utils.waitLoading()
-		Send "{Esc}"
+		Send("{Esc}")
 		utils.waitLoading()
-		Send "{Text}1"
+		Send("{Text}1")
 		utils.waitLoading()
 		loop 4 {
-			Send "{Tab}"
+			Send("{Tab}")
 			utils.waitLoading()
 		}
 		if (!this.isRunning) {
@@ -169,15 +169,15 @@ class BlankShare_Action {
 			return
 		}
 
-		Send "{Text}0"
+		Send("{Text}0")
 		utils.waitLoading()
-		Send "{Tab}"
+		Send("{Tab}")
 		utils.waitLoading()
-		Send "{Tab}"
+		Send("{Tab}")
 		utils.waitLoading()
-		Send "{Text}6"
+		Send("{Text}6")
 		utils.waitLoading()
-		Send "!o"
+		Send("!o")
 		utils.waitLoading()
 
 		if (!this.isRunning) {
@@ -186,28 +186,28 @@ class BlankShare_Action {
 		}
 
 		; open resv
-		Send "!r"
+		Send("!r")
 		utils.waitLoading()
-		Sleep 100
+		Sleep(100)
 
 
 		; delete comment
-		CoordMode "Pixel"
+		CoordMode("Pixel")
 		ImageSearch(&x, &y, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["opera-active-win.PNG"])
-		MouseMove x + 752, y + 415
-		Click
+		MouseMove(x + 752, y + 415)
+		Click()
 		utils.waitLoading()
 		loop {
-			Send "!d"
+			Send("!d")
 			utils.waitLoading()
 			if (!ImageSearch(&_, &_, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["alert.PNG"])) {
 				break
 			}
-			Send "!y"
+			Send("!y")
 			utils.waitLoading()
 		}
 		; close comment win
-		Send "!c"
+		Send("!c")
 		utils.waitLoading()
 		if (!this.isRunning) {
 			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
@@ -215,14 +215,14 @@ class BlankShare_Action {
 		}
 
 		; change RateCode to NRR
-		MouseClickDrag "L", x + 131, y + 324, x + 40, y + 324 
+		MouseClickDrag("L", x + 131, y + 324, x + 40, y + 324) 
 		utils.waitLoading()
-		Send "{Text}NRR"
+		Send("{Text}NRR")
 		utils.waitLoading()
-		Send "!o"
+		Send("!o")
 		utils.waitLoading()
 		loop 4 {
-			Send "{Esc}"
+			Send("{Esc}")
 			utils.waitLoading()
 		}
 	
@@ -232,20 +232,20 @@ class BlankShare_Action {
 		}
 
 		if (checkIn) {
-			Send "!i"
+			Send("!i")
 			utils.waitLoading()
 
-			CoordMode "Pixel", "Screen"
+			CoordMode("Pixel", "Screen")
 			if (ImageSearch(&foundX, &foundY, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["alert.png"])) {
 				if (PixelGetColor(foundX + 303, foundY) == "0xD7D7D7") {
-					Send "!y"
+					Send("!y")
 					utils.waitLoading()
 				} 
 			}
 
-			Send "{Esc}"
+			Send("{Esc}")
 			utils.waitLoading()
-			Send "{Space}"
+			Send("{Space}")
 			utils.waitLoading()
 		}
 
@@ -256,53 +256,53 @@ class BlankShare_Action {
 					return
 				}
 				loop 5 {
-					Send "{Down}"
+					Send("{Down}")
 					utils.waitLoading()
 				}
-				Send "!m"
+				Send("!m")
 				utils.waitLoading()
-				Send "{Esc}"
+				Send("{Esc}")
 				utils.waitLoading()
-				Send "{Text}1"
+				Send("{Text}1")
 				utils.waitLoading()
 				loop 4 {
-					Send "{Tab}"
+					Send("{Tab}")
 					utils.waitLoading()
 				}
-				Send "{Text}0"
+				Send("{Text}0")
 				utils.waitLoading()
-				Send "{Tab}"
+				Send("{Tab}")
 				utils.waitLoading()
-				Send "{Tab}"
+				Send("{Tab}")
 				utils.waitLoading()
-				Send "{Text}6"
+				Send("{Text}6")
 				utils.waitLoading()
-				Send "!o"
+				Send("!o")
 				utils.waitLoading()
 
 				if (checkIn) {
-					Send "!i"
+					Send("!i")
 					utils.waitLoading()
 		
-					CoordMode "Pixel", "Screen"
+					CoordMode("Pixel", "Screen")
 					if (ImageSearch(&foundX, &foundY, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["alert.PNG"])) {
 						if (PixelGetColor(foundX + 303, foundY) == "0xD7D7D7") {
-							Send "!y"
+							Send("!y")
 							utils.waitLoading()
 						} 
 					}
 		
-					Send "{Esc}"
+					Send("{Esc}")
 					utils.waitLoading()
-					Send "{Space}"
+					Send("{Space}")
 					utils.waitLoading()
 				}
 			}
 		}
 
-		Send "!o"
+		Send("!o")
 		utils.waitLoading()
-		Send "!c"
+		Send("!c")
 		utils.waitLoading()
 
 		( !keepGoing && this.end() )

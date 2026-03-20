@@ -41,10 +41,10 @@ OverNightReports(App) {
         }
         ReportMaster_Action.end()
 
-        WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
+        WinSetAlwaysOnTop(false, "ahk_class SunAwtFrame")
         saveText := "已保存报表：`n`n" . savedReports . "`n`n是否打开所在文件夹? "
         if (MsgBox(saveText, POPUP_TITLE, "OKCancel 4096") == "OK") {
-            Run A_MyDocuments
+            Run(A_MyDocuments)
         } else {
             utils.cleanReload(WIN_GROUP)
         }

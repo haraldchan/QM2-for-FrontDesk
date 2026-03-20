@@ -3,22 +3,22 @@ class GroupShareDnm_Action {
 
     static start() {
         this.isRunning := true
-        HotIf (*) => this.isRunning
+        HotIf((*) => this.isRunning)
         Hotkey("F12", (*) => this.end(), "On")
 
-        WinMaximize "ahk_class SunAwtFrame"
-        WinActivate "ahk_class SunAwtFrame"
-        Sleep 500
-        WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
-        BlockInput true
+        WinMaximize("ahk_class SunAwtFrame")
+        WinActivate("ahk_class SunAwtFrame")
+        Sleep(500)
+        WinSetAlwaysOnTop(true, "ahk_class SunAwtFrame")
+        BlockInput(true)
     }
 
     static end() {
         this.isRunning := false
         Hotkey("F12", "Off")
 
-        BlockInput false
-        WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
+        BlockInput(false)
+        WinSetAlwaysOnTop(false, "ahk_class SunAwtFrame")
     }
 
     static USE(form) {
@@ -45,38 +45,38 @@ class GroupShareDnm_Action {
 
     static shareDnm(roomQty, ratecode, shareOnly := false, initX := 340, initY := 311) {
         ; check if Advance panel is opened
-        CoordMode "Pixel", "Screen"
+        CoordMode("Pixel", "Screen")
         if (PixelGetColor(198, 297) != "0xFFFF00") {
-            Send "!a"
+            Send("!a")
             utils.waitLoading()
         }
 
-        MouseMove initX, initY ; 340, 311
+        MouseMove(initX, initY) ; 340, 311
         utils.waitLoading()
-        Click "Down"
-        MouseMove initX - 158, initY - 1 ; 182, 310
+        Click("Down")
+        MouseMove(initX - 158, initY - 1) ; 182, 310
         utils.waitLoading()
-        Click "Up"
-        MouseMove initX - 40, initY - 4 ; 300, 307
+        Click("Up")
+        MouseMove(initX - 40, initY - 4) ; 300, 307
         utils.waitLoading()
-        Send "{Backspace}"
+        Send("{Backspace}")
         utils.waitLoading()
-        Send Format("{Text}{1}", ratecode)
+        Send(Format("{Text}{1}", ratecode))
         if (!this.isRunning) {
             msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
             return
         }
 
         loop roomQty {
-            BlockInput true
-            MouseMove initX + 85, initY + 226 ; 425, 537
+            BlockInput(true)
+            MouseMove(initX + 85, initY + 226) ; 425, 537
             utils.waitLoading()
-            Send "!r"
+            Send("!r")
 
             if (shareOnly = false) {
-                MouseMove initX + 129, initY + 201 ; 469, 512
+                MouseMove(initX + 129, initY + 201) ; 469, 512
                 utils.waitLoading()
-                Click
+                Click()
                 utils.waitLoading()
             }
             if (!this.isRunning) {
@@ -84,64 +84,64 @@ class GroupShareDnm_Action {
                 return
             }
 
-            Send "!t"
+            Send("!t")
             utils.waitLoading()
-            Send "!s"
+            Send("!s")
             utils.waitLoading()
-            Send "!m"
+            Send("!m")
             utils.waitLoading()
-            Send "{Esc}"
+            Send("{Esc}")
             utils.waitLoading()
-            Send "{Text}1"
+            Send("{Text}1")
             utils.waitLoading()
-            MouseMove initX + 147, initY + 91 ; 487, 402
+            MouseMove(initX + 147, initY + 91) ; 487, 402
             utils.waitLoading()
-            Click "Down"
-            MouseMove initX + 178, initY + 92 ; 518, 403
+            Click("Down")
+            MouseMove(initX + 178, initY + 92) ; 518, 403
             utils.waitLoading()
-            Click "Up"
-            MouseMove initX + 176, initY + 132 ; 516, 443
+            Click("Up")
+            MouseMove(initX + 176, initY + 132) ; 516, 443
             utils.waitLoading()
-            Send "{Text}0"
+            Send("{Text}0")
             utils.waitLoading()
-            Send "!o"
+            Send("!o")
             utils.waitLoading()
-            Send "!r"
-            utils.waitLoading()
-            if (!this.isRunning) {
-                msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
-                return
-            }
-
-            MouseMove 950, 597
-            utils.waitLoading()
-            Click
-            utils.waitLoading()
-            Send "!d"
-            utils.waitLoading()
-            Send "{Left}"
-            utils.waitLoading()
-            Send "{Space}"
-            utils.waitLoading()
-            Send "!o"
-            utils.waitLoading()
-            Send "!c"
+            Send("!r")
             utils.waitLoading()
             if (!this.isRunning) {
                 msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
                 return
             }
 
-            MouseMove initX - 19, initY + 196 ; 321, 507
+            MouseMove(950, 597)
             utils.waitLoading()
-            Click "Down"
-            MouseMove initX - 154, initY + 198 ; 186, 509
+            Click()
             utils.waitLoading()
-            Click "Up"
+            Send("!d")
             utils.waitLoading()
-            Send "{Text}NRR"
+            Send("{Left}")
             utils.waitLoading()
-            Send "{Tab}"
+            Send("{Space}")
+            utils.waitLoading()
+            Send("!o")
+            utils.waitLoading()
+            Send("!c")
+            utils.waitLoading()
+            if (!this.isRunning) {
+                msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
+                return
+            }
+
+            MouseMove(initX - 19, initY + 196) ; 321, 507
+            utils.waitLoading()
+            Click("Down")
+            MouseMove(initX - 154, initY + 198) ; 186, 509
+            utils.waitLoading()
+            Click("Up")
+            utils.waitLoading()
+            Send("{Text}NRR")
+            utils.waitLoading()
+            Send("{Tab}")
             utils.waitLoading()
             if (!this.isRunning) {
                 msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
@@ -149,18 +149,18 @@ class GroupShareDnm_Action {
             }
 
             loop 5 {
-                Send "{Esc}"
+                Send("{Esc}")
                 utils.waitLoading()
             }
-            Send "!o"
+            Send("!o")
             utils.waitLoading()
-            Send "!o"
+            Send("!o")
             utils.waitLoading()
-            Send "!c"
+            Send("!c")
             utils.waitLoading()
-            Send "!c"
+            Send("!c")
             utils.waitLoading()
-            BlockInput false
+            BlockInput(false)
         }
     }
 
@@ -171,13 +171,13 @@ class GroupShareDnm_Action {
                 msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
                 return
             }
-            Send "!r"
+            Send("!r")
             utils.waitLoading()
-            Sleep 200
+            Sleep(200)
 
-            CoordMode "Pixel", "Screen"
+            CoordMode("Pixel", "Screen")
             ImageSearch(&x, &y, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["opera-active-win.PNG"])
-            Sleep 200
+            Sleep(200)
 
             ; dismiss alerts
             loop {
@@ -186,20 +186,20 @@ class GroupShareDnm_Action {
                     break
                 }
 
-                Send "{Enter}"
+                Send("{Enter}")
                 utils.waitLoading()
             }
 
             ; check if room is dnm already
             ImageSearch(&x, &y, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["opera-active-win.PNG"])
             if (PixelGetColor(x + 124, y + 304) != "0xFF0000" || isRemove) { ; room number field
-                MouseMove x + 275, y + 333
+                MouseMove(x + 275, y + 333)
                 utils.waitLoading()
-                Click
+                Click()
                 utils.waitLoading()
             }
 
-            Send "!o"
+            Send("!o")
             utils.waitLoading()
         }
     }

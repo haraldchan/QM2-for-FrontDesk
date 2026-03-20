@@ -27,16 +27,16 @@ PersistScriptsControl(App) {
 		}
 
 		; City Ledger
-		HotIf (*) => App["city-ledger-on"].Value
+		HotIf((*) => App["city-ledger-on"].Value)
 		Hotkey("^o", (*) => CityLedgerCo.USE())
 		Hotkey("MButton", (*) => CityLedgerCo.USE())
 
 		; Invoke Scan
-		HotIf (*) => App["scan-invoke-on"].Value
+		HotIf((*) => App["scan-invoke-on"].Value)
 		Hotkey("^+s", (*) => ScanInvoke(), "On")
 
 		; Balance Transfer
-		HotIf (*) => App["balance-transfer-on"].Value
+		HotIf((*) => App["balance-transfer-on"].Value)
 		HotString("::bt", (*) => BalanceTransfer.USE())
 	}
 

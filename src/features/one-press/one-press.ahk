@@ -24,7 +24,7 @@ OnePress(App) {
         for desc, module in modules {
             App[module.name.toCase("kebab") . "-action"].Opt(desc == ctrl.Text ? "+Default" : "-Default")
         }
-        WinSetAlwaysOnTop (moduleName == "PaymentRelation"), POPUP_TITLE
+        WinSetAlwaysOnTop((moduleName == "PaymentRelation"), POPUP_TITLE)
     }
 
     App.defineDirectives(

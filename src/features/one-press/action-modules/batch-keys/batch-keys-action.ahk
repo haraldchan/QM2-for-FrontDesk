@@ -3,20 +3,20 @@ class BatchKeysXl_Action {
 
     static start() {
         this.isRunning := true
-        HotIf (*) => this.isRunning
+        HotIf((*) => this.isRunning)
         Hotkey("F12", (*) => this.end(), "On")
 
-        CoordMode "Mouse", "Window"
-        WinActivate "ahk_exe vision.exe"
-        BlockInput true
+        CoordMode("Mouse", "Window")
+        WinActivate("ahk_exe vision.exe")
+        BlockInput(true)
     }
 
     static end() {
         this.isRunning := false
         Hotkey("F12", "Off")
 
-        CoordMode "Mouse", "Screen"
-        BlockInput false
+        CoordMode("Mouse", "Screen")
+        BlockInput(false)
     }
 
     static USE(xlPath, coDateTime, enable28f, useDeskTopXl := false) {
@@ -57,7 +57,7 @@ class BatchKeysXl_Action {
             etd := !coTimeXls[A_Index] ? coDateTimeFromInput[2] : coTimeXls[A_Index]
 
             this.makeKey(room, coDate, etd, enable28f)
-            BlockInput false
+            BlockInput(false)
             checkConf := MsgBox(Format("
                 (
                     已做房卡：{1}
@@ -74,7 +74,7 @@ class BatchKeysXl_Action {
             if (checkConf = "No") {
                 return
             }
-            BlockInput true
+            BlockInput(true)
 
             this.end()
         }
@@ -115,57 +115,57 @@ class BatchKeysXl_Action {
     static makeKey(room, coDate, etd, enable28f) {
         ; send room number
         A_Clipboard := room
-        MouseMove 168, 196
-        Click 3
-        Sleep 150
-        Send "^v" ; room num can only be pasted
-        Sleep 150
+        MouseMove(168, 196)
+        Click(3)
+        Sleep(150)
+        Send("^v") ; room num can only be pasted
+        Sleep(150)
 
         ; send check out date
-        MouseMove 173, 363
-        Sleep 150
-        Click "Down"
-        MouseMove 7, 363
-        Sleep 150
-        Click "Up"
-        Sleep 100
-        Send "{Text}" . coDate
-        Sleep 150
+        MouseMove(173, 363)
+        Sleep(150)
+        Click("Down")
+        MouseMove(7, 363)
+        Sleep(150)
+        Click("Up")
+        Sleep(100)
+        Send("{Text}" . coDate)
+        Sleep(150)
 
         ; send check out time
-        Send "{Tab}"
-        Sleep 100
-        Send "{Text}" . etd
-        Sleep 150
+        Send("{Tab}")
+        Sleep(100)
+        Send("{Text}" . etd)
+        Sleep(150)
 
         ; enable 28f
         if (enable28f != 0) {
             loop 2 {
-                Send "{Tab}"
-                Sleep 50
+                Send("{Tab}")
+                Sleep(50)
             }
             loop 2 {
-                Send "{Down}"
-                Sleep 50
+                Send("{Down}")
+                Sleep(50)
             }
-            Send "{Space}"
-            Sleep 50
-            Send "{Tab}"
-            Sleep 150
+            Send("{Space}")
+            Sleep(50)
+            Send("{Tab}")
+            Sleep(150)
         } else {
             loop 3 {
-                Send "{Tab}"
-                Sleep 50
+                Send("{Tab}")
+                Sleep(50)
             }
         }
 
         ; send number of cards
-        Send "2"
-        Sleep 150
+        Send("2")
+        Sleep(150)
 
         ; make
-        Send "!e"
-        Sleep 150
+        Send("!e")
+        Sleep(150)
     }
 }
 
@@ -175,20 +175,20 @@ class BatchKeysSq_Action {
 
     static start() {
         this.isRunning := true
-        HotIf (*) => this.isRunning
+        HotIf((*) => this.isRunning)
         Hotkey("F12", (*) => this.end(), "On")
 
-        CoordMode "Mouse", "Window"
-        WinActivate "ahk_exe vision.exe"
-        BlockInput true
+        CoordMode("Mouse", "Window")
+        WinActivate("ahk_exe vision.exe")
+        BlockInput(true)
     }
 
     static end() {
         this.isRunning := false
         Hotkey("F12", "Off")
 
-        CoordMode "Mouse", "Screen"
-        BlockInput false
+        CoordMode("Mouse", "Screen")
+        BlockInput(false)
     }
 
     static USE(formData) {
@@ -196,7 +196,7 @@ class BatchKeysSq_Action {
         
         for room in formData.rooms {
             this.makeKey(room, formData.coDate, formData.etd, formData.confNum, formData.enable28f)
-            BlockInput false
+            BlockInput(false)
             checkConf := MsgBox(Format("
                 (
                     已做房卡：{1}
@@ -213,7 +213,7 @@ class BatchKeysSq_Action {
             if (checkConf = "No") {
                 return
             }
-            BlockInput true
+            BlockInput(true)
         }
         
         this.end()
@@ -222,66 +222,66 @@ class BatchKeysSq_Action {
     static makeKey(room, coDate, etd, confNum, enable28f) {
         ; send confNum
         A_Clipboard := confNum
-        Send "^{Tab}"
-        Sleep 150
-        Send "^v"
-        Sleep 100
+        Send("^{Tab}")
+        Sleep(150)
+        Send("^v")
+        Sleep(100)
         loop 2 {
-            Send "^{Tab}"
-            Sleep 100
+            Send("^{Tab}")
+            Sleep(100)
         }
 
         ; send room number
         A_Clipboard := room
-        MouseMove 168, 196
-        Click 3
-        Sleep 150
-        Send "^v" ; room num can only be pasted
-        Sleep 150
+        MouseMove(168, 196)
+        Click(3)
+        Sleep(150)
+        Send("^v") ; room num can only be pasted
+        Sleep(150)
 
         ; send check out date
-        MouseMove 173, 363
-        Sleep 150
-        Click "Down"
-        MouseMove 7, 363
-        Sleep 150
-        Click "Up"
-        Sleep 100
-        Send "{Text}" . coDate
-        Sleep 150
+        MouseMove(173, 363)
+        Sleep(150)
+        Click("Down")
+        MouseMove(7, 363)
+        Sleep(150)
+        Click("Up")
+        Sleep(100)
+        Send("{Text}" . coDate)
+        Sleep(150)
 
         ; send check out time
-        Send "{Tab}"
-        Sleep 100
-        Send "{Text}" . etd
-        Sleep 150
+        Send("{Tab}")
+        Sleep(100)
+        Send("{Text}" . etd)
+        Sleep(150)
 
         ; enable 28f
         if (enable28f != 0) {
             loop 2 {
-                Send "{Tab}"
-                Sleep 50
+                Send("{Tab}")
+                Sleep(50)
             }
             loop 2 {
-                Send "{Down}"
-                Sleep 50
+                Send("{Down}")
+                Sleep(50)
             }
-            Send "{Space}"
-            Sleep 50
-            Send "{Tab}"
-            Sleep 150
+            Send("{Space}")
+            Sleep(50)
+            Send("{Tab}")
+            Sleep(150)
         } else {
             loop 3 {
-                Send "{Tab}"
-                Sleep 50
+                Send("{Tab}")
+                Sleep(50)
             }
         }
 
         ; send number of cards
-        Send "2"
-        Sleep 150
+        Send("2")
+        Sleep(150)
 
         ; make
-        Send "!e"
+        Send("!e")
     }
 }

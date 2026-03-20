@@ -3,21 +3,21 @@ class ReportMaster_Action {
 
     static start() {
         this.isRunning := true
-        HotIf (*) => this.isRunning
+        HotIf((*) => this.isRunning)
         Hotkey("F12", (*) => this.end(), "On")
 
-        WinMaximize "ahk_class SunAwtFrame"
-        WinActivate "ahk_class SunAwtFrame"
-        WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
-        BlockInput true
+        WinMaximize("ahk_class SunAwtFrame")
+        WinActivate("ahk_class SunAwtFrame")
+        WinSetAlwaysOnTop(true, "ahk_class SunAwtFrame")
+        BlockInput(true)
     }
 
     static end() {
         this.isRunning := false
         Hotkey("F12", "Off")
 
-        WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
-        BlockInput false
+        WinSetAlwaysOnTop(false, "ahk_class SunAwtFrame")
+        BlockInput(false)
     }
 
     static reportList := {
@@ -122,31 +122,31 @@ class ReportMaster_Action {
             "XLS", 5,
         )
 
-        Send "!m"
-        Sleep 100
-        Send "{Text}R"
-        Sleep 100
-        Send Format("{Text}{1}", reportInfoObj.searchStr)
-        Sleep 100
-        Send "!h"
-        Sleep 100
-        MouseMove initX, initY ; 433, 598
-        Sleep 150
-        Click ; click print to file
-        Sleep 150
+        Send("!m")
+        Sleep(100)
+        Send("{Text}R")
+        Sleep(100)
+        Send(Format("{Text}{1}", reportInfoObj.searchStr))
+        Sleep(100)
+        Send("!h")
+        Sleep(100)
+        MouseMove(initX, initY) ; 433, 598
+        Sleep(150)
+        Click()
+        Sleep(150)
 
-        MouseMove initX + 380, initY
-        Click
+        MouseMove(initX + 380, initY)
+        Click()
         if (fileTypeSelectPointer[fileType] != 0) {
             loop fileTypeSelectPointer[fileType] {
-                Send "{Down}"
-                Sleep 10
+                Send("{Down}")
+                Sleep(10)
             }
         }
-        Sleep 100
-        Send "{Enter}"
-        Sleep 100
-        Send "!o"
+        Sleep(100)
+        Send("{Enter}")
+        Sleep(100)
+        Send("!o")
         if (!this.isRunning) {
             msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
             return
@@ -163,18 +163,18 @@ class ReportMaster_Action {
         }
         saveFileName := saveName . "." . fileType
 
-        Sleep 1000
-        Send "!f"
+        Sleep(1000)
+        Send("!f")
 
         WinWait("Please Select a Directory to Download")
-        Sleep 200
-        Send "{Backspace}"
-        Sleep 200
-        Send Format("{Text}{1}", saveFileName)
-        Sleep 1000
-        Send "{Enter}"
+        Sleep(200)
+        Send("{Backspace}")
+        Sleep(200)
+        Send(Format("{Text}{1}", saveFileName))
+        Sleep(1000)
+        Send("{Enter}")
 
-        TrayTip Format("正在保存：{1}", saveFileName)
+        TrayTip(Format("正在保存：{1}", saveFileName))
         if (!this.isRunning) {
             msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
             return
@@ -185,15 +185,15 @@ class ReportMaster_Action {
                 this.end()
                 return
             }
-            sleep 1000
+            sleep(1000)
             if (Winwait("Warning", , 20)) {
-                WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
-                Sleep 100
-                WinActivate "Warning"
+                WinSetAlwaysOnTop(false, "ahk_class SunAwtFrame")
+                Sleep(100)
+                WinActivate("Warning")
                 utils.waitLoading()
-                Send "{Enter}"
+                Send("{Enter}")
                 utils.waitLoading()
-                WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
+                WinSetAlwaysOnTop(true, "ahk_class SunAwtFrame")
             }
 
             if (FileExist(A_MyDocuments . "\" . saveFileName)) {
@@ -207,67 +207,67 @@ class ReportMaster_Action {
             }
         }
 
-        MouseMove initX, initY
+        MouseMove(initX, initY)
         utils.waitLoading()
-        Click
-        Sleep 200
-        Send "!c"
+        Click()
+        Sleep(200)
+        Send("!c")
 
         return saveFileName
     }
 
     static comp() {
         fileName := "Comp"
-        Sleep 200
+        Sleep(200)
         return fileName
     }
 
     static mgrFlash(initX := 749, initY := 333) {
         fileName := "NA02-MANAGER FLASH"
-        Sleep 200
-        MouseMove initX, initY ; 749, 333
-        Sleep 150
-        Send "!o"
-        MouseMove initX - 149, initY + 169 ; 600, 502
-        Sleep 150
-        Click
-        Sleep 150
+        Sleep(200)
+        MouseMove(initX, initY) ; 749, 333
+        Sleep(150)
+        Send("!o")
+        MouseMove(initX - 149, initY + 169) ; 600, 502
+        Sleep(150)
+        Click()
+        Sleep(150)
         return fileName
     }
 
     static hisFor15(initX := 644, initY := 178) {
         fileName := "RS05-林总"
-        Sleep 200
+        Sleep(200)
         ; report options here
-        MouseMove initX, initY ; 644, 178
-        Sleep 150
-        Click "Down"
-        MouseMove initX - 102, initY - 8 ; 542, 170
-        Sleep 150
-        Click "Up"
-        MouseMove initX - 117, initY - 27 ; 527, 151
-        Sleep 150
-        Send "{NumpadSub}"
-        Sleep 150
-        Send "8"
-        MouseMove initX + 2, initY + 26 ; 646, 204
-        Sleep 150
-        Click "Down"
-        MouseMove initX - 111, initY + 41 ; 533, 219
-        Sleep 150
-        Click "Up"
-        MouseMove initX - 171, initY + 92 ; 473, 270
-        Sleep 150
-        Send "{NumpadSub}"
-        Sleep 150
-        Send "8"
-        MouseMove initX - 27, initY + 463 ; 617, 641
-        Sleep 150
-        Send "{Tab}"
-        MouseMove initX - 34, initY + 511 ; 610, 689
-        Sleep 150
-        Click
-        Sleep 150
+        MouseMove(initX, initY) ; 644, 178
+        Sleep(150)
+        Click("Down")
+        MouseMove(initX - 102, initY - 8) ; 542, 170
+        Sleep(150)
+        Click("Up")
+        MouseMove(initX - 117, initY - 27) ; 527, 151
+        Sleep(150)
+        Send("{NumpadSub}")
+        Sleep(150)
+        Send("8")
+        MouseMove(initX + 2, initY + 26) ; 646, 204
+        Sleep(150)
+        Click("Down")
+        MouseMove(initX - 111, initY + 41) ; 533, 219
+        Sleep(150)
+        Click("Up")
+        MouseMove(initX - 171, initY + 92) ; 473, 270
+        Sleep(150)
+        Send("{NumpadSub}")
+        Sleep(150)
+        Send("8")
+        MouseMove(initX - 27, initY + 463) ; 617, 641
+        Sleep(150)
+        Send("{Tab}")
+        MouseMove(initX - 34, initY + 511) ; 610, 689
+        Sleep(150)
+        Click()
+        Sleep(150)
         return fileName
     }
 
@@ -286,29 +286,29 @@ class ReportMaster_Action {
         dateLast := FormatTime(DateAdd(firstDayOfNextMonth, -1, "Days"), "MMddyyyy")
 
         fileName := Format("RS05-{1}月", preAuditMonth)
-        Sleep 150
-        Send "{Backspace}"
-        Sleep 300
-        Send Format("{Text}{1}", dateFirst)
-        Sleep 300
-        MouseMove initX, initY ; 645, 205
-        Sleep 150
-        Click "Down"
-        MouseMove initX - 114, initY - 1 ; 531, 204
-        Sleep 150
-        Click "Up"
-        Sleep 150
-        Send "{Backspace}"
-        Sleep 300
-        Send Format("{Text}{1}", dateLast)
-        Sleep 300
-        MouseMove initX - 28, initY + 436 ; 617, 641
-        Sleep 150
-        Send "{Tab}"
-        MouseMove initX - 35, initY + 484 ; 610, 689
-        Sleep 150
-        Click
-        Sleep 150
+        Sleep(150)
+        Send("{Backspace}")
+        Sleep(300)
+        Send(Format("{Text}{1}", dateFirst))
+        Sleep(300)
+        MouseMove(initX, initY) ; 645, 205
+        Sleep(150)
+        Click("Down")
+        MouseMove(initX - 114, initY - 1) ; 531, 204
+        Sleep(150)
+        Click("Up")
+        Sleep(150)
+        Send("{Backspace}")
+        Sleep(300)
+        Send(Format("{Text}{1}", dateLast))
+        Sleep(300)
+        MouseMove(initX - 28, initY + 436) ; 617, 641
+        Sleep(150)
+        Send("{Tab}")
+        MouseMove(initX - 35, initY + 484) ; 610, 689
+        Sleep(150)
+        Click()
+        Sleep(150)
         return fileName
     }
 
@@ -335,201 +335,201 @@ class ReportMaster_Action {
         fileName := Format("RS05-{1}月", nextMonth)
         ; BlockInput true
         ; reportOpen(searchStr)
-        Sleep 200
+        Sleep(200)
         ; report options here
-        Send "{Backspace}"
-        Sleep 300
-        Send Format("{Text}{1}", dateFirstNext)
-        Sleep 300
-        MouseMove initX, initY ; 645, 205
-        Sleep 150
-        Click "Down"
-        MouseMove initX - 114, initY - 1 ; 531, 204
-        Sleep 150
-        Click "Up"
-        Sleep 150
-        Send "{Backspace}"
-        Sleep 300
-        Send Format("{Text}{1}", dateLastNext)
-        Sleep 300
-        MouseMove initX - 28, initY + 436 ; 617, 641
-        Sleep 150
-        Send "{Tab}"
-        MouseMove initX - 35, initY + 484 ; 610, 689
-        Sleep 150
-        Click
-        Sleep 150
+        Send("{Backspace}")
+        Sleep(300)
+        Send(Format("{Text}{1}", dateFirstNext))
+        Sleep(300)
+        MouseMove(initX, initY) ; 645, 205
+        Sleep(150)
+        Click("Down")
+        MouseMove(initX - 114, initY - 1) ; 531, 204
+        Sleep(150)
+        Click("Up")
+        Sleep(150)
+        Send("{Backspace}")
+        Sleep(300)
+        Send(Format("{Text}{1}", dateLastNext))
+        Sleep(300)
+        MouseMove(initX - 28, initY + 436) ; 617, 641
+        Sleep(150)
+        Send("{Tab}")
+        MouseMove(initX - 35, initY + 484) ; 610, 689
+        Sleep(150)
+        Click()
+        Sleep(150)
         return fileName
     }
 
     static vipArr(initX := 464, initY := 194) {
         fileName := "FO01-VIP ARR"
-        Sleep 200
+        Sleep(200)
         ; report options here
-        MouseMove initX, initY ; 464, 194
-        Sleep 150
-        Click "Down"
-        MouseMove initX - 128, initY + 4 ; 336, 198
-        Sleep 50
-        Click "Up"
-        Sleep 150
-        Send "{NumpadAdd}"
-        Sleep 150
-        Send "{Text}2"
-        Sleep 100
-        MouseMove initX + 146, initY + 426 ; 610, 620
-        Sleep 150
-        Click
-        MouseMove initX + 168, initY + 399 ; 632, 593
-        Sleep 150
-        Click
-        MouseMove initX + 146, initY + 549 ; 610, 743
-        Sleep 150
+        MouseMove(initX, initY) ; 464, 194
+        Sleep(150)
+        Click("Down")
+        MouseMove(initX - 128, initY + 4) ; 336, 198
+        Sleep(50)
+        Click("Up")
+        Sleep(150)
+        Send("{NumpadAdd}")
+        Sleep(150)
+        Send("{Text}2")
+        Sleep(100)
+        MouseMove(initX + 146, initY + 426) ; 610, 620
+        Sleep(150)
+        Click()
+        MouseMove(initX + 168, initY + 399) ; 632, 593
+        Sleep(150)
+        Click()
+        MouseMove(initX + 146, initY + 549) ; 610, 743
+        Sleep(150)
         return fileName
     }
 
     static vipInh() {
         fileName := "VIP INH-Guest INH without due out"
-        Sleep 200
+        Sleep(200)
         return fileName
     }
 
     static vipDep(initX := 622, initY := 391) {
         fileName := "FO03-VIP DEP"
-        Sleep 200
+        Sleep(200)
         ; report options here
-        MouseMove initX, initY
-        Sleep 150
-        Click
-        MouseMove 855, 391
-        Sleep 150
-        Click
-        Sleep 150
-        Send "!a"
-        Sleep 150
-        Send "!o"
-        Sleep 200
+        MouseMove(initX, initY)
+        Sleep(150)
+        Click()
+        MouseMove(855, 391)
+        Sleep(150)
+        Click()
+        Sleep(150)
+        Send("!a")
+        Sleep(150)
+        Send("!o")
+        Sleep(200)
         return fileName
     }
 
     static arrAll(initX := 309, initY := 566) {
         fileName := "FO01-Arrival Detailed"
-        Sleep 200
+        Sleep(200)
         ; report options here
-        MouseMove initX, initY ; 309, 566
-        Sleep 150
-        Click
-        MouseMove initX + 8, initY + 53 ; 317, 619
-        Sleep 150
-        Click
-        MouseMove initX + 16, initY + 97 ; 325, 663
-        Sleep 150
-        Click
-        MouseMove initX + 290, initY + 28 ; 599, 594
-        Sleep 150
-        Click
-        MouseMove initX + 299, initY + 52 ; 608, 618
-        Click
-        Sleep 150
+        MouseMove(initX, initY) ; 309, 566
+        Sleep(150)
+        Click()
+        MouseMove(initX + 8, initY + 53) ; 317, 619
+        Sleep(150)
+        Click()
+        MouseMove(initX + 16, initY + 97) ; 325, 663
+        Sleep(150)
+        Click()
+        MouseMove(initX + 290, initY + 28) ; 599, 594
+        Sleep(150)
+        Click()
+        MouseMove(initX + 299, initY + 52) ; 608, 618
+        Click()
+        Sleep(150)
         return fileName
     }
 
     static inhAll(initX := 433, initY := 523) {
         fileName := "FO02-INH"
-        Sleep 200
+        Sleep(200)
         ; report options here
-        MouseMove initX, initY ; 433, 523
-        Sleep 150
-        Click
+        MouseMove(initX, initY) ; 433, 523
+        Sleep(150)
+        Click()
         return fileName
     }
 
     static depAll(initX := 607, initY := 540) {
         fileName := "FO03-DEP"
-        Sleep 200
+        Sleep(200)
         ; report options here
-        MouseMove initX, initY ; 607, 540
-        Sleep 150
-        click
-        Sleep 150
-        MouseMove initX - 119, initY - 50 ; 488, 490
-        Sleep 150
-        Click
+        MouseMove(initX, initY) ; 607, 540
+        Sleep(150)
+        click()
+        Sleep(150)
+        MouseMove(initX - 119, initY - 50) ; 488, 490
+        Sleep(150)
+        Click()
         return fileName
     }
 
     static creditLimit(initX := 686, initY := 474) {
         fileName := "FO11-CREDIT LIMIT"
         ; BlockInput true
-        Sleep 200
+        Sleep(200)
         ; report options here
-        MouseMove initX, initY ; 686, 474
-        Click
-        MouseMove initX - 277, initY + 48 ; 409, 522
-        Sleep 150
-        Click
-        Sleep 200
+        MouseMove(initX, initY) ; 686, 474
+        Click()
+        MouseMove(initX - 277, initY + 48) ; 409, 522
+        Sleep(150)
+        Click()
+        Sleep(200)
         return fileName
     }
 
     static bbf(initX := 599, initY := 276) {
         fileName := "FO13-Packages 早餐"
-        Sleep 200
+        Sleep(200)
         ; report options here
-        MouseMove initX, initY ; 599, 276
-        Sleep 150
-        Click "Down"
-        MouseMove initX - 80, initY + 3 ; 519, 279
-        Sleep 150
-        Click "Up"
-        Sleep 150
-        Send "{NumpadSub}"
-        Sleep 150
-        Send "1"
-        Sleep 150
-        Send "{Enter}"
-        MouseMove initX + 10, initY - 7 ; 609, 269
-        Sleep 150
-        Click "Down"
-        MouseMove initX - 129, initY + 7 ; 470, 283
-        Sleep 150
-        Click "Up"
-        Sleep 100
-        Send "^c"
-        Sleep 200
-        MouseMove initX + 6, initY + 27 ; 605, 303
-        Sleep 150
-        MouseMove initX + 6, initY + 27 ; 605, 303
-        Sleep 150
-        Click "Down"
-        MouseMove initX - 103, initY + 30 ; 496, 306
-        Sleep 150
-        Click "Up"
-        MouseMove initX - 105, initY + 31 ; 494, 307
-        Sleep 100
-        Send "^v"
-        Sleep 100
-        MouseMove initX - 136, initY + 242 ; 463, 518
-        Sleep 150
-        Click
-        Sleep 150
+        MouseMove(initX, initY) ; 599, 276
+        Sleep(150)
+        Click("Down")
+        MouseMove(initX - 80, initY + 3) ; 519, 279
+        Sleep(150)
+        Click("Up")
+        Sleep(150)
+        Send("{NumpadSub}")
+        Sleep(150)
+        Send("1")
+        Sleep(150)
+        Send("{Enter}")
+        MouseMove(initX + 10, initY - 7) ; 609, 269
+        Sleep(150)
+        Click("Down")
+        MouseMove(initX - 129, initY + 7) ; 470, 283
+        Sleep(150)
+        Click("Up")
+        Sleep(100)
+        Send("^c")
+        Sleep(200)
+        MouseMove(initX + 6, initY + 27) ; 605, 303
+        Sleep(150)
+        MouseMove(initX + 6, initY + 27) ; 605, 303
+        Sleep(150)
+        Click("Down")
+        MouseMove(initX - 103, initY + 30) ; 496, 306
+        Sleep(150)
+        Click("Up")
+        MouseMove(initX - 105, initY + 31) ; 494, 307
+        Sleep(100)
+        Send("^v")
+        Sleep(100)
+        MouseMove(initX - 136, initY + 242) ; 463, 518
+        Sleep(150)
+        Click()
+        Sleep(150)
         return fileName
     }
 
     static rooms(initX := 476, initY := 515) {
         fileName := "Rooms"
-        Sleep 200
+        Sleep(200)
         ; report options here
-        MouseMove initX, initY
-        Sleep 150
-        Click
-        Sleep 150
+        MouseMove(initX, initY)
+        Sleep(150)
+        Click()
+        Sleep(150)
         return fileName
     }
 
     static ooo() {
         fileName := "HK03-OOO"
-        Sleep 200
+        Sleep(200)
         return fileName
     }
 
@@ -537,7 +537,7 @@ class ReportMaster_Action {
         fileName := "Group Rooming List"
         ; BlockInput true
         ; reportOpen(searchStr)
-        Sleep 200
+        Sleep(200)
         ; ; report options here
         ; MouseMove initX, initY ; 372, 544
         ; Sleep 150
@@ -550,31 +550,31 @@ class ReportMaster_Action {
         ; Click
         ; Sleep 150
         loop 14 {
-            sleep 100
-            Send "{Tab}"
+            sleep(100)
+            Send("{Tab}")
         }
 
-        Sleep 100
-        Send "{Space}"
+        Sleep(100)
+        Send("{Space}")
 
-        Sleep 100
-        Send "{Tab}"
-        Sleep 100
-        Send "{Space}"
+        Sleep(100)
+        Send("{Tab}")
+        Sleep(100)
+        Send("{Space}")
 
         loop 5 {
-            sleep 100
-            Send "{Tab}"
+            sleep(100)
+            Send("{Tab}")
         }
-        Sleep 100
-        Send "{Space}"
+        Sleep(100)
+        Send("{Space}")
 
         loop 4 {
-            sleep 100
-            Send "{Tab}"
+            sleep(100)
+            Send("{Tab}")
         }
-        Sleep 100
-        Send "{Space}"
+        Sleep(100)
+        Send("{Space}")
 
         return fileName
     }
@@ -583,159 +583,159 @@ class ReportMaster_Action {
         fileName := "Group INH"
         ; BlockInput true
         ; reportOpen(searchStr)
-        Sleep 200
+        Sleep(200)
         ; report options here
-        MouseMove initX, initY ; 470, 425
-        Sleep 150
-        Click
-        MouseMove initX + 155, initY + 68 ; 625, 493
-        Sleep 150
-        Click
-        Sleep 150
+        MouseMove(initX, initY) ; 470, 425
+        Sleep(150)
+        Click()
+        MouseMove(initX + 155, initY + 68) ; 625, 493
+        Sleep(150)
+        Click()
+        Sleep(150)
         return fileName
     }
 
     static noShow(initX := 573, initY := 440) {
         fileName := "FO08-NO SHOW"
-        Sleep 200
+        Sleep(200)
         ; report options here
-        MouseMove initX, initY
-        Sleep 50
-        Send "{Backspace}"
-        Sleep 150
-        Send "{NumpadSub}"
-        Sleep 100
-        Send "{Text}1"
-        Sleep 150
-        Send "{Tab}"
-        Sleep 150
-        Send "{NumpadSub}"
-        Sleep 100
-        Send "{Text}1"
-        Sleep 150
+        MouseMove(initX, initY)
+        Sleep(50)
+        Send("{Backspace}")
+        Sleep(150)
+        Send("{NumpadSub}")
+        Sleep(100)
+        Send("{Text}1")
+        Sleep(150)
+        Send("{Tab}")
+        Sleep(150)
+        Send("{NumpadSub}")
+        Sleep(100)
+        Send("{Text}1")
+        Sleep(150)
         return fileName
     }
 
     static cancel(initX := 601, initY := 291) {
         fileName := "CXL"
-        Sleep 200
+        Sleep(200)
         ; report options here
-        MouseMove initX, initY ; 601, 291
-        Sleep 150
-        Click "Down"
-        MouseMove initX - 196, initY - 13 ; 485, 278
-        Sleep 150
-        Click "Up"
-        Sleep 150
-        Send "{Backspace}"
-        Sleep 150
-        Send "{NumpadSub}"
-        Sleep 150
-        Send "{Text}1"
-        Sleep 50
-        Send "{Enter}"
-        Sleep 150
-        MouseMove initX + 1, initY - 3 ; 602, 288
-        Sleep 150
-        Click "Down"
-        MouseMove initX - 153, initY + 1 ; 448, 292
-        Sleep 150
-        Click "Up"
-        Sleep 50
-        Send "^c"
-        Sleep 150
-        MouseMove initX - 15, initY + 18 ; 586, 309
-        Sleep 150
-        Click "Down"
-        MouseMove initX - 188, initY + 30 ; 413, 321
-        Sleep 150
-        Click "Up"
-        MouseMove initX - 162, initY + 34 ; 439, 325
-        Sleep 50
-        Send A_Clipboard
-        MouseMove initX + 86, initY + 26 ; 687, 317
-        Sleep 150
-        Click
-        MouseMove initX + 94, initY + 32 ; 695, 323
-        Sleep 150
+        MouseMove(initX, initY) ; 601, 291
+        Sleep(150)
+        Click("Down")
+        MouseMove(initX - 196, initY - 13) ; 485, 278
+        Sleep(150)
+        Click("Up")
+        Sleep(150)
+        Send("{Backspace}")
+        Sleep(150)
+        Send("{NumpadSub}")
+        Sleep(150)
+        Send("{Text}1")
+        Sleep(50)
+        Send("{Enter}")
+        Sleep(150)
+        MouseMove(initX + 1, initY - 3) ; 602, 288
+        Sleep(150)
+        Click("Down")
+        MouseMove(initX - 153, initY + 1) ; 448, 292
+        Sleep(150)
+        Click("Up")
+        Sleep(50)
+        Send("^c")
+        Sleep(150)
+        MouseMove(initX - 15, initY + 18) ; 586, 309
+        Sleep(150)
+        Click("Down")
+        MouseMove(initX - 188, initY + 30) ; 413, 321
+        Sleep(150)
+        Click("Up")
+        MouseMove(initX - 162, initY + 34) ; 439, 325
+        Sleep(50)
+        Send(A_Clipboard)
+        MouseMove(initX + 86, initY + 26) ; 687, 317
+        Sleep(150)
+        Click()
+        MouseMove(initX + 94, initY + 32) ; 695, 323
+        Sleep(150)
         return fileName
     }
 
     static arrivingGroups(blockCodeInput, saveName, initX := 845, initY := 376) {
         fileName := saveName
-        Sleep 200
+        Sleep(200)
         ; report options here
-        MouseMove initX, initY ; 845, 376
-        Sleep 150
-        Click
-        MouseMove initX - 41, initY + 10 ; 804, 386
-        Sleep 150
-        Send "!a"
-        Sleep 150
-        MouseMove initX - 37, initY + 229 ; 808, 605
-        Sleep 150
-        Click "Down"
-        MouseMove initX - 40, initY + 239 ; 805, 614
-        Sleep 150
-        Click "Up"
-        MouseMove initX - 108, initY + 239 ; 737, 615
-        Sleep 150
-        Click
-        Sleep 150
+        MouseMove(initX, initY) ; 845, 376
+        Sleep(150)
+        Click()
+        MouseMove(initX - 41, initY + 10) ; 804, 386
+        Sleep(150)
+        Send("!a")
+        Sleep(150)
+        MouseMove(initX - 37, initY + 229) ; 808, 605
+        Sleep(150)
+        Click("Down")
+        MouseMove(initX - 40, initY + 239) ; 805, 614
+        Sleep(150)
+        Click("Up")
+        MouseMove(initX - 108, initY + 239) ; 737, 615
+        Sleep(150)
+        Click()
+        Sleep(150)
         loop 8 {
-            Send "{Space}"
-            Sleep 100
-            Send "{Up}"
-            Sleep 100
+            Send("{Space}")
+            Sleep(100)
+            Send("{Up}")
+            Sleep(100)
         }
-        Sleep 350
-        Send "!o"
-        Sleep 150
-        MouseMove initX - 3, initY - 52 ; 842, 324
-        Sleep 150
-        Click
-        MouseMove initX - 276, initY - 93 ; 569, 283
-        Sleep 150
-        Click
-        Sleep 150
-        Send Format("{Text}{1}", blockCodeInput)
-        Sleep 150
-        MouseMove initX + 3, initY - 95 ; 848, 281
-        Sleep 150
-        Click
-        MouseMove initX - 242, initY + 36 ; 603, 412
-        Sleep 150
-        Click
-        Sleep 150
-        Send "{Space}"
-        MouseMove initX - 117, initY + 97 ; 728, 473
-        Sleep 150
-        Send "!o"
-        Sleep 150
-        Send "!o"
-        Sleep 150
-        MouseMove initX - 134, initY + 115 ; 711, 491
-        Sleep 150
-        Click
-        MouseMove initX - 423, initY + 144 ; 422, 520
-        Sleep 150
-        Click
-        MouseMove initX - 236, initY + 271 ; 609, 647
+        Sleep(350)
+        Send("!o")
+        Sleep(150)
+        MouseMove(initX - 3, initY - 52) ; 842, 324
+        Sleep(150)
+        Click()
+        MouseMove(initX - 276, initY - 93) ; 569, 283
+        Sleep(150)
+        Click()
+        Sleep(150)
+        Send(Format("{Text}{1}", blockCodeInput))
+        Sleep(150)
+        MouseMove(initX + 3, initY - 95) ; 848, 281
+        Sleep(150)
+        Click()
+        MouseMove(initX - 242, initY + 36) ; 603, 412
+        Sleep(150)
+        Click()
+        Sleep(150)
+        Send("{Space}")
+        MouseMove(initX - 117, initY + 97) ; 728, 473
+        Sleep(150)
+        Send("!o")
+        Sleep(150)
+        Send("!o")
+        Sleep(150)
+        MouseMove(initX - 134, initY + 115) ; 711, 491
+        Sleep(150)
+        Click()
+        MouseMove(initX - 423, initY + 144) ; 422, 520
+        Sleep(150)
+        Click()
+        MouseMove(initX - 236, initY + 271) ; 609, 647
         return fileName
     }
 
     static special(initX := 600, initY := 482) {
         fileName := Format("{1} 水果5", FormatTime(A_Now, "yyyyMMdd"))
-        Sleep 200
+        Sleep(200)
         ; report options here
-        MouseMove initX, initY ; 600, 482
-        Sleep 200
-        Click
-        Sleep 200
-        Send "{Text}水果5"
-        Sleep 100
-        MouseMove initX + 16, initY + 56 ; 616, 538
-        Sleep 200
+        MouseMove(initX, initY) ; 600, 482
+        Sleep(200)
+        Click()
+        Sleep(200)
+        Send("{Text}水果5")
+        Sleep(100)
+        MouseMove(initX + 16, initY + 56) ; 616, 538
+        Sleep(200)
         return fileName
     }
 
@@ -753,18 +753,18 @@ class ReportMaster_Action {
 
         fileName := Format("{1}-{2}", FormatTime(A_Now, "yyyyMMdd"), fileNameInput)
         ; report options here
-        Send "{Text}" . frDate.toFormat("MMddyyyy")
-        Sleep 200
-        Send "{Tab}"
-        Sleep 200
+        Send("{Text}" . frDate.toFormat("MMddyyyy"))
+        Sleep(200)
+        Send("{Tab}")
+        Sleep(200)
 
-        Send "{Text}" . toDate.toFormat("MMddyyyy")
-        Sleep 200
-        Send "{Tab}"
-        Sleep 200
+        Send("{Text}" . toDate.toFormat("MMddyyyy"))
+        Sleep(200)
+        Send("{Tab}")
+        Sleep(200)
 
-        Send spCodes.replace(" ", ",")
-        Sleep 200
+        Send(spCodes.replace(" ", ","))
+        Sleep(200)
 
         return fileName
     }
@@ -790,51 +790,51 @@ class ReportMaster_Action {
         fileName := Format("{1}-{2}", fileNameDate, fileNameInput)
 
         ; dates
-        Send "{Tab}"
-        Sleep 100
-        Send "{Text}" . frDate.toFormat("MMddyyyy")
-        Sleep 100
-        Send "{Tab}"
-        Sleep 100
-        Send "{Text}" . toDate.toFormat("MMddyyyy")
-        Sleep 100
+        Send("{Tab}")
+        Sleep(100)
+        Send("{Text}" . frDate.toFormat("MMddyyyy"))
+        Sleep(100)
+        Send("{Tab}")
+        Sleep(100)
+        Send("{Text}" . toDate.toFormat("MMddyyyy"))
+        Sleep(100)
 
         ; package codes(products)
         loop 2 {
-            Send "{Tab}"
-            Sleep 100
+            Send("{Tab}")
+            Sleep(100)
         }
 
         if (!pkgCodes.includes("%")) {
-            Send "{Text}" . pkgCodes.replace(" ", ",")
+            Send("{Text}" . pkgCodes.replace(" ", ","))
         }
         else {
-            Send "{Text}%"
-            Sleep 100
-            Send "{Enter}"
+            Send("{Text}%")
+            Sleep(100)
+            Send("{Enter}")
             utils.waitLoading()
-            Send "{Text}" . pkgCodes ; products input
-            Sleep 100
-            Send "!h" ; search
+            Send("{Text}" . pkgCodes) ; products input
+            Sleep(100)
+            Send("!h") ; search
             utils.waitLoading()
-            Send "!a" ; select all
+            Send("!a") ; select all
             utils.waitLoading()
-            Send "!o" ; ok
+            Send("!o") ; ok
             utils.waitLoading()
         }
 
         ; include pseudo rooms(apartments/presidential)
-        Send "!e"
-        Sleep 100
+        Send("!e")
+        Sleep(100)
 
         ; remove GroupBy condition
         if (!groupByPkg) {
             loop 3 {
-                Send "{Tab}"
-                Sleep 100
+                Send("{Tab}")
+                Sleep(100)
             }
-            Send "{Down}"
-            Sleep 100
+            Send("{Down}")
+            Sleep(100)
         }
 
         return fileName
@@ -843,10 +843,10 @@ class ReportMaster_Action {
     static depForBatchOut() {
         fileName := Format("{1} - Departures", FormatTime(A_Now, "yyyyMMdd"))
 
-        WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
-        BlockInput false
+        WinSetAlwaysOnTop(false, "ahk_class SunAwtFrame")
+        BlockInput(false)
 
-        Sleep 1000
+        Sleep(1000)
         timePeriod := InputBox(
             textMsg := "
             (
@@ -858,7 +858,7 @@ class ReportMaster_Action {
             0 - 自定义时间段
             )", "Report Master")
         if (timePeriod.Result = "Cancel") {
-            Reload
+            Reload()
         }
         frTime := ""
         toTime := ""
@@ -880,31 +880,31 @@ class ReportMaster_Action {
                 return
         }
 
-        Sleep 100
-        WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
-        BlockInput true
+        Sleep(100)
+        WinSetAlwaysOnTop(true, "ahk_class SunAwtFrame")
+        BlockInput(true)
 
-        WinActivate "ahk_class SunAwtFrame"
-        Sleep 100
-        MouseMove 490, 363
-        Sleep 100
-        Click 3
-        Sleep 100
-        Send Format("{Text}{1}", frTime)
-        Sleep 100
-        Send "{Tab}"
-        Sleep 100
-        Send Format("{Text}{1}", toTime)
-        Sleep 100
+        WinActivate("ahk_class SunAwtFrame")
+        Sleep(100)
+        MouseMove(490, 363)
+        Sleep(100)
+        Click(3)
+        Sleep(100)
+        Send(Format("{Text}{1}", frTime))
+        Sleep(100)
+        Send("{Tab}")
+        Sleep(100)
+        Send(Format("{Text}{1}", toTime))
+        Sleep(100)
         loop 7 {
-            Send "{Tab}"
-            Sleep 100
+            Send("{Tab}")
+            Sleep(100)
         }
-        Send "{Space}"
-        Sleep 100
-        Send "{Tab}"
-        Sleep 100
-        Send "{Space}"
+        Send("{Space}")
+        Sleep(100)
+        Send("{Tab}")
+        Sleep(100)
+        Send("{Space}")
 
         return fileName
     }

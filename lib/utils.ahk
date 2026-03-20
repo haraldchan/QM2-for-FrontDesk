@@ -5,17 +5,17 @@ class utils {
         ; Windows set default
         loop winGroup.Length {
             if (WinExist(winGroup[A_Index])) {
-                WinSetAlwaysOnTop false, winGroup[A_Index]
+                WinSetAlwaysOnTop(false, winGroup[A_Index])
             }
         }
         ; Key/Mouse state set default
-        BlockInput false
-        SetCapsLockState false
-        CoordMode "Mouse", "Screen"
+        BlockInput(false)
+        SetCapsLockState(false)
+        CoordMode("Mouse", "Screen")
         if (quit = "quit") {
-            ExitApp
+            ExitApp()
         }
-        Reload
+        Reload()
     }
 
     ; Exit app with clean reload.
@@ -27,8 +27,8 @@ class utils {
     ; Insert text at the beginning of file.
     static filePrepend(textToInsert, fileToPrepend) {
         textOrigin := FileRead(fileToPrepend)
-        FileDelete fileToPrepend
-        FileAppend textToInsert . textOrigin, fileToPrepend
+        FileDelete(fileToPrepend)
+        FileAppend(textToInsert . textOrigin, fileToPrepend)
     }
 
     ; Type checking with error msg.
@@ -67,7 +67,7 @@ class utils {
 
     static waitLoading(interval := 250) {
         loop {
-            sleep interval
+            sleep(interval)
             if (A_Cursor != "Wait") {
                 break
             }

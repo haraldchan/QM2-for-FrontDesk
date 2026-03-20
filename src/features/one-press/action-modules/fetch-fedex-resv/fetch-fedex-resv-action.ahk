@@ -3,22 +3,22 @@ class FetchFedexResv_Action {
 
     static start() {
 		this.isRunning := true
-		HotIf (*) => this.isRunning
+		HotIf((*) => this.isRunning)
 		Hotkey("F12", (*) => this.end(), "On")
 
-        CoordMode "Pixel", "Screen"
-        WinMaximize "ahk_class SunAwtFrame"
-        WinActivate "ahk_class SunAwtFrame"
-        WinSetAlwaysOnTop true, "ahk_class SunAwtFrame"
-        BlockInput true
+        CoordMode("Pixel", "Screen")
+        WinMaximize("ahk_class SunAwtFrame")
+        WinActivate("ahk_class SunAwtFrame")
+        WinSetAlwaysOnTop(true, "ahk_class SunAwtFrame")
+        BlockInput(true)
     }
 
     static end() {
 		this.isRunning := false
 		Hotkey("F12", "Off")
 
-		BlockInput false
-		WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
+		BlockInput(false)
+		WinSetAlwaysOnTop(false, "ahk_class SunAwtFrame")
     }
 
     static USE(roomNum, confNum) {
@@ -42,7 +42,7 @@ class FetchFedexResv_Action {
         )
 
         ; open reservation
-        Send "!r"
+        Send("!r")
         utils.waitLoading()
 
         ; check if alert is on top
@@ -52,8 +52,8 @@ class FetchFedexResv_Action {
                 break
             }
 
-            Send "{Enter}"
-            Sleep 250
+            Send("{Enter}")
+            Sleep(250)
         }
 
         ; get crewname
@@ -74,7 +74,7 @@ class FetchFedexResv_Action {
 		}
 
         ; open More Fields panel
-        Send "!i"
+        Send("!i")
         utils.waitLoading()
 		if (!this.isRunning) {
 			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
@@ -85,7 +85,7 @@ class FetchFedexResv_Action {
         inbound := this.getMoreFieldsValue(6)
         crew["ibCode"] := SubStr(inbound, 1, 2)
         crew["ibNum"] := SubStr(inbound, 3)
-        Sleep 100
+        Sleep(100)
 
         ; arr
         arr := StrSplit(this.getMoreFieldsValue(2), "-")
@@ -106,7 +106,7 @@ class FetchFedexResv_Action {
         ; ETD
         crew["ETD"] := this.getMoreFieldsValue(1)
 
-        Send "!o"
+        Send("!o")
         utils.waitLoading()
 		if (!this.isRunning) {
 			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
@@ -130,7 +130,7 @@ class FetchFedexResv_Action {
 
         A_Clipboard := cell
 
-        Send "!o"
+        Send("!o")
         utils.waitLoading()
 
         this.end()
@@ -145,23 +145,23 @@ class FetchFedexResv_Action {
                 anchorY := FoundY + 36
                 break
             }
-            Sleep 100
+            Sleep(100)
         }
 
-        MouseMove anchorX, anchorY
+        MouseMove(anchorX, anchorY)
         utils.waitLoading()
-        Click
+        Click()
         utils.waitLoading()
-        Send "^c"
-        Sleep 100
+        Send("^c")
+        Sleep(100)
         lastname := A_Clipboard
 
-        Send "{Tab}"
-        Send "^c"
-        Sleep 100
+        Send("{Tab}")
+        Send("^c")
+        Sleep(100)
         firstname := A_Clipboard
 
-        Send "!o"
+        Send("!o")
         utils.waitLoading()
 
         return [firstname, lastname]
@@ -175,20 +175,20 @@ class FetchFedexResv_Action {
                 break
             } else {
                 loop 5 {
-                    Send "{Enter}"
+                    Send("{Enter}")
                 }
-                Send "!i"
-                Send "!c"
+                Send("!i")
+                Send("!c")
                 utils.waitLoading()
             }
-            Sleep 100
+            Sleep(100)
         }
 
-        MouseMove anchorX, anchorY
-        Click 3
-        Sleep 200
-        Send "^c"
-        Sleep 200
+        MouseMove(anchorX, anchorY)
+        Click(3)
+        Sleep(200)
+        Send("^c")
+        Sleep(200)
 
         recLocField := StrSplit(A_Clipboard, (InStr(A_Clipboard, "  ") ? "  " : " "))
         tripNum := recLocField.Length > 1 ? recLocField[2] : ""
@@ -198,11 +198,11 @@ class FetchFedexResv_Action {
 
     static getMoreFieldsValue(step) {
         loop step {
-            Send "{Tab}"
+            Send("{Tab}")
         }
-        Sleep 100
-        Send "^c"
-        Sleep 100
+        Sleep(100)
+        Send("^c")
+        Sleep(100)
 
         return A_Clipboard
     }

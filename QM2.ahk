@@ -6,18 +6,18 @@
 #Include src\App.ahk
 
 ; global consts
-VERSION := "2.8.11"
+VERSION := "2.8.12"
 POPUP_TITLE := "QM2 for FrontDesk " . VERSION
 WIN_GROUP := ["ahk_class SunAwtFrame", "旅客信息", "ahk_class 360se6_Frame"]
-IMAGES := useImages(A_ScriptDir . "\src\Assets")
+IMAGES := useImages(A_ScriptDir . "\assets")
 APP_DATA_DIR := A_AppData . "\QM2"
 CONFIG := useJsonConfig("./qm.config.json", "qm.config.json", APP_DATA_DIR)
 
 ; init setup
-TraySetIcon IMAGES["QMTray.ico"]
-TrayTip "QM 2 运行中…按下 F9 开始使用脚本"
-CoordMode "Mouse", "Screen"
-CoordMode "Pixel", "Screen"
+TraySetIcon(IMAGES["QMTray.ico"])
+TrayTip("QM 2 运行中…按下 F9 开始使用脚本")
+CoordMode("Mouse", "Screen")
+CoordMode("Pixel", "Screen")
 
 ; attach App
 QM := Svaner({
@@ -36,7 +36,9 @@ App(QM)
 QM.Show()
 
 ; hotkey setup
-F9:: QM.Show()
+F9:: {
+    QM.Show()
+}
 ^F12:: {
 	if (FileExist(CONFIG.path)) {
 		FileDelete(CONFIG.path)
@@ -46,4 +48,6 @@ F9:: QM.Show()
 }
 
 #HotIf WinActive(POPUP_TITLE)
-Esc:: QM.Hide()
+Esc:: {
+    QM.Hide()
+}

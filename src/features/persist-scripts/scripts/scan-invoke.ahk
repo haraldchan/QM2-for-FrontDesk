@@ -10,8 +10,8 @@ ScanInvoke() {
 
 	Win := Gui("+AlwaysOnTop", "启动扫描")
 	Win.OnEvent("Close", (*) => Win.Destroy())
-	HotIf (*) => WinExist("启动扫描")
-	Hotkey "Esc", (*) => Win.Destroy()
+	HotIf((*) => WinExist("启动扫描"))
+	Hotkey("Esc", (*) => Win.Destroy())
 
 	scan(*) {
 		Win.Hide()
@@ -62,12 +62,12 @@ ScanInvoke() {
 						break
 					}
 
-					Sleep 500
+					Sleep(500)
 				}
 				FileMove(temp, img)
 
 				if (MsgBox("扫描完成，立即查看？", A_ThisFunc, "OKCancel T5") == "OK") {
-					Run img
+					Run(img)
 				}
 
 				Win.Destroy()

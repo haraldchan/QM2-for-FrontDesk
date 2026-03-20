@@ -19,7 +19,7 @@ FetchFedexResv(App, props) {
         roomNum.Focus()
 
         if (WinExist("ahk_class XLMAIN")) {
-            WinActivate "ahk_class XLMAIN"
+            WinActivate("ahk_class XLMAIN")
         }
     }
 

@@ -47,10 +47,10 @@ MiscReports(App) {
         savedFiledName := ReportMaster_Action.reportFiling(reportInfo, App["misc-file-type"].Text)
         ReportMaster_Action.end()
 
-        WinSetAlwaysOnTop false, "ahk_class SunAwtFrame"
+        WinSetAlwaysOnTop(false, "ahk_class SunAwtFrame")
         saveText := "已保存报表：`n`n" . Format("{1}-{2}", FormatTime(A_Now, "yyyyMMdd"), reportInfo.name) . "`n`n是否打开所在文件夹? "
         if (MsgBox(saveText, POPUP_TITLE, "OKCancel 4096") == "OK") {
-            Run Format('explorer /select, "{1}"', A_MyDocuments . "\" . savedFiledName)
+            Run(Format('explorer /select, "{1}"', A_MyDocuments . "\" . savedFiledName))
         } else {
             utils.cleanReload(WIN_GROUP)
         }

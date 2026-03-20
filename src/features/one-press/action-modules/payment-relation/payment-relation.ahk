@@ -63,7 +63,7 @@ PaymentRelation(App, props := {}) {
 
     action(*) {
         App.Hide()
-        Sleep 100
+        Sleep(100)
 
         form := comp.submit()
         PaymentRelation_Action.USE(pasteSingle.value ? "" : form)

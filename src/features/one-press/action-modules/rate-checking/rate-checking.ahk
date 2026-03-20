@@ -61,8 +61,8 @@ RateChecking(App, props) {
         scf := App["supt-conf-nums"]
 
         HotIf((*) => scf.Focused)
-        Hotkey "Up", (*) => (handleHistoryNavigate(scf, "Up"), scf.Focus())
-        Hotkey "Down", (*) => (handleHistoryNavigate(scf, "Down"), scf.Focus())
+        Hotkey("Up", (*) => (handleHistoryNavigate(scf, "Up"), scf.Focus()))
+        Hotkey("Down", (*) => (handleHistoryNavigate(scf, "Down"), scf.Focus()))
     }
 
     comp.render := (this) => this.Add(
