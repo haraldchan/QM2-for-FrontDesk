@@ -12,6 +12,7 @@ WIN_GROUP := ["ahk_class SunAwtFrame", "旅客信息", "ahk_class 360se6_Frame"]
 IMAGES := useImages(A_ScriptDir . "\assets")
 APP_DATA_DIR := A_AppData . "\QM2"
 CONFIG := useJsonConfig("./qm.config.json", "qm.config.json", APP_DATA_DIR)
+SUSPEND_CONTROLLER := SuspendController(0x0401)
 
 ; init setup
 TraySetIcon(IMAGES["QMTray.ico"])
@@ -34,6 +35,35 @@ QM := Svaner({
 })
 App(QM)
 QM.Show()
+
+; error logger
+OnError(logError)
+logError(err, *) {
+    if (!DirExist(A_ScriptDir . "\error-log")) {
+        DirCreate(A_ScriptDir . "\error-log")
+    }
+
+    errTxt := A_ScriptDir . "\error-log\" . FormatTime(A_Now, "yyyyMMdd") . "txt"
+    errLog := Format("
+    (
+        {1} line: {2}
+        message: {3}
+        error:   {4}`n`n
+    )",
+        FormatTime(A_Now, "yyyy/MM/dd HH:mm"),
+        err.Line,
+        err.Message,
+        err.Extra
+    )
+
+    FileAppend(errLog, errTxt, "utf-8")
+    	if (FileExist(CONFIG.path)) {
+        FileDelete(CONFIG.path)
+    }
+    CONFIG.createLocal()
+    
+    utils.cleanReload(WIN_GROUP)
+}
 
 ; hotkey setup
 F9:: {
