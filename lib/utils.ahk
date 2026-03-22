@@ -1,6 +1,10 @@
 ;utils: general utility methods
 class utils {
-    ; Reset windows and key states.
+    /**
+     * Reset windows and key states.
+     * @param {Array} winGroup Windows to release.
+     * @param {true | false} quit Exit app on reload.
+     */
     static cleanReload(winGroup, quit := 0) {
         ; Windows set default
         loop winGroup.Length {
@@ -18,53 +22,21 @@ class utils {
         Reload()
     }
 
-    ; Exit app with clean reload.
+    /**
+     * 
+     * @param {String} appName 
+     * @param {String} popupTitle 
+     * @param {Array} winGroup 
+     */
     static quitApp(appName, popupTitle, winGroup) {
         quitConfirm := MsgBox(Format("是否退出 {1}？", appName), popupTitle, "OKCancel 4096")
-        quitConfirm = "OK" ? this.cleanReload(winGroup, "quit") : this.cleanReload(winGroup)
+        quitConfirm = "OK" ? this.cleanReload(winGroup, true) : this.cleanReload(winGroup)
     }
 
-    ; Insert text at the beginning of file.
-    static filePrepend(textToInsert, fileToPrepend) {
-        textOrigin := FileRead(fileToPrepend)
-        FileDelete(fileToPrepend)
-        FileAppend(textToInsert . textOrigin, fileToPrepend)
-    }
-
-    ; Type checking with error msg.
-    static checkType(val, typeChecking, errMsg) {
-        if (!(val is typeChecking)) {
-            throw TypeError(Format("{1}; `n`nCurrent Type: {2}", errMsg, Type(val)))
-        }
-    }
-
-    static imgSearchAll(imgPath, method := "TD") {
-        ; method: "LeftRight" or "LR", "TopDown" or "TD"
-        target := imgPath
-        coords := []
-        fromWidth := 0
-        fromHeight := 0
-
-        loop {
-            if (!ImageSearch(&FoundX, &FoundY, fromWidth, fromHeight, A_ScreenWidth, A_ScreenWidth, target)) {
-                if (A_Index = 1) {
-                    MsgBox("Image Not Found.")
-                }
-                break
-            } else {
-                x := FoundX
-                y := FoundY
-                coords.Push([x, y])
-
-                if (method = "LeftRight" || method = "LR") {
-                    fromWidth := x
-                } else if (method = "TopDown" || method = "TD") {
-                    fromHeight := y
-                }
-            }
-        }
-    }
-
+    /**
+     * 
+     * @param {Integer} interval waiting interval in ms.
+     */
     static waitLoading(interval := 250) {
         loop {
             sleep(interval)
