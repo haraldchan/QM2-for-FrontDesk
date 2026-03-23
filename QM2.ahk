@@ -12,7 +12,8 @@ WIN_GROUP := ["ahk_class SunAwtFrame", "旅客信息", "ahk_class 360se6_Frame"]
 IMAGES := useImages(A_ScriptDir . "\assets")
 APP_DATA_DIR := A_AppData . "\QM2"
 CONFIG := useJsonConfig("./qm.config.json", "qm.config.json", APP_DATA_DIR)
-SUSPEND_CONTROLLER := SuspendController(0x0401)
+FORCE_SUSPEND_MESSAGE := 0x2042
+SUSPEND_CONTROLLER := SuspendController(FORCE_SUSPEND_MESSAGE)
 
 ; init setup
 TraySetIcon(IMAGES["QMTray.ico"])
