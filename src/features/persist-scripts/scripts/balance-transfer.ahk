@@ -87,7 +87,7 @@ class BalanceTransfer {
         Sleep(100)
         Send("{Tab}")
         Sleep(100)
-        Send("{Text}" . Format("{1}",  0 - Integer(balance)))
+        Send("{Text}" . Format("{:.2f}",  0 - balance))
         Sleep(100)
         loop 5 {
             Send("{Tab}")
