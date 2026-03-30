@@ -2,7 +2,8 @@
   "persist-scripts-switch": {
     "balance-transfer": true,
     "city-ledger": false,
-    "scan-invoke": true
+    "scan-invoke": true,
+    "start-wacom-driver": true
   },
   "report-master": {
     "on-day-group-folder": "\\\\10.0.2.13\\fd\\9-ON DAY GROUP DETAILS",
