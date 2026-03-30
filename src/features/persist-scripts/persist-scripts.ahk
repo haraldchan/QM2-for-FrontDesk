@@ -1,6 +1,7 @@
 #Include scripts\balance-transfer.ahk
 #Include scripts\city-ledger-co.ahk
 #Include scripts\scan-invoke.ahk
+#Include scripts\start-wacom-driver.ahk
 
 /**
  * @param {Svaner} App 
@@ -33,11 +34,15 @@ PersistScriptsControl(App) {
 
 		; Invoke Scan
 		HotIf((*) => App["scan-invoke-on"].Value)
-		Hotkey("^+s", (*) => ScanInvoke(), "On")
+		Hotkey("^+s", ScanInvoke, "On")
 
 		; Balance Transfer
 		HotIf((*) => App["balance-transfer-on"].Value)
 		HotString("::bt", (*) => BalanceTransfer.USE())
+
+		; Start Wacom driver
+		HotIf((*) => App["start-wacom-driver-on"].Value)
+		Hotstring("::wc", StartWacomDriver)
 	}
 
 	App.defineDirectives(
@@ -54,7 +59,7 @@ PersistScriptsControl(App) {
 				font: { options: "bold" },
 				groupbox: {
 					title: "常驻脚本",
-					options: "Section x15 y+10 w375 h100",
+					options: "Section x15 y+10 w375 h125",
 				}
 			},
 			() => [
@@ -69,7 +74,12 @@ PersistScriptsControl(App) {
 
 				; Balance Transfer
 				App.AddCheckbox("vbalance-transfer-on @use:psc-label", "Balance Transfer").onClick(handlePersistSwitch),
-				App.AddText("@use:psc-desc", "输入: BT")
+				App.AddText("@use:psc-desc", "输入: BT"),
+
+				; Start Wacom driver
+				App.AddCheckbox("vstart-wacom-driver-on @use:psc-label", "恢复签名版可用").onClick(handlePersistSwitch),
+				App.AddText("@use:psc-desc", "输入：WC | 点击->"),
+				App.AddButton("xp+105 w80 h20", "重启驱动").onClick(StartWacomDriver),
 			]
 		),
 		
