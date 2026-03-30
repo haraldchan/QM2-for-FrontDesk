@@ -16,10 +16,8 @@ class utils {
         BlockInput(false)
         SetCapsLockState(false)
         CoordMode("Mouse", "Screen")
-        if (quit = "quit") {
-            ExitApp()
-        }
-        Reload()
+
+        quit ? ExitApp() : Reload()
     }
 
     /**
