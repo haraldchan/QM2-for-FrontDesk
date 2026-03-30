@@ -1,4 +1,4 @@
-ScanInvoke() {
+ScanInvoke(*) {
 	if (WinExist(A_ThisFunc)) {
 		WinActivate(A_ThisFunc)
 		return
