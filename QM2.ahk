@@ -5,8 +5,13 @@
 #Include lib\lib-index.ahk
 #Include src\App.ahk
 
+; acquire admin
+if (!A_IsAdmin) {
+    Run("*RunAs " . A_ScriptFullPath)
+}
+
 ; global consts
-VERSION := "2.8.12"
+VERSION := "2.9.0"
 POPUP_TITLE := "QM2 for FrontDesk " . VERSION
 WIN_GROUP := ["ahk_class SunAwtFrame", "旅客信息", "ahk_class 360se6_Frame"]
 IMAGES := useImages(A_ScriptDir . "\assets")
