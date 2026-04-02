@@ -43,7 +43,10 @@ App(QM)
 QM.Show()
 
 ; error logger
-OnError(logError)
+OnError(logError, false)
+/**
+ * @param {Error} err 
+ */
 logError(err, *) {
     if (!DirExist(A_ScriptDir . "\error-log")) {
         DirCreate(A_ScriptDir . "\error-log")
