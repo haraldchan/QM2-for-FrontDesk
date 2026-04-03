@@ -3,7 +3,7 @@
     "balance-transfer": true,
     "city-ledger": false,
     "scan-invoke": true,
-    "start-wacom-driver": true
+    "start-wacom-driver": false
   },
   "report-master": {
     "on-day-group-folder": "\\\\10.0.2.13\\fd\\9-ON DAY GROUP DETAILS",
