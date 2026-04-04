@@ -14,18 +14,25 @@ StartWacomDriver(arg*) {
             return
         case InStr(output, "RUNNING"):
             shell.Run(Format("sc stop {1}", wacomService), 0)
+            loop {
+                state := shell.Exec("sc query " . wacomService).StdOut.ReadAll()
+                Sleep(1000)
+            } until (state.includes("STOPPED"))
     }
 
     shell.Run(Format("sc start {1}", wacomService), 0)
-    Sleep(1000)
+    loop {
+        Sleep(500)
+        state := shell.Exec("sc query " . wacomService).StdOut.ReadAll()
+        if (state.includes("RUNNING")) {
+            btn.Enabled := true
+            shell := ""
+            MsgBox("Wacom 驱动已启动。", , "4096 T1 iconi")
+            return
+        }
+    } until (A_Index > 5)
 
-    if (shell.Exec("sc query " . wacomService).StdOut.ReadAll().includes("RUNNING")) {
-        MsgBox("Wacom 驱动已启动。", , "4096 T1 iconi")
-    }
-    else {
-        MsgBox("Wacom 驱动启动失败，请查看是否正确安装。", POPUP_TITLE, "4096 T1 icon!")
-    }
-
+    MsgBox("Wacom 驱动启动失败，请查看是否正确安装。", POPUP_TITLE, "4096 T1 icon!")
     btn.Enabled := true
     shell := ""
 }
