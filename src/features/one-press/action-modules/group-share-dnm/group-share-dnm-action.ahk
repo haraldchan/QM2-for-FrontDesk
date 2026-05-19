@@ -24,19 +24,19 @@ class GroupShareDnm_Action {
     static USE(form) {
         this.start()
 
-        if (form.shareDnm) {
+        if (form.gsdShareDnm) {
             this.shareDnm(form.gsdRmQty, form.ratecodeField)
         }
 
-        if (form.shareOnly) {
+        if (form.gsdShareOnly) {
             this.shareDnm(form.gsdRmQty, form.useRc, true)
         }
 
-        if (form.dnmOnly) {
+        if (form.gsdDnmOnly) {
             this.dnm(form.gsdRmQty)
         }
 
-        if (form.dnmRemove) {
+        if (form.gsdDnmRemove) {
             this.dnm(form.gsdRmQty, true)
         }
 

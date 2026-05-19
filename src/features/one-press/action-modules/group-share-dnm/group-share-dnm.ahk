@@ -17,6 +17,16 @@ GroupShareDnm(App, props) {
         ratecodeField.Value := useRatecode ? rateCode.value : ""
     }
 
+    handleDisableUseRateCode(ctrl, _) {
+        App["ratecode-field"].Enabled := !(ctrl.Name == "gsd-dnm-only" || ctrl.Name == "gsd-dnm-remove")
+        App["use-rc"].Enabled := !(ctrl.Name == "gsd-dnm-only" || ctrl.Name == "gsd-dnm-remove")
+    }
+
+    onMount() {
+        radios := App[ctrl => (ctrl.name.includes("gsd") && ctrl is Gui.Radio)]
+        radios.forEach(radio => radio.onClick(handleDisableUseRateCode))
+    }
+
     action(*) {
         form := comp.submit()
         if (!form.gsdRmQty) {
@@ -49,12 +59,13 @@ GroupShareDnm(App, props) {
                 App.AddEdit("vratecode-field x+5 h20 0x200 w100", "{1}", rateCode).bind(),
 
                 ; both/share/dnm
-                App.AddRadio("vshare-dnm xs10 y+10 h20 Checked 0x200", "Share 及 DoNotMove"),
-                App.AddRadio("vshare-only xs10 y+5 h20 0x200", "仅做 Share"),
-                App.AddRadio("vdnm-only xs10 y+5 h20 0x200", "仅做 DoNotMove"),
-                App.AddRadio("vdnm-remove xs10 y+5 h20 0x200", "解除 DoNotMove(主管权限)"),
+                App.AddRadio("vgsd-share-dnm xs10 y+10 h20 Checked 0x200", "Share 及 DoNotMove"),
+                App.AddRadio("vgsd-share-only xs10 y+5 h20 0x200", "仅做 Share"),
+                App.AddRadio("vgsd-dnm-only xs10 y+5 h20 0x200", "仅做 DoNotMove"),
+                App.AddRadio("vgsd-dnm-remove xs10 y+5 h20 0x200", "解除 DoNotMove(主管权限)"),
                 App.AddButton("vgroup-share-dnm-action Default xs10 y+10 w100", "启 动")
-                   .onClick(action)
+                   .onClick(action),
+                onMount()
             ]
         )
     )
