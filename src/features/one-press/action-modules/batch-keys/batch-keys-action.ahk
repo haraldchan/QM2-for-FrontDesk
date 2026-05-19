@@ -35,7 +35,13 @@ class BatchKeysXl_Action {
 
         coDateTimeFromInput := [FormatTime(coDateTime, "ShortDate"), FormatTime(coDateTime, "HH:mm")]
 
-        Xl := ComObject("Excel.Application")
+        Xl := "" 
+        try { 
+            Xl := ComObject("Ket.Application")
+        }
+        catch {
+            Xl := ComObject("Excel.Application")
+        }
         GroupKeysXl := Xl.Workbooks.Open(path)
         groupRooms := GroupKeysXl.Worksheets[1]
         lastRow := groupRooms.Cells(groupRooms.Rows.Count, "A").End(-4162).Row

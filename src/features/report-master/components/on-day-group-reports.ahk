@@ -46,7 +46,12 @@ OnDayGroupReports(App, curActiveTab) {
         }
 
         blockInfo := []
-        Xl := ComObject("Excel.Application")
+        try { 
+            Xl := ComObject("Ket.Application")
+        }
+        catch {
+            Xl := ComObject("Excel.Application")
+        }        
         OnDayGroupDetails := Xl.Workbooks.Open(XL_FILE_PATH).Worksheets("Sheet1")
         loop {
             blockCodeReceived := OnDayGroupDetails.Cells(A_Index + 3, 1).Text
