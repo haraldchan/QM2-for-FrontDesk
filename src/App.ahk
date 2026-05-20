@@ -19,7 +19,7 @@ App(App) {
 	}
 
     onMount() {
-        firstRadio := App["component:$op-radio-group"].ctrls.find(c => c is Gui.Radio)
+        firstRadio := App["component:op-radio-group"].ctrls.find(c => c is Gui.Radio)
         firstRadio.Value := true
         firstRadio.Focus()
 
