@@ -67,7 +67,7 @@ class SvanerDateTime extends Svaner.Control {
         TypeChecker.checkTypeDepend(depend)
 
         this.key := key
-        super.__New(GuiObject, "DateTime", options, dateFormat, depend)
+        super.__New(GuiObject, "DateTime", options, dateFormat, depend, key)
     }
 }
 
@@ -180,6 +180,11 @@ class SvanerListView extends Svaner.Control {
         super.__New(GuiObject, "ListView", options, columnDetails, depend, key)
     }
 
+    focusOnUpdate(state := true) {
+        super.isFocusOnUpdate := state
+    }
+
+
     /**
      * Applies new options to columns
      * @param {Object} newColumnDetails 
@@ -266,11 +271,11 @@ class SvanerSlider extends Svaner.Control {
      * @param {String} options Options apply to the control, same as Gui.Add.
      * @param {signal} [depend] Subscribed signal.
      */
-    __New(GuiObject, options := "", depend := 0) {
+    __New(GuiObject, options := "", depend := 0, key := 0) {
         TypeChecker.checkType(options, String, "Parameter #1 (options) is not a String")
         TypeChecker.checkType(depend, signal, "Parameter #2 (depend) is not a signal")
 
-        super.__New(GuiObject, "Slider", options,, depend)
+        super.__New(GuiObject, "Slider", options,, depend, key)
     }
 }
 
