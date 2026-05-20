@@ -18,18 +18,24 @@ GroupShareDnm(App, props) {
     }
 
     handleDisableUseRateCode(ctrl, _) {
-        App["ratecode-field"].Enabled := !(ctrl.Name == "gsd-dnm-only" || ctrl.Name == "gsd-dnm-remove")
-        App["use-rc"].Enabled := !(ctrl.Name == "gsd-dnm-only" || ctrl.Name == "gsd-dnm-remove")
+        App["ratecode-field"].Enabled := !(ctrl.attributes.gsdMode == "dnmOnly" || ctrl.attributes.gsdMode == "dnmRemove")
+        App["use-rc"].Enabled := !(ctrl.attributes.gsdMode == "dnmOnly" || ctrl.attributes.gsdMode == "dnmRemove")
     }
 
-    onMount() {
-        radios := App[ctrl => (ctrl.name.includes("gsd") && ctrl is Gui.Radio)]
+    onMount() {        
+        radios := App["#gsd-mode"]
         radios.forEach(radio => radio.onClick(handleDisableUseRateCode))
     }
 
     action(*) {
-        form := comp.submit()
-        if (!form.gsdRmQty) {
+        form := {
+            roomQty: App["gsd-rm-qty"].Value,
+            isFilterByRatecode: App["use-rc"].Value,
+            filterRatecode: ratecode.value,
+            runningMode: App["#gsd-mode"].find(ctrl => ctrl.Value == true).attributes.gsdMode
+        }
+
+        if (!form.roomQty) {
             MsgBox("请输入需要处理的房间数量", POPUP_TITLE, "4096 T1")
             App["gsd-rm-qty"].Focus()
             return
@@ -59,10 +65,10 @@ GroupShareDnm(App, props) {
                 App.AddEdit("vratecode-field x+5 h20 0x200 w100", "{1}", rateCode).bind(),
 
                 ; both/share/dnm
-                App.AddRadio("vgsd-share-dnm xs10 y+10 h20 Checked 0x200", "Share 及 DoNotMove"),
-                App.AddRadio("vgsd-share-only xs10 y+5 h20 0x200", "仅做 Share"),
-                App.AddRadio("vgsd-dnm-only xs10 y+5 h20 0x200", "仅做 DoNotMove"),
-                App.AddRadio("vgsd-dnm-remove xs10 y+5 h20 0x200", "解除 DoNotMove(主管权限)"),
+                App.AddRadio("#gsd-mode=shareDnm xs10 y+10 h20 Checked 0x200", "Share 及 DoNotMove"),
+                App.AddRadio("#gsd-mode=shareOnly xs10 y+5 h20 0x200", "仅做 Share"),
+                App.AddRadio("#gsd-mode=dnmOnly xs10 y+5 h20 0x200", "仅做 DoNotMove"),
+                App.AddRadio("#gsd-mode=dnmRemove xs10 y+5 h20 0x200", "解除 DoNotMove(主管权限)"),
                 App.AddButton("vgroup-share-dnm-action Default xs10 y+10 w100", "启 动")
                    .onClick(action),
                 onMount()

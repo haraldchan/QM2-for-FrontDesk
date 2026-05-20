@@ -21,23 +21,28 @@ class GroupShareDnm_Action {
         WinSetAlwaysOnTop(false, "ahk_class SunAwtFrame")
     }
 
+    /**
+     * @typedef {Object} GSDForm
+     * @property {String} filterRatecode
+     * @property {1 | 0} isFilterByRatecode
+     * @property {Integer} roomQty
+     * @property {"shareDnm" | "shareOnly" | "dnmOnly" | "dnmRemove"} runningMode
+     */
+    /**
+     * @param {GSDForm} form 
+     */
     static USE(form) {
         this.start()
 
-        if (form.gsdShareDnm) {
-            this.shareDnm(form.gsdRmQty, form.ratecodeField)
-        }
-
-        if (form.gsdShareOnly) {
-            this.shareDnm(form.gsdRmQty, form.useRc, true)
-        }
-
-        if (form.gsdDnmOnly) {
-            this.dnm(form.gsdRmQty)
-        }
-
-        if (form.gsdDnmRemove) {
-            this.dnm(form.gsdRmQty, true)
+        switch form.runningMode {
+            case "shareDnm":
+                this.shareDnm(form.roomQty, form.isFilterByRatecode ? form.filterRatecode : "")
+            case "shareOnly":
+                this.shareDnm(form.roomQty, form.isFilterByRatecode ? form.filterRatecode : "", true)
+            case "dnmOnly":
+                this.dnm(form.roomQty)
+            case "dnmRemove":
+                this.dnm(form.roomQty, true)
         }
 
         this.end()
