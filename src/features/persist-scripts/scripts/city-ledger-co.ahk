@@ -13,6 +13,8 @@ class CityLedgerCo {
 
 		Hotkey("F12", (*) => this.end(), "On")
 		this.isRunning := true
+
+		SUSPEND_CONTROLLER.suspendOtherScripts()
 	}
 	
 	static end() {
@@ -21,76 +23,53 @@ class CityLedgerCo {
 		
 		Hotkey("F12", (*) => {}, "Off")
 		this.isRunning := false
+
+		SUSPEND_CONTROLLER.restoreAllScripts()
 	}
 
 	static USE() {
 		this.start()
-
-		isBlue := "0x004080"
-		PixelGetColor(600, 830) == isBlue
-			? this.fullWin()
-			: this.smallWin()
-		
+		this.runCL()
 		this.end()
 	}
 
-	static fullWin() {
+	static runCL() {
 		MouseMove(862, 272)
 		Sleep(100)
 		Click()
 		Sleep(10)
 		Send("!o")
 		utils.waitLoading()
-		Send("{Blind}{Text}CL")
-		if (!this.isRunning) {
+		
+		found := PmsImageFinder.find("city-ledger.PNG")
+		if (!found) {
 			this.end()
 			return
 		}
 
-		Sleep(10)
-		Send("!f")
+		MouseMove(found.outX, found.outY)
+		Click()
 		utils.waitLoading()
-		Send("!p")
+		MouseMove(found.outX - 524, found.outY + 260)
+		Click()
+		utils.waitLoading()
+		MouseMove(found.outX - 133, found.outY + 264)
+		Click()
 		utils.waitLoading()
 		Send("!n")
 		utils.waitLoading()
 		Sleep(100)
 
-		loop {
-			if (ImageSearch(&foundX, &foundY, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["alert.png"])) {
-				MouseMove(foundX, foundY)
-				Click()
-				break
-			}
-
-			Sleep(100)
-		} until (A_Index > 20)
-
-		Send("!n")
+		found := PmsImageFinder.find("alert.PNG", 100, 10)
+		if (!found) {
+			this.end()
+			return
+		}
+		MouseMove(found.outX + 165, found.outY + 51)
+		Click()
 		utils.waitLoading()
 
 		MouseMove(352, 269)
 		this.end()
-	}
-
-	static smallWin() {
-		BlockInput(true)
-		MouseMove(700, 200)
-		Sleep(10)
-		Click()
-		Sleep(10)
-		Send("!o")
-		Sleep(10)
-		Send("{Blind}{Text}CL")
-		Sleep(10)
-		Send("!f")
-		Sleep(10)
-		Send("!p")
-		Sleep(10)
-		Send("{Esc}")
-		Sleep(10)
-		BlockInput(false)
-		Sleep(10)
-		WinRestore("ahk_class SunAwtFrame")
 	}
 }
