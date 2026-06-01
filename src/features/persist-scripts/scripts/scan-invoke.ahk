@@ -66,7 +66,7 @@ ScanInvoke(*) {
 				}
 				FileMove(temp, img)
 
-				if (MsgBox("扫描完成，立即查看？", A_ThisFunc, "OKCancel T5") == "OK") {
+				if (MsgBox("扫描完成，立即查看？", A_ThisFunc, "OKCancel T1") == "OK") {
 					Run(img)
 				}
 
