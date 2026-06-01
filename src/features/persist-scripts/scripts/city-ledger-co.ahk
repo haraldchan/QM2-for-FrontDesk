@@ -47,14 +47,11 @@ class CityLedgerCo {
 			return
 		}
 
-		MouseMove(found.outX, found.outY)
-		Click()
+		Click(found.outX, found.outY)
 		utils.waitLoading()
-		MouseMove(found.outX - 524, found.outY + 260)
-		Click()
+		Click(found.outX - 524, found.outY + 260)
 		utils.waitLoading()
-		MouseMove(found.outX - 133, found.outY + 264)
-		Click()
+		Click(found.outX - 133, found.outY + 264)
 		utils.waitLoading()
 		Send("!n")
 		utils.waitLoading()
@@ -65,8 +62,7 @@ class CityLedgerCo {
 			this.end()
 			return
 		}
-		MouseMove(found.outX + 165, found.outY + 51)
-		Click()
+		Click(found.outX + 165, found.outY + 51)
 		utils.waitLoading()
 
 		MouseMove(352, 269)
