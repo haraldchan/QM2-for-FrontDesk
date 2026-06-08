@@ -35,7 +35,7 @@ OnePress(App) {
         "@use:form-edit", "x+10 w200 h25 0x200"
     )
 
-    return (
+    render() {
         StackBox(App, 
             {
                 name: "op-radio-group",
@@ -46,5 +46,7 @@ OnePress(App) {
             )
         ),
         Dynamic(App, selectedModule, modules)
-    )
+    }
+    
+    return render()
 }

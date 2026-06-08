@@ -56,15 +56,17 @@ MiscReports(App) {
         }
     }
 
-    return (
+    render() {
         App.AddListBox("vmisc-list x30 y+15 w260 r4 Choose1", miscReports.keys())
-           .onChange((ctrl, _) => selectedMiscReport.set(ctrl.Text)),
-        App.AddDDL("vmisc-file-type @align[y]:misc-list x+10 w80 Choose1", ["PDF", "XML", "TXT", "XLS"]),
+           .onChange((ctrl, _) => selectedMiscReport.set(ctrl.Text))
+        App.AddDDL("vmisc-file-type @align[y]:misc-list x+10 w80 Choose1", ["PDF", "XML", "TXT", "XLS"])
         App.AddButton("vmisc-report-save @align[x]:misc-file-type y+16 h25 w80 Default", "保存报表")
-           .onClick(saveReports),
+           .onClick(saveReports)
         ; options
         Dynamic(App, selectedMiscReport, miscReports)
-    )
+    }
+    
+    return render()
 }
 
 /**

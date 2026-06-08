@@ -51,7 +51,7 @@ PersistScriptsControl(App) {
 		"@func:bold", ctrl => ctrl.SetFont("bold")
 	)
 
-	return (
+	render() {
 		StackBox(
 			App, 
 			{
@@ -84,5 +84,7 @@ PersistScriptsControl(App) {
 		),
 		
 		onMount()
-	)
+	}
+
+	return render()
 }

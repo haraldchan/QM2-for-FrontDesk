@@ -26,12 +26,12 @@ App(App) {
         App["blank-share-action"].Opt("Default")
     }
 
-	return (
+	render() {
 		; desc
-		StrSplit(description, "`n").map(fragment => App.AddText("y+5", fragment)),
+		StrSplit(description, "`n").map(fragment => App.AddText("y+5", fragment))
 		
 		; persist scripts
-		PersistScriptsControl(App),
+		PersistScriptsControl(App)
 
 		; op action modules/ phrases/ report master
 		App.AddTab3("w380 x15 Choose1", OrderedMap(
@@ -40,8 +40,10 @@ App(App) {
 			"夜班报表", () => OverNightReports(App),
 			"团单信息", () => OnDayGroupReports(App, curActiveTab),
 			"其他报表", () => MiscReports(App),
-		)).onChange(onTabChange),
+		)).onChange(onTabChange)
 
 		onMount()
-	)
+	}
+
+	return render()
 }

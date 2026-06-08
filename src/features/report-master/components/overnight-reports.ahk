@@ -55,7 +55,7 @@ OverNightReports(App) {
         handleHisForNextMonthUncheck()
     }
 
-    return (
+    render() {
         ; report listview
         App.AddListView(
             ; options
@@ -71,11 +71,13 @@ OverNightReports(App) {
             },
             ; report infos
             signal(ReportMaster_Action.reportList.onr)
-        ),
+        )
         ; footer
-        App.AddCheckBox("vonr-check-all Checked y+10 h25", "全选"),
-        App.AddDDL("vonr-file-type w50 x+160 Choose1", ["PDF", "XML", "TXT", "XLS"]),
-        App.AddButton("vonr-report-save h25 w80 x+10 Default", "保存报表").onClick(saveReports),
+        App.AddCheckBox("vonr-check-all Checked y+10 h25", "全选")
+        App.AddDDL("vonr-file-type w50 x+160 Choose1", ["PDF", "XML", "TXT", "XLS"])
+        App.AddButton("vonr-report-save h25 w80 x+10 Default", "保存报表").onClick(saveReports)
         onMount()
-    )
+    }
+
+    return render()
 }
