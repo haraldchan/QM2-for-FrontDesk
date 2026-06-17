@@ -20,7 +20,13 @@ class BalanceTransfer {
 	}
 
     static USE() {
-        BT := Gui(, "Balance Transfer")
+        static formData := {
+            balance: "",
+            fromMsg: "",
+            toMsg: "",
+        }
+
+        BT := Gui("+AlwaysOnTop", "Balance Transfer")
         BT.OnEvent("Escape", (this) => this.Destroy())
 
         handleSubmit(*) {
@@ -35,18 +41,23 @@ class BalanceTransfer {
             this.BalanceTransfer_Action(formData)
         }
 
-        return (
+        render() {
             ; form
-            BT.AddText("x10 w60 h25 0x200", "金额："),
-            BT.AddEdit("vbalance w150 x+10 h25 0x200", ""),
-            BT.AddText("x10 w60 h25 0x200", "From 信息："),
-            BT.AddEdit("vfromMsg w150 x+10 h25 0x200", ""),
-            BT.AddText("x10 w60 h25 0x200", "To   信息："),
-            BT.AddEdit("vtoMsg w150 x+10 h25 0x200", ""),
+            BT.AddText("x10 w60 h25 0x200", "金额：")
+            BT.AddEdit("vbalance w150 x+10 h25 0x200", formData.balance)
+            BT.AddText("x10 w60 h25 0x200", "From 信息：")
+            BT.AddEdit("vfromMsg w150 x+10 h25 0x200", formData.fromMsg)
+            BT.AddText("x10 w60 h25 0x200", "To   信息：")
+            BT.AddEdit("vtoMsg w150 x+10 h25 0x200", formData.toMsg)
             ; bts
-            BT.AddButton("x10 w105 h30", "取消").OnEvent("Click", (*) => BT.Destroy()),
-            BT.AddButton("w105 h30 x+10 +Default", "确定").OnEvent("Click", handleSubmit),
+            BT.AddButton("x10 w105 h30", "取消").OnEvent("Click", (*) => BT.Destroy())
+            BT.AddButton("w105 h30 x+10 +Default", "确定").OnEvent("Click", handleSubmit)
             ;
+            BT.Show()
+        }
+
+        return (
+            render(),
             BT.Show()
         )
     }
