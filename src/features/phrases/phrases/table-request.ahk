@@ -17,7 +17,7 @@ TableRequest(App, props) {
 				continue
 			}
 
-			if (field != "trClerk" && !val) {
+			if (!val) {
 				return 
 			}
 		}
