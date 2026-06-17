@@ -41,8 +41,9 @@ OnePress(App) {
                 name: "op-radio-group",
                 groupbox: { options: "vop-radio-group Section x30 y+10 w350 Hidden " . Format("h{1}", 30 * modules.keys().Length) } 
             },
-            () => modules.entries().map((entry, index) => 
-                App.AddRadio(index == 1 ? "xs1 h20 yp+1" : "xs1 h20 yp+30" , entry[1]).onClick(handleModuleChange)
+            () => modules.keys().map(desc => 
+                App.AddRadio(A_Index == 1 ? "xs1 h20 yp+1" : "xs1 h20 yp+30" , desc)
+                   .onClick(handleModuleChange)
             )
         ),
         Dynamic(App, selectedModule, modules)
