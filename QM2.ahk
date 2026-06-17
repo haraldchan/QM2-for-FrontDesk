@@ -35,44 +35,13 @@ QM := Svaner({
         name: "微软雅黑"
     },
     events: {
-        close: (*) => utils.quitApp("QM2", POPUP_TITLE, WIN_GROUP)
+        close: (*) => utils.quitApp("QM2", POPUP_TITLE, WIN_GROUP),
+        escape: app => app.Hide()
     },
     ; devOpt: { border: true }
 })
 App(QM)
 QM.Show()
-
-; error logger
-OnError(logError, false)
-/**
- * @param {Error} err 
- */
-logError(err, *) {
-    if (!DirExist(A_ScriptDir . "\error-log")) {
-        DirCreate(A_ScriptDir . "\error-log")
-    }
-
-    errTxt := A_ScriptDir . "\error-log\" . FormatTime(A_Now, "yyyyMMdd") . "txt"
-    errLog := Format("
-    (
-        {1} line: {2}
-        message: {3}
-        error:   {4}`n`n
-    )",
-        FormatTime(A_Now, "yyyy/MM/dd HH:mm"),
-        err.Line,
-        err.Message,
-        err.Extra
-    )
-
-    FileAppend(errLog, errTxt, "utf-8")
-    	if (FileExist(CONFIG.path)) {
-        FileDelete(CONFIG.path)
-    }
-    CONFIG.createLocal()
-    
-    utils.cleanReload(WIN_GROUP)
-}
 
 ; hotkey setup
 F9:: {
@@ -84,9 +53,4 @@ F9:: {
 	}
     CONFIG.createLocal()
     utils.cleanReload(WIN_GROUP)
-}
-
-#HotIf WinActive(POPUP_TITLE)
-Esc:: {
-    QM.Hide()
 }
