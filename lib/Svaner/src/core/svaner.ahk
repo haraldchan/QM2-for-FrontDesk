@@ -93,6 +93,8 @@ class Svaner {
      * prefixes: - "type:{type-name}": returns the first type matched control
      *           - "typeAll:{type-name}": returns all type matched control in an array.
      *           - "component:{component-name}": returns a component.
+     *           - "#{attribute}": returns an array of controls with the same attribute.
+     *           - "#{attribute}={value}": returns an array of controls with the same attribute value.
      * @returns {Gui.Control | Array<Gui.Control> | Component}
      */
     __Item[ctrlSearchCondition] {
@@ -106,15 +108,15 @@ class Svaner {
                 case StringExt.startsWith(ctrlSearchCondition, "type:"):
                     return GuiExt.getCtrlByType(this.gui, StrReplace(ctrlSearchCondition, "type:", ""))
 
-                    ; by type all
+                ; by type all
                 case StringExt.startsWith(ctrlSearchCondition, "typeAll:"):
                     return GuiExt.getCtrlByTypeAll(this.gui, StrReplace(ctrlSearchCondition, "typeAll:", ""))
 
-                    ; search component
+                ; search component
                 case StringExt.startsWith(ctrlSearchCondition, "component:"):
                     return this.components[StrReplace(ctrlSearchCondition, "component:")]
 
-                    ; by attribute
+                ; by attribute
                 case (StringExt.startsWith(ctrlSearchCondition, "#") && !InStr(ctrlSearchCondition, "=")):
                     attr := pipe(
                         res => StrReplace(res, "#", "", , , 1),
@@ -123,7 +125,7 @@ class Svaner {
 
                     return GuiExt.getCtrlsByMatch(this.gui, ctrl => ctrl.attributes.HasOwnProp(attr))
 
-                    ; by attribute with matched value
+                ; by attribute with matched value
                 case (StringExt.startsWith(ctrlSearchCondition, "#") && InStr(ctrlSearchCondition, "=")):
                     pair := pipe(
                         res => StrReplace(res, "#", "", , , 1),
@@ -135,7 +137,7 @@ class Svaner {
                         ctrl => ctrl.attributes.HasOwnProp(StringExt.toCase(pair[1], "kebab")) && ctrl.attributes.%pair[1]% == pair[2]
                     )
 
-                    ; by name(same as Gui.__Item)
+                ; by name(same as Gui.__Item)
                 default:
                     return GuiExt.getCtrlByName(this.gui, ctrlSearchCondition)
             }
@@ -193,6 +195,7 @@ class Svaner {
             attributes: attributes
         }
     }
+
 
     /**
      * Apply custom directives to control.
@@ -494,14 +497,14 @@ class Svaner {
         }
         else {
             ; Native ListView
-            parsedOptions := this.__parseOptions(options)
+            parsedLvOptions := this.__parseOptions(options)
         }
 
         control := IsSet(depend) && depend is signal
             ? SvanerListView(
                 this.gui, { lvOptions: parsedLvOptions.parsed, itemOptions: parsedItemOptions.parsed },
                 columnDetailsOrList, depend, (IsSet(key) ? key : 0))
-            : this.gui.AddListView(parsedOptions.parsed, columnDetailsOrList)
+            : this.gui.AddListView(parsedLvOptions.parsed, columnDetailsOrList)
 
         if (control is SvanerListView && (parsedLvOptions.callbacks || parsedItemOptions.callbacks)) {
             callbacks := ArrayExt.append(parsedLvOptions.callbacks, parsedItemOptions.callbacks)
