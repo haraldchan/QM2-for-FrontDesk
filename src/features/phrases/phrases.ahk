@@ -8,27 +8,23 @@
  */
 Phrases(App) {
 	phrases := OrderedMap(
-		TableRequest, "Table Request - 餐厅订位",
-		RushRoom,  	  "Rush Room - 赶房与Key Keep",
-		Upsell, 	  "Upselling - 房间升级",
-		ExtraBed, 	  "Extra Bed - 加床",
+		"Table Request - 餐厅订位", TableRequest,
+		"Rush Room - 赶房与Key Keep", RushRoom,
+		"Upselling - 房间升级", Upsell,
+		"Extra Bed - 加床", ExtraBed
 	)
 
-	selectedPhrase := signal(phrases.keys()[1].name)
-	phraseComponents := OrderedMap()
-	for phrase in phrases {
-		phraseComponents[phrase.name] := phrase
-	}
+	selectedPhrase := signal(phrases.keys()[1])
 
 	onMount(componentInstances) {
 		effect(selectedPhrase, handleSwapWriteClipboard)
 		handleSwapWriteClipboard(phraseName) {
 			writeClipboard := ObjBindMethod(componentInstances[phraseName], "writeClipboard")
-			
+
 			App["phrase-copy"].onClick(writeClipboard, -1)
 		}
 
-		handleSwapWriteClipboard(phrases.keys()[1].name)
+		handleSwapWriteClipboard(phrases.keys()[1])
 	}
 
 	App.defineDirectives(
@@ -38,19 +34,18 @@ Phrases(App) {
 	)
 
 	render() {
-        StackBox(App, 
-            {
-                groupbox: { options: "vphrases-radio-group Section x30 y+10 w350 Hidden " . Format("h{1}", 30 * phrases.keys().Length) } 
-            },
+		StackBox(App, {
+			groupbox: { options: "vphrases-radio-group Section x30 y+10 w350 Hidden " . Format("h{1}", 30 * phrases.keys().Length) }
+		},
 			() => phrases.keys().map(phrase =>
-				App.AddRadio(A_Index == 1 ? "Checked xs1 yp+1 h20" : "xs1 yp+30 h20", phrases[phrase])
-				   .onClick((*) => selectedPhrase.set(phrase.name))
-			)	
-        )
+				App.AddRadio(A_Index == 1 ? "Checked xs1 yp+1 h20" : "xs1 yp+30 h20", phrase)
+				   .onClick((*) => selectedPhrase.set(phrase))
+			)
+		)
 		App.AddButton("vphrase-copy @relative[x-100;y+30]:phrases-radio-group w90 h50", "复制语句")
-		Dynamic(App, selectedPhrase, phraseComponents,, &componentInstances)
+		Dynamic(App, selectedPhrase, phrases, , &componentInstances)
 		onMount(componentInstances)
 	}
 
-	return render() 
+	return render()
 }
