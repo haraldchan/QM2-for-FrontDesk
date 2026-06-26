@@ -144,21 +144,6 @@ class ReportMaster_Action {
             saveFn: this.creditLimit
         }, 
         {
-            searchStr: "grprmlist",
-            name: "Group Rooming List",
-            saveFn: this.groupRoom
-        }, 
-        {
-            searchStr: "grpinhouse",
-            name: "Group In House",
-            saveFn: this.groupInh
-        }, 
-        {
-            searchStr: "%gitraces",
-            name: "Reservation Traces",
-            saveFn: this.reservationTraces
-        }, 
-        {
             searchStr: "%hkroomstatusperroom",
             name: "Rooms-housekeepingstatus",
             saveFn: this.rooms
@@ -167,7 +152,22 @@ class ReportMaster_Action {
             searchStr: "HK03",
             name: "HK03-OOO",
             saveFn: this.ooo
-        }],
+        },
+        {
+            searchStr: "%gitraces",
+            name: "Reservation Traces",
+            saveFn: this.reservationTraces
+        }, 
+        {
+            searchStr: "grprmlist",
+            name: "Group Rooming List",
+            saveFn: this.groupRoom
+        }, 
+        {
+            searchStr: "grpinhouse",
+            name: "Group In House",
+            saveFn: this.groupInh
+        },],
         groupArr: {
             searchStr: "GRPRMLIST",
             name: "Group Arrival - 当天预抵团单",
@@ -178,7 +178,7 @@ class ReportMaster_Action {
     /**
      * 
      * @param reportInfoObj 
-     * @param fileType 
+     * @param {"PDF" | "XML" | "TXT" | "XLS"} fileType 
      * @param {Integer} initX 
      * @param {Integer} initY 
      * @returns {void | String} 
@@ -284,6 +284,30 @@ class ReportMaster_Action {
         Send("!c")
 
         return saveFileName
+    }
+
+    /**
+     * 
+     * @param {Array} reportInfoObjs
+     * @param {"PDF" | "XML" | "TXT" | "XLS"} fileType 
+     * @returns {String} saved report names
+     */
+    static saveReports(reportInfoObjs, fileType) {
+        savedReports := ""
+
+        this.start()
+
+        for reportObj in reportInfoObjs {
+            if (!ReportMaster_Action.isRunning && A_Index > 1) {
+                return
+            }
+            ReportMaster_Action.reportFiling(reportObj, fileType)
+            savedReports .= reportObj.name . "`n"
+        }
+
+        this.end()
+
+        return savedReports
     }
 
     static comp() {
