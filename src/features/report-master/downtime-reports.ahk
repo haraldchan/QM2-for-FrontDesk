@@ -4,6 +4,7 @@
 
 if (A_ScriptName == "downtime-reports.ahk") {
     POPUP_TITLE := "DownTime Reports"
+    IMAGES := useImages("..\..\..\assets\QMTray.ico")
     TraySetIcon("..\..\..\assets\QMTray.ico")
 
     DownTimeWin := Svaner({
@@ -24,7 +25,9 @@ if (A_ScriptName == "downtime-reports.ahk") {
  * @param {true | false} runAsIndividual
  */
 DownTimeReports(App, runAsIndividual) {
-    BROWSER := "F:\360\360se6\Application\360se.exe"
+    BROWSER := FileExist("F:\360\360se6\Application\360se.exe")
+        ? "F:\360\360se6\Application\360se.exe"
+        : A_AppData . "\360se6\Application\360se.exe"
     PMS_URL := "https://wsh-opr-app1"
     PMS_USERNAME := "FOHARALDC"
     PMS_PASSWORD := "sxzc123456"
@@ -39,6 +42,14 @@ DownTimeReports(App, runAsIndividual) {
     downtimeReportList := signal(ReportMaster_Action.reportList.downtime)
 
     handleBrowserReopen() {
+        ; close all pms win
+        loop {
+            if (WinExist("OPERA Full Service Edition")) {
+                WinKill("OPERA Full Service Edition")
+            }
+            Sleep(200)
+        } until (!WinExist("OPERA Full Service Edition"))
+
         Run(BROWSER . " " . PMS_URL)
         WinWait("OPERA Login")
         WinActivate("OPERA Login")
@@ -59,7 +70,7 @@ DownTimeReports(App, runAsIndividual) {
         utils.waitLoading(1000)
 
         loop {
-            found := ImageSearch(&x, &y, 0, 0, A_ScreenWidth, A_ScreenHeight, "..\..\..\assets\pms-login.png")
+            found := ImageSearch(&x, &y, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["pms-login.png"])
             if (found) {
                 break
             }
@@ -70,15 +81,16 @@ DownTimeReports(App, runAsIndividual) {
         ; wait for PMS app
         WinWait("OPERA PMS")
         WinActivate("OPERA PMS")
-        Sleep(2000)
-        Send("!f")
-        Sleep(100)
-        Send("{Down}")
-        Sleep(100)
-        Send("{Enter}")
-        utils.waitLoading()
-        WinMaximize("ahk_class SunAwtFrame")
-        Sleep(100)
+        utils.waitLoading(2000)
+
+        ; wait for window standby
+        loop {
+            found := ImageSearch(&x, &y, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["opera-logo.png"])
+            if (found) {
+                break
+            }
+            Sleep(500)
+        }
     }
 
     App.gui.OnEvent("Close", handleExitApp)
@@ -86,7 +98,7 @@ DownTimeReports(App, runAsIndividual) {
 
     handleSaveReports(*) {
         SetTimer(cd, 0)
-        
+
         ; reopen browser
         handleBrowserReopen()
 
@@ -109,7 +121,7 @@ DownTimeReports(App, runAsIndividual) {
 
         savedReports := ReportMaster_Action.saveReports(selectedReports, "PDF")
 
-        loop files (A_MyDocuments, "*.PDF") {
+        loop files (A_MyDocuments . "\*.PDF") {
             if (downtimeReportList.value.find(reportObj => (A_LoopFileName.replace(".PDF") == reportObj.name))) {
                 FileCopy(A_LoopFileFullPath, DOWNTIME_FOLDER . "\" . A_LoopFileName, true)
             }
@@ -120,13 +132,15 @@ DownTimeReports(App, runAsIndividual) {
             Run(DOWNTIME_FOLDER)
         }
 
-        handleExitApp()
+        if (runAsIndividual) {
+            handleExitApp()
+        }
     }
 
     handleAddButtons() {
         if (runAsIndividual) {
             App.AddButton("xs175 y+10 w80 h25", "取  消").onClick(handleExitApp),
-            App.AddButton("x+10 w80 h25", "开始保存 ({1})", closeCountdown).onClick(handleSaveReports)
+                App.AddButton("x+10 w80 h25", "开始保存 ({1})", closeCountdown).onClick(handleSaveReports)
         }
         else {
             App.AddButton("xs265 y+10 w80 h25", "开始保存").onClick(handleSaveReports)
@@ -134,37 +148,31 @@ DownTimeReports(App, runAsIndividual) {
     }
 
     render() {
-        StackBox(App,
-            {
-                groupbox: {
-                    title: "DownTime Report 保存",
-                    options: "Section w355 h380",
-                },
-                font: { options: "s10.5 bold" }
+        StackBox(App, {
+            groupbox: {
+                title: "DownTime Report 保存",
+                options: "Section w355 h380",
             },
+            font: { options: "s10.5 bold" }
+        },
             () => [
                 App.AddText("xs10 yp+35 w330", Format("当前时间：{}", A_Now.toFormat("yyyy-MM-dd HH:mm"))),
-                
                 ; notes
                 App.AddText("y+10 w330 h25", "注意事项").setFont("s10 bold"),
                 App.AddText("xs10 y+1 w330", " - 启动后将重启浏览器，请先保存   未完成工作。"),
-                
                 ; report list
                 App.AddText("y+15 w330 h25", "报表列表").setFont("s10 bold"),
-                App.AddListView(
-                    {
-                        lvOptions: "vdowntime-list Checked Grid NoSortHdr -ReadOnly -Multi @lv:label-tip xs13 y+1 w330 r10",
-                        itemOptions: "Check"
-                    },
-                    {
-                        keys: ["searchStr", "name"],
-                        titles: ["搜索字段", "报表名称"],
-                        widths: [120, 200]
-                    },
+                App.AddListView({
+                    lvOptions: "vdowntime-list Checked Grid NoSortHdr -ReadOnly -Multi @lv:label-tip xs13 y+1 w330 r10",
+                    itemOptions: "Check"
+                }, {
+                    keys: ["searchStr", "name"],
+                    titles: ["搜索字段", "报表名称"],
+                    widths: [120, 200]
+                },
                     downtimeReportList
                 ),
                 handleAddButtons(),
-
             ]
         )
     }
