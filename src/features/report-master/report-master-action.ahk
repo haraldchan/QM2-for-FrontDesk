@@ -21,153 +21,124 @@ class ReportMaster_Action {
     }
 
     static reportList := {
-        onr: [
-        {
+        onr: [{
             searchStr: "%complimentary",
             name: "Guest INH Complimentary",
             saveFn: this.comp
-        }, 
-        {
+        }, {
             searchStr: "FI01",
             name: "NA02-Manager Flash",
             saveFn: this.mgrFlash
-        }, 
-        {
+        }, {
             searchStr: "RS05",
             name: "RS05-（前后15天）History & Forecast",
             saveFn: this.hisFor15
-        }, 
-        {
+        }, {
             searchStr: "RS05",
             name: "RS05-（FO当月）History & Forecast",
             saveFn: this.hisForThisMonth
-        }, 
-        {
+        }, {
             searchStr: "RS05",
             name: "RS05-（FO次月）History & Forecast",
             saveFn: this.hisForNextMonth
-        }, 
-        {
+        }, {
             searchStr: "FO01-VIP",
             name: "VIP Arrival (VIP Arr)",
             saveFn: this.vipArr
-        }, 
-        {
+        }, {
             searchStr: "FO03",
             name: "FO03-VIP DEP",
             saveFn: this.vipDep
-        }, 
-        {
+        }, {
             searchStr: "FO01",
             name: "FO01-Arrival Detailed",
             saveFn: this.arrAll
-        }, 
-        {
+        }, {
             searchStr: "FO02",
             name: "FO02-Guests INH by Room",
             saveFn: this.inhAll
-        }, 
-        {
+        }, {
             searchStr: "FO03",
             name: "FO03-Departures",
             saveFn: this.depAll
-        }, 
-        {
+        }, {
             searchStr: "FO11",
             name: "FO11-Credit Limit",
             saveFn: this.creditLimit
-        }, 
-        {
+        }, {
             searchStr: "FO13",
             name: "FO13-Package Forecast（仅早餐）",
             saveFn: this.bbf
-        }, 
-        {
+        }, {
             searchStr: "%hkroomstatusperroom",
             name: "Rooms-housekeepingstatus",
             saveFn: this.rooms
-        }, 
-        {
+        }, {
             searchStr: "HK03",
             name: "HK03-OOO",
             saveFn: this.ooo
-        }, 
-        {
+        }, {
             searchStr: "grprmlist",
             name: "Group Rooming List",
             saveFn: this.groupRoom
-        }, 
-        {
+        }, {
             searchStr: "grpinhouse",
             name: "Group In House",
             saveFn: this.groupInh
-        }, 
-        {
+        }, {
             searchStr: "FO08",
             name: "FO08-No Show",
             saveFn: this.noShow
-        }, 
-        {
+        }, {
             searchStr: "rescancel",
             name: "Cancellations",
             saveFn: this.cancel
-        }, 
-        {
+        }, {
             searchStr: "%gitraces",
             name: "Reservation Traces",
             saveFn: this.reservationTraces
-        }, 
-        {
+        }, {
             searchStr: "%guestinhw",
             name: "Guest In House w/o Due Out(VIP INH)",
             saveFn: this.vipInh
         }],
-        downtime: [
-            {
+        downtime: [{
             searchStr: "FO01",
             name: "FO01-Arrival Detailed",
             saveFn: this.arrAll
-        }, 
-        {
+        }, {
             searchStr: "FO02",
             name: "FO02-Guests INH by Room",
             saveFn: this.inhAll
-        }, 
-        {
+        }, {
             searchStr: "FO03",
             name: "FO03-Departures",
             saveFn: this.depAll
-        }, 
-        {
+        }, {
             searchStr: "FO11",
             name: "FO11-Credit Limit",
             saveFn: this.creditLimit
-        }, 
-        {
+        }, {
             searchStr: "%hkroomstatusperroom",
             name: "Rooms-housekeepingstatus",
             saveFn: this.rooms
-        }, 
-        {
+        }, {
             searchStr: "HK03",
             name: "HK03-OOO",
             saveFn: this.ooo
-        },
-        {
+        }, {
             searchStr: "%gitraces",
             name: "Reservation Traces",
             saveFn: this.reservationTraces
-        }, 
-        {
+        }, {
             searchStr: "grprmlist",
             name: "Group Rooming List",
             saveFn: this.groupRoom
-        }, 
-        {
+        }, {
             searchStr: "grpinhouse",
             name: "Group In House",
             saveFn: this.groupInh
-        },],
+        }],
         groupArr: {
             searchStr: "GRPRMLIST",
             name: "Group Arrival - 当天预抵团单",
@@ -184,7 +155,6 @@ class ReportMaster_Action {
      * @returns {void | String} 
      */
     static reportFiling(reportInfoObj, fileType, initX := 433, initY := 598) {
-
         fileTypeSelectPointer := Map(
             "PDF", 0,
             "XML", 2,
@@ -231,7 +201,7 @@ class ReportMaster_Action {
                 ? reportFn(this, reportInfoObj.args*)
                 : reportFn(this)
         }
-        saveFileName := saveName . "." . fileType
+        saveFileName := (saveName ? saveName : reportInfoObj.name) . "." . fileType
 
         Sleep(1000)
         Send("!f")
@@ -267,6 +237,7 @@ class ReportMaster_Action {
             }
 
             if (FileExist(A_MyDocuments . "\" . saveFileName)) {
+                Sleep(2000)
                 break
             }
 
@@ -507,7 +478,6 @@ class ReportMaster_Action {
     }
 
     static arrAll(initX := 309, initY := 566) {
-        fileName := "FO01-Arrival Detailed"
         Sleep(200)
         ; report options here
         MouseMove(initX, initY) ; 309, 566
@@ -525,21 +495,17 @@ class ReportMaster_Action {
         MouseMove(initX + 299, initY + 52) ; 608, 618
         Click()
         Sleep(150)
-        return fileName
     }
 
     static inhAll(initX := 433, initY := 523) {
-        fileName := "FO02-INH"
         Sleep(200)
         ; report options here
         MouseMove(initX, initY) ; 433, 523
         Sleep(150)
         Click()
-        return fileName
     }
 
     static depAll(initX := 607, initY := 540) {
-        fileName := "FO03-DEP"
         Sleep(200)
         ; report options here
         MouseMove(initX, initY) ; 607, 540
@@ -549,11 +515,9 @@ class ReportMaster_Action {
         MouseMove(initX - 119, initY - 50) ; 488, 490
         Sleep(150)
         Click()
-        return fileName
     }
 
     static creditLimit(initX := 686, initY := 474) {
-        fileName := "FO11-CREDIT LIMIT"
         ; BlockInput true
         Sleep(200)
         ; report options here
@@ -563,7 +527,6 @@ class ReportMaster_Action {
         Sleep(150)
         Click()
         Sleep(200)
-        return fileName
     }
 
     static bbf(initX := 599, initY := 276) {
@@ -611,14 +574,12 @@ class ReportMaster_Action {
     }
 
     static rooms(initX := 476, initY := 515) {
-        fileName := "Rooms"
         Sleep(200)
         ; report options here
         MouseMove(initX, initY)
         Sleep(150)
         Click()
         Sleep(150)
-        return fileName
     }
 
     static ooo() {
@@ -674,8 +635,6 @@ class ReportMaster_Action {
     }
 
     static groupInh(initX := 470, initY := 425) {
-        fileName := "Group INH"
-        ; BlockInput true
         ; reportOpen(searchStr)
         Sleep(200)
         ; report options here
@@ -686,7 +645,6 @@ class ReportMaster_Action {
         Sleep(150)
         Click()
         Sleep(150)
-        return fileName
     }
 
     static noShow(initX := 573, initY := 440) {
