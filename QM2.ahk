@@ -10,13 +10,27 @@ if (!A_IsAdmin) {
     Run("*RunAs " . A_ScriptFullPath)
 }
 
-; global consts
+; versioning
 VERSION := "2.9.5"
+UNC_PATH := "\\10.0.2.13\fd"
+; SplitPath(A_ScriptDir, , , , , &OutDrive)
+; uncScriptDir := UNC_PATH . "\19-个人文件夹\HC\Software - 软件及脚本\AHK_Scripts\QM2-for-FrontDesk-main"
+; if (OutDrive == "C:" && DirExist(UNC_PATH)) {
+;     ; compare version
+;     uncVersion := JSON.parse(FileRead(uncScriptDir . "\qm.config.json"))["version"]
+;     if (VERSION != uncVersion) {
+;         if (!DirExist("C:\QM2")) {
+;             DirCopy(uncScriptDir, "C:\QM2", true)
+;             Reload()
+;         }
+;     }
+; }
+
+; global consts
 POPUP_TITLE := "QM2 for FrontDesk " . VERSION
 WIN_GROUP := ["ahk_class SunAwtFrame", "旅客信息", "ahk_class 360se6_Frame"]
 IMAGES := useImages(A_ScriptDir . "\assets")
-APP_DATA_DIR := A_AppData . "\QM2"
-CONFIG := useJsonConfig("./qm.config.json", "qm.config.json", APP_DATA_DIR)
+CONFIG := useJsonConfig("./qm.config.json", "qm.config.json", A_AppData . "\QM2")
 FORCE_SUSPEND_MESSAGE := 0x2042
 SUSPEND_CONTROLLER := SuspendController(FORCE_SUSPEND_MESSAGE)
 
