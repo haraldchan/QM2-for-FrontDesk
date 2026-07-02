@@ -5,8 +5,10 @@ ScanInvoke(*) {
 	}
 
 	scannerName := "Epson Perfection V19"
-	savePath := "\\10.0.2.13\fd\01 FO PASSPORT SCANNING"
+	uncSavePath := "\\10.0.2.13\fd\01 FO PASSPORT SCANNING"
+	localSavePath := A_MyDocuments . "\01 FO PASSPORT SCANNING"
 	temp := A_Desktop . "\temp.jpg"
+	savePath := DirExist(uncSavePath) ? uncSavePath : localSavePath
 
 	Win := Gui("+AlwaysOnTop", "启动扫描")
 	Win.OnEvent("Close", (*) => Win.Destroy())
