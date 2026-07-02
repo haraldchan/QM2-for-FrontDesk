@@ -3,8 +3,18 @@
 #Include report-master-action.ahk
 
 if (A_ScriptName == "downtime-reports.ahk") {
+    ; acquire admin
+    if (!A_IsAdmin) {
+        try {
+            Run("*RunAs " . A_ScriptFullPath)
+        }
+        catch {
+            ExitApp()
+        }
+    }
+
     POPUP_TITLE := "DownTime Reports"
-    IMAGES := useImages("..\..\..\assets\QMTray.ico")
+    IMAGES := useImages("..\..\..\assets")
     TraySetIcon("..\..\..\assets\QMTray.ico")
 
     DownTimeWin := Svaner({
@@ -151,7 +161,7 @@ DownTimeReports(App, runAsIndividual) {
         StackBox(App, {
             groupbox: {
                 title: "DownTime Report 保存",
-                options: "Section w355 h380",
+                options: "Section w355 h430",
             },
             font: { options: "s10.5 bold" }
         },
