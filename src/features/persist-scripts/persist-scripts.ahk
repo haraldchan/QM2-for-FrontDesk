@@ -7,8 +7,15 @@
  * @param {Svaner} App 
  */
 PersistScriptsControl(App) {
+
+	uncSavePath := "\\10.0.2.13\fd\01 FO PASSPORT SCANNING"
+	localSavePath := A_MyDocuments . "\01 FO PASSPORT SCANNING"
 	handleOpenScanFolder(*) {
-		scanFolderPath := "\\10.0.2.13\fd\01 FO PASSPORT SCANNING"
+		if (!uncSavePath && !localSavePath) {
+			DirCreate(localSavePath)
+		}
+
+		scanFolderPath := DirExist(uncSavePath) ? uncSavePath : localSavePath
 		
 		if (!DirExist(scanFolderPath)) {
 			MsgBox(Format("证件扫描文件夹 <{1}> 未找到", scanFolderPath), POPUP_TITLE, "T5 0x10")
