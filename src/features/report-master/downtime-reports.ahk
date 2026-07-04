@@ -32,9 +32,9 @@ if (A_ScriptName == "downtime-reports.ahk") {
 
 /**
  * @param {Svaner} App 
- * @param {true | false} runAsIndividual
+ * @param {true | false} runAsInstance
  */
-DownTimeReports(App, runAsIndividual) {
+DownTimeReports(App, runAsInstance) {
     BROWSER := FileExist("F:\360\360se6\Application\360se.exe")
         ? "F:\360\360se6\Application\360se.exe"
         : A_AppData . "\360se6\Application\360se.exe"
@@ -43,7 +43,7 @@ DownTimeReports(App, runAsIndividual) {
     PMS_PASSWORD := "sxzc123456"
     DOWNTIME_FOLDER := "\\10.0.2.13\fd\1-Reports\DownTime Reports"
 
-    if (runAsIndividual) {
+    if (runAsInstance) {
         closeCountdown := signal(30)
         SetTimer(cd(*) => closeCountdown.set(t => t - 1), 1000)
         effect(closeCountdown, cur => cur == 0 && handleSaveReports())
@@ -53,13 +53,13 @@ DownTimeReports(App, runAsIndividual) {
 
     handleBrowserReopen() {
         ; close all pms win
+
         loop {
-            if (WinExist("OPERA Full Service Edition")) {
-                WinKill("OPERA Full Service Edition")
+            if (WinExist("ahk_exe 360se.exe")) {
+                WinKill("ahk_exe 360se.exe")
             }
             Sleep(200)
-        } until (!WinExist("OPERA Full Service Edition"))
-
+        } until (!WinExist("ahk_exe 360se.exe"))
         Run(BROWSER . " " . PMS_URL)
         WinWait("OPERA Login")
         WinActivate("OPERA Login")
@@ -142,13 +142,13 @@ DownTimeReports(App, runAsIndividual) {
             Run(DOWNTIME_FOLDER)
         }
 
-        if (runAsIndividual) {
+        if (runAsInstance) {
             handleExitApp()
         }
     }
 
     handleAddButtons() {
-        if (runAsIndividual) {
+        if (runAsInstance) {
             App.AddButton("xs175 y+10 w80 h25", "取  消").onClick(handleExitApp),
                 App.AddButton("x+10 w80 h25", "开始保存 ({1})", closeCountdown).onClick(handleSaveReports)
         }
