@@ -197,9 +197,7 @@ class BatchKeysSq_Action {
         BlockInput(false)
     }
 
-    static USE(formData) {
-        this.start()
-        
+    static USE(formData) {        
         for room in formData.rooms {
             this.makeKey(room, formData.coDate, formData.etd, formData.confNum, formData.enable28f)
             BlockInput(false)
@@ -216,18 +214,18 @@ class BatchKeysSq_Action {
                 A_Index == formData.rooms.Length ? "`n房卡已全部制作完成，请再次核对确保无误" : ""
             ), "Batch Keys", "YesNo 4096")
 
-            if (checkConf = "No") {
+            if (checkConf == "No") {
                 return
             }
             BlockInput(true)
-        }
-        
-        this.end()
+        }        
     }
 
     static makeKey(room, coDate, etd, confNum, enable28f) {
+        this.start()
         ; send confNum
         A_Clipboard := confNum
+        Sleep(150)
         Send("^{Tab}")
         Sleep(150)
         Send("^v")
@@ -240,6 +238,7 @@ class BatchKeysSq_Action {
         ; send room number
         A_Clipboard := room
         MouseMove(168, 196)
+        Sleep(150)
         Click(3)
         Sleep(150)
         Send("^v") ; room num can only be pasted
@@ -289,5 +288,7 @@ class BatchKeysSq_Action {
 
         ; make
         Send("!e")
+
+        this.end()
     }
 }
