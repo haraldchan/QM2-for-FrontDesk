@@ -43,4 +43,17 @@ class utils {
             }
         }
     }
+
+    static clearExistInstances() {
+        DetectHiddenWindows(true)
+        existInstances := WinGetList(A_ScriptName)
+        if (existInstances.Length > 0) {
+            for instanceID in existInstances {
+                if (instanceID != A_ScriptHwnd) {
+                    WinKill(instanceID)
+                }
+            }
+        }
+
+    }
 }
