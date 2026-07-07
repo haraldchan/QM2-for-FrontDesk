@@ -1,22 +1,19 @@
 ; configs
 #Requires AutoHotkey v2.0
-#SingleInstance Force
+#SingleInstance Off
 ; includes
 #Include lib\lib-index.ahk
 #Include src\App.ahk
 
 ; acquire admin
 if (!A_IsAdmin) {
-    try {
-        Run("*RunAs " . A_ScriptFullPath)
-    }
-    catch {
-        ExitApp()
-    }
+    Run("*RunAs " . A_ScriptFullPath)
+    ExitApp()
 }
+utils.clearExistInstances()
 
 ; global consts
-VERSION := "2.9.7"
+VERSION := "2.9.8"
 UNC_PATH := "\\10.0.2.13\fd"
 POPUP_TITLE := "QM2 for FrontDesk " . VERSION
 WIN_GROUP := ["ahk_class SunAwtFrame", "旅客信息", "ahk_class 360se6_Frame"]
