@@ -1,17 +1,16 @@
-#SingleInstance Force
+#SingleInstance Off
 #Include ..\..\..\lib\lib-index.ahk
 #Include report-master-action.ahk
 
 if (A_ScriptName == "downtime-reports.ahk") {
     ; acquire admin
     if (!A_IsAdmin) {
-        try {
-            Run("*RunAs " . A_ScriptFullPath)
-        }
-        catch {
-            ExitApp()
-        }
+        Run("*RunAs " . A_ScriptFullPath)
+        ExitApp()
     }
+
+    ; close other instances
+    utils.clearExistInstances()
 
     POPUP_TITLE := "DownTime Reports"
     IMAGES := useImages("..\..\..\assets")
@@ -53,7 +52,6 @@ DownTimeReports(App, runAsInstance) {
 
     handleBrowserReopen() {
         ; close all pms win
-
         loop {
             if (WinExist("ahk_exe 360se.exe")) {
                 WinKill("ahk_exe 360se.exe")
@@ -62,6 +60,7 @@ DownTimeReports(App, runAsInstance) {
         } until (!WinExist("ahk_exe 360se.exe"))
         Run(BROWSER . " " . PMS_URL)
         WinWait("OPERA Login")
+        WinMaximize("OPERA Login")
         WinActivate("OPERA Login")
         Sleep(200)
 
@@ -104,7 +103,12 @@ DownTimeReports(App, runAsInstance) {
     }
 
     App.gui.OnEvent("Close", handleExitApp)
-    handleExitApp(*) => ExitApp()
+    handleExitApp(*) {
+        if (runAsInstance) {
+            SetTimer(cd, 0)
+        }
+        ExitApp()
+    }
 
     handleSaveReports(*) {
         SetTimer(cd, 0)
