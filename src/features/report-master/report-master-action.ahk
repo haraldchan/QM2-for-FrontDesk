@@ -220,32 +220,44 @@ class ReportMaster_Action {
             return
         }
 
-        loop 30 {
-            if (!this.isRunning) {
-                this.end()
-                return
-            }
-            sleep(1000)
-            if (Winwait("Warning", , 20)) {
-                WinSetAlwaysOnTop(false, "ahk_class SunAwtFrame")
-                Sleep(100)
-                WinActivate("Warning")
-                utils.waitLoading()
-                Send("{Enter}")
-                utils.waitLoading()
-                WinSetAlwaysOnTop(true, "ahk_class SunAwtFrame")
-            }
+        if (!this.isRunning) {
+            this.end()
+            return
+        }
+        sleep(1000)
 
+        if (Winwait("Warning", , 20)) {
+            WinSetAlwaysOnTop(false, "ahk_class SunAwtFrame")
+            Sleep(100)
+            WinActivate("Warning")
+            utils.waitLoading()
+            Send("{Enter}")
+            utils.waitLoading()
+            WinSetAlwaysOnTop(true, "ahk_class SunAwtFrame")
+        }
+        else {
+            this.isRunning := false
+        }
+        if (!this.isRunning) {
+            this.end()
+            return
+        }
+
+        waitIndex := 0
+        loop {
             if (FileExist(A_MyDocuments . "\" . saveFileName)) {
-                Sleep(2000)
+                Sleep(1000)
                 break
             }
-
-            if (A_Index == 30) {
-                MsgBox("保存出错，脚本已终止。", "ReportMaster", "T1 4096")
-                this.end()
-                return
-            }
+            waitIndex++
+        } until (waitIndex > 30)
+        if (waitIndex > 30) {
+            this.isRunning := false
+        }
+        if (!this.isRunning) {
+            MsgBox("保存出错，脚本已终止。", "ReportMaster", "T1 4096")
+            this.end()
+            return
         }
 
         MouseMove(initX, initY)
@@ -272,7 +284,10 @@ class ReportMaster_Action {
             if (!ReportMaster_Action.isRunning && A_Index > 1) {
                 return
             }
-            ReportMaster_Action.reportFiling(reportObj, fileType)
+            res := ReportMaster_Action.reportFiling(reportObj, fileType)
+            if (!res) {
+                continue
+            }
             savedReports .= reportObj.name . "`n"
         }
 
