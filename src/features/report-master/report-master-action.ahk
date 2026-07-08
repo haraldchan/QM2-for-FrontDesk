@@ -235,18 +235,11 @@ class ReportMaster_Action {
             utils.waitLoading()
             WinSetAlwaysOnTop(true, "ahk_class SunAwtFrame")
         }
-        else {
-            this.isRunning := false
-        }
-        if (!this.isRunning) {
-            this.end()
-            return
-        }
 
         waitIndex := 0
         loop {
+            Sleep(1000)
             if (FileExist(A_MyDocuments . "\" . saveFileName)) {
-                Sleep(1000)
                 break
             }
             waitIndex++
@@ -1025,5 +1018,75 @@ class ReportMaster_Action {
         Send("{Space}")
 
         return fileName
+    }
+
+    static arrivingCoupons() {
+        Sleep(500)
+        topLeft := PmsImageFinder.find("opera-active-win.png")
+        if (!topLeft) {
+            return
+        }
+
+        ; filter rate codes
+        Click(topLeft.outX + 648, topLeft.outY + 215)
+        utils.waitLoading()
+        Send("!n")
+        utils.waitLoading()
+        Send("{Tab}")
+        utils.waitLoading()
+        Send("{Text}%通")
+        Sleep(100)
+        Send("!h")
+        utils.waitLoading()
+        Send("!a")
+        utils.waitLoading()
+        Send("{Text}%消")
+        Sleep(100)
+        Send("!h")
+        utils.waitLoading()
+        Send("!a")
+        utils.waitLoading()
+        Send("!o")
+        utils.waitLoading()
+
+        ; check Notes
+        loop 19 {
+            Send("{Tab}")
+            Sleep(100)
+        }
+        Send("{Space}")
+    }
+
+    static onDayLateOut() {
+        Sleep(500)
+        topLeft := PmsImageFinder.find("opera-active-win.png")
+        if (!topLeft) {
+            return
+        }
+
+        ; enter depart from time
+        loop 6 {
+            Send("{Tab}")
+            Sleep(100)
+        }
+        Send("{Text}1700")
+
+        ; sort order -> Departure Time
+        Click(topLeft.outX + 584, topLeft.outY + 465)
+        utils.waitLoading()
+        Send("!r")
+        utils.waitLoading()
+        Send("!o")
+        utils.waitLoading()
+        Click(topLeft.outX + 584, topLeft.outY + 465)
+        utils.waitLoading()
+        loop 2 {
+            Send("{Down}")
+            Sleep(100)
+        }
+        Send("!a")
+        utils.waitLoading()
+        Send("!o")
+        utils.waitLoading()
     }
 }
