@@ -152,13 +152,12 @@ DownTimeReports(App, runAsInstance) {
     }
 
     handleAddButtons() {
-        if (runAsInstance) {
-            App.AddButton("xs175 y+10 w80 h25", "取  消").onClick(handleExitApp),
+        return runAsInstance
+            ? [
+                App.AddButton("xs175 y+10 w80 h25", "取  消").onClick(handleExitApp),
                 App.AddButton("x+10 w80 h25", "开始保存 ({1})", closeCountdown).onClick(handleSaveReports)
-        }
-        else {
-            App.AddButton("xs265 y+10 w80 h25", "开始保存").onClick(handleSaveReports)
-        }
+            ]
+            : App.AddButton("xs265 y+10 w80 h25", "开始保存").onClick(handleSaveReports)
     }
 
     render() {
