@@ -54,7 +54,7 @@ class Cashiering_Action {
 
         Send("!t")
         utils.waitLoading()
-        Send("dep")
+        Send("{Text}dep")
         utils.waitLoading()
         Send("!p")
         utils.waitLoading()
