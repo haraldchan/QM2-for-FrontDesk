@@ -51,13 +51,17 @@ DownTimeReports(App, runAsInstance) {
     downtimeReportList := signal(ReportMaster_Action.reportList.downtime)
 
     handleBrowserReopen() {
-        ; close all pms win
-        loop {
-            if (WinExist("ahk_exe 360se.exe")) {
-                WinKill("ahk_exe 360se.exe")
+        exitCode := utils.killApp("360se.exe")
+        if (exitCode != 0) {
+            res := MsgBox("关闭 360 浏览器失败，请手动关闭。", POPUP_TITLE, "4096 icon! CancelTryAgainContinue")
+            switch (res) {
+                case "Cancel":
+                    return
+                case "TryAgain":
+                    handleBrowserReopen()
             }
-            Sleep(200)
-        } until (!WinExist("ahk_exe 360se.exe"))
+        }
+
         Run(BROWSER . " " . PMS_URL)
         WinWait("OPERA Login")
         WinMaximize("OPERA Login")
