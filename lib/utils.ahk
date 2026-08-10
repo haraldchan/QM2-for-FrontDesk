@@ -56,4 +56,8 @@ class utils {
         }
 
     }
+    
+    static killApp(exe) {
+        return RunWait(A_ComSpec ' /c taskkill /F /T /IM "' exe '"', , "Hide")
+    }
 }
