@@ -48,7 +48,6 @@ MiscReports(App) {
 
     saveReports(*) {
         reportInfo := defineReportInfo()
-        msgbox JSON.stringify(reportInfo)
 
         if (reportInfo.hasOwnProp("args") && !reportInfo.args[1]) {
             return
