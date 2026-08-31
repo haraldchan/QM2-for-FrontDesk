@@ -51,6 +51,7 @@ DownTimeReports(App, runAsInstance) {
     downtimeReportList := signal(ReportMaster_Action.reportList.downtime)
 
     handleBrowserReopen() {
+        ; close all pms win
         exitCode := utils.killApp("360se.exe")
         if (exitCode != 0) {
             res := MsgBox("关闭 360 浏览器失败，请手动关闭。", POPUP_TITLE, "4096 icon! CancelTryAgainContinue")
@@ -69,6 +70,12 @@ DownTimeReports(App, runAsInstance) {
         Sleep(200)
 
         ; log into opera
+        found := PmsImageFinder.find("login-btn.png")
+        if (found is Error) {
+            return found
+        }
+        Click(found.outX, found.outY - 110)
+        Sleep(100)
         Send("{TEXT}" . PMS_USERNAME)
         Sleep(100)
         Send("{Tab}")
@@ -137,10 +144,10 @@ DownTimeReports(App, runAsInstance) {
             selectedReports.Push(downtimeReportList.value[row])
         }
 
-        savedReports := ReportMaster_Action.saveReports(selectedReports, "PDF")
+        savedReports := ReportMaster_Action.saveReports(selectedReports, "HTML")
 
-        loop files (A_MyDocuments . "\*.PDF") {
-            if (downtimeReportList.value.find(reportObj => (A_LoopFileName.replace(".PDF") == reportObj.name))) {
+        loop files (A_MyDocuments . "\*.HTML") {
+            if (downtimeReportList.value.find(reportObj => (A_LoopFileName.replace(".HTML") == reportObj.name))) {
                 FileCopy(A_LoopFileFullPath, DOWNTIME_FOLDER . "\" . A_LoopFileName, true)
             }
         }
@@ -162,6 +169,7 @@ DownTimeReports(App, runAsInstance) {
                 App.AddButton("x+10 w80 h25", "开始保存 ({1})", closeCountdown).onClick(handleSaveReports)
             ]
             : App.AddButton("xs265 y+10 w80 h25", "开始保存").onClick(handleSaveReports)
+
     }
 
     render() {
