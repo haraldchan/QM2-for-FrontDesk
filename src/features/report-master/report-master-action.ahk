@@ -156,6 +156,7 @@ class ReportMaster_Action {
      */
     static reportFiling(reportInfoObj, fileType, initX := 433, initY := 598) {
         fileTypeSelectPointer := Map(
+            "HTML", -1,
             "PDF", 0,
             "XML", 2,
             "TXT", 4,
@@ -177,9 +178,15 @@ class ReportMaster_Action {
 
         MouseMove(initX + 380, initY)
         Click()
-        if (fileTypeSelectPointer[fileType] != 0) {
+        if (fileTypeSelectPointer[fileType] > 0) {
             loop fileTypeSelectPointer[fileType] {
                 Send("{Down}")
+                Sleep(10)
+            }
+        }
+        else {
+            loop Abs(fileTypeSelectPointer[fileType]) {
+                Send("{Up}")
                 Sleep(10)
             }
         }
