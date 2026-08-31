@@ -163,14 +163,36 @@ class JSON {
     }
 }
 
+lcoalConfig := JSON.parse(FileRead(A_AppData . "\QM2\qm.config.json"))
+isAutoUpdate := localConfig["auto-update"]
+if (!isAutoUpdate) {
+    try {
+        Run("C:\QM2\app\QM2.ahk")
+    }
+    catch {
+        Run("\\10.0.2.13\fd\19-个人文件夹\HC\Software - 软件及脚本\AHK_Scripts\QM2-for-FrontDesk-main\QM2.ahk")
+    }
+    ExitApp()
+}
 
-VERSION := JSON.parse(FileRead(A_AppData . "\QM2\qm.config.json"))["version"]
+VERSION := lcoalConfig["version"]
 UNC_PATH := "\\10.0.2.13\fd"
 uncScriptDir := UNC_PATH . "\19-个人文件夹\HC\Software - 软件及脚本\AHK_Scripts\QM2-for-FrontDesk-main"
 if (DirExist(UNC_PATH)) {
     ; compare version
     uncVersion := JSON.parse(FileRead(uncScriptDir . "\qm.config.json"))["version"]
-    if (VERSION != uncVersion || !DirExist("C:\QM2\app")) {
+    if (VERSION != uncVersion) {
+		DetectHiddenWindows(true)
+		loop {
+			if (id := WinExist("app\QM2")) {
+				pid := WinGetPID("ahk_id " . id)
+				if (!pid) {
+					break
+				}
+				ProcessClose(pid)
+			}
+		} until (!WinExist("app\QM2"))
+
         DirCopy(uncScriptDir, "C:\QM2\app", true)
         FileCopy(uncScriptDir . "\qm.config.json", A_AppData . "\QM2\qm.config.json", true)
         Reload()
