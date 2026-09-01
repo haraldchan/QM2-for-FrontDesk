@@ -164,7 +164,7 @@ class JSON {
 }
 
 lcoalConfig := JSON.parse(FileRead(A_AppData . "\QM2\qm.config.json"))
-isAutoUpdate := localConfig["auto-update"]
+isAutoUpdate := lcoalConfig["auto-update"]
 if (!isAutoUpdate) {
     try {
         Run("C:\QM2\app\QM2.ahk")
