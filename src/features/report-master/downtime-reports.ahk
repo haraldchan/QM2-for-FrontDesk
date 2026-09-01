@@ -14,6 +14,8 @@ if (A_ScriptName == "downtime-reports.ahk") {
 
     POPUP_TITLE := "DownTime Reports"
     IMAGES := useImages("..\..\..\assets")
+    PmsImageFinder.images := IMAGES
+
     TraySetIcon("..\..\..\assets\QMTray.ico")
 
     DownTimeWin := Svaner({
@@ -128,9 +130,7 @@ DownTimeReports(App, runAsInstance) {
         handleBrowserReopen()
 
         ; check/create downtime report dir
-        if (!DirExist(DOWNTIME_FOLDER)) {
-            DirCreate(DOWNTIME_FOLDER)
-        }
+        DirCreate(DOWNTIME_FOLDER)
 
         selectedReports := []
         selectedRows := App["downtime-list"].getCheckedRowNumbers()
