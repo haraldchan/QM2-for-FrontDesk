@@ -16,7 +16,7 @@ PersistScriptsControl(App) {
 		}
 
 		scanFolderPath := DirExist(uncSavePath) ? uncSavePath : localSavePath
-		
+
 		if (!DirExist(scanFolderPath)) {
 			MsgBox(Format("证件扫描文件夹 <{1}> 未找到", scanFolderPath), POPUP_TITLE, "T5 0x10")
 			return
@@ -38,6 +38,7 @@ PersistScriptsControl(App) {
 		HotIf((*) => App["city-ledger-on"].Value)
 		Hotkey("^o", (*) => CityLedgerCo.USE())
 		Hotkey("MButton", (*) => CityLedgerCo.USE())
+		Hotkey("^e", (*) => CityLedgerCo.runSequence())
 
 		; Invoke Scan
 		HotIf((*) => App["scan-invoke-on"].Value)
@@ -73,24 +74,20 @@ PersistScriptsControl(App) {
 				; City Ledger
 				App.AddCheckbox("vcity-ledger-on @use:psc-label yp+20", "City Ledger").onClick(handlePersistSwitch),
 				App.AddText("@use:psc-desc", "热键: Ctrl + O | 鼠标滚轮键"),
-			
 				; Scan Invoke
 				App.AddCheckbox("vscan-invoke-on @use:psc-label", "启动扫描").onClick(handlePersistSwitch),
 				App.AddText("@use:psc-desc", "热键: Ctrl+Shift+S"),
 				App.AddButton("xp+105 w80 h20", "Scan 文件夹").onClick(handleOpenScanFolder),
-
 				; Balance Transfer
 				App.AddCheckbox("vbalance-transfer-on @use:psc-label", "Balance Transfer").onClick(handlePersistSwitch),
 				App.AddText("@use:psc-desc", "输入: BT"),
-
 				; Start Wacom driver
 				App.AddCheckbox("vstart-wacom-driver-on @use:psc-label", "恢复签名版可用").onClick(handlePersistSwitch),
 				App.AddText("@use:psc-desc", "输入：WC | 点击->"),
 				App.AddButton("xp+105 w80 h20", "重启驱动").onClick(StartWacomDriver),
 			]
 		),
-		
-		onMount()
+			onMount()
 	}
 
 	return render()
