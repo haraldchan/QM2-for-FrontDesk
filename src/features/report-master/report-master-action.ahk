@@ -1065,6 +1065,7 @@ class ReportMaster_Action {
     }
 
     static onDayLateOut() {
+        CoordMode("Mouse", "Screen")
         Sleep(500)
         topLeft := PmsImageFinder.find("opera-active-win.png")
         if (!topLeft) {
@@ -1079,13 +1080,15 @@ class ReportMaster_Action {
         Send("{Text}1700")
 
         ; sort order -> Departure Time
-        Click(topLeft.outX + 584, topLeft.outY + 465)
+        ; Click(topLeft.outX + 584, topLeft.outY + 465)
+        Click(854, 639)
         utils.waitLoading()
         Send("!r")
         utils.waitLoading()
         Send("!o")
         utils.waitLoading()
-        Click(topLeft.outX + 584, topLeft.outY + 465)
+        ; Click(topLeft.outX + 584, topLeft.outY + 465)
+        Click(854, 639)
         utils.waitLoading()
         loop 2 {
             Send("{Down}")
