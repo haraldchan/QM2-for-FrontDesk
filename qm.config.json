@@ -1,26 +1,26 @@
 {
-  "version":"2.9.13-2",
-  "persist-scripts-switch": {
-    "balance-transfer": true,
-    "city-ledger": false,
-    "scan-invoke": true,
-    "start-wacom-driver": false
-  },
-  "report-master": {
-    "on-day-group-folder": "\\\\10.0.2.13\\fd\\9-ON DAY GROUP DETAILS",
-    "misc-reports": {
-      "packages": {
-        "presets": {
-          "早餐": "BFNP BFPP BFC",
-          "Upsell": "%US",
-          "一盅两件": "DXTC DXTCF"
-        }
-      },
-      "specials": {
-        "presets": {
-          "水果5": "水果5"
-        }
-      }
-    }
-  }
+	"version": "2.9.14",
+	"persist-scripts-switch": {
+		"balance-transfer": true,
+		"city-ledger": false,
+		"scan-invoke": true,
+		"start-wacom-driver": false
+	},
+	"report-master": {
+		"on-day-group-folder": "\\\\10.0.2.13\\fd\\9-ON DAY GROUP DETAILS",
+		"misc-reports": {
+			"packages": {
+				"presets": {
+					"早餐": "BFNP BFPP BFC",
+					"Upsell": "%US",
+					"一盅两件": "DXTC DXTCF"
+				}
+			},
+			"specials": {
+				"presets": {
+					"水果5": "水果5"
+				}
+			}
+		}
+	}
 }
