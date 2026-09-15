@@ -6,6 +6,7 @@ class ReportMaster_Action {
         HotIf((*) => this.isRunning)
         Hotkey("F12", (*) => this.end(), "On")
 
+        CoordMode("Mouse", "Screen")
         WinMaximize("ahk_class SunAwtFrame")
         WinActivate("ahk_class SunAwtFrame")
         WinSetAlwaysOnTop(true, "ahk_class SunAwtFrame")
@@ -170,14 +171,12 @@ class ReportMaster_Action {
         Send(Format("{Text}{1}", reportInfoObj.searchStr))
         Sleep(100)
         Send("!h")
+        utils.waitLoading()
+        Send("!i")
+        utils.waitLoading()
+        Send("{Tab}")
         Sleep(100)
-        MouseMove(initX, initY) ; 433, 598
-        Sleep(150)
-        Click()
-        Sleep(150)
 
-        MouseMove(initX + 380, initY)
-        Click()
         if (fileTypeSelectPointer[fileType] > 0) {
             loop fileTypeSelectPointer[fileType] {
                 Send("{Down}")
@@ -190,8 +189,6 @@ class ReportMaster_Action {
                 Sleep(10)
             }
         }
-        Sleep(100)
-        Send("{Enter}")
         Sleep(100)
         Send("!o")
         if (!this.isRunning) {
