@@ -65,7 +65,18 @@ class CityLedgerCo {
 			Sleep(10)
 		}
 		utils.waitLoading()
-		PixelSearch(&outX, &outY, 440, 264, 533, 613, "0X000080")
+		loop {
+			foundBlue := PixelSearch(&outX, &outY, 440, 264, 533, 613, "0X000080")
+			if (foundBlue) {
+				break
+			}
+			Sleep(200)
+
+			if (A_Index > 10) {
+				MsgBox("定位失败，请点选 BalanceTransfer 后继续", , "4096 icon!")
+			}
+		}
+
 		Sleep(200)
 		MouseClickDrag("L", outX + 5, outY + 5, this.billingBtnCoords[toBillingIndex]*)
 		Sleep(200)
