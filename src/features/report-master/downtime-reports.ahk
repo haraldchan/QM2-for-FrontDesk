@@ -16,6 +16,9 @@ if (A_ScriptName == "downtime-reports.ahk") {
     IMAGES := useImages("..\..\..\assets")
     PmsImageFinder.images := IMAGES
 
+    FORCE_SUSPEND_MESSAGE := 0x2042
+    SUSPEND_CONTROLLER := SuspendController(FORCE_SUSPEND_MESSAGE)
+
     TraySetIcon("..\..\..\assets\QMTray.ico")
 
     DownTimeWin := Svaner({
@@ -53,17 +56,9 @@ DownTimeReports(App, runAsInstance) {
     downtimeReportList := signal(ReportMaster_Action.reportList.downtime)
 
     handleBrowserReopen() {
+        SUSPEND_CONTROLLER.suspendOtherScripts()
         ; close all pms win
-        exitCode := utils.killApp("360se.exe")
-        if (exitCode != 0) {
-            res := MsgBox("关闭 360 浏览器失败，请手动关闭。", POPUP_TITLE, "4096 icon! CancelTryAgainContinue")
-            switch (res) {
-                case "Cancel":
-                    return
-                case "TryAgain":
-                    handleBrowserReopen()
-            }
-        }
+        utils.killApp("360se.exe")
 
         Run(BROWSER . " " . PMS_URL)
         WinWait("OPERA Login")
@@ -113,6 +108,8 @@ DownTimeReports(App, runAsInstance) {
             }
             Sleep(500)
         }
+
+        SUSPEND_CONTROLLER.restoreAllScripts()
     }
 
     App.gui.OnEvent("Close", handleExitApp)
