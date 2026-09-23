@@ -108,7 +108,7 @@ class Landow {
         landowWinIds := WinGetList("ahk_exe CmsManager.exe")
         for (id in landowWinIds) {
             if (id != this.mainWinHwnd) {
-                ProcessClose(WinGetPID(id))
+                WinClose(id)
             }
         }
 
@@ -174,6 +174,14 @@ class Landow {
             this.runAndLogin()
         }
         WinActivate(this.mainWinHwnd)
+
+        ; clear exist modal
+        landowWinIds := WinGetList("ahk_exe CmsManager.exe")
+        for (id in landowWinIds) {
+            if (id != this.mainWinHwnd) {
+                WinClose(id)
+            }
+        }
 
         this.clickGuestService()
         Sleep(100)
