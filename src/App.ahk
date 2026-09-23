@@ -18,18 +18,18 @@ App(App) {
 		curActiveTab.set(tab3.Text)
 	}
 
-    onMount() {
-        firstRadio := App["component:op-radio-group"].ctrls.find(c => c is Gui.Radio)
-        firstRadio.Value := true
-        firstRadio.Focus()
+	onMount() {
+		firstRadio := App["component:op-radio-group"].ctrls.find(c => c is Gui.Radio)
+		firstRadio.Value := true
+		firstRadio.Focus()
 
-        App["blank-share-action"].Opt("Default")
-    }
+		App["blank-share-action"].Opt("Default")
+	}
 
 	render() {
 		; desc
 		StrSplit(description, "`n").map(fragment => App.AddText("y+5", fragment))
-		
+
 		; persist scripts
 		PersistScriptsControl(App)
 
@@ -37,6 +37,7 @@ App(App) {
 		App.AddTab3("w380 x15 Choose1", OrderedMap(
 			"一键运行", () => OnePress(App),
 			"常用语句", () => Phrases(App),
+			"蓝豆联动", () => LandowLinker(App),
 			"夜班报表", () => OverNightReports(App),
 			"团单信息", () => OnDayGroupReports(App, curActiveTab),
 			"其他报表", () => MiscReports(App),
