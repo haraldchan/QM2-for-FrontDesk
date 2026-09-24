@@ -5,7 +5,8 @@ class Landow {
     static loginTitle := "登录"
     static mainWinTitle := "住客服务管家"
     static mainWinHwnd := this.getMainWinHwnd()
-    
+    static orderWinHwnd := ""
+
     static getMainWinHwnd() {
         ids := WinGetList("ahk_exe CmsManager.exe")
         for (id in ids) {
@@ -35,7 +36,7 @@ class Landow {
         Sleep(100)
         Send("{Enter}")
         Sleep(100)
-        
+
         if (!WinWait(, this.mainWinTitle, 5)) {
             return
         }
@@ -53,21 +54,18 @@ class Landow {
     static close() {
         if (WinExist(this.mainWinHwnd)) {
             ProcessClose(WinGetPID(this.mainWinHwnd))
-        }        
+        }
     }
-
 
 
     ; 对客服务
     static clickGuestService() {
         CoordMode("Mouse", "Window")
         ; click guest feedback as a reset
-        Click(64, 191)
-        Sleep(100)
-        Click(64, 159)
+        Click(60, 90)
         Sleep(100)
 
-        Click(69, 161)
+        Click(60, 226)
         CoordMode("Mouse", "Screen")
     }
 
@@ -83,6 +81,9 @@ class Landow {
         CoordMode("Mouse", "Window")
         Click(207, 140)
         CoordMode("Mouse", "Screen")
+
+        Sleep(500)
+        this.orderWinHwnd := WinGetList("ahk_exe CmsManager.exe").find(id => id != this.mainWinHwnd)
     }
 
     ; 客人换房
@@ -90,6 +91,9 @@ class Landow {
         CoordMode("Mouse", "Window")
         Click(299, 238)
         CoordMode("Mouse", "Screen")
+
+        Sleep(500)
+        this.orderWinHwnd := WinGetList("ahk_exe CmsManager.exe").find(id => id != this.mainWinHwnd)
     }
 
     /**
@@ -108,7 +112,9 @@ class Landow {
         landowWinIds := WinGetList("ahk_exe CmsManager.exe")
         for (id in landowWinIds) {
             if (id != this.mainWinHwnd) {
-                WinClose(id)
+                try {
+                    WinClose(id)
+                }
             }
         }
 
@@ -118,6 +124,8 @@ class Landow {
         Sleep(100)
         this.clickItemAndService()
         Sleep(100)
+
+        WinActivate(this.orderWinHwnd)
 
         found := LandowImageFinder.find("landow-no-guest.png", 50)
         if (!found) {
@@ -138,9 +146,7 @@ class Landow {
         }
 
         ; send order type
-        WinActivate(this.mainWinHwnd)
-        ; Click()
-        Sleep(2000)
+        Sleep(200)
         Send("{Tab}")
         Sleep(100)
         Send("{Text}" . orderType)
@@ -148,7 +154,7 @@ class Landow {
         Send("{Enter}")
         Sleep(500)
 
-        ; send qty  
+        ; send qty
         Send("{Tab}")
         Sleep(100)
         Send("{Text}" . qty)
@@ -167,6 +173,8 @@ class Landow {
         Send("{Enter}")
         Sleep(100)
         ; TODO: resolve duplicated order
+
+        this.orderWinHwnd := ""
     }
 
     static createRoomMove(curRoomNum, newRoomNum, reason) {
@@ -179,7 +187,9 @@ class Landow {
         landowWinIds := WinGetList("ahk_exe CmsManager.exe")
         for (id in landowWinIds) {
             if (id != this.mainWinHwnd) {
-                WinClose(id)
+                try {
+                    WinClose(id)
+                }
             }
         }
 
@@ -189,6 +199,8 @@ class Landow {
         Sleep(100)
         this.clickRoomMove()
         Sleep(100)
+
+        WinActivate(this.orderWinHwnd)
 
         found := LandowImageFinder.find("landow-no-guest.png", 50)
         if (!found) {
@@ -227,7 +239,7 @@ class Landow {
         Send("{Text}" . reason)
         Sleep(500)
         Send("{Enter}")
-        Sleep(200)   
+        Sleep(200)
 
         ; confirm send
         Send("{Tab}")
@@ -236,5 +248,6 @@ class Landow {
         Sleep(200)
 
         CoordMode("Mouse", "Screen")
+        this.orderWinHwnd := ""
     }
 }
