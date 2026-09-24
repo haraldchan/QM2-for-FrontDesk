@@ -1,4 +1,4 @@
-﻿#Include landow-linker-action.ahk
+#Include landow-linker-action.ahk
 
 /**
  * @param {Svaner} App
@@ -6,7 +6,7 @@
 LandowLinker(App) {
     orderTypesRead := JSON.parse(
         FileRead(A_LineFile.replace(A_LineFile.split("\").at(-1), "order-types.json"), "utf-8")
-    )
+    ).unshift("(请选择工单内容)")
 
     orderTypes := signal(orderTypesRead)
 
@@ -24,6 +24,7 @@ LandowLinker(App) {
         matchedList := orderTypesRead.filter(orderType => orderType.includes(ctrl.Text.toUpper()))
         if (!matchedList.Length) {
             orderTypes.reset()
+            return
         }
         else {
             orderTypes.set(matchedList)
@@ -33,6 +34,14 @@ LandowLinker(App) {
             if (orderType.includes(ctrl.Text.toUpper())) {
                 ctrl.Text := orderType
                 ctrl.Focus()
+                if (!ctrl.Text) {
+                    return
+                }
+
+                if (orderTypes.value.Length > 1) {
+                    ControlShowDropDown(ctrl)
+                }
+                break
             }
         }
     }
@@ -65,6 +74,7 @@ LandowLinker(App) {
             return
         }
 
+        
 
         LandowLinker_Action.sendRoomMove(newRoomNum, roomMoveReason, prevRoomStatus)
     }
@@ -80,7 +90,7 @@ LandowLinker(App) {
             },
             () => [
                 App.AddText("vservice-order-line1 @use:ll-text", "工单内容"),
-                App.AddComboBox("vorder-type x+10 w150", orderTypes).onChange(handleOrderTypeAutoComplete, 300),
+                App.AddComboBox("vorder-type x+10 w150 Choose1", orderTypes).onChange(handleOrderTypeAutoComplete, 300),
                 ;
                 App.AddText("@use:ll-text", "数量"),
                 App.AddEdit("vorder-qty @use:ll-edit Number", "1"),
@@ -103,13 +113,13 @@ LandowLinker(App) {
             () => [
                 App.AddText("vroommove-line1 @use:ll-text", "新房号"),
                 App.AddEdit("vnew-room-num @use:ll-edit", ""),
-                ;
+                ; 
                 App.AddText("@use:ll-text", "旧房房态"),
                 App.AddDDL("vprev-room-status x+10 w150 Choose1", ["Dirty", "Inspected"]),
-                ;
+                ; 
                 App.AddText("@use:ll-text", "换房原因"),
                 App.AddEdit("vroom-move-reason @use:ll-edit h60", ""),
-                ;
+                ; 
                 App.AddButton("@relative[x+180]:roommove-line1 @align[y]:roommove-line1 w90 h30", "执行换房")
                    .onClick(handleSendRoomMove)
             ]
