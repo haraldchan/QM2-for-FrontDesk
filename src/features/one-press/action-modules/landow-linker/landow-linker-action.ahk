@@ -26,7 +26,10 @@ class LandowLinker_Action {
         MouseClickDrag("Left", found.outX + 120, found.outY + 302, found.outX, found.outY + 302)
         Sleep(200)
         Send("^c")
-        ClipWait()
+        if (!ClipWait(2)) {
+            MsgBox("复制房号失败，请在预订界面中重试", POPUP_TITLE, "4096 T2 iconx")
+            return
+        }
         curRoomNum := A_Clipboard
         Sleep(200)
 
@@ -62,7 +65,10 @@ class LandowLinker_Action {
         MouseClickDrag("Left", found.outX + 120, found.outY + 302, found.outX, found.outY + 302)
         Sleep(200)
         Send("^c")
-        ClipWait()
+        if (!ClipWait(2)) {
+            MsgBox("复制房号失败，请在预订界面中重试", POPUP_TITLE, "4096 T2 iconx")
+            return
+        }
         curRoomNum := A_Clipboard
         Sleep(200)
 
@@ -75,8 +81,21 @@ class LandowLinker_Action {
         utils.waitLoading()
         Send("!o")
         utils.waitLoading()
+
+        ; handle alert
+        alertFound := PmsImageFinder.find("alert.png")
+        Sleep(100)
+        errorFound := PmsImageFinder.find("alert.png")
+        if (alertFound || errorFound) {
+            res := MsgBox("检测到警告弹窗，请处理后继续", POPUP_TITLE, "4096 iconi OKCancel")
+            if (res == "Cancel") {
+                return
+            }
+        }
+
         Send(this.roomStatusKeyMap[prevRoomStatus])
         utils.waitLoading()
+
 
         Landow.createRoomMove(curRoomNum, newRoomNum, reason)
     }
