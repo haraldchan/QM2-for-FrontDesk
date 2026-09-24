@@ -1,5 +1,5 @@
 {
-	"version": "2.9.15",
+	"version": "2.10.0",
 	"persist-scripts-switch": {
 		"balance-transfer": true,
 		"city-ledger": false,
