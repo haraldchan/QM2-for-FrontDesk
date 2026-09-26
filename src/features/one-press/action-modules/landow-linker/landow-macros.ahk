@@ -106,6 +106,8 @@ class Landow {
         if (!WinExist(this.mainWinTitle)) {
             this.runAndLogin()
         }
+
+        this.mainWinHwnd := this.getMainWinHwnd()
         WinActivate(this.mainWinHwnd)
 
         ; clear exist modal
@@ -181,6 +183,8 @@ class Landow {
         if (!WinExist(this.mainWinTitle)) {
             this.runAndLogin()
         }
+
+        this.mainWinHwnd := this.getMainWinHwnd()
         WinActivate(this.mainWinHwnd)
 
         ; clear exist modal
