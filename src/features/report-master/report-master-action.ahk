@@ -7,10 +7,17 @@ class ReportMaster_Action {
         Hotkey("F12", (*) => this.end(), "On")
 
         CoordMode("Mouse", "Screen")
-        WinMaximize("ahk_class SunAwtFrame")
-        WinActivate("ahk_class SunAwtFrame")
-        WinSetAlwaysOnTop(true, "ahk_class SunAwtFrame")
-        BlockInput(true)
+        try {
+            WinMaximize("ahk_class SunAwtFrame")
+            WinActivate("ahk_class SunAwtFrame")
+            WinSetAlwaysOnTop(true, "ahk_class SunAwtFrame")
+            BlockInput(true)
+        }
+        catch Error as e {
+            if (e.Message == "Error: Target window not found.") {
+                return false
+            }
+        }
     }
 
     static end() {
@@ -275,7 +282,11 @@ class ReportMaster_Action {
     static saveReports(reportInfoObjs, fileType) {
         savedReports := ""
 
-        this.start()
+        started := this.start()
+        if (!started) {
+            MsgBox("Opera PMS 未启动，请登录后重试", POPUP_TITLE, "4096 T1 icon!")
+            return
+        }
 
         for reportObj in reportInfoObjs {
             if (!ReportMaster_Action.isRunning && A_Index > 1) {
@@ -775,6 +786,83 @@ class ReportMaster_Action {
         MouseMove(initX - 117, initY + 97) ; 728, 473
         Sleep(150)
         Send("!o")
+        Sleep(150)
+        Send("!o")
+        Sleep(150)
+        MouseMove(initX - 134, initY + 115) ; 711, 491
+        Sleep(150)
+        Click()
+        MouseMove(initX - 423, initY + 144) ; 422, 520
+        Sleep(150)
+        Click()
+        MouseMove(initX - 236, initY + 271) ; 609, 647
+        return fileName
+    }
+
+    static arrivingFedex(initX := 845, initY := 376) {
+        fileName := Format("{1}-FEDEX-ARRIVAL", FormatTime(A_Now, "yyyyMMdd"))
+
+        Sleep(200)
+        ; report options here
+        MouseMove(initX, initY) ; 845, 376
+        Sleep(150)
+        Click()
+        MouseMove(initX - 41, initY + 10) ; 804, 386
+        Sleep(150)
+        Send("!a")
+        Sleep(150)
+        MouseMove(initX - 37, initY + 229) ; 808, 605
+        Sleep(150)
+        Click("Down")
+        MouseMove(initX - 40, initY + 239) ; 805, 614
+        Sleep(150)
+        Click("Up")
+        MouseMove(initX - 108, initY + 239) ; 737, 615
+        Sleep(150)
+        Click()
+        Sleep(150)
+        loop 8 {
+            Send("{Space}")
+            Sleep(100)
+            Send("{Up}")
+            Sleep(100)
+        }
+        Sleep(350)
+        Send("!o")
+        Sleep(150)
+        MouseMove(initX - 3, initY - 52) ; 842, 324
+        Sleep(150)
+        Click()
+        MouseMove(initX - 276, initY - 93) ; 569, 283
+        Sleep(150)
+        Click()
+        Sleep(150)
+        Send(Format("{Text}{1}", "%FEDEX"))
+        Sleep(150)
+        ; MouseMove(initX + 3, initY - 95) ; 848, 281
+        ; Sleep(150)
+        ; Click()
+        ; MouseMove(initX - 242, initY + 36) ; 603, 412
+        ; Sleep(150)
+        ; Click()
+        ; Sleep(150)
+        ; Send("{Space}")
+        ; MouseMove(initX - 117, initY + 97) ; 728, 473
+        Send("!h")
+        utils.waitLoading()
+        Send("!a")
+        utils.waitLoading()
+        Sleep(150)
+        Send("!o")
+        utils.waitLoading()
+
+        ; check ETA
+        loop 6 {
+            Send("{Tab}")
+            Sleep(100)
+        }
+        Send("{Space}")
+
         Sleep(150)
         Send("!o")
         Sleep(150)
