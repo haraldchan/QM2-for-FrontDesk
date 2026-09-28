@@ -1,6 +1,6 @@
 class FedexSignInGen {
-    static scheduleDir := A_Desktop "\fdx-test"
-    static signInTemplate := "c:\Users\haraldchan\Desktop\fdx-test\FedEx Sign In Sheet temp(空模板).xlsx"
+    static scheduleDir := "\\10.0.2.13\FD\25-FEDEX\Schedule 2026"
+    static signInTemplate := "\\10.0.2.13\FD\25-FEDEX\Schedule生成处理工具\FedEx Sign In Sheet temp(空模板).xlsx"
     static signInSaveDir := A_Desktop
 
     static shceduleFlightInfoItems := [
@@ -140,19 +140,26 @@ class FedexSignInGen {
                 flightIn: flightIn
             }
 
-            mapToAdd := Integer(eta.split(":")[1]) >= 10 ? onDayMap : nextDayMap
-            if (mapToAdd.Has(formatted.flightIn)) {
-                mapToAdd[formatted.flightIn].Push(formatted)
+            if (Integer(eta.split(":")[1]) >= 10) {
+                if (onDayMap.Has(formatted.flightIn)) {
+                    onDayMap[formatted.flightIn].Push(formatted)
+                }
+                else {
+                    onDayMap[formatted.flightIn] := [formatted]
+                }
             }
             else {
-                mapToAdd[formatted.flightIn] := [formatted]
+                if (nextDayMap.Has(formatted.flightIn)) {
+                    nextDayMap[formatted.flightIn].Push(formatted)
+                }
+                else {
+                    nextDayMap[formatted.flightIn] := [formatted]
+                }
             }
         }
 
         xmlDoc := ""
-
-
-        sortedOnDay := onDayMap.values().flat().sort((a, b) => Integer(a.eta.replace(":", "")) - Integer(b.eta.replace(":", "")))
+        sortedOnDay := !onDayMap.Capacity ? [] : onDayMap.values().flat().sort((a, b) => Integer(a.eta.replace(":", "")) - Integer(b.eta.replace(":", "")))
         sortedNextDay := nextDayMap.values().flat().sort((a, b) => Integer(a.eta.replace(":", "")) - Integer(b.eta.replace(":", "")))
 
         return sortedOnDay.append(sortedNextDay)
@@ -218,7 +225,7 @@ class FedexSignInGen {
                     "qty", "",
                     "flightIn1", booking.flightIn.substr(1, 2),
                     "flightIn2", booking.flightIn.substr(3),
-                    "ciDate", booking.ciDate,
+                    "ciDate", Integer(booking.eta.replace(":", "")) >= 10 ? booking.ciDate : FormatTime(DateAdd(date, 1, "Days"), "MM/dd"),
                     "eta", booking.eta,
                 ))
             }
@@ -312,11 +319,18 @@ class FedexSignInGen {
 
     static saveArrivalXml() {
         reportDescriptor := {
-            searchStr: "GRPRMLIST",
-            name: "Group Arrival - 当天预抵团单",
+            searchStr: "GRPRM",
+            name: FormatTime(A_Now, "yyyyMMdd") . " Fedex 团单",
             saveFn: ReportMaster_Action.arrivingFedex
         }
 
-        ReportMaster_Action.saveReports([reportDescriptor], "XML")
+        savedReport := ReportMaster_Action.saveReports([reportDescriptor], "XML")
+        saveText := "已保存报表：`n`n" . savedReport . "`n`n是否打开所在文件夹? "
+        if (MsgBox(saveText, POPUP_TITLE, "OKCancel 4096") == "OK") {
+            saveFilename := A_MyDocuments "\" FormatTime(A_Now, "yyyyMMdd") "-FEDEX-ARRIVAL.XML"
+            Run(Format('explorer /select, "{1}"', saveFilename))
+        } else {
+            utils.cleanReload(WIN_GROUP)
+        }
     }
 }
