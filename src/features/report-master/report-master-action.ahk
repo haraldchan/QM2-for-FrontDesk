@@ -14,10 +14,10 @@ class ReportMaster_Action {
             BlockInput(true)
         }
         catch Error as e {
-            if (e.Message == "Error: Target window not found.") {
-                return false
-            }
+            return false
         }
+
+        return true
     }
 
     static end() {
@@ -176,7 +176,7 @@ class ReportMaster_Action {
         Send("{Text}R")
         Sleep(100)
         Send(Format("{Text}{1}", reportInfoObj.searchStr))
-        Sleep(100)
+        Sleep(200)
         Send("!h")
         utils.waitLoading()
         Send("!i")
@@ -198,6 +198,7 @@ class ReportMaster_Action {
         }
         Sleep(100)
         Send("!o")
+        utils.waitLoading()
         if (!this.isRunning) {
             msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
             return
@@ -808,9 +809,9 @@ class ReportMaster_Action {
         Sleep(150)
         Click()
         MouseMove(initX - 41, initY + 10) ; 804, 386
-        Sleep(150)
+        utils.waitLoading()
         Send("!a")
-        Sleep(150)
+        utils.waitLoading()
         MouseMove(initX - 37, initY + 229) ; 808, 605
         Sleep(150)
         Click("Down")
@@ -820,22 +821,24 @@ class ReportMaster_Action {
         MouseMove(initX - 108, initY + 239) ; 737, 615
         Sleep(150)
         Click()
-        Sleep(150)
+        utils.waitLoading()
         loop 8 {
             Send("{Space}")
-            Sleep(100)
+            utils.waitLoading(100)
             Send("{Up}")
-            Sleep(100)
+            utils.waitLoading(100)
         }
         Sleep(350)
         Send("!o")
-        Sleep(150)
+        utils.waitLoading()
         MouseMove(initX - 3, initY - 52) ; 842, 324
         Sleep(150)
         Click()
+        utils.waitLoading()
         MouseMove(initX - 276, initY - 93) ; 569, 283
         Sleep(150)
         Click()
+        utils.waitLoading()
         Sleep(150)
         Send(Format("{Text}{1}", "%FEDEX"))
         Sleep(150)
@@ -865,13 +868,8 @@ class ReportMaster_Action {
 
         Sleep(150)
         Send("!o")
-        Sleep(150)
-        MouseMove(initX - 134, initY + 115) ; 711, 491
-        Sleep(150)
-        Click()
-        MouseMove(initX - 423, initY + 144) ; 422, 520
-        Sleep(150)
-        Click()
+        utils.waitLoading()
+
         MouseMove(initX - 236, initY + 271) ; 609, 647
         return fileName
     }
