@@ -125,7 +125,8 @@ class FetchFedexResv_Action {
 
         cell := ""
         for k, v in crew {
-            cell .= v . "`t"
+            val := v ? v : "`t"
+            cell .= val . "`t"
         }
 
         A_Clipboard := cell
