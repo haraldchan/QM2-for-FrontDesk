@@ -2,9 +2,9 @@ class FetchFedexResv_Action {
     static isRunning := false
 
     static start() {
-		this.isRunning := true
-		HotIf((*) => this.isRunning)
-		Hotkey("F12", (*) => this.end(), "On")
+        this.isRunning := true
+        HotIf((*) => this.isRunning)
+        Hotkey("F12", (*) => this.end(), "On")
 
         CoordMode("Pixel", "Screen")
         WinMaximize("ahk_class SunAwtFrame")
@@ -14,11 +14,11 @@ class FetchFedexResv_Action {
     }
 
     static end() {
-		this.isRunning := false
-		Hotkey("F12", "Off")
+        this.isRunning := false
+        Hotkey("F12", "Off")
 
-		BlockInput(false)
-		WinSetAlwaysOnTop(false, "ahk_class SunAwtFrame")
+        BlockInput(false)
+        WinSetAlwaysOnTop(false, "ahk_class SunAwtFrame")
     }
 
     static USE(roomNum, confNum) {
@@ -60,26 +60,26 @@ class FetchFedexResv_Action {
         name := this.getCrewName()
         crew["name"] := name[1] . " " . name[2]
         utils.waitLoading()
-		if (!this.isRunning) {
-			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
-			return
-		}    
+        if (!this.isRunning) {
+            msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
+            return
+        }
 
         ; get trip number
         crew["trip"] := this.getTripNum()
         utils.waitLoading()
-		if (!this.isRunning) {
-			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
-			return
-		}
+        if (!this.isRunning) {
+            msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
+            return
+        }
 
         ; open More Fields panel
         Send("!i")
         utils.waitLoading()
-		if (!this.isRunning) {
-			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
-			return
-		}
+        if (!this.isRunning) {
+            msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
+            return
+        }
 
         ; inbound
         inbound := this.getMoreFieldsValue(6)
@@ -108,10 +108,10 @@ class FetchFedexResv_Action {
 
         Send("!o")
         utils.waitLoading()
-		if (!this.isRunning) {
-			msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
-			return
-		}
+        if (!this.isRunning) {
+            msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
+            return
+        }
 
         mins := DateDiff(
             "20" . dep[3] . dep[1] . dep[2] . StrReplace(crew["ETD"], ":", ""),
