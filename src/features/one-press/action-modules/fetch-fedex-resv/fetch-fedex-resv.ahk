@@ -26,8 +26,8 @@ FetchFedexResv(App, props) {
 
     handleFedexSignInGenerate(*) {
         FedexSignInGen.USE(
-            "20260926", 
-            App["fr-time"].Value, 
+            FormatTime(A_Now, "yyyyMMdd"),
+            App["fr-time"].Value,
             App["to-time"].Value
         )
     }
