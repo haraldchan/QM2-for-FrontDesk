@@ -26,8 +26,9 @@ class FedexSignInGen {
     ]
 
     /**
-     * 
      * @param {String} date 
+     * @param {String} frTime 
+     * @param {String} toTime 
      */
     static USE(date, frTime, toTime) {
         arrRead := this.readArrivalXml(A_MyDocuments "\" date "-FEDEX-ARRIVAL.xml")
@@ -41,7 +42,7 @@ class FedexSignInGen {
         nextDayList := this.readScheduleXls(FormatTime(DateAdd(date, 1, "Days"), "yyyyMMdd"))
         scheduleList := onDayList.append(nextDayList)
 
-        this.writeSignInSheet(arrivalList, scheduleList, date)
+        this.writeSignInSheet(arrivalList, scheduleList, date, frTime)
     }
 
     /**
@@ -75,6 +76,23 @@ class FedexSignInGen {
         }
 
         return targetXls
+    }
+
+    static saveArrivalXml() {
+        reportDescriptor := {
+            searchStr: "GRPRM",
+            name: FormatTime(A_Now, "yyyyMMdd") . " Fedex 团单",
+            saveFn: ReportMaster_Action.arrivingFedex
+        }
+
+        savedReport := ReportMaster_Action.saveReports([reportDescriptor], "XML")
+        saveText := "已保存报表：`n`n" . savedReport . "`n`n是否打开所在文件夹? "
+        if (MsgBox(saveText, POPUP_TITLE, "OKCancel 4096") == "OK") {
+            saveFilename := A_MyDocuments "\" FormatTime(A_Now, "yyyyMMdd") "-FEDEX-ARRIVAL.XML"
+            Run(Format('explorer /select, "{1}"', saveFilename))
+        } else {
+            utils.cleanReload(WIN_GROUP)
+        }
     }
 
     /**
@@ -206,13 +224,25 @@ class FedexSignInGen {
         return shceduledInboundFlights
     }
 
+    /**
+     * Convert hex to BGR integer
+     * @param {String} hex 
+     * @returns {Integer} 
+     */
+    static hexToExcelColor(hex) {
+        r := Integer("0x" SubStr(hex, 1, 2))
+        g := Integer("0x" SubStr(hex, 3, 2))
+        b := Integer("0x" SubStr(hex, 5, 2))
+
+        return r | (g << 8) | (b << 16)
+    }
 
     /**
      * @param {Array} arrivalList 
      * @param {Array} scheduleList 
      * @param {String} date 
      */
-    static writeSignInSheet(arrivalList, scheduleList, date) {
+    static writeSignInSheet(arrivalList, scheduleList, date, frTime) {
         listToWrite := []
 
         for (booking in arrivalList) {
@@ -294,43 +324,16 @@ class FedexSignInGen {
             row++
         }
 
-        saveFilename := Format("{1}\{2}FedEx Sign In Sheet.xlsx", this.signInSaveDir, date)
+        saveDate := Integer(frTime.replace(":", "")) <= 10
+            ? date
+            : FormatTime(DateAdd(date, 1, "Days"), "yyyyMMdd")
+        saveFilename := Format("{1}\{2}FedEx Sign In Sheet{3}.xlsx", this.signInSaveDir, saveDate, saveDate == date ? "" : " (早到)")
         signInTemplate.SaveAs(saveFilename)
         Xl.Quit()
 
         checkSavedSignInSheet := MsgBox("已生成Sign-in Sheet文件。`n是否打开保存所在文件夹查看？", "FedexScheduleMonthly", "OKCancel")
         if (checkSavedSignInSheet == "OK") {
             Run(Format('explorer /select, "{1}"', saveFilename))
-        }
-    }
-
-    /**
-     * Convert hex to BGR integer
-     * @param {String} hex 
-     * @returns {Integer} 
-     */
-    static hexToExcelColor(hex) {
-        r := Integer("0x" SubStr(hex, 1, 2))
-        g := Integer("0x" SubStr(hex, 3, 2))
-        b := Integer("0x" SubStr(hex, 5, 2))
-
-        return r | (g << 8) | (b << 16)
-    }
-
-    static saveArrivalXml() {
-        reportDescriptor := {
-            searchStr: "GRPRM",
-            name: FormatTime(A_Now, "yyyyMMdd") . " Fedex 团单",
-            saveFn: ReportMaster_Action.arrivingFedex
-        }
-
-        savedReport := ReportMaster_Action.saveReports([reportDescriptor], "XML")
-        saveText := "已保存报表：`n`n" . savedReport . "`n`n是否打开所在文件夹? "
-        if (MsgBox(saveText, POPUP_TITLE, "OKCancel 4096") == "OK") {
-            saveFilename := A_MyDocuments "\" FormatTime(A_Now, "yyyyMMdd") "-FEDEX-ARRIVAL.XML"
-            Run(Format('explorer /select, "{1}"', saveFilename))
-        } else {
-            utils.cleanReload(WIN_GROUP)
         }
     }
 }
