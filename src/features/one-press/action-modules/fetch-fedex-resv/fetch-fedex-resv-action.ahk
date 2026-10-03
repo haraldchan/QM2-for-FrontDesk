@@ -125,7 +125,7 @@ class FetchFedexResv_Action {
 
         cell := ""
         for k, v in crew {
-            val := v ? v : "`t"
+            val := v
             cell .= val . "`t"
         }
 
