@@ -76,12 +76,12 @@ DownTimeReports(App, runAsInstance) {
         Send("{TEXT}" . PMS_USERNAME)
         Sleep(100)
         Send("{Tab}")
-        Sleep(100)
+        Sleep(200)
         Send("{TEXT}" . PMS_PASSWORD)
         Sleep(100)
         loop 3 {
             Send("{Tab}")
-            Sleep(100)
+            Sleep(200)
         }
         Send("{Enter}")
         utils.waitLoading(1000)
