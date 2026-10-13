@@ -72,11 +72,10 @@ class FedexSignInGen {
                 }
 
                 ciDate := splittedLine[2]
-                curDate := schdPDF.split("\")
-                    .at(-1)
-                    .toLower()
-                    .replaceThese([".pdf", "hotel-can-"], "")
-                    .split("-")[1] . ciDate.replace("/", "")
+                schdYear := schdPDF.split("\").at(-1).toLower().replaceThese([".pdf", "hotel-can-"], "").split("-")[1]
+                curYear := ciDate.substr(1, 2) == "01" ? schdYear + 1 : schdYear
+                curDate := curYear . ciDate.replace("/", "")
+
                 daySchd := Map(curDate, [])
                 splittedLine.RemoveAt(2, 2)
             }
@@ -147,7 +146,7 @@ class FedexSignInGen {
         }
 
         savedReport := ReportMaster_Action.saveReports([reportDescriptor], "XML")
-        saveText := "已保存报表：`n`n" . savedReport . "`n`n是否继续生成 Sign-in Sheet？ "
+        saveText := "已保存报表：`n`n" . savedReport . "`n`n是否继续生成 Sign-in Sheet？"
 
         if (MsgBox(saveText, POPUP_TITLE, "OKCancel 4096") == "OK") {
             ; saveFilename := A_MyDocuments "\" FormatTime(A_Now, "yyyyMMdd") "-FEDEX-ARRIVAL.XML"
