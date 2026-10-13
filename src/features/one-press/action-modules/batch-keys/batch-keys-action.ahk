@@ -35,8 +35,8 @@ class BatchKeysXl_Action {
 
         coDateTimeFromInput := [FormatTime(coDateTime, "ShortDate"), FormatTime(coDateTime, "HH:mm")]
 
-        Xl := "" 
-        try { 
+        Xl := ""
+        try {
             Xl := ComObject("Ket.Application")
         }
         catch {
@@ -55,11 +55,11 @@ class BatchKeysXl_Action {
         Xl.Quit()
 
         loop lastRow {
-            this.start() 
+            this.start()
 
             room := roomingList[A_Index]
 
-            coDate := !coDateXls[A_Index] ? coDateTimeFromInput[1] : coDateXls[A_Index]   
+            coDate := !coDateXls[A_Index] ? coDateTimeFromInput[1] : coDateXls[A_Index]
             etd := !coTimeXls[A_Index] ? coDateTimeFromInput[2] : coTimeXls[A_Index]
 
             this.makeKey(room, coDate, etd, enable28f)
@@ -77,10 +77,10 @@ class BatchKeysXl_Action {
                 A_Index == roomingList.Length ? "`n房卡已全部制作完成，请再次核对确保无误" : ""
             ), "Batch Keys", "YesNo 4096")
 
-            if (checkConf = "No") {
+            if (checkConf == "No") {
                 return
             }
-            BlockInput(true)
+            BlockInput(!A_Index == roomingList.Length)
 
             this.end()
         }
@@ -197,18 +197,18 @@ class BatchKeysSq_Action {
         BlockInput(false)
     }
 
-    static USE(formData) {        
+    static USE(formData) {
         for room in formData.rooms {
             this.makeKey(room, formData.coDate, formData.etd, formData.confNum, formData.enable28f)
             BlockInput(false)
             checkConf := MsgBox(Format("
-                (
-                    已做房卡：{1}
-                    {2}
-                    - 是(Y)制作下一个
-                    - 否(N)退出制卡
-                    {3}
-                )",
+            (
+                已做房卡：{1}
+                {2}
+                - 是(Y)制作下一个
+                - 否(N)退出制卡
+                {3}
+            )",
                 room,
                 A_Index + 1 <= formData.rooms.Length ? Format("下一房号：{1}`n", formData.rooms[A_Index + 1]) : "",
                 A_Index == formData.rooms.Length ? "`n房卡已全部制作完成，请再次核对确保无误" : ""
@@ -217,8 +217,8 @@ class BatchKeysSq_Action {
             if (checkConf == "No") {
                 return
             }
-            BlockInput(true)
-        }        
+            BlockInput(!A_Index == formData.rooms.Length)
+        }
     }
 
     static makeKey(room, coDate, etd, confNum, enable28f) {
