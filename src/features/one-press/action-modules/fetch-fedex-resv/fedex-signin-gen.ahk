@@ -1,6 +1,6 @@
 class FedexSignInGen {
     static scheduleDir := "\\10.0.2.13\FD\25-FEDEX\Schedules"
-    static signInTemplate := "\\10.0.2.13\FD\25-FEDEX\Schedule生成处理工具\FedEx Sign In Sheet temp(空模板).xlsx"
+    static signInTemplate := ""
     static signInSaveDir := A_Desktop
 
     static cellColors := [
