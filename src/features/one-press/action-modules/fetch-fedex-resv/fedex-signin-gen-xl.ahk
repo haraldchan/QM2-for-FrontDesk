@@ -90,7 +90,7 @@ class FedexSignInGen_Xl {
         }
 
         savedReport := ReportMaster_Action.saveReports([reportDescriptor], "XML")
-        saveText := "已保存报表：`n`n" . savedReport . "`n`n是否打开所在文件夹? "
+        saveText := "已保存报表：`n`n" . savedReport . "`n`n是否是否继续生成 Sign-in Sheet？"
 
         if (MsgBox(saveText, POPUP_TITLE, "OKCancel 4096") == "OK") {
             ; saveFilename := A_MyDocuments "\" FormatTime(A_Now, "yyyyMMdd") "-FEDEX-ARRIVAL.XML"
