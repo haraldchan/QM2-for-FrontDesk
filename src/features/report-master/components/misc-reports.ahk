@@ -7,6 +7,7 @@ MiscReports(App) {
         "WSHGZ - Specials", (*) => MiscReportOptions(App, { reportType: "specials", groupboxTitle: "WSHGZ - Specials" }),
         "预抵消费券 - ArrivingCoupons", (*) => MiscReportOptionless(App),
         "当天夜退房间 - OnDayLateOut", (*) => MiscReportOptionless(App),
+        "昨日住房国籍数量 - CountryByDate", (*) => MiscReportOptionless(App),
     )
 
     selectedMiscReport := signal(miscReports.keys()[1])
@@ -18,7 +19,8 @@ MiscReports(App) {
             "FO13 - Packages", "pkgforecast",
             "WSHGZ - Specials", "Wshgz_special",
             "预抵消费券 - ArrivingCoupons", "FO01-Arrival",
-            "当天夜退房间 - OnDayLateOut", "departure_all"
+            "当天夜退房间 - OnDayLateOut", "departure_all",
+            "昨日住房国籍数量 - CountryByDate", "stat_countrybyday"
         ))
 
         reportInfo := miscReports[selectedMiscReport.value]().name != "MiscReportOptionless"

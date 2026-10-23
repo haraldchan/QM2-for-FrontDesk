@@ -1182,4 +1182,25 @@ class ReportMaster_Action {
         Send("!o")
         utils.waitLoading()
     }
+
+    static countryByDate() {
+        Send("{Text}" . FormatTime(DateAdd(A_Now, -1, "Days"), "MM-dd-yy"))
+        utils.waitLoading()
+
+        ; uncheck Display-Room Nights
+        loop 5 {
+            Send("{Tab}")
+            Sleep(50)
+        }
+        Send("{Space}")
+        Sleep(100)
+
+        ; Check Display-Adult Nights
+        loop 2 {
+            Send("{Tab}")
+            Sleep(50)
+        }
+        Send("{Space}")
+        Sleep(100)
+    }
 }
