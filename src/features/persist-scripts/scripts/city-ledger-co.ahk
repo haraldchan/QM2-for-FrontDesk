@@ -55,35 +55,29 @@ class CityLedgerCo {
 	}
 
 	static toNextRoom(toBillingIndex) {
-		; sort by date on window 1
-		; Click(231, 251)
-		; utils.waitLoading()
-		loop 5 {
-			Send("{PgDn}")
-			Sleep(10)
-			Send("{PgDn}")
-			Sleep(10)
-		}
-		utils.waitLoading()
+		; click the "end" btn to jump to the oldest trn.
+		Click(545, 626)
+		utils.waitLoading(300)
+		Sleep(800)
 		loop {
-			foundBlue := PixelSearch(&outX, &outY, 440, 264, 533, 613, "0X000080")
+			foundBlue := PixelSearch(&outX, &outY, 440, 265, 440, 605, "0X000080")
 			if (foundBlue) {
 				break
 			}
 			Sleep(200)
 
-			if (A_Index > 10) {
+			if (A_Index > 20) {
 				MsgBox("定位失败，请点选 BalanceTransfer 后继续", , "4096 icon!")
 			}
 		}
 
 		Sleep(200)
-		MouseClickDrag("L", outX + 5, outY + 5, this.billingBtnCoords[toBillingIndex]*)
+		MouseClickDrag("L", outX, outY, this.billingBtnCoords[toBillingIndex]*)
 		Sleep(200)
 		utils.waitLoading()
 		Click(this.billingBtnCoords[toBillingIndex]*)
 		utils.waitLoading()
-		Sleep(200)
+		Sleep(800)
 	}
 
 	static runCL() {
@@ -114,6 +108,7 @@ class CityLedgerCo {
 			this.end()
 			return
 		}
+		Sleep(800)
 		Click(found.outX + 165, found.outY + 51)
 		utils.waitLoading()
 
