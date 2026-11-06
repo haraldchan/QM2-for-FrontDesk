@@ -1,5 +1,5 @@
 {
-	"version": "2.12.2",
+	"version": "2.12.2-8",
 	"persist-scripts-switch": {
 		"balance-transfer": true,
 		"city-ledger": false,
@@ -24,6 +24,6 @@
 		}
 	},
 	"fetch-fedex-resv": {
-		"template": "\\\\10.0.2.13\\FD\\25-FEDEX\\Schedule生成处理工具\\FedEx Sign In Sheet temp(空模板).xlsx"
+		"template":  "\\\\10.0.2.13\\FD\\25-FEDEX\\Schedule生成处理工具\\FedEx Sign In Sheet temp(空模板).xlsx"
 	}
 }
