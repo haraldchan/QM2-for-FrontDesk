@@ -1203,4 +1203,43 @@ class ReportMaster_Action {
         Send("{Space}")
         Sleep(100)
     }
+
+    ; for Revenue
+    static hisForSixMonths(initX := 645, initY := 205) {
+        startDate := A_Mon "01" A_Year
+        endDate := pipe(
+            x => (x + 7 > 12 ? x + 7 - 12 : x + 7),
+            x => x > 10 ? String(x) : Format("0{}", x),
+            x => Format("{}{}{}", x < A_Mon ? A_Year + 1 : A_Year, x, "01"),
+            x => DateAdd(x, -1, "Days"),
+            x => FormatTime(x, "MMddyyyy")
+        )(Integer(A_Mon))
+
+        fileName := Format("RS05-未来六月")
+        Sleep(150)
+        Send("{Backspace}")
+        Sleep(300)
+        Send(Format("{Text}{1}", startDate))
+        Sleep(300)
+        MouseClickDrag("Left", initX, initY, initX - 114, initY - 1) ; 645, 205, 531, 204
+        Sleep(150)
+        Send("{Backspace}")
+        Sleep(300)
+        Send(Format("{Text}{1}", endDate))
+        Sleep(300)
+        Click(initX - 28, initY + 436) ; 617, 641
+        Sleep(150)
+        Send("{Tab}")
+        Sleep(150)
+        Click(initX - 35, initY + 484) ; 610, 689
+        Sleep(150)
+        return fileName   
+    }
+
+    /**
+     * @param {"MarketCode"|"SourceCode"} groupBy 
+     */
+    static marketStats(groupBy) {
+        ; groupby changes `GroupBy` and `SubGroupBy`
+    }
 }
