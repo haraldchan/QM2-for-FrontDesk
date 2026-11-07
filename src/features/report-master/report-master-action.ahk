@@ -1239,7 +1239,26 @@ class ReportMaster_Action {
     /**
      * @param {"MarketCode"|"SourceCode"} groupBy 
      */
-    static marketStats(groupBy) {
-        ; groupby changes `GroupBy` and `SubGroupBy`
+    static marketStats(groupBy, queryDate) {
+    	; groupby changes `GroupBy` and `SubGroupBy`
+    	Send("{Text}" . FormatTime(queryDate, "MMddyyyy"))
+    
+    	loop 10 {
+    		Send("{Tab}")
+    		Sleep(100)
+    	}
+    
+    	if (groupBy == "SourceCode") {
+    		loop 2 {
+    			Send("{Down}")
+    			Sleep(100)	
+    		}
+    		Send("{Tab}")
+    		Sleep(100)	
+    		loop 2 {
+    			Send("{Down}")
+    			Sleep(100)	
+    		}
+    	}
     }
 }
