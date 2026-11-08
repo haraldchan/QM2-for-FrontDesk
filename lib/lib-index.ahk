@@ -5,3 +5,4 @@
 #Include use-server-agent.ahk
 #Include pms-image-finder.ahk
 #Include suspend-controller.ahk
+#Include curl-mailer.ahk
