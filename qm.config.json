@@ -1,5 +1,5 @@
 {
-	"version": "2.12.3",
+	"version": "2.13.0",
 	"persist-scripts-switch": {
 		"balance-transfer": true,
 		"city-ledger": false,
@@ -24,6 +24,11 @@
 		}
 	},
 	"fetch-fedex-resv": {
-		"template":  "\\\\10.0.2.13\\FD\\25-FEDEX\\Schedule生成处理工具\\FedEx Sign In Sheet temp(空模板).xlsx"
+		"template": "\\\\10.0.2.13\\FD\\25-FEDEX\\Schedule生成处理工具\\FedEx Sign In Sheet temp(空模板).xlsx"
+	},
+	"curl-mailer": {
+		"user": "reception@whiteswanhotel.com",
+		"auth": "NS2h#RVfJr5Qa226",
+		"url": "smtps://smtp.qiye.163.com:994"
 	}
 }
