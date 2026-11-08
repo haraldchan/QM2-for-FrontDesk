@@ -13,6 +13,7 @@ if (A_ScriptName == "downtime-reports.ahk") {
     utils.clearExistInstances()
 
     POPUP_TITLE := "DownTime Reports"
+
     IMAGES := useImages("..\..\..\assets")
     PmsImageFinder.images := IMAGES
 
@@ -120,6 +121,35 @@ DownTimeReports(App, runAsInstance) {
         ExitApp()
     }
 
+    handleSendEmail(reportPaths) {
+        if (!reportPaths.Length) {
+            return
+        }
+
+        config := JSON.parse(FileRead(A_AppData "\QM2\qm.config.json", "utf-8"))
+        mailerInfo := config["curl-mailer"]
+
+        mailer := CurlMailer(
+            mailerInfo["user"],
+            mailerInfo["auth"],
+            mailerInfo["url"]
+        )
+
+        result := mailer.Send(
+            "reception@whiteswanhotel.com",
+            "DownTime Reports @" FormatTime(A_Now, "yyyy-MM-dd HH:mm"),
+            "Please check the attachments.",
+            [reportPaths*]
+        )
+
+        if (result.ok) {
+            MsgBox("报表已发送。", POPUP_TITLE, "4096 T1 iconi")
+        }
+        else {
+            MsgBox("发送失败`nExit code: " result.exitCode "`n" result.stderr, POPUP_TITLE, "4096 T2 icon!")
+        }
+    }
+
     handleSaveReports(*) {
         SetTimer(cd, 0)
 
@@ -143,11 +173,18 @@ DownTimeReports(App, runAsInstance) {
 
         savedReports := ReportMaster_Action.saveReports(selectedReports, "HTML")
 
+        reportsToSend := []
+
         loop files (A_MyDocuments . "\*.HTML") {
             if (downtimeReportList.value.find(reportObj => (A_LoopFileName.replace(".HTML") == reportObj.name))) {
                 FileCopy(A_LoopFileFullPath, DOWNTIME_FOLDER . "\" . A_LoopFileName, true)
+                if (Abs(DateDiff(A_LoopFileTimeCreated, A_Now, "Hours"))) {
+                    reportsToSend.Push(A_LoopFileFullPath)
+                }
             }
         }
+
+        handleSendEmail(reportsToSend)
 
         saveText := "已保存报表：`n`n" . savedReports . "`n`n是否打开所在文件夹? "
         if (MsgBox(saveText, POPUP_TITLE, "OKCancel 4096 T5") == "OK") {
