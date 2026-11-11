@@ -41,7 +41,7 @@ saveReports(whichReport, fileFormat) {
     )
 }
 
-saveReports(A_Args[1], A_Args.Has(2) ? A_Args[2] : "PDF")
+; saveReports(A_Args[1], A_Args.Has(2) ? A_Args[2] : "PDF")
 
 ; run with:
 ; [System.Diagnostics.Process]::Start("<ahk path in ProgramFiles>", "<report-save-commands.ahk path> <which report> <file format>")
