@@ -43,10 +43,10 @@ DownTimeReports(App, runAsInstance) {
     BROWSER := FileExist("F:\360\360se6\Application\360se.exe")
         ? "F:\360\360se6\Application\360se.exe"
         : A_AppData . "\360se6\Application\360se.exe"
-    PMS_URL := "https://wsh-opr-app1"
-    PMS_USERNAME := "FOHARALDC"
-    PMS_PASSWORD := "sxzc123456"
-    DOWNTIME_FOLDER := "\\10.0.2.13\fd\1-Reports\DownTime Reports"
+    PMS_URL := CONFIG.read(["pms", "url"])
+    PMS_USERNAME := CONFIG.read(["pms", "username"])
+    PMS_PASSWORD := CONFIG.read(["pms", "password"])
+    DOWNTIME_FOLDER := CONFIG.read(["report-master", "downtime-folder"])
 
     if (runAsInstance) {
         closeCountdown := signal(30)
@@ -55,63 +55,6 @@ DownTimeReports(App, runAsInstance) {
     }
 
     downtimeReportList := signal(ReportMaster_Action.reportList.downtime)
-
-    handleBrowserReopen() {
-        SUSPEND_CONTROLLER.suspendOtherScripts()
-        ; close all pms win
-        utils.killApp("360se.exe")
-
-        Run(BROWSER . " " . PMS_URL)
-        WinWait("OPERA Login")
-        WinMaximize("OPERA Login")
-        WinActivate("OPERA Login")
-        Sleep(200)
-
-        ; log into opera
-        found := PmsImageFinder.find("login-btn.png", 2)
-        if (!found) {
-            return found
-        }
-        Click(found.outX, found.outY - 110)
-        Sleep(100)
-        Send("{TEXT}" . PMS_USERNAME)
-        Sleep(100)
-        Send("{Tab}")
-        Sleep(200)
-        Send("{TEXT}" . PMS_PASSWORD)
-        Sleep(100)
-        loop 3 {
-            Send("{Tab}")
-            Sleep(200)
-        }
-        Send("{Enter}")
-        utils.waitLoading(1000)
-
-        loop {
-            found := ImageSearch(&x, &y, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["pms-login.png"])
-            if (found) {
-                break
-            }
-            Sleep(500)
-        }
-        Click(x, y)
-
-        ; wait for PMS app
-        WinWait("OPERA PMS")
-        WinActivate("OPERA PMS")
-        utils.waitLoading(2000)
-
-        ; wait for window standby
-        loop {
-            found := ImageSearch(&x, &y, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["opera-logo.png"])
-            if (found) {
-                break
-            }
-            Sleep(500)
-        }
-
-        SUSPEND_CONTROLLER.restoreAllScripts()
-    }
 
     App.gui.OnEvent("Close", handleExitApp)
     handleExitApp(*) {
@@ -154,7 +97,7 @@ DownTimeReports(App, runAsInstance) {
         SetTimer(cd, 0)
 
         ; reopen browser
-        handleBrowserReopen()
+        ReportMaster_Action.handleBrowserReopen(BROWSER, PMS_URL, PMS_USERNAME, PMS_PASSWORD)
 
         ; check/create downtime report dir
         DirCreate(DOWNTIME_FOLDER)
@@ -171,16 +114,14 @@ DownTimeReports(App, runAsInstance) {
             selectedReports.Push(downtimeReportList.value[row])
         }
 
-        savedReports := ReportMaster_Action.saveReports(selectedReports, "HTML")
+        savedReports := ReportMaster_Action.saveReports(selectedReports, "PDF")
 
         reportsToSend := []
 
-        loop files (A_MyDocuments . "\*.HTML") {
-            if (downtimeReportList.value.find(reportObj => (A_LoopFileName.replace(".HTML") == reportObj.name))) {
+        loop files (A_MyDocuments . "\*.PDF") {
+            if (downtimeReportList.value.find(reportObj => A_LoopFileName.includes(reportObj.name))) {
                 FileCopy(A_LoopFileFullPath, DOWNTIME_FOLDER . "\" . A_LoopFileName, true)
-                if (Abs(DateDiff(A_LoopFileTimeCreated, A_Now, "Hours"))) {
-                    reportsToSend.Push(A_LoopFileFullPath)
-                }
+                reportsToSend.Push(A_LoopFileFullPath)
             }
         }
 
@@ -203,7 +144,6 @@ DownTimeReports(App, runAsInstance) {
                 App.AddButton("x+10 w80 h25", "开始保存 ({1})", closeCountdown).onClick(handleSaveReports)
             ]
             : App.AddButton("xs265 y+10 w80 h25", "开始保存").onClick(handleSaveReports)
-
     }
 
     render() {
