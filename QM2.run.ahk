@@ -173,7 +173,7 @@ appInit() {
 		return
 	}
 
-    lcoalConfig := JSON.parse(FileRead(A_AppData . "\QM2\qm.config.json"))
+    lcoalConfig := JSON.parse(FileRead(A_AppData . "\QM2\qm.config.json", "utf-8"))
     VERSION := lcoalConfig["version"]
     isAutoUpdate := lcoalConfig["auto-update"]
 	if (!isAutoUpdate) {
@@ -191,7 +191,7 @@ appInit() {
 
     if (DirExist(UNC_PATH)) {
         ; compare version
-        uncVersion := JSON.parse(FileRead(uncScriptDir . "\qm.config.json"))["version"]
+        uncVersion := JSON.parse(FileRead(uncScriptDir . "\qm.config.json"), "utf-8")["version"]
         if (VERSION != uncVersion) {
             DetectHiddenWindows(true)
             loop {
