@@ -28,7 +28,7 @@ class CurlMailer {
         }
     }
 
-    Send(to, subject, body, attachments := []) {
+    Send(to, subject, body, attachments := [], cc := []) {
         curlStatus := this.CheckCurl()
 
         if (curlStatus is Error)
@@ -41,6 +41,9 @@ class CurlMailer {
         eml := ""
         eml .= "From: " this.smtpUser crlf
         eml .= "To: " to crlf
+        if (cc.Length) {
+            eml .= "Cc: " this.JoinAddresses(cc) crlf
+        }
         eml .= "Subject: =?UTF-8?B?" this.Base64EncodeText(subject) "?=" crlf
         eml .= "MIME-Version: 1.0" crlf
         eml .= 'Content-Type: multipart/mixed; boundary="' boundary '"' crlf
@@ -82,6 +85,11 @@ class CurlMailer {
         config .= "user = " this.CurlQuote(this.smtpUser ":" this.authCode) "`n"
         config .= "mail-from = " this.CurlQuote(this.smtpUser) "`n"
         config .= "mail-rcpt = " this.CurlQuote(to) "`n"
+        for address in (cc is Array ? cc : [cc]) {
+            if (Trim(address) != "") {
+                config .= "mail-rcpt = " this.CurlQuote(address) "`n"
+            }
+        }
         config .= "upload-file = " this.CurlQuote(emlPath) "`n"
         config .= "silent`n"
         config .= "show-error`n"
@@ -188,5 +196,18 @@ class CurlMailer {
         return mimeTypes.Has(ext)
             ? mimeTypes[ext]
             : "application/octet-stream"
+    }
+
+    JoinAddresses(addresses) {
+        return addresses is Array
+            ? this.JoinArray(addresses, ", ")
+            : addresses
+    }
+
+    JoinArray(arr, separator := ", ") {
+        result := ""
+        for i, value in arr
+            result .= (i > 1 ? separator : "") value
+        return result
     }
 }
