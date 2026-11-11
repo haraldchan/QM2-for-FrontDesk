@@ -1,5 +1,5 @@
 {
-	"version": "2.13.0",
+	"version": "2.14.0",
 	"persist-scripts-switch": {
 		"balance-transfer": true,
 		"city-ledger": false,
@@ -21,7 +21,13 @@
 					"水果5": "水果5"
 				}
 			}
-		}
+		},
+		"downtime-folder": "\\\\10.0.2.13\\fd\\1-Reports\\DownTime Reports"
+	},
+	"pms": {
+		"username": "FOHARALDC",
+		"password": "sxzc123456",
+		"url": "https://wsh-opr-app1"
 	},
 	"fetch-fedex-resv": {
 		"template": "\\\\10.0.2.13\\FD\\25-FEDEX\\Schedule生成处理工具\\FedEx Sign In Sheet temp(空模板).xlsx"
