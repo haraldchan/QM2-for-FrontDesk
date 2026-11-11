@@ -393,17 +393,17 @@ class ReportMaster_Action {
         if (waitIndex > 30) {
             this.isRunning := false
         }
-        if (!this.isRunning) {
-            MsgBox("保存出错，脚本已终止。", "ReportMaster", "T1 4096")
-            this.end()
-            return
-        }
-
         MouseMove(initX, initY)
         utils.waitLoading()
         Click()
         Sleep(200)
         Send("!c")
+
+        if (!this.isRunning) {
+            MsgBox("保存出错，脚本已终止。", "ReportMaster", "T1 4096")
+            this.end()
+            return
+        }
 
         return saveFileName
     }
