@@ -28,141 +28,275 @@ class ReportMaster_Action {
         BlockInput(false)
     }
 
-    static reportList := {
-        onr: [{
-            searchStr: "%complimentary",
+
+    static overnightReports := [
+        {
             name: "Guest INH Complimentary",
+            searchStr: "%complimentary",
             saveFn: this.comp
-        }, {
-            searchStr: "FI01",
+        },
+        {
             name: "NA02-Manager Flash",
+            searchStr: "FI01",
             saveFn: this.mgrFlash
-        }, {
-            searchStr: "RS05",
+        },
+        {
             name: "RS05-（前后15天）History & Forecast",
+            searchStr: "RS05",
             saveFn: this.hisFor15
-        }, {
-            searchStr: "RS05",
+        }, 
+        {
             name: "RS05-（FO当月）History & Forecast",
-            saveFn: this.hisForThisMonth
-        }, {
             searchStr: "RS05",
+            saveFn: this.hisForThisMonth
+        }, 
+        {
             name: "RS05-（FO次月）History & Forecast",
+            searchStr: "RS05",
             saveFn: this.hisForNextMonth
-        }, {
-            searchStr: "FO01-VIP",
+        }, 
+        {
             name: "VIP Arrival (VIP Arr)",
+            searchStr: "FO01-VIP",
             saveFn: this.vipArr
-        }, {
-            searchStr: "FO03",
+        }, 
+        {
             name: "FO03-VIP DEP",
+            searchStr: "FO03",
             saveFn: this.vipDep
-        }, {
-            searchStr: "FO01",
+        }, 
+        {
             name: "FO01-Arrival Detailed",
+            searchStr: "FO01",
             saveFn: this.arrAll
-        }, {
-            searchStr: "FO02",
+        }, 
+        {
             name: "FO02-Guests INH by Room",
+            searchStr: "FO02",
             saveFn: this.inhAll
-        }, {
-            searchStr: "FO03",
+        }, 
+        {
             name: "FO03-Departures",
+            searchStr: "FO03",
             saveFn: this.depAll
-        }, {
-            searchStr: "FO11",
+        },
+        {
             name: "FO11-Credit Limit",
+            searchStr: "FO11",
             saveFn: this.creditLimit
-        }, {
-            searchStr: "FO13",
+        }, 
+        {
             name: "FO13-Package Forecast（仅早餐）",
+            searchStr: "FO13",
             saveFn: this.bbf
-        }, {
-            searchStr: "%hkroomstatusperroom",
+        }, 
+        {
             name: "Rooms-housekeepingstatus",
+            searchStr: "%hkroomstatusperroom",
             saveFn: this.rooms
-        }, {
-            searchStr: "HK03",
+        }, 
+        {
             name: "HK03-OOO",
+            searchStr: "HK03",
             saveFn: this.ooo
-        }, {
-            searchStr: "grprmlist",
+        }, 
+        {
             name: "Group Rooming List",
+            searchStr: "grprmlist",
             saveFn: this.groupRoom
-        }, {
-            searchStr: "grpinhouse",
+        }, 
+        {
             name: "Group In House",
+            searchStr: "grpinhouse",
             saveFn: this.groupInh
-        }, {
-            searchStr: "FO08",
+        }, 
+        {
             name: "FO08-No Show",
+            searchStr: "FO08",
             saveFn: this.noShow
-        }, {
-            searchStr: "rescancel",
+        }, 
+        {
             name: "Cancellations",
+            searchStr: "rescancel",
             saveFn: this.cancel
-        }, {
-            searchStr: "%gitraces",
+        }, 
+        {
             name: "Reservation Traces",
+            searchStr: "%gitraces",
             saveFn: this.reservationTraces
-        }, {
-            searchStr: "%guestinhw",
+        }, 
+        {
             name: "Guest In House w/o Due Out(VIP INH)",
+            searchStr: "%guestinhw",
             saveFn: this.vipInh
-        }],
-        downtime: [{
-            searchStr: "FO01",
+        }
+    ]
+
+    static downtimeReports := [
+        {
             name: "FO01-Arrival Detailed",
+            searchStr: "FO01",
             saveFn: this.arrAll
-        }, {
-            searchStr: "FO02",
+        },
+        {
             name: "FO02-Guests INH by Room",
+            searchStr: "FO02",
             saveFn: this.inhAll
-        }, {
-            searchStr: "FO03",
+        },
+        {
             name: "FO03-Departures",
+            searchStr: "FO03",
             saveFn: this.depAll
-        }, {
-            searchStr: "FO11",
+        },
+        {
             name: "FO11-Credit Limit",
+            searchStr: "FO11",
             saveFn: this.creditLimit
-        }, {
-            searchStr: "%hkroomstatusperroom",
+        },
+        {
             name: "Rooms-housekeepingstatus",
+            searchStr: "%hkroomstatusperroom",
             saveFn: this.rooms
-        }, {
-            searchStr: "HK03",
+        },
+        {
             name: "HK03-OOO",
+            searchStr: "HK03",
             saveFn: this.ooo
-        }, {
-            searchStr: "%gitraces",
+        },
+        {
             name: "Reservation Traces",
+            searchStr: "%gitraces",
             saveFn: this.reservationTraces
-        }, {
-            searchStr: "grprmlist",
+        },
+        {
             name: "Group Rooming List",
+            searchStr: "grprmlist",
             saveFn: this.groupRoom
-        }, {
-            searchStr: "grpinhouse",
+        },
+        {
             name: "Group In House",
+            searchStr: "grpinhouse",
             saveFn: this.groupInh
-        }],
+        }
+    ]
+
+    static miscReports := [
+        {
+            name: "FO13 - Packages",
+            searchStr: "pkgforecast",
+            saveFn: this.packages    
+        },
+        {
+            name: "WSHGZ - Specials",
+            searchStr: "Wshgz_special",
+            saveFn: this.specials            
+        },
+        {
+            name: "预抵消费券",
+            searchStr: "FO01-Arrival",
+            saveFn: this.arrivingCoupons
+        },
+        {
+            name: "当天夜退房间",
+            searchStr: "departure_all",
+            saveFn: this.onDayLateOut
+        },
+        {
+            name: "昨日住房国籍数量",
+            searchStr: "stat_countrybyday",
+            saveFn: this.countryByDate
+        },
+        {
+            name: "Market Segment",
+            searchStr: "RS07",
+            saveFn: this.marketStats
+        },
+        {
+            name: "可售房型余量",
+            searchStr: "detail_avail",
+            saveFn: this.detailedAvailability
+        },
+    ]
+
+    static reportList := {
+        onr: this.overnightReports,
+        downtime: this.downtimeReports,
         groupArr: {
-            searchStr: "GRPRMLIST",
             name: "Group Arrival - 当天预抵团单",
+            searchStr: "GRPRMLIST",
             saveFn: this.arrivingGroups
         }
     }
 
+
+    static handleBrowserReopen(browser, pmsURL, username, password) {
+        SUSPEND_CONTROLLER.suspendOtherScripts()
+        ; close all pms win
+        utils.killApp("360se.exe")
+
+        Run(browser . " " . pmsURL)
+        WinWait("OPERA Login")
+        WinMaximize("OPERA Login")
+        WinActivate("OPERA Login")
+        Sleep(200)
+
+        ; log into opera
+        found := PmsImageFinder.find("opera-login-anchor.png", 10)
+        MouseMove(found.outX + 29, found.outY - 168)
+        if (!found) {
+            return found
+        }
+        Click(found.outX + 29, found.outY - 168)
+        Sleep(100)
+        Send("{TEXT}" . username)
+        Sleep(100)
+        Send("{Tab}")
+        Sleep(200)
+        Send("{TEXT}" . password)
+        Sleep(100)
+        loop 3 {
+            Send("{Tab}")
+            Sleep(200)
+        }
+        Send("{Enter}")
+        utils.waitLoading(1000)
+
+        loop {
+            found := ImageSearch(&x, &y, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["pms-login.png"])
+            if (found) {
+                break
+            }
+            Sleep(500)
+        }
+        Click(x, y)
+
+        ; wait for PMS app
+        WinWait("OPERA PMS")
+        WinActivate("OPERA PMS")
+        utils.waitLoading(2000)
+
+        ; wait for window standby
+        loop {
+            found := ImageSearch(&x, &y, 0, 0, A_ScreenWidth, A_ScreenHeight, IMAGES["opera-logo.png"])
+            if (found) {
+                break
+            }
+            Sleep(500)
+        }
+
+        SUSPEND_CONTROLLER.restoreAllScripts()
+    }
+
+
     /**
      * 
-     * @param reportInfoObj 
+     * @param reportDescriptor 
      * @param {"PDF" | "XML" | "TXT" | "XLS"} fileType 
      * @param {Integer} initX 
      * @param {Integer} initY 
      * @returns {void | String} 
      */
-    static reportFiling(reportInfoObj, fileType, initX := 433, initY := 598) {
+    static reportFiling(reportDescriptor, fileType, initX := 433, initY := 598) {
         fileTypeSelectPointer := Map(
             "HTML", -1,
             "PDF", 0,
@@ -175,7 +309,7 @@ class ReportMaster_Action {
         Sleep(100)
         Send("{Text}R")
         Sleep(100)
-        Send(Format("{Text}{1}", reportInfoObj.searchStr))
+        Send(Format("{Text}{1}", reportDescriptor.searchStr))
         Sleep(200)
         Send("!h")
         utils.waitLoading()
@@ -205,15 +339,15 @@ class ReportMaster_Action {
         }
 
         ; run saving actions, return filename
-        reportFn := reportInfoObj.saveFn
-        if (reportInfoObj.searchStr = "GRPRMLIST" && reportInfoObj.name = "Group Arrival - 当天预抵团单") {
-            saveName := reportFn(this, reportInfoObj.blockCode, reportInfoObj.blockName)
+        reportFn := reportDescriptor.saveFn
+        if (reportDescriptor.searchStr = "GRPRMLIST" && reportDescriptor.name = "Group Arrival - 当天预抵团单") {
+            saveName := reportFn(this, reportDescriptor.blockCode, reportDescriptor.blockName)
         } else {
-            saveName := reportInfoObj.hasOwnProp("args")
-                ? reportFn(this, reportInfoObj.args*)
+            saveName := reportDescriptor.hasOwnProp("args")
+                ? reportFn(this, reportDescriptor.args*)
                 : reportFn(this)
         }
-        saveFileName := (saveName ? saveName : reportInfoObj.name) . "." . fileType
+        saveFileName := (saveName ? saveName : reportDescriptor.name) . "." . fileType
 
         Sleep(1000)
         Send("!f")
@@ -276,11 +410,11 @@ class ReportMaster_Action {
 
     /**
      * 
-     * @param {Array} reportInfoObjs
+     * @param {Array} reportDescriptors
      * @param {"PDF" | "XML" | "TXT" | "XLS"} fileType 
      * @returns {String} saved report names
      */
-    static saveReports(reportInfoObjs, fileType) {
+    static saveReports(reportDescriptors, fileType) {
         savedReports := ""
 
         started := this.start()
@@ -289,7 +423,7 @@ class ReportMaster_Action {
             return
         }
 
-        for reportObj in reportInfoObjs {
+        for reportObj in reportDescriptors {
             if (!ReportMaster_Action.isRunning && A_Index > 1) {
                 return
             }
@@ -1233,32 +1367,68 @@ class ReportMaster_Action {
         Sleep(150)
         Click(initX - 35, initY + 484) ; 610, 689
         Sleep(150)
-        return fileName   
+        return fileName
     }
 
     /**
      * @param {"MarketCode"|"SourceCode"} groupBy 
      */
     static marketStats(groupBy, queryDate) {
-    	; groupby changes `GroupBy` and `SubGroupBy`
-    	Send("{Text}" . FormatTime(queryDate, "MMddyyyy"))
-    
-    	loop 10 {
-    		Send("{Tab}")
-    		Sleep(100)
-    	}
-    
-    	if (groupBy == "SourceCode") {
-    		loop 2 {
-    			Send("{Down}")
-    			Sleep(100)	
-    		}
-    		Send("{Tab}")
-    		Sleep(100)	
-    		loop 2 {
-    			Send("{Down}")
-    			Sleep(100)	
-    		}
-    	}
+        ; groupby changes `GroupBy` and `SubGroupBy`
+        Send("{Text}" . FormatTime(queryDate, "MMddyyyy"))
+
+        loop 10 {
+            Send("{Tab}")
+            Sleep(100)
+        }
+
+        if (groupBy == "SourceCode") {
+            loop 2 {
+                Send("{Down}")
+                Sleep(100)
+            }
+            Send("{Tab}")
+            Sleep(100)
+            loop 2 {
+                Send("{Down}")
+                Sleep(100)
+            }
+        }
+    }
+
+    ; search: "detail_avail"
+    static detailedAvailability() {
+        fromDate := FormatTime(A_Now, "MMddyyyy")
+        toDate := FormatTime(DateAdd(A_Now, 72, "Days"), "MMddyyyy")
+        roomClasses := ["STD", "DEX", "CDR", "CES", "CPS"]
+
+        found := PmsImageFinder.find("opera-active-win.png")
+        if (!found) {
+            return
+        }
+
+        ; send dates
+        Send("{Text}" fromDate)
+        Send("{Tab}")
+        Sleep(100)
+        Send("{Text}" toDate)
+        Sleep(100)
+
+        ; enter room class filter
+        Click(found.outX + 360, found.outY + 117)
+        utils.waitLoading()
+        for (roomCls in roomClasses) {
+            Send("{Text}" roomCls)
+            Send("!h")
+            utils.waitLoading()
+            Send("!a")
+            utils.waitLoading()
+        }
+        Send("!o")
+        utils.waitLoading(300)
+
+        ; select "non-deduct"
+        Send("!n")
+        utils.waitLoading(300)
     }
 }
