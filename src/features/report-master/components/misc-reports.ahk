@@ -17,7 +17,7 @@ MiscReports(App) {
     defineReportDescriptor() {
         prefix := selectedMiscReport.value.split(" - ").at(-1).toLower()
 
-        reportDescriptor := ReportMaster_Action.miscReports.find(r => r.name == selectedMiscReport.value)
+        reportDescriptor := ReportMaster_Action.miscReports.find(r => selectedMiscReport.value.includes(r.name))
 
         if (selectedMiscReport.value.includes("Market Segment")) {
             groupBy := App["market-segment-groupby"].Text
@@ -51,10 +51,6 @@ MiscReports(App) {
     saveReport(*) {
         reportDescriptor := defineReportDescriptor()
         if (!reportDescriptor) {
-            return
-        }
-
-        if (reportDescriptor.hasOwnProp("args") && !reportDescriptor.args[1]) {
             return
         }
 
