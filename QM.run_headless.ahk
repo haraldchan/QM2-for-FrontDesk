@@ -3,15 +3,19 @@
 #SingleInstance Off
 ; includes
 #Include lib\lib-index.ahk
-#Include src\App.ahk
+#Include src\App_Headless.ahk
 
 ; acquire admin
 if (!A_IsAdmin) {
-    Run("*RunAs " . A_ScriptFullPath)
+    args := ""
+
+    for arg in A_Args
+        args .= ' "' arg '"'
+
+    Run('*RunAs "' A_ScriptFullPath '"' args)
     ExitApp()
 }
 ; utils.clearExistInstances()
-
 ; global consts
 CONFIG := useJsonConfig("./qm.config.json", "qm.config.json", A_AppData . "\QM2")
 VERSION := CONFIG.read("version")
@@ -26,13 +30,14 @@ TraySetIcon(IMAGES["QMTray.ico"])
 CoordMode("Mouse", "Screen")
 CoordMode("Pixel", "Screen")
 
-
+params := FileRead(A_ScriptDir "\qm_headless_params.json", "utf-8")
+App_Headless(params)
 
 ; hotkey setup
 ^F12:: {
-	if (FileExist(CONFIG.path)) {
-		FileDelete(CONFIG.path)
-	}
+    if (FileExist(CONFIG.path)) {
+        FileDelete(CONFIG.path)
+    }
     CONFIG.createLocal()
     utils.cleanReload(WIN_GROUP)
 }
