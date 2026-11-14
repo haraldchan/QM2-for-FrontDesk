@@ -13,6 +13,11 @@ if (A_ScriptName == "downtime-reports.ahk") {
     utils.clearExistInstances()
 
     POPUP_TITLE := "DownTime Reports"
+    CONFIG := useJsonConfig(
+        "\\10.0.2.13\FD\19-个人文件夹\HC\Software - 软件及脚本\AHK_Scripts\QM2-for-FrontDesk-main\qm.config.json", 
+        "qm.config.json",
+        A_AppData . "\QM2"
+    )
 
     IMAGES := useImages("..\..\..\assets")
     PmsImageFinder.images := IMAGES
@@ -20,7 +25,7 @@ if (A_ScriptName == "downtime-reports.ahk") {
     FORCE_SUSPEND_MESSAGE := 0x2042
     SUSPEND_CONTROLLER := SuspendController(FORCE_SUSPEND_MESSAGE)
 
-    TraySetIcon("..\..\..\assets\QMTray.ico")
+    TraySetIcon(IMAGES["QMTray.ico"])
 
     DownTimeWin := Svaner({
         gui: {
