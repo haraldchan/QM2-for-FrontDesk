@@ -163,50 +163,54 @@ class JSON {
 }
 
 appInit() {
+    DetectHiddenWindows(true)
+    loop {
+        if (id := WinExist("app\QM2")) {
+            pid := WinGetPID("ahk_id " . id)
+            if (!pid) {
+                break
+            }
+            ProcessClose(pid)
+        }
+    } until (!WinExist("app\QM2"))
+
     UNC_PATH := "\\10.0.2.13\fd"
+    ; UNC_PATH := "c:\Users\haraldchan\Code"
     uncScriptDir := UNC_PATH . "\19-个人文件夹\HC\Software - 软件及脚本\AHK_Scripts\QM2-for-FrontDesk-main"
+    ; uncScriptDir := UNC_PATH . "\QM2-for-FrontDesk"
 
-	; fresh copy
-	if (!DirExist(A_AppData . "\QM2")) {
-		DirCopy(uncScriptDir, "C:\QM2\app", true)
-		FileCopy(uncScriptDir . "\qm.config.json", A_AppData . "\QM2\qm.config.json", true)
-		return
-	}
+    ; no config json found, copy as fresh deploy
+    if (!FileExist(A_AppData "\QM2\qm.config.json")) {
+        DirCopy(uncScriptDir, "C:\QM2\app", true)
+        DirCreate(A_AppData "\QM2")
+        FileCopy(uncScriptDir "\qm.config.json", A_AppData "\QM2\qm.config.json", true)
+        Run("C:\QM2\app\QM2.ahk")
+        return
+    }
 
-    lcoalConfig := JSON.parse(FileRead(A_AppData . "\QM2\qm.config.json", "utf-8"))
-    VERSION := lcoalConfig["version"]
-    isAutoUpdate := lcoalConfig["auto-update"]
-	if (!isAutoUpdate) {
-		updateNow := MsgBox("检测到新版本，是否更新？", , "4096 iconi OKCancel")
-		if (updateNow == "Cancel") {
-			try {
-				Run("C:\QM2\app\QM2.ahk")
-			}
-			catch {
-				Run(uncScriptDir . "\QM2.ahk")
-			}
-			ExitApp()
-		}
-	}
-
-    if (DirExist(UNC_PATH)) {
-        ; compare version
-        uncVersion := JSON.parse(FileRead(uncScriptDir . "\qm.config.json"), "utf-8")["version"]
-        if (VERSION != uncVersion) {
-            DetectHiddenWindows(true)
-            loop {
-                if (id := WinExist("app\QM2")) {
-                    pid := WinGetPID("ahk_id " . id)
-                    if (!pid) {
-                        break
-                    }
-                    ProcessClose(pid)
-                }
-            } until (!WinExist("app\QM2"))
-
-            DirCopy(uncScriptDir, "C:\QM2\app", true)
-            FileCopy(uncScriptDir . "\qm.config.json", A_AppData . "\QM2\qm.config.json", true)
-            Reload()
+    localConfig := JSON.parse(FileRead(A_AppData "\QM2\qm.config.json", "utf-8"))
+    VERSION := localConfig["version"]
+    isAutoUpdate := localConfig["auto-update"]
+    if (!isAutoUpdate) {
+        updateNow := MsgBox("检测到新版本，是否更新？", , "4096 iconi OKCancel")
+        if (updateNow == "Cancel") {
+            try {
+                Run("C:\QM2\app\QM2.ahk")
+            }
+            catch {
+                Run(uncScriptDir . "\QM2.ahk")
+            }
+            return
+        }
+        if (DirExist(UNC_PATH)) {
+            TrayTip("更新中，请稍候...")
+            ; compare version
+            uncVersion := JSON.parse(FileRead(uncScriptDir . "\qm.config.json"), "utf-8")["version"]
+            if (VERSION != uncVersion) {
+                DirCopy(uncScriptDir, "C:\QM2\app", true)
+                DirCreate(A_AppData "\QM2")
+                FileCopy(uncScriptDir "\qm.config.json", A_AppData "\QM2\qm.config.json", true)
+            }
         }
     }
 
@@ -215,6 +219,7 @@ appInit() {
     }
     catch {
         Run("\\10.0.2.13\fd\19-个人文件夹\HC\Software - 软件及脚本\AHK_Scripts\QM2-for-FrontDesk-main\QM2.ahk")
+        ; Run(uncScriptDir "\QM2-for-FrontDesk-main\QM2.ahk")
     }
 }
 
