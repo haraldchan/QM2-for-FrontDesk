@@ -249,11 +249,11 @@ class ReportMaster_Action {
         Click(found.outX + 29, found.outY - 168)
         Sleep(100)
         Send("{TEXT}" . username)
-        Sleep(100)
+        Sleep(200)
         Send("{Tab}")
         Sleep(200)
         Send("{TEXT}" . password)
-        Sleep(100)
+        Sleep(200)
         loop 3 {
             Send("{Tab}")
             Sleep(200)
@@ -308,7 +308,7 @@ class ReportMaster_Action {
         Send("!m")
         Sleep(100)
         Send("{Text}R")
-        Sleep(100)
+        utils.waitLoading(400)
         Send(Format("{Text}{1}", reportDescriptor.searchStr))
         Sleep(200)
         Send("!h")
@@ -327,10 +327,9 @@ class ReportMaster_Action {
         else {
             loop Abs(fileTypeSelectPointer[fileType]) {
                 Send("{Up}")
-                Sleep(10)
+                Sleep(Random(100, 500))
             }
         }
-        Sleep(100)
         Send("!o")
         utils.waitLoading()
         if (!this.isRunning) {
@@ -417,20 +416,22 @@ class ReportMaster_Action {
     static saveReports(reportDescriptors, fileType) {
         savedReports := ""
 
-        started := this.start()
-        if (!started) {
-            MsgBox("Opera PMS 未启动，请登录后重试", POPUP_TITLE, "4096 T1 icon!")
-            return
-        }
-
         for reportObj in reportDescriptors {
             if (!ReportMaster_Action.isRunning && A_Index > 1) {
                 return
             }
+
+            started := this.start()
+            if (!started) {
+                MsgBox("Opera PMS 未启动，请登录后重试", POPUP_TITLE, "4096 T1 icon!")
+                return
+            }
             res := ReportMaster_Action.reportFiling(reportObj, fileType)
+            Sleep(Random(1000, 1500))
             if (!res) {
                 continue
             }
+            
             savedReports .= reportObj.name . "`n"
         }
 
@@ -441,56 +442,56 @@ class ReportMaster_Action {
 
     static comp() {
         fileName := "Comp"
-        Sleep(200)
+        Sleep(Random(100,500))
         return fileName
     }
 
     static mgrFlash(initX := 749, initY := 333) {
         fileName := "NA02-MANAGER FLASH"
-        Sleep(200)
+        Sleep(Random(100,500))
         MouseMove(initX, initY) ; 749, 333
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("!o")
         MouseMove(initX - 149, initY + 169) ; 600, 502
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
-        Sleep(150)
+        Sleep(Random(100,500))
         return fileName
     }
 
     static hisFor15(initX := 644, initY := 178) {
         fileName := "RS05-林总"
-        Sleep(200)
+        Sleep(Random(100,500))
         ; report options here
         MouseMove(initX, initY) ; 644, 178
-        Sleep(150)
+        Sleep(Random(100,500))
         Click("Down")
         MouseMove(initX - 102, initY - 8) ; 542, 170
-        Sleep(150)
+        Sleep(Random(100,500))
         Click("Up")
         MouseMove(initX - 117, initY - 27) ; 527, 151
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("{NumpadSub}")
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("8")
         MouseMove(initX + 2, initY + 26) ; 646, 204
-        Sleep(150)
+        Sleep(Random(100,500))
         Click("Down")
         MouseMove(initX - 111, initY + 41) ; 533, 219
-        Sleep(150)
+        Sleep(Random(100,500))
         Click("Up")
         MouseMove(initX - 171, initY + 92) ; 473, 270
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("{NumpadSub}")
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("8")
         MouseMove(initX - 27, initY + 463) ; 617, 641
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("{Tab}")
         MouseMove(initX - 34, initY + 511) ; 610, 689
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
-        Sleep(150)
+        Sleep(Random(100,500))
         return fileName
     }
 
@@ -509,29 +510,29 @@ class ReportMaster_Action {
         dateLast := FormatTime(DateAdd(firstDayOfNextMonth, -1, "Days"), "MMddyyyy")
 
         fileName := Format("RS05-{1}月", preAuditMonth)
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("{Backspace}")
-        Sleep(300)
+        Sleep(Random(100,500))
         Send(Format("{Text}{1}", dateFirst))
-        Sleep(300)
+        Sleep(Random(100,500))
         MouseMove(initX, initY) ; 645, 205
-        Sleep(150)
+        Sleep(Random(100,500))
         Click("Down")
         MouseMove(initX - 114, initY - 1) ; 531, 204
-        Sleep(150)
+        Sleep(Random(100,500))
         Click("Up")
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("{Backspace}")
-        Sleep(300)
+        Sleep(Random(100,500))
         Send(Format("{Text}{1}", dateLast))
-        Sleep(300)
+        Sleep(Random(100,500))
         MouseMove(initX - 28, initY + 436) ; 617, 641
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("{Tab}")
         MouseMove(initX - 35, initY + 484) ; 610, 689
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
-        Sleep(150)
+        Sleep(Random(100,500))
         return fileName
     }
 
@@ -558,191 +559,191 @@ class ReportMaster_Action {
         fileName := Format("RS05-{1}月", nextMonth)
         ; BlockInput true
         ; reportOpen(searchStr)
-        Sleep(200)
+        Sleep(Random(100,500))
         ; report options here
         Send("{Backspace}")
-        Sleep(300)
+        Sleep(Random(100,500))
         Send(Format("{Text}{1}", dateFirstNext))
-        Sleep(300)
+        Sleep(Random(100,500))
         MouseMove(initX, initY) ; 645, 205
-        Sleep(150)
+        Sleep(Random(100,500))
         Click("Down")
         MouseMove(initX - 114, initY - 1) ; 531, 204
-        Sleep(150)
+        Sleep(Random(100,500))
         Click("Up")
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("{Backspace}")
-        Sleep(300)
+        Sleep(Random(100,500))
         Send(Format("{Text}{1}", dateLastNext))
-        Sleep(300)
+        Sleep(Random(100,500))
         MouseMove(initX - 28, initY + 436) ; 617, 641
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("{Tab}")
         MouseMove(initX - 35, initY + 484) ; 610, 689
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
-        Sleep(150)
+        Sleep(Random(100,500))
         return fileName
     }
 
     static vipArr(initX := 464, initY := 194) {
         fileName := "FO01-VIP ARR"
-        Sleep(200)
+        Sleep(Random(100,500))
         ; report options here
         MouseMove(initX, initY) ; 464, 194
-        Sleep(150)
+        Sleep(Random(100,500))
         Click("Down")
         MouseMove(initX - 128, initY + 4) ; 336, 198
-        Sleep(50)
+        Sleep(Random(100,500))
         Click("Up")
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("{NumpadAdd}")
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("{Text}2")
-        Sleep(100)
+        Sleep(Random(100,500))
         MouseMove(initX + 146, initY + 426) ; 610, 620
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
         MouseMove(initX + 168, initY + 399) ; 632, 593
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
         MouseMove(initX + 146, initY + 549) ; 610, 743
-        Sleep(150)
+        Sleep(Random(100,500))
         return fileName
     }
 
     static vipInh() {
         fileName := "VIP INH-Guest INH without due out"
-        Sleep(200)
+        Sleep(Random(100,500))
         return fileName
     }
 
     static vipDep(initX := 622, initY := 391) {
         fileName := "FO03-VIP DEP"
-        Sleep(200)
+        Sleep(Random(100,500))
         ; report options here
         MouseMove(initX, initY)
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
         MouseMove(855, 391)
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("!a")
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("!o")
-        Sleep(200)
+        Sleep(Random(100,500))
         return fileName
     }
 
     static arrAll(initX := 309, initY := 566) {
-        Sleep(200)
+        Sleep(Random(100,500))
         ; report options here
         MouseMove(initX, initY) ; 309, 566
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
         MouseMove(initX + 8, initY + 53) ; 317, 619
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
         MouseMove(initX + 16, initY + 97) ; 325, 663
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
         MouseMove(initX + 290, initY + 28) ; 599, 594
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
         MouseMove(initX + 299, initY + 52) ; 608, 618
         Click()
-        Sleep(150)
+        Sleep(Random(100,500))
     }
 
     static inhAll(initX := 433, initY := 523) {
-        Sleep(200)
+        Sleep(Random(100,500))
         ; report options here
         MouseMove(initX, initY) ; 433, 523
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
     }
 
     static depAll(initX := 607, initY := 540) {
-        Sleep(200)
+        Sleep(Random(100,500))
         ; report options here
         MouseMove(initX, initY) ; 607, 540
-        Sleep(150)
+        Sleep(Random(100,500))
         click()
-        Sleep(150)
+        Sleep(Random(100,500))
         MouseMove(initX - 119, initY - 50) ; 488, 490
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
     }
 
     static creditLimit(initX := 686, initY := 474) {
         ; BlockInput true
-        Sleep(200)
+        Sleep(Random(100,500))
         ; report options here
         MouseMove(initX, initY) ; 686, 474
         Click()
         MouseMove(initX - 277, initY + 48) ; 409, 522
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
-        Sleep(200)
+        Sleep(Random(100,500))
     }
 
     static bbf(initX := 599, initY := 276) {
         fileName := "FO13-Packages 早餐"
-        Sleep(200)
+        Sleep(Random(100,500))
         ; report options here
         MouseMove(initX, initY) ; 599, 276
-        Sleep(150)
+        Sleep(Random(100,500))
         Click("Down")
         MouseMove(initX - 80, initY + 3) ; 519, 279
-        Sleep(150)
+        Sleep(Random(100,500))
         Click("Up")
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("{NumpadSub}")
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("1")
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("{Enter}")
         MouseMove(initX + 10, initY - 7) ; 609, 269
-        Sleep(150)
+        Sleep(Random(100,500))
         Click("Down")
         MouseMove(initX - 129, initY + 7) ; 470, 283
-        Sleep(150)
+        Sleep(Random(100,500))
         Click("Up")
-        Sleep(100)
+        Sleep(Random(100,500))
         Send("^c")
-        Sleep(200)
+        Sleep(Random(100,500))
         MouseMove(initX + 6, initY + 27) ; 605, 303
-        Sleep(150)
+        Sleep(Random(100,500))
         MouseMove(initX + 6, initY + 27) ; 605, 303
-        Sleep(150)
+        Sleep(Random(100,500))
         Click("Down")
         MouseMove(initX - 103, initY + 30) ; 496, 306
-        Sleep(150)
+        Sleep(Random(100,500))
         Click("Up")
         MouseMove(initX - 105, initY + 31) ; 494, 307
-        Sleep(100)
+        Sleep(Random(100,500))
         Send("^v")
-        Sleep(100)
+        Sleep(Random(100,500))
         MouseMove(initX - 136, initY + 242) ; 463, 518
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
-        Sleep(150)
+        Sleep(Random(100,500))
         return fileName
     }
 
     static rooms(initX := 476, initY := 515) {
-        Sleep(200)
+        Sleep(Random(100,500))
         ; report options here
         MouseMove(initX, initY)
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
-        Sleep(150)
+        Sleep(Random(100,500))
     }
 
     static ooo() {
         fileName := "HK03-OOO"
-        Sleep(200)
+        Sleep(Random(100,500))
         return fileName
     }
 
@@ -750,7 +751,7 @@ class ReportMaster_Action {
         fileName := "Group Rooming List"
         ; BlockInput true
         ; reportOpen(searchStr)
-        Sleep(200)
+        Sleep(Random(100,500))
         ; ; report options here
         ; MouseMove initX, initY ; 372, 544
         ; Sleep 150
@@ -763,30 +764,30 @@ class ReportMaster_Action {
         ; Click
         ; Sleep 150
         loop 14 {
-            sleep(100)
+            sleep(Random(100,500))
             Send("{Tab}")
         }
 
-        Sleep(100)
+        Sleep(Random(100,500))
         Send("{Space}")
 
-        Sleep(100)
+        Sleep(Random(100,500))
         Send("{Tab}")
-        Sleep(100)
+        Sleep(Random(100,500))
         Send("{Space}")
 
         loop 5 {
-            sleep(100)
+            sleep(Random(100,500))
             Send("{Tab}")
         }
-        Sleep(100)
+        Sleep(Random(100,500))
         Send("{Space}")
 
         loop 4 {
-            sleep(100)
+            sleep(Random(100,500))
             Send("{Tab}")
         }
-        Sleep(100)
+        Sleep(Random(100,500))
         Send("{Space}")
 
         return fileName
@@ -794,141 +795,141 @@ class ReportMaster_Action {
 
     static groupInh(initX := 470, initY := 425) {
         ; reportOpen(searchStr)
-        Sleep(200)
+        Sleep(Random(100,500))
         ; report options here
         MouseMove(initX, initY) ; 470, 425
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
         MouseMove(initX + 155, initY + 68) ; 625, 493
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
-        Sleep(150)
+        Sleep(Random(100,500))
     }
 
     static noShow(initX := 573, initY := 440) {
         fileName := "FO08-NO SHOW"
-        Sleep(200)
+        Sleep(Random(100,500))
         ; report options here
         MouseMove(initX, initY)
-        Sleep(50)
+        Sleep(Random(100,500))
         Send("{Backspace}")
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("{NumpadSub}")
-        Sleep(100)
+        Sleep(Random(100,500))
         Send("{Text}1")
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("{Tab}")
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("{NumpadSub}")
-        Sleep(100)
+        Sleep(Random(100,500))
         Send("{Text}1")
-        Sleep(150)
+        Sleep(Random(100,500))
         return fileName
     }
 
     static cancel(initX := 601, initY := 291) {
         fileName := "CXL"
-        Sleep(200)
+        Sleep(Random(100,500))
         ; report options here
         MouseMove(initX, initY) ; 601, 291
-        Sleep(150)
+        Sleep(Random(100,500))
         Click("Down")
         MouseMove(initX - 196, initY - 13) ; 485, 278
-        Sleep(150)
+        Sleep(Random(100,500))
         Click("Up")
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("{Backspace}")
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("{NumpadSub}")
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("{Text}1")
-        Sleep(50)
+        Sleep(Random(100,500))
         Send("{Enter}")
-        Sleep(150)
+        Sleep(Random(100,500))
         MouseMove(initX + 1, initY - 3) ; 602, 288
-        Sleep(150)
+        Sleep(Random(100,500))
         Click("Down")
         MouseMove(initX - 153, initY + 1) ; 448, 292
-        Sleep(150)
+        Sleep(Random(100,500))
         Click("Up")
-        Sleep(50)
+        Sleep(Random(100,500))
         Send("^c")
-        Sleep(150)
+        Sleep(Random(100,500))
         MouseMove(initX - 15, initY + 18) ; 586, 309
-        Sleep(150)
+        Sleep(Random(100,500))
         Click("Down")
         MouseMove(initX - 188, initY + 30) ; 413, 321
-        Sleep(150)
+        Sleep(Random(100,500))
         Click("Up")
         MouseMove(initX - 162, initY + 34) ; 439, 325
-        Sleep(50)
+        Sleep(Random(100,500))
         Send(A_Clipboard)
         MouseMove(initX + 86, initY + 26) ; 687, 317
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
         MouseMove(initX + 94, initY + 32) ; 695, 323
-        Sleep(150)
+        Sleep(Random(100,500))
         return fileName
     }
 
     static arrivingGroups(blockCodeInput, saveName, initX := 845, initY := 376) {
         fileName := saveName
-        Sleep(200)
+        Sleep(Random(100,500))
         ; report options here
         MouseMove(initX, initY) ; 845, 376
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
         MouseMove(initX - 41, initY + 10) ; 804, 386
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("!a")
-        Sleep(150)
+        Sleep(Random(100,500))
         MouseMove(initX - 37, initY + 229) ; 808, 605
-        Sleep(150)
+        Sleep(Random(100,500))
         Click("Down")
         MouseMove(initX - 40, initY + 239) ; 805, 614
-        Sleep(150)
+        Sleep(Random(100,500))
         Click("Up")
         MouseMove(initX - 108, initY + 239) ; 737, 615
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
-        Sleep(150)
+        Sleep(Random(100,500))
         loop 8 {
             Send("{Space}")
             Sleep(100)
             Send("{Up}")
             Sleep(100)
         }
-        Sleep(350)
+        Sleep(Random(100,500))
         Send("!o")
-        Sleep(150)
+        Sleep(Random(100,500))
         MouseMove(initX - 3, initY - 52) ; 842, 324
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
         MouseMove(initX - 276, initY - 93) ; 569, 283
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
-        Sleep(150)
+        Sleep(Random(100,500))
         Send(Format("{Text}{1}", blockCodeInput))
-        Sleep(150)
+        Sleep(Random(100,500))
         MouseMove(initX + 3, initY - 95) ; 848, 281
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
         MouseMove(initX - 242, initY + 36) ; 603, 412
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("{Space}")
         MouseMove(initX - 117, initY + 97) ; 728, 473
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("!o")
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("!o")
-        Sleep(150)
+        Sleep(Random(100,500))
         MouseMove(initX - 134, initY + 115) ; 711, 491
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
         MouseMove(initX - 423, initY + 144) ; 422, 520
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
         MouseMove(initX - 236, initY + 271) ; 609, 647
         return fileName
@@ -937,23 +938,23 @@ class ReportMaster_Action {
     static arrivingFedex(initX := 845, initY := 376) {
         fileName := Format("{1}-FEDEX-ARRIVAL", FormatTime(A_Now, "yyyyMMdd"))
 
-        Sleep(200)
+        Sleep(Random(100,500))
         ; report options here
         MouseMove(initX, initY) ; 845, 376
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
         MouseMove(initX - 41, initY + 10) ; 804, 386
         utils.waitLoading()
         Send("!a")
         utils.waitLoading()
         MouseMove(initX - 37, initY + 229) ; 808, 605
-        Sleep(150)
+        Sleep(Random(100,500))
         Click("Down")
         MouseMove(initX - 40, initY + 239) ; 805, 614
-        Sleep(150)
+        Sleep(Random(100,500))
         Click("Up")
         MouseMove(initX - 108, initY + 239) ; 737, 615
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
         utils.waitLoading()
         loop 8 {
@@ -962,20 +963,20 @@ class ReportMaster_Action {
             Send("{Up}")
             utils.waitLoading(100)
         }
-        Sleep(350)
+        Sleep(Random(100,500))
         Send("!o")
         utils.waitLoading()
         MouseMove(initX - 3, initY - 52) ; 842, 324
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
         utils.waitLoading()
         MouseMove(initX - 276, initY - 93) ; 569, 283
-        Sleep(150)
+        Sleep(Random(100,500))
         Click()
         utils.waitLoading()
-        Sleep(150)
+        Sleep(Random(100,500))
         Send(Format("{Text}{1}", "%FEDEX"))
-        Sleep(150)
+        Sleep(Random(100,500))
         ; MouseMove(initX + 3, initY - 95) ; 848, 281
         ; Sleep(150)
         ; Click()
@@ -989,18 +990,18 @@ class ReportMaster_Action {
         utils.waitLoading()
         Send("!a")
         utils.waitLoading()
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("!o")
         utils.waitLoading()
 
         ; check ETA
         loop 6 {
             Send("{Tab}")
-            Sleep(100)
+            Sleep(Random(100,500))
         }
         Send("{Space}")
 
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("!o")
         utils.waitLoading()
 
@@ -1010,16 +1011,16 @@ class ReportMaster_Action {
 
     static special(initX := 600, initY := 482) {
         fileName := Format("{1} 水果5", FormatTime(A_Now, "yyyyMMdd"))
-        Sleep(200)
+        Sleep(Random(100,500))
         ; report options here
         MouseMove(initX, initY) ; 600, 482
-        Sleep(200)
+        Sleep(Random(100,500))
         Click()
-        Sleep(200)
+        Sleep(Random(100,500))
         Send("{Text}水果5")
-        Sleep(100)
+        Sleep(Random(100,500))
         MouseMove(initX + 16, initY + 56) ; 616, 538
-        Sleep(200)
+        Sleep(Random(100,500))
         return fileName
     }
 
@@ -1038,17 +1039,17 @@ class ReportMaster_Action {
         fileName := Format("{1}-{2}", FormatTime(A_Now, "yyyyMMdd"), fileNameInput)
         ; report options here
         Send("{Text}" . frDate.toFormat("MMddyyyy"))
-        Sleep(200)
+        Sleep(Random(100,500))
         Send("{Tab}")
-        Sleep(200)
+        Sleep(Random(100,500))
 
         Send("{Text}" . toDate.toFormat("MMddyyyy"))
-        Sleep(200)
+        Sleep(Random(100,500))
         Send("{Tab}")
-        Sleep(200)
+        Sleep(Random(100,500))
 
         Send(spCodes.replace(" ", ","))
-        Sleep(200)
+        Sleep(Random(100,500))
 
         return fileName
     }
@@ -1075,18 +1076,18 @@ class ReportMaster_Action {
 
         ; dates
         Send("{Tab}")
-        Sleep(100)
+        Sleep(Random(100,500))
         Send("{Text}" . frDate.toFormat("MMddyyyy"))
-        Sleep(100)
+        Sleep(Random(100,500))
         Send("{Tab}")
-        Sleep(100)
+        Sleep(Random(100,500))
         Send("{Text}" . toDate.toFormat("MMddyyyy"))
-        Sleep(100)
+        Sleep(Random(100,500))
 
         ; package codes(products)
         loop 2 {
             Send("{Tab}")
-            Sleep(100)
+            Sleep(Random(100,500))
         }
 
         if (!pkgCodes.includes("%")) {
@@ -1094,11 +1095,11 @@ class ReportMaster_Action {
         }
         else {
             Send("{Text}%")
-            Sleep(100)
+            Sleep(Random(100,500))
             Send("{Enter}")
             utils.waitLoading()
             Send("{Text}" . pkgCodes) ; products input
-            Sleep(100)
+            Sleep(Random(100,500))
             Send("!h") ; search
             utils.waitLoading()
             Send("!a") ; select all
@@ -1109,16 +1110,16 @@ class ReportMaster_Action {
 
         ; include pseudo rooms(apartments/presidential)
         Send("!e")
-        Sleep(100)
+        Sleep(Random(100,500))
 
         ; remove GroupBy condition
         if (!groupByPkg) {
             loop 3 {
                 Send("{Tab}")
-                Sleep(100)
+                Sleep(Random(100,500))
             }
             Send("{Down}")
-            Sleep(100)
+            Sleep(Random(100,500))
         }
 
         return fileName
@@ -1127,49 +1128,49 @@ class ReportMaster_Action {
     static reservationTraces(initX := 600, initY := 482) {
         loop 6 {
             Send("{Tab}")
-            utils.waitLoading(200)
+            utils.waitLoading(Random(100,500))
         }
 
         ; Include reservation types
         ; pseudo rooms
         Send("{space}")
-        utils.waitLoading(200)
+        utils.waitLoading(Random(100,500))
         Send("{Tab}")
-        utils.waitLoading(200)
+        utils.waitLoading(Random(100,500))
 
         ; skip checked-in and check reserved
         Send("{Tab}")
-        utils.waitLoading(200)
+        utils.waitLoading(Random(100,500))
         Send("{space}")
-        utils.waitLoading(200)
+        utils.waitLoading(Random(100,500))
         Send("{Tab}")
-        utils.waitLoading(200)
+        utils.waitLoading(Random(100,500))
 
         ; check due out
         Send("{space}")
-        utils.waitLoading(200)
+        utils.waitLoading(Random(100,500))
         Send("{Tab}")
-        utils.waitLoading(200)
+        utils.waitLoading(Random(100,500))
 
         ; check checked-out
         Send("{space}")
-        utils.waitLoading(200)
+        utils.waitLoading(Random(100,500))
         Send("{Tab}")
-        utils.waitLoading(200)
+        utils.waitLoading(Random(100,500))
 
         ; check notes and specials
         loop 2 {
             Send("{Tab}")
-            utils.waitLoading(200)
+            utils.waitLoading(Random(100,500))
         }
         Send("{space}")
-        utils.waitLoading(200)
+        utils.waitLoading(Random(100,500))
         Send("{Tab}")
-        utils.waitLoading(200)
+        utils.waitLoading(Random(100,500))
         Send("{Tab}")
-        utils.waitLoading(200)
+        utils.waitLoading(Random(100,500))
         Send("{space}")
-        utils.waitLoading(200)
+        utils.waitLoading(Random(100,500))
 
         fileName := "Reservation Traces"
         return fileName
@@ -1259,13 +1260,13 @@ class ReportMaster_Action {
         Send("{Tab}")
         utils.waitLoading()
         Send("{Text}%通")
-        Sleep(100)
+        Sleep(Random(100,500))
         Send("!h")
         utils.waitLoading()
         Send("!a")
         utils.waitLoading()
         Send("{Text}%消")
-        Sleep(100)
+        Sleep(Random(100,500))
         Send("!h")
         utils.waitLoading()
         Send("!a")
@@ -1276,14 +1277,14 @@ class ReportMaster_Action {
         ; check Notes
         loop 19 {
             Send("{Tab}")
-            Sleep(100)
+            Sleep(Random(100,500))
         }
         Send("{Space}")
     }
 
     static onDayLateOut() {
         CoordMode("Mouse", "Screen")
-        Sleep(500)
+        Sleep(Random(100,500))
         topLeft := PmsImageFinder.find("opera-active-win.png")
         if (!topLeft) {
             return
@@ -1309,7 +1310,7 @@ class ReportMaster_Action {
         utils.waitLoading()
         loop 2 {
             Send("{Down}")
-            Sleep(100)
+            Sleep(Random(100,500))
         }
         Send("!a")
         utils.waitLoading()
@@ -1324,18 +1325,18 @@ class ReportMaster_Action {
         ; uncheck Display-Room Nights
         loop 5 {
             Send("{Tab}")
-            Sleep(50)
+            Sleep(Random(100,500))
         }
         Send("{Space}")
-        Sleep(100)
+        Sleep(Random(100,500))
 
         ; Check Display-Adult Nights
         loop 2 {
             Send("{Tab}")
-            Sleep(50)
+            Sleep(Random(100,500))
         }
         Send("{Space}")
-        Sleep(100)
+        Sleep(Random(100,500))
     }
 
     ; for Revenue
@@ -1349,25 +1350,25 @@ class ReportMaster_Action {
             x => FormatTime(x, "MMddyyyy")
         )(Integer(A_Mon))
 
-        fileName := Format("RS05-未来六月")
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("{Backspace}")
-        Sleep(300)
+        Sleep(Random(100,500))
         Send(Format("{Text}{1}", startDate))
-        Sleep(300)
+        Sleep(Random(100,500))
         MouseClickDrag("Left", initX, initY, initX - 114, initY - 1) ; 645, 205, 531, 204
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("{Backspace}")
-        Sleep(300)
+        Sleep(Random(100,500))
         Send(Format("{Text}{1}", endDate))
-        Sleep(300)
+        Sleep(Random(100,500))
         Click(initX - 28, initY + 436) ; 617, 641
-        Sleep(150)
+        Sleep(Random(100,500))
         Send("{Tab}")
-        Sleep(150)
+        Sleep(Random(100,500))
         Click(initX - 35, initY + 484) ; 610, 689
-        Sleep(150)
-        return fileName
+        Sleep(Random(100,500))
+
+        return Format("RS05 H&F {}-{}", FormatTime(startDate, "yyyy.MM.dd"), FormatTime("yyyy.MM.dd"))
     }
 
     /**
@@ -1376,22 +1377,26 @@ class ReportMaster_Action {
     static marketStats(groupBy, queryDate) {
         ; groupby changes `GroupBy` and `SubGroupBy`
         Send("{Text}" . FormatTime(queryDate, "MMddyyyy"))
-
-        loop 10 {
-            Send("{Tab}")
-            Sleep(100)
-        }
+        Sleep(10)
+        Send("{Tab}")
 
         if (groupBy == "SourceCode") {
+            Send("!g")
+            Sleep(Random(100,500))
+            Send("!g")
+            Sleep(Random(100,500))
+            Send("{Tab}")
+            Sleep(Random(100,500))
+
             loop 2 {
                 Send("{Down}")
-                Sleep(100)
+                Sleep(Random(100,500))
             }
             Send("{Tab}")
-            Sleep(100)
+            Sleep(Random(100,500))
             loop 2 {
                 Send("{Down}")
-                Sleep(100)
+                Sleep(Random(100,500))
             }
         }
     }
@@ -1410,9 +1415,9 @@ class ReportMaster_Action {
         ; send dates
         Send("{Text}" fromDate)
         Send("{Tab}")
-        Sleep(100)
+        Sleep(Random(100,500))
         Send("{Text}" toDate)
-        Sleep(100)
+        Sleep(Random(100,500))
 
         ; enter room class filter
         Click(found.outX + 360, found.outY + 117)
