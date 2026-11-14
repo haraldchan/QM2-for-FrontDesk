@@ -13,9 +13,8 @@ if (!A_IsAdmin) {
 utils.clearExistInstances()
 
 ; global consts
-CONFIG := useJsonConfig("./qm.config.json", "qm.config.json", A_AppData . "\QM2")
+CONFIG := useJsonConfig(A_ScriptDir "\qm.config.json", "qm.config.json", A_AppData . "\QM2")
 VERSION := CONFIG.read("version")
-UNC_PATH := "\\10.0.2.13\fd"
 POPUP_TITLE := "QM2 for FrontDesk " . VERSION
 WIN_GROUP := ["ahk_class SunAwtFrame", "旅客信息", "ahk_class 360se6_Frame"]
 IMAGES := useImages(A_ScriptDir . "\assets")
