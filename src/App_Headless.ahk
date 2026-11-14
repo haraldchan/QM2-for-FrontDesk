@@ -1,10 +1,23 @@
 #Include features\index.ahk
 
-App_Headless() {
-    runRevenueReports()
+App_Headless(propString) {
+    props := JSON.parse(propString)
+
+    runRevenueReports(props)
+
+    utils.cleanReload(WIN_GROUP, true)
 }
 
-runRevenueReports() {
+runRevenueReports(props) {
+    p := useProps(props, {
+        date: A_Now.yesterday().toFormat("yyyyMMdd"),
+        recipient: "cpxt5234@agent.qq.com",
+        cc: ["shinwu@whiteswanhotel.com"],
+        savepath: A_MyDocuments
+    })
+
+    msgbox JSON.stringify(p.toObject())
+
     BROWSER := FileExist("F:\360\360se6\Application\360se.exe")
         ? "F:\360\360se6\Application\360se.exe"
         : A_AppData . "\360se6\Application\360se.exe"
@@ -12,29 +25,30 @@ runRevenueReports() {
     PMS_USERNAME := CONFIG.read(["pms", "username"])
     PMS_PASSWORD := CONFIG.read(["pms", "password"])
 
-    mailer := CurlMailer(
-        CONFIG.read(["curl-mailer", "user"]),
-        CONFIG.read(["curl-mailer", "auth"]),
-        CONFIG.read(["curl-mailer", "url"])
-    )
+    fmtDate := p.date.toFormat("yyyy.MM.dd")
 
     reportDescriptors := [
         {
-            name: "Market Segment by MarketCode @" FormatTime(A_Now, "yyyyMMdd HH:mm"),
-            searchStr: "RS07",
-            saveFn: ReportMaster_Action.marketStats,
-            args: ["MarketCode", FormatTime(A_Now, "yyyyMMdd")],
-            filetype: "PDF"
+            searchStr: "RS05",
+            saveFn: ReportMaster_Action.hisForSixMonths,
+            filetype: "XML"            
         },
         {
-            name: "Market Segment by SourceCode @" FormatTime(A_Now, "yyyyMMdd HH:mm"),
+            name: "RS07 MKT " fmtDate,
             searchStr: "RS07",
             saveFn: ReportMaster_Action.marketStats,
-            args: ["MarketCode", FormatTime(A_Now, "yyyyMMdd")],
-            filetype: "PDF"
+            args: ["MarketCode", p.date],
+            filetype: "XML"
         },
         {
-            name: "可售房型余量",
+            name: "RS07 Source " fmtDate,
+            searchStr: "RS07",
+            saveFn: ReportMaster_Action.marketStats,
+            args: ["SourceCode", p.date],
+            filetype: "XML"
+        },
+        {
+            name: "房型库存 " fmtDate,
             searchStr: "detail_avail",
             saveFn: ReportMaster_Action.detailedAvailability,
             filetype: "XML"
@@ -48,24 +62,35 @@ runRevenueReports() {
         ReportMaster_Action.start()
         savedFiledName := ReportMaster_Action.reportFiling(descriptor, descriptor.filetype)
         ReportMaster_Action.end()
+        Sleep(Random(1000, 3000))
 
         savedReports.Push(A_MyDocuments "\" savedFiledName)
     }
 
-    result := mailer.Send(
-        "shinwu@whiteswanhotel.com",
-        "Reports @" FormatTime(A_Now, "yyyy-MM-dd HH:mm"),
-        "Please check the attachments.",
-        [savedReports*],
-        ["cpxt5234@agent.qq.com"]
+    mailer := CurlMailer(
+        CONFIG.read(["curl-mailer", "user"]),
+        CONFIG.read(["curl-mailer", "auth"]),
+        CONFIG.read(["curl-mailer", "url"])
     )
 
-    ; if (result.ok) {
-    ;     MsgBox("报表已发送。", POPUP_TITLE, "4096 T1 iconi")
-    ; }
-    ; else {
-    ;     MsgBox("发送失败`nExit code: " result.exitCode "`n" result.stderr, POPUP_TITLE, "4096 icon!")
-    ; }
-}
+    result := mailer.Send(
+        p.recipient,
+        fmtDate "经营数据",
+        "Please check the attachments.",
+        [savedReports*],
+        p.cc
+    )
 
-App_Headless()
+    if (p.savepath != A_MyDocuments) {
+        for (report in savedReports) {
+            FileMove(report, report.replace(A_MyDocuments, p.savepath), true)
+        }
+    }
+
+    if (result.ok) {
+        MsgBox("报表已发送。", POPUP_TITLE, "4096 T1 iconi")
+    }
+    else {
+        MsgBox("发送失败`nExit code: " result.exitCode "`n" result.stderr, POPUP_TITLE, "4096 icon!")
+    }
+}
