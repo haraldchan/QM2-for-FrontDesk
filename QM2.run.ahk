@@ -188,10 +188,18 @@ appInit() {
         return
     }
 
-    localConfig := JSON.parse(FileRead(A_AppData "\QM2\qm.config.json", "utf-8"))
-    VERSION := localConfig["version"]
-    isAutoUpdate := localConfig["auto-update"]
-    if (!isAutoUpdate) {
+    try {
+        localConfig := JSON.parse(FileRead(A_AppData "\QM2\qm.config.json", "utf-8"))
+        VERSION := localConfig["version"]
+        uncVersion := JSON.parse(FileRead(uncScriptDir . "\qm.config.json", "utf-8"))["version"]
+        isAutoUpdate := localConfig["auto-update"]
+    }
+    catch Error as err {
+        FileCopy(uncScriptDir "\qm.config.json", A_AppData "\QM2\qm.config.json", true)
+        Reload()
+    }
+
+    if (!isAutoUpdate && VERSION != uncVersion) {
         updateNow := MsgBox("检测到新版本，是否更新？", , "4096 iconi OKCancel")
         if (updateNow == "Cancel") {
             try {
@@ -205,12 +213,9 @@ appInit() {
         if (DirExist(UNC_PATH)) {
             TrayTip("更新中，请稍候...")
             ; compare version
-            uncVersion := JSON.parse(FileRead(uncScriptDir . "\qm.config.json"), "utf-8")["version"]
-            if (VERSION != uncVersion) {
-                DirCopy(uncScriptDir, "C:\QM2\app", true)
-                DirCreate(A_AppData "\QM2")
-                FileCopy(uncScriptDir "\qm.config.json", A_AppData "\QM2\qm.config.json", true)
-            }
+            DirCopy(uncScriptDir, "C:\QM2\app", true)
+            DirCreate(A_AppData "\QM2")
+            FileCopy(uncScriptDir "\qm.config.json", A_AppData "\QM2\qm.config.json", true)
         }
     }
 
