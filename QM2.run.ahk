@@ -179,6 +179,11 @@ appInit() {
     uncScriptDir := UNC_PATH . "\19-个人文件夹\HC\Software - 软件及脚本\AHK_Scripts\QM2-for-FrontDesk-main"
     ; uncScriptDir := UNC_PATH . "\QM2-for-FrontDesk"
 
+    if (!DirExist(uncScriptDir)) {
+        Run("C:\QM2\app\QM2.ahk")
+        return
+    }
+
     ; no config json found, copy as fresh deploy
     if (!FileExist(A_AppData "\QM2\qm.config.json")) {
         DirCopy(uncScriptDir, "C:\QM2\app", true)
@@ -210,13 +215,12 @@ appInit() {
             }
             return
         }
-        if (DirExist(UNC_PATH)) {
-            TrayTip("更新中，请稍候...")
-            ; compare version
-            DirCopy(uncScriptDir, "C:\QM2\app", true)
-            DirCreate(A_AppData "\QM2")
-            FileCopy(uncScriptDir "\qm.config.json", A_AppData "\QM2\qm.config.json", true)
-        }
+        
+        TrayTip("更新中，请稍候...")
+        ; compare version
+        DirCopy(uncScriptDir, "C:\QM2\app", true)
+        DirCreate(A_AppData "\QM2")
+        FileCopy(uncScriptDir "\qm.config.json", A_AppData "\QM2\qm.config.json", true)
     }
 
     try {
