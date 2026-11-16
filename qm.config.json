@@ -1,6 +1,6 @@
 {
 	"auto-update": false,
-	"version": "2.14.2",
+	"version": "2.14.3",
 	"persist-scripts-switch": {
 		"balance-transfer": true,
 		"city-ledger": false,
