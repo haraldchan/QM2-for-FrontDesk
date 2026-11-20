@@ -1,4 +1,27 @@
 {
+	"date": "",
 	"recipient": "cpxt5234@agent.qq.com",
-	"cc": ["shinwu@whiteswanhotel.com"]
+	"cc": ["shinwu@whiteswanhotel.com"],
+	"reportConfig": {
+		"rs05": {
+			"isave": true,
+			"send-email": true,
+			"format": "XML"
+		},
+		"rs07-mkt": {
+			"save": true,
+			"send-email": true,
+			"format": "XML"
+		},
+		"rs07-src": {
+			"save": true,
+			"send-email": true,
+			"format": "XML"
+		},
+		"detail-avail": {
+			"save": true,
+			"send-email": true,
+			"format": "XML"
+		}
+	}
 }

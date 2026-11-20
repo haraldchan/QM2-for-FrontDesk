@@ -13,10 +13,8 @@ runRevenueReports(props) {
         date: A_Now.yesterday().toFormat("yyyyMMdd"),
         recipient: "cpxt5234@agent.qq.com",
         cc: ["shinwu@whiteswanhotel.com"],
-        savepath: A_MyDocuments
+        savepath: A_MyDocuments,
     })
-
-    msgbox JSON.stringify(p.toObject())
 
     BROWSER := FileExist("F:\360\360se6\Application\360se.exe")
         ? "F:\360\360se6\Application\360se.exe"
@@ -31,40 +29,56 @@ runRevenueReports(props) {
         {
             searchStr: "RS05",
             saveFn: ReportMaster_Action.hisForSixMonths,
-            filetype: "XML"            
+            filetype: props["format"],
+            isSave: props["save"],
+            sendEmail: props["send-email"],
         },
         {
             name: "RS07 MKT " fmtDate,
             searchStr: "RS07",
             saveFn: ReportMaster_Action.marketStats,
             args: ["MarketCode", p.date],
-            filetype: "XML"
+            filetype: props["format"],
+            isSave: props["save"],
+            sendEmail: props["send-email"],
         },
         {
             name: "RS07 Source " fmtDate,
             searchStr: "RS07",
             saveFn: ReportMaster_Action.marketStats,
             args: ["SourceCode", p.date],
-            filetype: "XML"
+            filetype: props["format"],
+            isSave: props["save"],
+            sendEmail: props["send-email"],
         },
         {
             name: "房型库存 " fmtDate,
             searchStr: "detail_avail",
             saveFn: ReportMaster_Action.detailedAvailability,
-            filetype: "XML"
+            filetype: props["format"],
+            isSave: props["save"],
+            sendEmail: props["send-email"],
         },
     ]
 
     ReportMaster_Action.handleBrowserReopen(BROWSER, PMS_URL, PMS_USERNAME, PMS_PASSWORD)
 
     savedReports := []
+    reportsToSend := []
     for (descriptor in reportDescriptors) {
+        if (!descriptor.isSave) {
+            continue
+        }
+
         ReportMaster_Action.start()
         savedFiledName := ReportMaster_Action.reportFiling(descriptor, descriptor.filetype)
         ReportMaster_Action.end()
         Sleep(Random(1000, 3000))
 
         savedReports.Push(A_MyDocuments "\" savedFiledName)
+        if (descriptor.sendEmail) {
+            reportsToSend.Push(A_MyDocuments "\" savedFiledName)
+        }
     }
 
     mailer := CurlMailer(
@@ -77,7 +91,7 @@ runRevenueReports(props) {
         p.recipient,
         fmtDate "经营数据",
         "Please check the attachments.",
-        [savedReports*],
+        reportsToSend,
         p.cc
     )
 
