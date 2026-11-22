@@ -42,6 +42,7 @@ App(App) {
 			"团单信息", () => OnDayGroupReports(App, curActiveTab),
 			"其他报表", () => MiscReports(App),
 			"停机报表", () => DownTimeReports(App, false),
+			"收益报表", () => RevenueReports(App),
 		)).onChange(onTabChange)
 
 		onMount()
