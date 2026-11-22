@@ -232,7 +232,13 @@ class ReportMaster_Action {
     static handleBrowserReopen(browser, pmsURL, username, password) {
         SUSPEND_CONTROLLER.suspendOtherScripts()
         ; close all pms win
-        utils.killApp("360se.exe")
+        if (ProcessExist("jp2launcher.exe")) {
+            ProcessClose("jp2launcher.exe")
+        }
+        if (ProcessExist("360se.exe")) {
+            ProcessClose("360se.exe")
+        }
+
 
         Run(browser . " " . pmsURL)
         WinWait("OPERA Login")
@@ -247,16 +253,16 @@ class ReportMaster_Action {
             return found
         }
         Click(found.outX + 29, found.outY - 168)
-        Sleep(100)
+        Sleep(Random(100, 500))
         Send("{TEXT}" . username)
-        Sleep(200)
+        Sleep(Random(100, 500))
         Send("{Tab}")
-        Sleep(200)
+        Sleep(Random(100, 500))
         Send("{TEXT}" . password)
-        Sleep(200)
+        Sleep(Random(100, 500))
         loop 3 {
             Send("{Tab}")
-            Sleep(200)
+            Sleep(Random(100, 500))
         }
         Send("{Enter}")
         utils.waitLoading(1000)
@@ -310,13 +316,13 @@ class ReportMaster_Action {
         Send("{Text}R")
         utils.waitLoading(400)
         Send(Format("{Text}{1}", reportDescriptor.searchStr))
-        Sleep(200)
+        Sleep(Random(100, 500))
         Send("!h")
         utils.waitLoading()
         Send("!i")
         utils.waitLoading()
         Send("{Tab}")
-        Sleep(100)
+        Sleep(Random(100, 500))
 
         if (fileTypeSelectPointer[fileType] > 0) {
             loop fileTypeSelectPointer[fileType] {
@@ -348,10 +354,16 @@ class ReportMaster_Action {
         }
         saveFileName := (saveName ? saveName : reportDescriptor.name) . "." . fileType
 
+        utils.waitLoading()
         Sleep(1000)
         Send("!f")
 
         WinWait("Please Select a Directory to Download")
+        if (!this.isRunning) {
+            msgbox("脚本已终止", POPUP_TITLE, "4096 T1")
+            return
+        }
+
         Sleep(200)
         Send("{Backspace}")
         Sleep(200)
@@ -388,8 +400,8 @@ class ReportMaster_Action {
                 break
             }
             waitIndex++
-        } until (waitIndex > 30)
-        if (waitIndex > 30) {
+        } until (waitIndex > 60)
+        if (waitIndex > 60) {
             this.isRunning := false
         }
         MouseMove(initX, initY)
@@ -1368,7 +1380,7 @@ class ReportMaster_Action {
         Click(initX - 35, initY + 484) ; 610, 689
         Sleep(Random(100,500))
 
-        return Format("RS05 H&F {}-{}", FormatTime(startDate, "yyyy.MM.dd"), FormatTime("yyyy.MM.dd"))
+        return Format("RS05_HF_{}", FormatTime(A_Now, "yyyy-MM-dd"))
     }
 
     /**
