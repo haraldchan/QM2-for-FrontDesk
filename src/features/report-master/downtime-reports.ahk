@@ -100,9 +100,11 @@ DownTimeReports(App, runAsInstance) {
 
     handleSaveReports(*) {
         SetTimer(cd, 0)
-
+        
         ; reopen browser
-        ReportMaster_Action.handleBrowserReopen(BROWSER, PMS_URL, PMS_USERNAME, PMS_PASSWORD)
+        if (runAsInstance) {
+            ReportMaster_Action.handleBrowserReopen(BROWSER, PMS_URL, PMS_USERNAME, PMS_PASSWORD)
+        }
 
         ; check/create downtime report dir
         DirCreate(DOWNTIME_FOLDER)
