@@ -43,6 +43,7 @@ App(App) {
 			"其他报表", () => MiscReports(App),
 			"停机报表", () => DownTimeReports(App, false),
 			"收益报表", () => RevenueReports(App),
+			"二维码生成", () => QrCreator(App),
 		)).onChange(onTabChange)
 
 		onMount()

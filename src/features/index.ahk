@@ -2,3 +2,4 @@
 #Include persist-scripts\persist-scripts.ahk
 #Include phrases\phrases.ahk
 #Include report-master\report-master.ahk
+#Include qr-creator\qr-creator.ahk
