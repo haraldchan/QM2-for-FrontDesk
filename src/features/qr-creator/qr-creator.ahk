@@ -18,7 +18,7 @@ QrCreator(App) {
 
         stream := whr.ResponseStream
 
-        f := FileOpen(A_Desktop "\qr-creator-temp.png", "w")
+        f := FileOpen(A_Temp "\qr-creator-temp.png", "w")
 
         buf := Buffer(8192)
 
@@ -44,7 +44,7 @@ QrCreator(App) {
         whr := ""
         f := ""
 
-        App["qr-code"].Value := A_Desktop "\qr-creator-temp.png"
+        App["qr-code"].Value := A_Temp "\qr-creator-temp.png"
     }
 
     handleSaveImage(*) {
