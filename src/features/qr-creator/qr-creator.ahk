@@ -50,7 +50,19 @@ QrCreator(App) {
     handleSaveImage(*) {
         savepath := FileSelect("S", App["qr-text-content"].Value, "请选择保存位置", "PNG 文件 (*.png)")
 
-        FileMove(A_Temp "\qr-creator-temp.png", savepath ".png")
+        try {
+            FileCopy(A_Temp "\qr-creator-temp.png", savepath ".png")
+        }
+        catch {
+            overwrite := MsgBox(savepath ".png 已经存在，是否覆盖文件？", POPUP_TITLE, "4096 YesNo")
+            if (overwrite == "Yes") {
+                FileCopy(A_Temp "\qr-creator-temp.png", savepath ".png", true)
+            }
+            else {
+                return
+            }
+        }
+        
     }
 
     render() {
