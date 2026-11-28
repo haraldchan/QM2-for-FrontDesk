@@ -38,12 +38,12 @@ App(App) {
 			"一键运行", () => OnePress(App),
 			"常用语句", () => Phrases(App),
 			"蓝豆联动", () => LandowLinker(App),
-			"夜班报表", () => OverNightReports(App),
+			"二维码生成", () => QrCreator(App),
 			"团单信息", () => OnDayGroupReports(App, curActiveTab),
+			"夜班报表", () => OverNightReports(App),
 			"其他报表", () => MiscReports(App),
 			"停机报表", () => DownTimeReports(App, false),
 			"收益报表", () => RevenueReports(App),
-			"二维码生成", () => QrCreator(App),
 		)).onChange(onTabChange)
 
 		onMount()
