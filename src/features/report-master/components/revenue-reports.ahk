@@ -3,34 +3,31 @@
  */
 RevenueReports(App) {
     date := A_Now.yesterday().toFormat("yyyyMMdd")
-    fmtDate := FormatTime(date, "yyyy.MM.dd")
+    fmtDate := FormatTime(date, "yyyy-MM-dd")
 
-    reportDescriptors := [
-        {
-            searchStr: "RS05",
-            saveFn: ReportMaster_Action.hisForSixMonths,
-            filetype: "XML"            
-        },
-        {
-            name: "RS07 MKT " fmtDate,
-            searchStr: "RS07",
-            saveFn: ReportMaster_Action.marketStats,
-            args: ["MarketCode", date],
-            filetype: "XML"
-        },
-        {
-            name: "RS07 Source " fmtDate,
-            searchStr: "RS07",
-            saveFn: ReportMaster_Action.marketStats,
-            args: ["SourceCode", date],
-            filetype: "XML"
-        },
-        {
-            name: "房型库存 " fmtDate,
-            searchStr: "detail_avail",
-            saveFn: ReportMaster_Action.detailedAvailability,
-            filetype: "XML"
-        },
+    reportDescriptors := [{
+        name: Format("RS05_HF_{}", FormatTime(A_Now, "yyyy-MM-dd")),
+        searchStr: "RS05",
+        saveFn: ReportMaster_Action.hisForSixMonths,
+        filetype: "XML"
+    }, {
+        name: "房型库存 " FormatTime(A_Now, "yyyy-MM-dd"),
+        searchStr: "detail_avail",
+        saveFn: ReportMaster_Action.detailedAvailability,
+        filetype: "XML"
+    }, {
+        name: "RS07 MKT " fmtDate,
+        searchStr: "RS07",
+        saveFn: ReportMaster_Action.marketStats,
+        args: ["MarketCode", date],
+        filetype: "XML"
+    }, {
+        name: "RS07 Source " fmtDate,
+        searchStr: "RS07",
+        saveFn: ReportMaster_Action.marketStats,
+        args: ["SourceCode", date],
+        filetype: "XML"
+    },
     ]
 
     mailer := CurlMailer(
@@ -40,9 +37,21 @@ RevenueReports(App) {
     )
 
     saveReports(*) {
+        selectedReport := []
+        selectedRows := App["rev-reports"].getCheckedRowNumbers()
+        if (!selectedRows.Length) {
+            MsgBox("未选中报表", POPUP_TITLE, "T2")
+            App.Show()
+            return
+        }
+
+        for (row in selectedRows) {
+            selectedReport.Push(reportDescriptors[row])
+        }
+
         savedReports := []
         reportsToSend := []
-        for (descriptor in reportDescriptors) {
+        for (descriptor in selectedReport) {
             ; if (!descriptor.isSave) {
             ;     continue
             ; }
@@ -57,7 +66,7 @@ RevenueReports(App) {
 
             savedReports.Push(A_MyDocuments "\" savedFiledName)
             ; if (descriptor.sendEmail) {
-                reportsToSend.Push(A_MyDocuments "\" savedFiledName)
+            reportsToSend.Push(A_MyDocuments "\" savedFiledName)
             ; }
         }
 
@@ -87,6 +96,16 @@ RevenueReports(App) {
         },
             () => [
                 App.AddText("xs10 yp+35 w330", "完成保存并发送后，请查看邮箱已发送中是否有 收益报表 邮件"),
+                App.AddListView({
+                    lvOptions: "vrev-reports Checked Grid NoSortHdr -ReadOnly -Multi @lv:label-tip xs10 y+15 w335 r4",
+                    itemOptions: "Check"
+                }, {
+                    keys: ["searchStr", "name"],
+                    titles: ["搜索字段", "报表名称"],
+                    widths: [120, 200]
+                },
+                    signal(reportDescriptors)
+                ),
                 App.AddButton("xs265 y+10 w80 h25", "开始保存").onClick(saveReports)
             ]
         )
