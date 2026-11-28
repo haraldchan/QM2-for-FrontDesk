@@ -1379,8 +1379,6 @@ class ReportMaster_Action {
         Sleep(Random(100,500))
         Click(initX - 35, initY + 484) ; 610, 689
         Sleep(Random(100,500))
-
-        return Format("RS05_HF_{}", FormatTime(A_Now, "yyyy-MM-dd"))
     }
 
     /**
